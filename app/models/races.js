@@ -17,12 +17,11 @@ module.exports = (sequelize, DataTypes) => {
   Races.init({
     name: DataTypes.STRING,
     status: DataTypes.INTEGER,
-    deletedAt: DataTypes.DATE
+    deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Races',
   });
-
-  return Races;
   
+  return Races;
 };

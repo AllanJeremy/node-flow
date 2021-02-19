@@ -17,12 +17,12 @@ module.exports = (sequelize, DataTypes) => {
   AdminPermissions.init({
     user_id: DataTypes.INTEGER,
     permissions: DataTypes.JSON,
-    deletedAt: DataTypes.DATE
+    deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'AdminPermissions',
   });
 
   return AdminPermissions;
-
+  
 };

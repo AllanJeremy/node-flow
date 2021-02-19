@@ -17,12 +17,12 @@ module.exports = (sequelize, DataTypes) => {
   InviteUsers.init({
     user_id: DataTypes.INTEGER,
     invite_user_email: DataTypes.STRING,
-    deletedAt: DataTypes.DATE
+    deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'InviteUsers',
   });
 
   return InviteUsers;
-  
+
 };

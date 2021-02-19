@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('mental_health_sections', {
+    await queryInterface.createTable('companies', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,28 +12,36 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      status: {
-        type: Sequelize.INTEGER
+      email: {
+        type: Sequelize.STRING
+      },
+      domain: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
+        field: "created_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
       updatedAt: {
         allowNull: false,
+        field: "updated_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
-      deletedAt: {
-        allowNull: false,
+      deleted_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
-      },
-    });
+      }
+    },
+      {
+        underscored: true
+      }
+    );
   },
 
   down: async (queryInterface, Sequelize) => {
-      await queryInterface.dropTable('mental_health_sections');
+    await queryInterface.dropTable('companies');
   }
 };

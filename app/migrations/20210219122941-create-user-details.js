@@ -10,75 +10,55 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       user_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
+      },
+      user_id: {
+        type: Sequelize.INTEGER
       },
       race_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Races',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       gender_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Genders',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       sexual_orientation_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'SexualOrientations',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       family_detail_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'FamilyDynamics',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       mental_health_section_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'MentalHealthSections',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       conversation_starter_id: {
-        type: Sequelize.JSON,
-        references: {
-          model: 'ConversationStarters',
-          key: 'id'
-        }
+        type: Sequelize.JSON
       },
       short_story: {
         type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
+        field: "created_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
       updatedAt: {
         allowNull: false,
+        field: "updated_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
-      deletedAt: {
-        allowNull: false,
+      deleted_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
-      },
-    });
+      }
+    },
+      {
+        underscored: true
+      }
+    );
   },
-
+  
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('user_details');
   }

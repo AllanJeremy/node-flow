@@ -23,12 +23,12 @@ module.exports = (sequelize, DataTypes) => {
     birth_date: DataTypes.STRING,
     profile_picture: DataTypes.STRING,
     status: DataTypes.INTEGER,
-    deletedAt: DataTypes.DATE
+    deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Users',
   });
-
-  return Users;
   
+  return Users;
+
 };

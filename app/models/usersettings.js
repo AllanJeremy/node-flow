@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     language: DataTypes.STRING,
     theme_color: DataTypes.STRING,
     font_size: DataTypes.STRING,
-    deletedAt: DataTypes.DATE
+    deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'UserSettings',

@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('user_deactivations', {
+    await queryInterface.createTable('user_reviews', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,40 +10,35 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       user_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
-      },
-      reason: {
-        type: Sequelize.STRING
-      },
-      is_allow_to_contact: {
         type: Sequelize.INTEGER
       },
-      contact_email: {
+      description: {
         type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
+        field: "created_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
       updatedAt: {
         allowNull: false,
+        field: "updated_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
-      deletedAt: {
-        allowNull: false,
+      deleted_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       }
-    });
+    },
+      {
+        underscored: true
+      }
+    );
   },
-  
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('user_deactivations');
+    await queryInterface.dropTable('user_reviews');
   }
 };
