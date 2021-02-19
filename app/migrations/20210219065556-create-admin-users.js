@@ -2,18 +2,31 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('family_dynamics', {
+    await queryInterface.createTable('admin_users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      first_name: {
+        type: Sequelize.STRING
+      },
+      last_name: {
+        type: Sequelize.STRING
+      },
+      email: {
+        type: Sequelize.STRING
+      },
+      password: {
         type: Sequelize.STRING
       },
       status: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 1
+      },
+      remember_token: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -26,7 +39,6 @@ module.exports = {
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
       deletedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
@@ -34,6 +46,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('family_dynamics');
+    await queryInterface.dropTable('admin_users');
   }
 };
