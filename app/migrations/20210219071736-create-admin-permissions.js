@@ -9,8 +9,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
-        type: Sequelize.INTEGER
+      admin_user_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'AdminUsers',
+          key: 'id'
+        }
       },
       permissions: {
         type: Sequelize.JSON
