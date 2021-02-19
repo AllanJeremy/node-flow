@@ -2,49 +2,43 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('peer_reports', {
+    await queryInterface.createTable('genders', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
-      },
-      peer_user_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
-      },
-      description: {
+      name: {
         type: Sequelize.STRING
+      },
+      status: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
+        field: "created_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
       updatedAt: {
         allowNull: false,
+        field: "updated_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
-      deletedAt: {
-        allowNull: false,
+      deleted_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       }
-    });
+    },
+      {
+        underscored: true
+      }
+    );
   },
 
   down: async (queryInterface, Sequelize) => {
-      await queryInterface.dropTable('peer_reports');
+    await queryInterface.dropTable('genders');
   }
 };

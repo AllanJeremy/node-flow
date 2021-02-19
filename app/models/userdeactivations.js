@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     reason: DataTypes.STRING,
     is_allow_to_contact: DataTypes.INTEGER,
     contact_email: DataTypes.STRING,
-    deletedAt: DataTypes.DATE
+    deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'UserDeactivations',

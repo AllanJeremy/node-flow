@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   UserReview.init({
     user_id: DataTypes.INTEGER,
     description: DataTypes.STRING,
-    deletedAt: DataTypes.DATE
+    deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'UserReview',

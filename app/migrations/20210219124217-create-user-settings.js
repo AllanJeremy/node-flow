@@ -1,8 +1,7 @@
 'use strict';
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('user_reviews', {
+    await queryInterface.createTable('user_settings', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,34 +9,40 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       user_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
-      description: {
+      language: {
+        type: Sequelize.STRING
+      },
+      theme_color: {
+        type: Sequelize.STRING
+      },
+      font_size: {
         type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
+        field: "created_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
       updatedAt: {
         allowNull: false,
+        field: "updated_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
-      deletedAt: {
-        allowNull: false,
+      deleted_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       }
-    });
+    },
+      {
+        underscored: true
+      }
+    );
   },
-
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('user_reviews');
+    await queryInterface.dropTable('user_settings');
   }
 };

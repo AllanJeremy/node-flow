@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   ConversationStarters.init({
     name: DataTypes.STRING,
     status: DataTypes.INTEGER,
-    deletedAt: DataTypes.DATE
+    deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'ConversationStarters',

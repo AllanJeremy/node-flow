@@ -18,12 +18,12 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER,
     peer_user_id: DataTypes.INTEGER,
     description: DataTypes.STRING,
-    deletedAt: DataTypes.DATE
+    deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'PeerReports',
   });
-
-  return PeerReports;
   
+  return PeerReports;
+
 };

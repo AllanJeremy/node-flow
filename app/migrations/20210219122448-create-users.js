@@ -2,12 +2,22 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('admin_users', {
+    await queryInterface.createTable('users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      },
+      email: {
+        type: Sequelize.STRING,
+        unique: "unique_tag"
+      },
+      password: {
+        type: Sequelize.STRING
+      },
+      name_prefix: {
+        type: Sequelize.STRING
       },
       first_name: {
         type: Sequelize.STRING
@@ -15,37 +25,45 @@ module.exports = {
       last_name: {
         type: Sequelize.STRING
       },
-      email: {
+      birth_date: {
         type: Sequelize.STRING
       },
-      password: {
+      profile_picture: {
         type: Sequelize.STRING
       },
       status: {
-        type: Sequelize.INTEGER,
-        defaultValue: 1
-      },
-      remember_token: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
+        field: "created_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
       updatedAt: {
         allowNull: false,
+        field: "updated_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
-      deletedAt: {
+      deleted_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
-      },
-    });
+      }
+    },
+      {
+        underscored: true,
+        uniqueKeys: {
+          unique_tag: {
+            customIndex: true,
+            fields: ["email"]
+          }
+        }
+      }
+    );
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('admin_users');
+    await queryInterface.dropTable('users');
   }
 };

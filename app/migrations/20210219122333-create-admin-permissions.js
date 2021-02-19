@@ -1,47 +1,43 @@
 'use strict';
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('user_settings', {
+    await queryInterface.createTable('admin_permissions', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
+      admin_user_id: {
+        type: Sequelize.INTEGER
       },
-      language: {
-        type: Sequelize.STRING
-      },
-      theme_color: {
-        type: Sequelize.STRING
-      },
-      font_size: {
-        type: Sequelize.STRING
+      permissions: {
+        type: Sequelize.JSON
       },
       createdAt: {
         allowNull: false,
+        field: "created_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
       updatedAt: {
         allowNull: false,
+        field: "updated_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       },
-      deletedAt: {
-        allowNull: false,
+      deleted_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
       }
-    });
+    },{
+        underscored: true
+      }
+    );
   },
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('user_settings');
+    await queryInterface.dropTable('admin_permissions');
   }
 };

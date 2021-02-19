@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   CompanyUsers.init({
     company_id: DataTypes.INTEGER,
     user_id: DataTypes.INTEGER,
-    deletedAt: DataTypes.DATE
+    deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'CompanyUsers',
