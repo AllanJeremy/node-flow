@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'SexualOrientation',
+    paranoid: true,
+    deletedAt: 'deleted_at'
   });
 
   return SexualOrientation;
