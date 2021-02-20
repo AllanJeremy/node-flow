@@ -4,7 +4,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class AdminPermissions extends Model {
+  class AdminPermission extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -14,15 +14,15 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  AdminPermissions.init({
+  AdminPermission.init({
     user_id: DataTypes.INTEGER,
     permissions: DataTypes.JSON,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,
-    modelName: 'AdminPermissions',
+    modelName: 'AdminPermission',
   });
 
-  return AdminPermissions;
+  return AdminPermission;
   
 };
