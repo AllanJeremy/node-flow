@@ -16,13 +16,15 @@ module.exports = (sequelize, DataTypes) => {
   };
   UserSetting.init({
     user_id: DataTypes.INTEGER,
-    language: DataTypes.STRING,
+    language_id: DataTypes.STRING,
     theme_color: DataTypes.STRING,
     font_size: DataTypes.STRING,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'UserSetting',
+    paranoid: true,
+    deletedAt: 'deleted_at'
   });
 
   return UserSetting;

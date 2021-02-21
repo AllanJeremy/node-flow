@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'UserReview',
+    paranoid: true,
+    deletedAt: 'deleted_at'
   });
 
   return UserReview;

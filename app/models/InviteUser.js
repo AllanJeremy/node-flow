@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'InviteUser',
+    paranoid: true,
+    deletedAt: 'deleted_at'
   });
 
   return InviteUser;

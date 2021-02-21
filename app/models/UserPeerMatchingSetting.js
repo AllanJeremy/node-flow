@@ -22,6 +22,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'UserPeerMatchingSetting',
+    paranoid: true,
+    deletedAt: 'deleted_at'
   });
 
   return UserPeerMatchingSetting;

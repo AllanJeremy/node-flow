@@ -25,6 +25,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'AdminUser',
+    paranoid: true,
+    deletedAt: 'deleted_at'
   });
 
   return AdminUser;

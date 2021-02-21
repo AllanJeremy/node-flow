@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('user_settings', {
+    await queryInterface.createTable('disorder_users', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,14 +11,8 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER
       },
-      language_id: {
-        type: Sequelize.STRING
-      },
-      theme_color: {
-        type: Sequelize.STRING
-      },
-      font_size: {
-        type: Sequelize.STRING
+      disorder_id: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -36,13 +30,9 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: null
       }
-    },
-      {
-        underscored: true
-      }
-    );
+    });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('user_settings');
+    await queryInterface.dropTable('disorder_users');
   }
 };
