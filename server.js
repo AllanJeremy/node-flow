@@ -1,6 +1,6 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 var dotenv = require('dotenv');
 
 const app = express();
@@ -15,21 +15,18 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
 // database
-const db = require("./app/models");
+const db = require('./app/models');
 db.sequelize.sync();
 
 // route
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome to Joyn." });
+    res.json({ message: 'Welcome to Joyn Connect.' });
 });
 
-// Admin routes 
-
-const router = express.Router()
-const routes = require('./app/routes/admin.routes')(router, {});
-app.use('/api/v1/admin', router);
+// admin routes 
+const routes = require('./app/routes/admin');
+app.use('/api/v1/admin', routes);
 
 
 // set port, listen for requests
