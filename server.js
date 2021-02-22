@@ -25,6 +25,12 @@ app.get("/", (req, res) => {
     res.json({ message: "Welcome to Joyn." });
 });
 
+// Admin routes 
+
+const router = express.Router()
+const routes = require('./app/routes/admin.routes')(router, {});
+app.use('/api/v1/admin', router);
+
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;

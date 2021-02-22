@@ -14,17 +14,20 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  AdminUsers.init({
+  AdminUser.init({
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    status: DataTypes.TINYINT,
+    status: DataTypes.INTEGER,
     remember_token: DataTypes.STRING,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'AdminUser',
+    tableName: 'admin_users',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
   });
 
   return AdminUser;
