@@ -23,6 +23,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'UserDeactivation',
+    paranoid: true,
+    deletedAt: 'deleted_at'
   });
 
   return UserDeactivation;

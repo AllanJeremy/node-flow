@@ -12,9 +12,6 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER
       },
-      user_id: {
-        type: Sequelize.INTEGER
-      },
       race_id: {
         type: Sequelize.INTEGER
       },
@@ -27,13 +24,7 @@ module.exports = {
       family_detail_id: {
         type: Sequelize.INTEGER
       },
-      mental_health_section_id: {
-        type: Sequelize.INTEGER
-      },
-      conversation_starter_id: {
-        type: Sequelize.JSON
-      },
-      short_story: {
+      summary: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -50,7 +41,7 @@ module.exports = {
       },
       deleted_at: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
+        defaultValue: null
       }
     },
       {

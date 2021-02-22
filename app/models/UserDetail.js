@@ -16,18 +16,17 @@ module.exports = (sequelize, DataTypes) => {
   };
   UserDetail.init({
     user_id: DataTypes.INTEGER,
-    user_id: DataTypes.INTEGER,
     race_id: DataTypes.INTEGER,
     gender_id: DataTypes.INTEGER,
     sexual_orientation_id: DataTypes.INTEGER,
     family_detail_id: DataTypes.INTEGER,
-    mental_health_section_id: DataTypes.INTEGER,
-    conversation_starter_id: DataTypes.JSON,
-    short_story: DataTypes.STRING,
+    summary: DataTypes.STRING,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'UserDetail',
+    paranoid: true,
+    deletedAt: 'deleted_at'
   });
 
   return UserDetails;
