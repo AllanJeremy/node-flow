@@ -1,20 +1,23 @@
 const { check } = require('express-validator');
 
+const messages = require('../../langauge/en_default');
+const validation = messages.ENLanguage.admin.validation
+
 exports.SignIn = [
   check('email')
   	.trim()
     .escape()
     .not()
     .isEmpty()
-    .withMessage('Email address is required.')
+    .withMessage(validation.email_required)
     .isEmail()
-    .withMessage('Invalide email address.')
+    .withMessage(validation.email_invalid)
     .bail(),
   check('password')
     .trim()
     .escape()
     .not()
     .isEmpty()
-    .withMessage('Password is required.')
+    .withMessage(validation.password_required)
     .bail(),
 ];

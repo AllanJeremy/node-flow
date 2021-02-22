@@ -10,6 +10,10 @@ const db = require('../../../../models');
 
 const AdminUser = db.adminuser;
 
+var messages = require('../../../../langauge/en_default');
+var ResMessages = messages.ENLanguage.admin.response;
+var validation = messages.ENLanguage.admin.validation
+
 class AuthController {
 
 	/**
@@ -31,7 +35,7 @@ class AuthController {
 	    }
 	  }).then(user => {
 	    if (!user) {
-	      return APIResponse.error(404, 'User not found with this email Id.', res);
+	      return APIResponse.error(404, validation.email_invalid, res);
 	    }
 
 	    var passwordIsValid = bcrypt.compareSync(
@@ -40,7 +44,7 @@ class AuthController {
 	    );
 
 	    if (!passwordIsValid) {
-        return APIResponse.error(401, 'Invalid password.', res);
+        return APIResponse.error(401, validation.password_invalid, res);
       }
 
       var token = jwt.sign({ id: user.id }, config.secret, {
@@ -54,7 +58,7 @@ class AuthController {
       	}
       ];
 
-      return APIResponse.success(200, 'Successfully login.', res, data);
+      return APIResponse.success(200, ResMessages.login_success, res, data);
 	  })
 	  .catch(err => {
 	    res.status(500).send({ message: err.message });
