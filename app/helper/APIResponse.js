@@ -6,11 +6,11 @@ class APIResponse {
 	 */
 	success = (status, message, res, data = []) => {
 		return res
-						.status(status)
-						.send({
-							outputs: data,
-							success: message
-						})
+			.status(status)
+			.send({
+				outputs: data,
+				success: message
+			})
 	}
 
   /* Return response for error
@@ -21,11 +21,11 @@ class APIResponse {
 	 */
 	error = (status, message, res, data = []) => {
 		return res
-						.status(status)
-						.send({
-							outputs: data,
-							error: message
-						})
+			.status(status)
+			.send({
+				outputs: data,
+				error: message
+			})
 	}
 
 }

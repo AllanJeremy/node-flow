@@ -1,7 +1,7 @@
 const { check, validationResult } = require('express-validator');
 
 const auth = require('./auth');
-const UserValidation = require('../../validators/UserValidation'); 
+const UserValidation = require('../../validators/admin/UserValidation'); 
 
 
 var express = require('express');
