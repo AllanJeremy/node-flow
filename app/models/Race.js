@@ -21,8 +21,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Race',
-    paranoid: true,
-    deletedAt: 'deleted_at'
+    tableName: 'races',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true
   });
   
   return Race;
