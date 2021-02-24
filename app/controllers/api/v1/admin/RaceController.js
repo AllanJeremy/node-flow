@@ -108,7 +108,7 @@ class RaceController {
 	}
 
 	/**
-	 * Update race by id.
+	 * Delete race by id.
 	 *
 	 * @param Object req
 	 * @return Object res
