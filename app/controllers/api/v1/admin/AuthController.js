@@ -6,16 +6,16 @@ var APIResponse = require('../../../../helper/APIResponse');
 APIResponse = new APIResponse();
 
 const config = require('../../../../config/auth.config.js');
-const db = require('../../../../models');
 
+const db = require('../../../../models');
 const AdminUser = db.adminuser;
 
-var messages = require('../../../../langauge/en_default');
-var ResMessages = messages.ENLanguage.admin.response;
-var validation = messages.ENLanguage.admin.validation;
+var language = require('../../../../language/en_default');
+var ResMessages = language.en.admin.response;
+var validation = language.en.admin.validation;
 
-var AuthTransform = require('../../../../transformer/AuthTransformer');
-AuthTransform = new AuthTransform();
+var UserTransform = require('../../../../transformers/admin/UserTransformer');
+UserTransform = new UserTransform();
 
 class AuthController {
 
@@ -27,7 +27,7 @@ class AuthController {
 	 */
 	SignIn = (req, res) => {
 
-		const errors = validationResult(req);
+	  const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
@@ -56,13 +56,13 @@ class AuthController {
 
       var data = {
     		token: token,
-    		user: user
+    		user: UserTransform.SignIn(user)
     	};
 
-      return APIResponse.success(200, ResMessages.login_success, res, AuthTransform.SignIn(data));
+      return APIResponse.success(200, ResMessages.login_success, res, data);
 	  })
 	  .catch(err => {
-	    res.status(500).send({ message: err.message });
+	    return APIResponse.error(500, err.message, res, []);
 	  });
 	}
 

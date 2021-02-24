@@ -25,5 +25,6 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.adminuser = require("../models/AdminUser.js")(sequelize, Sequelize);
+db.race = require("../models/Race.js")(sequelize, Sequelize);
 
 module.exports = db;
