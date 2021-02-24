@@ -12,7 +12,10 @@ const AdminUser = db.adminuser;
 
 var messages = require('../../../../langauge/en_default');
 var ResMessages = messages.ENLanguage.admin.response;
-var validation = messages.ENLanguage.admin.validation
+var validation = messages.ENLanguage.admin.validation;
+
+var AuthTransform = require('../../../../transformer/AuthTransformer');
+AuthTransform = new AuthTransform();
 
 class AuthController {
 
@@ -51,14 +54,12 @@ class AuthController {
         expiresIn: config.tokenExpiryTime
       });
 
-      var data = [
-      	{
-      		token: token,
-      		user: user
-      	}
-      ];
+      var data = {
+    		token: token,
+    		user: user
+    	};
 
-      return APIResponse.success(200, ResMessages.login_success, res, data);
+      return APIResponse.success(200, ResMessages.login_success, res, AuthTransform.SignIn(data));
 	  })
 	  .catch(err => {
 	    res.status(500).send({ message: err.message });
