@@ -21,8 +21,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'HealthCategory',
-    paranoid: true,
-    deletedAt: 'deleted_at'
+    tableName: 'health_categories',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true
   });
 
   return HealthCategory;

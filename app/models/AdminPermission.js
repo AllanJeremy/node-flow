@@ -15,14 +15,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   AdminPermission.init({
-    user_id: DataTypes.INTEGER,
+    admin_user_id: DataTypes.INTEGER,
     permissions: DataTypes.JSON,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'AdminPermission',
-    paranoid: true,
-    deletedAt: 'deleted_at'
+    tableName: 'admin_permissions',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true
   });
 
   return AdminPermission;

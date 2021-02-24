@@ -10,20 +10,20 @@ var CommonTransformer = require('../../../../transformers/core/CommonTransformer
 CommonTransformer = new CommonTransformer();
 
 const db = require('../../../../models');
-const Race = db.race;
+const Workout = db.workout;
 
-class RaceController {
+class WorkoutController {
 
 	/**
-	 * Show race list.
+	 * Show workout list.
 	 *
 	 * @param Object req
 	 * @return Object res
 	 */
 	list = (req, res) => {
-		Race.findAll()
-    .then(race => {
-    	var data = CommonTransformer.transform(race);
+		Workout.findAll()
+    .then(workout => {
+    	var data = CommonTransformer.transform(workout);
 
       return APIResponse.success("", res, data);
     })
@@ -35,7 +35,7 @@ class RaceController {
 
 
 	/**
-	 * Store a newly created race in storage.
+	 * Store a newly created workout in storage.
 	 *
 	 * @param Object req
 	 * @return Object res
@@ -47,19 +47,19 @@ class RaceController {
       return APIResponse.error(422, errors.array(), res);
     }
 
-    Race.findOne({
+    Workout.findOne({
 	    where: {
 	      name: req.body.name
 	    }
-	  }).then(race => {
-  		if(!race) {
-		    Race.create({
+	  }).then(workout => {
+  		if(!workout) {
+		    Workout.create({
 			    name: req.body.name,
 			    status: req.body.status
 			  })
-		    .then(race => {
+		    .then(workout => {
 
-		      return APIResponse.success(responseLanguage.race_store_success, res, []);
+		      return APIResponse.success(responseLanguage.workout_store_success, res, []);
 		    })
 		    .catch(err => {
 
@@ -67,7 +67,7 @@ class RaceController {
 		    })
 		  } else {
 
-		  	return APIResponse.error(400, responseLanguage.race_exist, res);
+		  	return APIResponse.error(400, responseLanguage.workout_exist, res);
 		  }
 		})
 	  .catch(err => {
@@ -77,7 +77,7 @@ class RaceController {
 	}
 
 	/**
-	 * Update race by id.
+	 * Update workout by id.
 	 *
 	 * @param Object req
 	 * @return Object res
@@ -89,21 +89,21 @@ class RaceController {
       return APIResponse.error(422, errors.array(), res);
     }
 
-    Race.findOne({
+    Workout.findOne({
 	    where: {
 	    	id: req.params.id
 	    }
 	  })
-    .then(race => {
-    	if (race) {
-	      Race.update({
+    .then(workout => {
+    	if (workout) {
+	      Workout.update({
 	        name: req.body.name,
 	        status: req.body.status,
 	      },
 	      { where: { id: req.params.id } })
-	      .then(race => {
+	      .then(workout => {
 
-	      	return APIResponse.success(responseLanguage.race_update_success, res, []);
+	      	return APIResponse.success(responseLanguage.workout_update_success, res, []);
 	      })
 	      .catch(err => {
 
@@ -121,23 +121,23 @@ class RaceController {
 	}
 
 	/**
-	 * Delete race by id.
+	 * Delete workout by id.
 	 *
 	 * @param Object req
 	 * @return Object res
 	 */
 	destroy = (req, res) => {
-    Race.findOne({
+    Workout.findOne({
 	    where: {
 	    	id: req.params.id
 	    }
 	  })
-    .then(race => {
-    	if (race) {
-	      Race.destroy({ where: { id: req.params.id } })
-	      .then(race => {
+    .then(workout => {
+    	if (Workout) {
+	      Workout.destroy({ where: { id: req.params.id } })
+	      .then(workout => {
 
-	      	return APIResponse.success(responseLanguage.race_delete_success, res);
+	      	return APIResponse.success(responseLanguage.workout_delete_success, res);
 	      })
 	      .catch(err => {
 
@@ -155,4 +155,4 @@ class RaceController {
 	}
 }
 
-module.exports = RaceController;
+module.exports = WorkoutController;

@@ -10,20 +10,20 @@ var CommonTransformer = require('../../../../transformers/core/CommonTransformer
 CommonTransformer = new CommonTransformer();
 
 const db = require('../../../../models');
-const Race = db.race;
+const Gender = db.gender;
 
-class RaceController {
+class GenderController {
 
 	/**
-	 * Show race list.
+	 * Show gender list.
 	 *
 	 * @param Object req
 	 * @return Object res
 	 */
 	list = (req, res) => {
-		Race.findAll()
-    .then(race => {
-    	var data = CommonTransformer.transform(race);
+		Gender.findAll()
+    .then(gender => {
+    	var data = CommonTransformer.transform(gender);
 
       return APIResponse.success("", res, data);
     })
@@ -35,7 +35,7 @@ class RaceController {
 
 
 	/**
-	 * Store a newly created race in storage.
+	 * Store a newly created gender in storage.
 	 *
 	 * @param Object req
 	 * @return Object res
@@ -47,19 +47,19 @@ class RaceController {
       return APIResponse.error(422, errors.array(), res);
     }
 
-    Race.findOne({
+    Gender.findOne({
 	    where: {
 	      name: req.body.name
 	    }
-	  }).then(race => {
-  		if(!race) {
-		    Race.create({
+	  }).then(gender => {
+  		if(!gender) {
+		    Gender.create({
 			    name: req.body.name,
 			    status: req.body.status
 			  })
-		    .then(race => {
+		    .then(gender => {
 
-		      return APIResponse.success(responseLanguage.race_store_success, res, []);
+		      return APIResponse.success(responseLanguage.gender_store_success, res, []);
 		    })
 		    .catch(err => {
 
@@ -67,7 +67,7 @@ class RaceController {
 		    })
 		  } else {
 
-		  	return APIResponse.error(400, responseLanguage.race_exist, res);
+		  	return APIResponse.error(400, responseLanguage.gender_exist, res);
 		  }
 		})
 	  .catch(err => {
@@ -77,7 +77,7 @@ class RaceController {
 	}
 
 	/**
-	 * Update race by id.
+	 * Update gender by id.
 	 *
 	 * @param Object req
 	 * @return Object res
@@ -89,21 +89,21 @@ class RaceController {
       return APIResponse.error(422, errors.array(), res);
     }
 
-    Race.findOne({
+    Gender.findOne({
 	    where: {
 	    	id: req.params.id
 	    }
 	  })
-    .then(race => {
-    	if (race) {
-	      Race.update({
+    .then(gender => {
+    	if (gender) {
+	      Gender.update({
 	        name: req.body.name,
 	        status: req.body.status,
 	      },
 	      { where: { id: req.params.id } })
-	      .then(race => {
+	      .then(gender => {
 
-	      	return APIResponse.success(responseLanguage.race_update_success, res, []);
+	      	return APIResponse.success(responseLanguage.gender_update_success, res, []);
 	      })
 	      .catch(err => {
 
@@ -121,23 +121,23 @@ class RaceController {
 	}
 
 	/**
-	 * Delete race by id.
+	 * Delete gender by id.
 	 *
 	 * @param Object req
 	 * @return Object res
 	 */
 	destroy = (req, res) => {
-    Race.findOne({
+    Gender.findOne({
 	    where: {
 	    	id: req.params.id
 	    }
 	  })
-    .then(race => {
-    	if (race) {
-	      Race.destroy({ where: { id: req.params.id } })
-	      .then(race => {
+    .then(gender => {
+    	if (gender) {
+	      Gender.destroy({ where: { id: req.params.id } })
+	      .then(gender => {
 
-	      	return APIResponse.success(responseLanguage.race_delete_success, res);
+	      	return APIResponse.success(responseLanguage.gender_delete_success, res);
 	      })
 	      .catch(err => {
 
@@ -155,4 +155,4 @@ class RaceController {
 	}
 }
 
-module.exports = RaceController;
+module.exports = GenderController;
