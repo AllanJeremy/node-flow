@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 
-var APIResponse = require('../../../../helper/APIResponse');
+const APIResponse = require('../../../../helper/APIResponse');
 APIResponse = new APIResponse();
 
 const config = require('../../../../config/auth.config.js');
@@ -10,11 +10,11 @@ const config = require('../../../../config/auth.config.js');
 const db = require('../../../../models');
 const AdminUser = db.adminuser;
 
-var language = require('../../../../language/en_default');
-var ResMessages = language.en.admin.response;
-var validation = language.en.admin.validation;
+const language = require('../../../../language/en_default');
+const responsemessages = language.en.admin.response;
+const validation = language.en.admin.validation;
 
-var UserTransform = require('../../../../transformers/admin/UserTransformer');
+const UserTransform = require('../../../../transformers/admin/UserTransformer');
 UserTransform = new UserTransform();
 
 class AuthController {
@@ -29,7 +29,8 @@ class AuthController {
 
 	  const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
+
+    	return APIResponse.error(422, errors.array, res);
     }
 
 		AdminUser.findOne({
@@ -38,6 +39,7 @@ class AuthController {
 	    }
 	  }).then(user => {
 	    if (!user) {
+
 	      return APIResponse.error(404, validation.email_invalid, res);
 	    }
 
@@ -47,6 +49,7 @@ class AuthController {
 	    );
 
 	    if (!passwordIsValid) {
+
         return APIResponse.error(401, validation.password_invalid, res);
       }
 
@@ -59,9 +62,10 @@ class AuthController {
     		user: UserTransform.SignIn(user)
     	};
 
-      return APIResponse.success(200, ResMessages.login_success, res, data);
+      return APIResponse.success(200, responsemessages.login_success, res, data);
 	  })
 	  .catch(err => {
+
 	    return APIResponse.error(500, err.message, res, []);
 	  });
 	}

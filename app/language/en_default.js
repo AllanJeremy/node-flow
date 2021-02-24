@@ -14,7 +14,7 @@ exports.en = {
 			'race_store_success': 'Race created successfully.',
 			'race_update_success': 'Race updated successfully.',
 			'race_delete_success': 'Race deleted successfully.',
-			'race_exist': 'Race already exist.',
+			'race_exist': 'Race already exists.',
 		}
 	}
 }
