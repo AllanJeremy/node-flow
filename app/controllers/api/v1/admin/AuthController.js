@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 
-var APIResponse = require('../../../../helper/APIResponse');
+const APIResponse = require('../../../../helper/APIResponse');
 APIResponse = new APIResponse();
 
 const config = require('../../../../config/auth.config.js');
@@ -29,7 +29,7 @@ class AuthController {
 
 	  const errors = validationResult(req);
     if (!errors.isEmpty()) {
-    	
+
     	return APIResponse.error(422, errors.array, res);
     }
 
