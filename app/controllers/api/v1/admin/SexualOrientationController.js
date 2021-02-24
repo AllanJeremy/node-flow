@@ -10,20 +10,20 @@ var CommonTransformer = require('../../../../transformers/core/CommonTransformer
 CommonTransformer = new CommonTransformer();
 
 const db = require('../../../../models');
-const Race = db.race;
+const SexualOrientation = db.sexual_orientation;
 
-class RaceController {
+class SexualOrientationController {
 
 	/**
-	 * Show race list.
+	 * Show sexual orientation list.
 	 *
 	 * @param Object req
 	 * @return Object res
 	 */
 	list = (req, res) => {
-		Race.findAll()
-    .then(race => {
-    	var data = CommonTransformer.transform(race);
+		SexualOrientation.findAll()
+    .then(sexual_orientation => {
+    	var data = CommonTransformer.transform(sexual_orientation);
 
       return APIResponse.success("", res, data);
     })
@@ -35,7 +35,7 @@ class RaceController {
 
 
 	/**
-	 * Store a newly created race in storage.
+	 * Store a newly created sexual orientation in storage.
 	 *
 	 * @param Object req
 	 * @return Object res
@@ -47,19 +47,19 @@ class RaceController {
       return APIResponse.error(422, errors.array(), res);
     }
 
-    Race.findOne({
+    SexualOrientation.findOne({
 	    where: {
 	      name: req.body.name
 	    }
-	  }).then(race => {
-  		if(!race) {
-		    Race.create({
+	  }).then(sexual_orientation => {
+  		if(!sexual_orientation) {
+		    SexualOrientation.create({
 			    name: req.body.name,
 			    status: req.body.status
 			  })
-		    .then(race => {
+		    .then(sexual_orientation => {
 
-		      return APIResponse.success(responseLanguage.race_store_success, res, []);
+		      return APIResponse.success(responseLanguage.sexual_orientation_store_success, res);
 		    })
 		    .catch(err => {
 
@@ -67,7 +67,7 @@ class RaceController {
 		    })
 		  } else {
 
-		  	return APIResponse.error(400, responseLanguage.race_exist, res);
+		  	return APIResponse.error(400, responseLanguage.sexual_orientation_exist, res);
 		  }
 		})
 	  .catch(err => {
@@ -77,7 +77,7 @@ class RaceController {
 	}
 
 	/**
-	 * Update race by id.
+	 * Update sexual orientation by id.
 	 *
 	 * @param Object req
 	 * @return Object res
@@ -89,21 +89,21 @@ class RaceController {
       return APIResponse.error(422, errors.array(), res);
     }
 
-    Race.findOne({
+    SexualOrientation.findOne({
 	    where: {
 	    	id: req.params.id
 	    }
 	  })
-    .then(race => {
-    	if (race) {
-	      Race.update({
+    .then(sexual_orientation => {
+    	if (sexual_orientation) {
+	      SexualOrientation.update({
 	        name: req.body.name,
 	        status: req.body.status,
 	      },
 	      { where: { id: req.params.id } })
-	      .then(race => {
+	      .then(sexual_orientation => {
 
-	      	return APIResponse.success(responseLanguage.race_update_success, res, []);
+	      	return APIResponse.success(responseLanguage.sexual_orientation_update_success, res);
 	      })
 	      .catch(err => {
 
@@ -121,23 +121,23 @@ class RaceController {
 	}
 
 	/**
-	 * Delete race by id.
+	 * Delete sexual orientation by id.
 	 *
 	 * @param Object req
 	 * @return Object res
 	 */
 	destroy = (req, res) => {
-    Race.findOne({
+    SexualOrientation.findOne({
 	    where: {
 	    	id: req.params.id
 	    }
 	  })
-    .then(race => {
-    	if (race) {
-	      Race.destroy({ where: { id: req.params.id } })
-	      .then(race => {
+    .then(sexual_orientation => {
+    	if (sexual_orientation) {
+	      SexualOrientation.destroy({ where: { id: req.params.id } })
+	      .then(sexual_orientation => {
 
-	      	return APIResponse.success(responseLanguage.race_delete_success, res);
+	      	return APIResponse.success(responseLanguage.sexual_orientation_delete_success, res);
 	      })
 	      .catch(err => {
 
@@ -155,4 +155,4 @@ class RaceController {
 	}
 }
 
-module.exports = RaceController;
+module.exports = SexualOrientationController;

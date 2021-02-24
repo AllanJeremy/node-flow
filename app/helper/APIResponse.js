@@ -4,9 +4,9 @@ class APIResponse {
 	 * success status
 	 * 200 - success
 	 */
-	success = (status, message, res, data = []) => {
+	success = (message, res, data = []) => {
 		return res
-			.status(status)
+			.status(200)
 			.send({
 				outputs: data,
 				success: message

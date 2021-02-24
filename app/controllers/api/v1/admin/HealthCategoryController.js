@@ -10,20 +10,20 @@ var CommonTransformer = require('../../../../transformers/core/CommonTransformer
 CommonTransformer = new CommonTransformer();
 
 const db = require('../../../../models');
-const Race = db.race;
+const HealthCategory = db.health_category;
 
-class RaceController {
+class HealthCategoryController {
 
 	/**
-	 * Show race list.
+	 * Show health category list.
 	 *
 	 * @param Object req
 	 * @return Object res
 	 */
 	list = (req, res) => {
-		Race.findAll()
-    .then(race => {
-    	var data = CommonTransformer.transform(race);
+		HealthCategory.findAll()
+    .then(health_category => {
+    	var data = CommonTransformer.transform(health_category);
 
       return APIResponse.success("", res, data);
     })
@@ -35,7 +35,7 @@ class RaceController {
 
 
 	/**
-	 * Store a newly created race in storage.
+	 * Store a newly created health category in storage.
 	 *
 	 * @param Object req
 	 * @return Object res
@@ -47,19 +47,19 @@ class RaceController {
       return APIResponse.error(422, errors.array(), res);
     }
 
-    Race.findOne({
+    HealthCategory.findOne({
 	    where: {
 	      name: req.body.name
 	    }
-	  }).then(race => {
-  		if(!race) {
-		    Race.create({
+	  }).then(health_category => {
+  		if(!health_category) {
+		    HealthCategory.create({
 			    name: req.body.name,
 			    status: req.body.status
 			  })
-		    .then(race => {
+		    .then(health_category => {
 
-		      return APIResponse.success(responseLanguage.race_store_success, res, []);
+		      return APIResponse.success(responseLanguage.health_category_store_success, res, []);
 		    })
 		    .catch(err => {
 
@@ -67,7 +67,7 @@ class RaceController {
 		    })
 		  } else {
 
-		  	return APIResponse.error(400, responseLanguage.race_exist, res);
+		  	return APIResponse.error(400, responseLanguage.health_category_exist, res);
 		  }
 		})
 	  .catch(err => {
@@ -77,7 +77,7 @@ class RaceController {
 	}
 
 	/**
-	 * Update race by id.
+	 * Update health category by id.
 	 *
 	 * @param Object req
 	 * @return Object res
@@ -89,21 +89,21 @@ class RaceController {
       return APIResponse.error(422, errors.array(), res);
     }
 
-    Race.findOne({
+    HealthCategory.findOne({
 	    where: {
 	    	id: req.params.id
 	    }
 	  })
-    .then(race => {
-    	if (race) {
-	      Race.update({
+    .then(health_category => {
+    	if (health_category) {
+	      HealthCategory.update({
 	        name: req.body.name,
 	        status: req.body.status,
 	      },
 	      { where: { id: req.params.id } })
-	      .then(race => {
+	      .then(health_category => {
 
-	      	return APIResponse.success(responseLanguage.race_update_success, res, []);
+	      	return APIResponse.success(responseLanguage.health_category_update_success, res, []);
 	      })
 	      .catch(err => {
 
@@ -121,23 +121,23 @@ class RaceController {
 	}
 
 	/**
-	 * Delete race by id.
+	 * Delete health category by id.
 	 *
 	 * @param Object req
 	 * @return Object res
 	 */
 	destroy = (req, res) => {
-    Race.findOne({
+    HealthCategory.findOne({
 	    where: {
 	    	id: req.params.id
 	    }
 	  })
-    .then(race => {
-    	if (race) {
-	      Race.destroy({ where: { id: req.params.id } })
-	      .then(race => {
+    .then(health_category => {
+    	if (health_category) {
+	      HealthCategory.destroy({ where: { id: req.params.id } })
+	      .then(health_category => {
 
-	      	return APIResponse.success(responseLanguage.race_delete_success, res);
+	      	return APIResponse.success(responseLanguage.health_category_delete_success, res);
 	      })
 	      .catch(err => {
 
@@ -155,4 +155,4 @@ class RaceController {
 	}
 }
 
-module.exports = RaceController;
+module.exports = HealthCategoryController;

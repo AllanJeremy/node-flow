@@ -1,6 +1,6 @@
 var fractal = require('fractal-transformer')();
 
-class RaceTransformer {
+class CommonTransformer {
 
 	transform = (data) => fractal(data, {
     'id': 'id', 
@@ -9,4 +9,4 @@ class RaceTransformer {
   });
 }
 
-module.exports = RaceTransformer;
+module.exports = CommonTransformer;

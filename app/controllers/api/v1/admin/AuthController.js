@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 
-const APIResponse = require('../../../../helper/APIResponse');
+var APIResponse = require('../../../../helper/APIResponse');
 APIResponse = new APIResponse();
 
 const config = require('../../../../config/auth.config.js');
@@ -11,10 +11,10 @@ const db = require('../../../../models');
 const AdminUser = db.adminuser;
 
 const language = require('../../../../language/en_default');
-const responsemessages = language.en.admin.response;
-const validation = language.en.admin.validation;
+const responseLanguage = language.en.admin.response;
+const validationLanguage = language.en.admin.validation;
 
-const UserTransform = require('../../../../transformers/admin/UserTransformer');
+var UserTransform = require('../../../../transformers/admin/UserTransformer');
 UserTransform = new UserTransform();
 
 class AuthController {
@@ -40,7 +40,7 @@ class AuthController {
 	  }).then(user => {
 	    if (!user) {
 
-	      return APIResponse.error(404, validation.email_invalid, res);
+	      return APIResponse.error(404, validationLanguage.email_invalid, res);
 	    }
 
 	    var passwordIsValid = bcrypt.compareSync(
@@ -50,7 +50,7 @@ class AuthController {
 
 	    if (!passwordIsValid) {
 
-        return APIResponse.error(401, validation.password_invalid, res);
+        return APIResponse.error(401, validationLanguage.password_invalid, res);
       }
 
       var token = jwt.sign({ id: user.id }, config.secret, {
@@ -62,11 +62,11 @@ class AuthController {
     		user: UserTransform.SignIn(user)
     	};
 
-      return APIResponse.success(200, responsemessages.login_success, res, data);
+      return APIResponse.success(responseLanguage.login_success, res, data);
 	  })
 	  .catch(err => {
 
-	    return APIResponse.error(500, err.message, res, []);
+	    return APIResponse.error(500, err.message, res);
 	  });
 	}
 

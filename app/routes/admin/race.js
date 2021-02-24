@@ -1,5 +1,5 @@
-var raceController = require('../../controllers/api/v1/admin/RaceController');
+var RaceController = require('../../controllers/api/v1/admin/RaceController');
 
-raceController = new raceController();
+RaceController = new RaceController();
 
-module.exports = raceController;
+module.exports = RaceController;
