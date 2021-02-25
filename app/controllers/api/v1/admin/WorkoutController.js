@@ -22,10 +22,9 @@ class WorkoutController {
 	 */
 	list = (req, res) => {
 		Workout.findAll()
-    .then(workout => {
-    	var data = CommonTransformer.transform(workout);
+    .then(response => {
 
-      return APIResponse.success("", res, data);
+      return APIResponse.success("", res, CommonTransformer.transform(response));
     })
     .catch(err => {
 
@@ -51,13 +50,13 @@ class WorkoutController {
 	    where: {
 	      name: req.body.name
 	    }
-	  }).then(workout => {
-  		if(!workout) {
+	  }).then(response => {
+  		if(!response) {
 		    Workout.create({
 			    name: req.body.name,
 			    status: req.body.status
 			  })
-		    .then(workout => {
+		    .then(response => {
 
 		      return APIResponse.success(responseLanguage.workout_store_success, res, []);
 		    })
@@ -94,14 +93,14 @@ class WorkoutController {
 	    	id: req.params.id
 	    }
 	  })
-    .then(workout => {
-    	if (workout) {
+    .then(response => {
+    	if (response) {
 	      Workout.update({
 	        name: req.body.name,
 	        status: req.body.status,
 	      },
 	      { where: { id: req.params.id } })
-	      .then(workout => {
+	      .then(response => {
 
 	      	return APIResponse.success(responseLanguage.workout_update_success, res, []);
 	      })
@@ -132,10 +131,10 @@ class WorkoutController {
 	    	id: req.params.id
 	    }
 	  })
-    .then(workout => {
+    .then(response => {
     	if (Workout) {
 	      Workout.destroy({ where: { id: req.params.id } })
-	      .then(workout => {
+	      .then(response => {
 
 	      	return APIResponse.success(responseLanguage.workout_delete_success, res);
 	      })

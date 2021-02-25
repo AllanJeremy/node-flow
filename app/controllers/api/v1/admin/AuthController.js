@@ -37,15 +37,15 @@ class AuthController {
 	    where: {
 	      email: req.body.email
 	    }
-	  }).then(user => {
-	    if (!user) {
+	  }).then(response => {
+	    if (!response) {
 
 	      return APIResponse.error(404, validationLanguage.email_invalid, res);
 	    }
 
 	    var passwordIsValid = bcrypt.compareSync(
 	      req.body.password,
-	      user.password
+	      response.password
 	    );
 
 	    if (!passwordIsValid) {
@@ -53,13 +53,13 @@ class AuthController {
         return APIResponse.error(401, validationLanguage.password_invalid, res);
       }
 
-      var token = jwt.sign({ id: user.id }, config.secret, {
+      var token = jwt.sign({ id: response.id }, config.secret, {
         expiresIn: config.tokenExpiryTime
       });
 
       var data = {
     		token: token,
-    		user: UserTransform.SignIn(user)
+    		response: UserTransform.SignIn(response)
     	};
 
       return APIResponse.success(responseLanguage.login_success, res, data);

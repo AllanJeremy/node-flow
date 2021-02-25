@@ -22,10 +22,9 @@ class GenderController {
 	 */
 	list = (req, res) => {
 		Gender.findAll()
-    .then(gender => {
-    	var data = CommonTransformer.transform(gender);
+    .then(response => {
 
-      return APIResponse.success("", res, data);
+      return APIResponse.success("", res, CommonTransformer.transform(response));
     })
     .catch(err => {
 
@@ -51,13 +50,13 @@ class GenderController {
 	    where: {
 	      name: req.body.name
 	    }
-	  }).then(gender => {
-  		if(!gender) {
+	  }).then(response => {
+  		if(!response) {
 		    Gender.create({
 			    name: req.body.name,
 			    status: req.body.status
 			  })
-		    .then(gender => {
+		    .then(response => {
 
 		      return APIResponse.success(responseLanguage.gender_store_success, res, []);
 		    })
@@ -94,14 +93,14 @@ class GenderController {
 	    	id: req.params.id
 	    }
 	  })
-    .then(gender => {
-    	if (gender) {
+    .then(response => {
+    	if (response) {
 	      Gender.update({
 	        name: req.body.name,
 	        status: req.body.status,
 	      },
 	      { where: { id: req.params.id } })
-	      .then(gender => {
+	      .then(response => {
 
 	      	return APIResponse.success(responseLanguage.gender_update_success, res, []);
 	      })
@@ -132,10 +131,10 @@ class GenderController {
 	    	id: req.params.id
 	    }
 	  })
-    .then(gender => {
-    	if (gender) {
+    .then(response => {
+    	if (response) {
 	      Gender.destroy({ where: { id: req.params.id } })
-	      .then(gender => {
+	      .then(response => {
 
 	      	return APIResponse.success(responseLanguage.gender_delete_success, res);
 	      })

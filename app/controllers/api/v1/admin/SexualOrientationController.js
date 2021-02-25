@@ -22,10 +22,9 @@ class SexualOrientationController {
 	 */
 	list = (req, res) => {
 		SexualOrientation.findAll()
-    .then(sexual_orientation => {
-    	var data = CommonTransformer.transform(sexual_orientation);
+    .then(response => {
 
-      return APIResponse.success("", res, data);
+      return APIResponse.success("", res, CommonTransformer.transform(response));
     })
     .catch(err => {
 
@@ -51,13 +50,13 @@ class SexualOrientationController {
 	    where: {
 	      name: req.body.name
 	    }
-	  }).then(sexual_orientation => {
-  		if(!sexual_orientation) {
+	  }).then(response => {
+  		if(!response) {
 		    SexualOrientation.create({
 			    name: req.body.name,
 			    status: req.body.status
 			  })
-		    .then(sexual_orientation => {
+		    .then(response => {
 
 		      return APIResponse.success(responseLanguage.sexual_orientation_store_success, res);
 		    })
@@ -94,14 +93,14 @@ class SexualOrientationController {
 	    	id: req.params.id
 	    }
 	  })
-    .then(sexual_orientation => {
-    	if (sexual_orientation) {
+    .then(response => {
+    	if (response) {
 	      SexualOrientation.update({
 	        name: req.body.name,
 	        status: req.body.status,
 	      },
 	      { where: { id: req.params.id } })
-	      .then(sexual_orientation => {
+	      .then(response => {
 
 	      	return APIResponse.success(responseLanguage.sexual_orientation_update_success, res);
 	      })
@@ -132,10 +131,10 @@ class SexualOrientationController {
 	    	id: req.params.id
 	    }
 	  })
-    .then(sexual_orientation => {
-    	if (sexual_orientation) {
+    .then(response => {
+    	if (response) {
 	      SexualOrientation.destroy({ where: { id: req.params.id } })
-	      .then(sexual_orientation => {
+	      .then(response => {
 
 	      	return APIResponse.success(responseLanguage.sexual_orientation_delete_success, res);
 	      })

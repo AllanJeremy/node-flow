@@ -22,10 +22,9 @@ class RaceController {
 	 */
 	list = (req, res) => {
 		Race.findAll()
-    .then(race => {
-    	var data = CommonTransformer.transform(race);
+    .then(response => {
 
-      return APIResponse.success("", res, data);
+      return APIResponse.success("", res, CommonTransformer.transform(response));
     })
     .catch(err => {
 
@@ -51,13 +50,13 @@ class RaceController {
 	    where: {
 	      name: req.body.name
 	    }
-	  }).then(race => {
-  		if(!race) {
+	  }).then(response => {
+  		if(!response) {
 		    Race.create({
 			    name: req.body.name,
 			    status: req.body.status
 			  })
-		    .then(race => {
+		    .then(response => {
 
 		      return APIResponse.success(responseLanguage.race_store_success, res, []);
 		    })
@@ -94,14 +93,14 @@ class RaceController {
 	    	id: req.params.id
 	    }
 	  })
-    .then(race => {
-    	if (race) {
+    .then(response => {
+    	if (response) {
 	      Race.update({
 	        name: req.body.name,
 	        status: req.body.status,
 	      },
 	      { where: { id: req.params.id } })
-	      .then(race => {
+	      .then(response => {
 
 	      	return APIResponse.success(responseLanguage.race_update_success, res, []);
 	      })
@@ -132,10 +131,10 @@ class RaceController {
 	    	id: req.params.id
 	    }
 	  })
-    .then(race => {
-    	if (race) {
+    .then(response => {
+    	if (response) {
 	      Race.destroy({ where: { id: req.params.id } })
-	      .then(race => {
+	      .then(response => {
 
 	      	return APIResponse.success(responseLanguage.race_delete_success, res);
 	      })
