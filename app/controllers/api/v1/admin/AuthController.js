@@ -30,7 +30,7 @@ class AuthController {
 	  const errors = validationResult(req);
     if (!errors.isEmpty()) {
 
-    	return APIResponse.error(422, errors.array, res);
+    	return APIResponse.success(0, errors.array, res);
     }
 
 		AdminUser.findOne({
@@ -40,7 +40,7 @@ class AuthController {
 	  }).then(response => {
 	    if (!response) {
 
-	      return APIResponse.error(404, validationLanguage.email_invalid, res);
+	      return APIResponse.success(0, validationLanguage.email_invalid, res);
 	    }
 
 	    var passwordIsValid = bcrypt.compareSync(
@@ -50,7 +50,7 @@ class AuthController {
 
 	    if (!passwordIsValid) {
 
-        return APIResponse.error(401, validationLanguage.password_invalid, res);
+        return APIResponse.success(0, validationLanguage.password_invalid, res);
       }
 
       var token = jwt.sign({ id: response.id }, config.secret, {
@@ -62,7 +62,7 @@ class AuthController {
     		response: UserTransform.SignIn(response)
     	};
 
-      return APIResponse.success(responseLanguage.login_success, res, data);
+      return APIResponse.success(1, responseLanguage.login_success, res, data);
 	  })
 	  .catch(err => {
 
