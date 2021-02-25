@@ -22,10 +22,9 @@ class HealthCategoryController {
 	 */
 	list = (req, res) => {
 		HealthCategory.findAll()
-    .then(health_category => {
-    	var data = CommonTransformer.transform(health_category);
+    .then(response => {
 
-      return APIResponse.success("", res, data);
+      return APIResponse.success("", res, CommonTransformer.transform(response));
     })
     .catch(err => {
 
@@ -51,13 +50,13 @@ class HealthCategoryController {
 	    where: {
 	      name: req.body.name
 	    }
-	  }).then(health_category => {
-  		if(!health_category) {
+	  }).then(response => {
+  		if(!response) {
 		    HealthCategory.create({
 			    name: req.body.name,
 			    status: req.body.status
 			  })
-		    .then(health_category => {
+		    .then(response => {
 
 		      return APIResponse.success(responseLanguage.health_category_store_success, res, []);
 		    })
@@ -94,14 +93,14 @@ class HealthCategoryController {
 	    	id: req.params.id
 	    }
 	  })
-    .then(health_category => {
-    	if (health_category) {
+    .then(response => {
+    	if (response) {
 	      HealthCategory.update({
 	        name: req.body.name,
 	        status: req.body.status,
 	      },
 	      { where: { id: req.params.id } })
-	      .then(health_category => {
+	      .then(response => {
 
 	      	return APIResponse.success(responseLanguage.health_category_update_success, res, []);
 	      })
@@ -132,10 +131,10 @@ class HealthCategoryController {
 	    	id: req.params.id
 	    }
 	  })
-    .then(health_category => {
-    	if (health_category) {
+    .then(response => {
+    	if (response) {
 	      HealthCategory.destroy({ where: { id: req.params.id } })
-	      .then(health_category => {
+	      .then(response => {
 
 	      	return APIResponse.success(responseLanguage.health_category_delete_success, res);
 	      })
