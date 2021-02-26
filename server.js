@@ -45,6 +45,8 @@ Joyn.use(cors(corsOpts));
 
 Joyn.options("*", cors());
 
+Joyn.use(cors({origin: '*'}));
+
 Joyn.use(cors({
   allowedHeaders: [ 'Accept-Version', 'Authorization', 'Credentials', 'Content-Type' ]
 }));
