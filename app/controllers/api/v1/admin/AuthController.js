@@ -59,7 +59,7 @@ class AuthController {
 
       var data = {
     		token: token,
-    		response: UserTransform.SignIn(response)
+    		user: UserTransform.SignIn(response)
     	};
 
       return APIResponse.success(1, responseLanguage.login_success, res, data);
