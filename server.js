@@ -45,6 +45,9 @@ Joyn.use(cors(corsOpts));
 
 Joyn.options("*", cors());
 
+Joyn.use(cors({
+  allowedHeaders: [ 'Accept-Version', 'Authorization', 'Credentials', 'Content-Type' ]
+}));
 
 // parse requests of content-type - application/json
 Joyn.use(bodyParser.json());
