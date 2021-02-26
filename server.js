@@ -43,6 +43,8 @@ const corsOpts = {
 
 Joyn.use(cors(corsOpts));
 
+Joyn.options("*", cors());
+
 
 // parse requests of content-type - application/json
 Joyn.use(bodyParser.json());
