@@ -2,9 +2,8 @@ exports.en = {
 	'admin': {
 		'validation': {
 			'email_required': 'Email address is required.',
-			'email_invalid': 'Invalid email address.',
 			'password_required': 'Password is required.',
-			'password_invalid': 'Invalid password.',
+			'invalid_credentials': 'Invalid email address or password.',
 			'name_required': 'Name is required.',
 			'status_required': 'Status is required.',
 		},

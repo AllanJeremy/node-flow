@@ -21,9 +21,9 @@ class RaceController {
 	 * @return Object res
 	 */
 	list = (req, res) => {
-		Race.findAll()
+		Race.findAll({order: [['id', 'DESC']]})
     .then(response => {
-
+    	console.log("response", response)
       return APIResponse.success("", res, CommonTransformer.transform(response));
     })
     .catch(err => {
@@ -58,7 +58,7 @@ class RaceController {
 			  })
 		    .then(response => {
 
-		      return APIResponse.success(responseLanguage.race_store_success, res, []);
+			    return APIResponse.success(responseLanguage.race_store_success, res, '');
 		    })
 		    .catch(err => {
 
