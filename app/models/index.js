@@ -1,22 +1,22 @@
-const config = require("../config/db.config.js");
+const config = require('../config/db.config.js');
 
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize');
 const sequelize = new Sequelize(
-    config.DATABASE,
-    config.USER,
-    config.PASSWORD,
-    {
-      host: config.HOST,
-      dialect: config.dialect,
-      operatorsAliases: false,
-      camelCase: true,
-      camelCaseForFileName: true,
-      define: {
-	    	charset: 'utf8',
-		    collate: 'utf8_general_ci', 
-		    timestamps: true
-			}
+  config.DATABASE,
+  config.USER,
+  config.PASSWORD,
+  {
+    host: config.HOST,
+    dialect: config.DIALECT,
+    operatorsAliases: false,
+    camelCase: true,
+    camelCaseForFileName: true,
+    define: {
+      charset: 'utf8',
+      collate: 'utf8_general_ci',
+      timestamps: true
     }
+  }
 );
 
 const db = {};
@@ -24,7 +24,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.adminuser = require("../models/AdminUser.js")(sequelize, Sequelize);
+db.AdminUser = require('../models/AdminUser.js')(sequelize, Sequelize);
 db.race = require("../models/Race.js")(sequelize, Sequelize);
 db.admin_permission = require("../models/AdminPermission.js")(sequelize, Sequelize);
 db.gender = require("../models/Gender.js")(sequelize, Sequelize);
