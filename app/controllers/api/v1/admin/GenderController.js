@@ -44,7 +44,7 @@ class GenderController {
   }
 
   /**
-   * Stores a new gender in storage.
+   * Creates a new gender.
    *
    * @param Object req
    * @return Object res
@@ -82,7 +82,7 @@ class GenderController {
   }
 
   /**
-   * Updates gender.
+   * Updates the gender sepcified by id.
    *
    * @param Object req
    * @return Object res
@@ -124,7 +124,7 @@ class GenderController {
   }
 
   /**
-   * Deletes gender.
+   * Deletes the gender.
    *
    * @param Object req
    * @return Object res
