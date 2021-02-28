@@ -2,41 +2,39 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 var dotenv = require('dotenv');
-
 const Joyn = express();
 
 dotenv.config();
 
+// Set CORS
+Joyn.use(cors({ origin: process.env.originURL }));
 
-const corsConst = process.env.NODE_ENV == 'development' ? cors() : cors({origin: process.env.originURL})
-
-Joyn.use(
-  corsConst
-);
-
-// parse requests of content-type - application/json
-Joyn.use(bodyParser.json());
+Joyn.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 Joyn.use(bodyParser.urlencoded({ extended: true }));
 
-// database
+// parse requests of content-type - application/json
+Joyn.use(bodyParser.json());
+
+// Database
 const db = require('./app/models');
 db.sequelize.sync();
 
 // route
-Joyn.get("/", (req, res) => {
-    res.json({ status: {"message":"No route matches [GET] \"/\"", "code": 404,  "error_type": "Exceptions::RoutingError"}});
+Joyn.get('/', (req, res) => {
+  res.json({
+    'message': 'No route matches [GET] /'
+  });
 });
 
 // admin routes
 const routes = require('./app/routes/admin');
 Joyn.use('/admin', routes);
 
-
 // set port, listen for requests
 const PORT = process.env.PORT || 3001;
 
 Joyn.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
+  console.log(`Server is running on port ${PORT}.`);
 });
