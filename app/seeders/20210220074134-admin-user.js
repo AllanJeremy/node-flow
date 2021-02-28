@@ -14,10 +14,10 @@ module.exports = {
      * }], {});
     */
     return queryInterface.bulkInsert('admin_users', [{
-      first_name: 'admin',
-      last_name: 'admin',
-      email: 'admin@gmail.com',
-      password: bcrypt.hashSync('joynconnect@123', 8),
+      first_name: 'Chintan',
+      last_name: 'Kotadia',
+      email: 'chintan@joyn.one',
+      password: bcrypt.hashSync('admindev@joyn', 8),
       status: 1,
       created_at: new Date(),
       updated_at: new Date()
