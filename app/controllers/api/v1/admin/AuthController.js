@@ -8,6 +8,8 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
+const StatusHandler = require('../../../../helpers/StatusHandler');
+
 /**
  * Configs
  */
@@ -53,7 +55,8 @@ class AuthController {
 
     AdminUser.findOne({
       where: {
-        email: req.body.email
+        email: req.body.email,
+        status: StatusHandler.active
       }
     }).then(response => {
 
