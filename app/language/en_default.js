@@ -1,6 +1,7 @@
 exports.en = {
 	'admin': {
 		'validation': {
+      'required_fields': 'Please fill up all the required fields',
 			'email_required': 'Email address is a required field.',
 			'password_required': 'Password is a required field.',
 			'invalid_credentials': 'Invalid email address or password.',
@@ -12,7 +13,7 @@ exports.en = {
 			'token_required': 'Token is a required field.',
 			'permission_denied': 'Permission denied.',
 			'unauthorized': 'Unauthorized.',
-			'not_exist': 'Data not exists.',
+			'not_exist': 'Something went wrong or data does not exists',
 			'race_store_success': 'Race created successfully.',
 			'race_update_success': 'Race updated successfully.',
 			'race_delete_success': 'Race deleted successfully.',

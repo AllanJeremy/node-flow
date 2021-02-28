@@ -1,26 +1,36 @@
 const jwt = require('jsonwebtoken');
 
+/**
+ * Configs
+ */
 const config = require('../config/auth.config.js');
 
-var language = require('../language/en_default');
-var responsemessages = language.en.admin.response;
+/**
+ * Languages
+ */
+const language = require('../language/en_default');
+const responseLanguage = language.en.admin.response;
 
-var APIResponse = require('../helpers/APIResponse');
-APIResponse = new APIResponse();
+/**
+ * Helpers
+ */
+var ResponseHandler = require('../helpers/ResponseHandler');
+ResponseHandler = new ResponseHandler();
 
 exports.verify = (req, res, next) => {
-	let token = req.headers['authorization'];
+  let token = req.headers.authorization;
 
-	if (!token) {
-
-    return APIResponse.error(403, responsemessages.token_required, res);
+  if (!token) {
+    return ResponseHandler.error(res, 403, responseLanguage.token_required);
   }
+
+  token = token.split(' ')[1];
 
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
-
-      return APIResponse.error(401, responsemessages.unauthorized, res);
+      return ResponseHandler.error(res, 401, responseLanguage.unauthorized);
     }
+
     req.id = decoded.id
     next();
   });
