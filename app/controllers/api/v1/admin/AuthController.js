@@ -2,20 +2,35 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 
-var APIResponse = require('../../../../helpers/APIResponse');
-APIResponse = new APIResponse();
+/**
+ * Helpers
+ */
+var ResponseHandler = require('../../../../helpers/ResponseHandler');
+ResponseHandler = new ResponseHandler();
 
-const config = require('../../../../config/auth.config.js');
+/**
+ * Configs
+ */
+const authConfig = require('../../../../config/auth.config.js');
 
-const db = require('../../../../models');
-const AdminUser = db.adminuser;
+/**
+ * Models
+ */
+const Models = require('../../../../models');
+const AdminUser = Models.AdminUser;
 
+/**
+ * Languages
+ */
 const language = require('../../../../language/en_default');
 const responseLanguage = language.en.admin.response;
 const validationLanguage = language.en.admin.validation;
 
-var UserTransform = require('../../../../transformers/admin/UserTransformer');
-UserTransform = new UserTransform();
+/**
+ * Transformers
+ */
+var UserTransformer = require('../../../../transformers/admin/UserTransformer');
+UserTransformer = new UserTransformer();
 
 class AuthController {
 
@@ -33,7 +48,7 @@ class AuthController {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return APIResponse.error(400, errors.array(), res);
+      return ResponseHandler.error(res, 422, errors.array());
     }
 
     AdminUser.findOne({
@@ -43,34 +58,31 @@ class AuthController {
     }).then(response => {
 
       if (!response) {
-
-        return APIResponse.error(400, validationLanguage.invalid_credentials, res);
+        return ResponseHandler.error(res, 422, validationLanguage.invalid_credentials);
       }
 
-      var passwordIsValid = bcrypt.compareSync(
+      var isPasswordValid = bcrypt.compareSync(
         req.body.password,
         response.password
       );
 
-      if (!passwordIsValid) {
-
-        return APIResponse.error(422, validationLanguage.invalid_credentials, res);
+      if (!isPasswordValid) {
+        return ResponseHandler.error(res, 422, validationLanguage.invalid_credentials);
       }
 
-      var token = jwt.sign({ id: response.id }, config.secret, {
-        expiresIn: config.tokenExpiryTime
+      var token = jwt.sign({ id: response.id }, authConfig.secret, {
+        expiresIn: authConfig.tokenExpiryTime
       });
 
       var data = {
         token: token,
-        user: UserTransform.SignIn(response)
+        user: UserTransformer.AdminUser(response)
       };
 
-      return APIResponse.success(responseLanguage.login_success, res, data);
+      return ResponseHandler.success(res, responseLanguage.login_success, data);
     })
     .catch(err => {
-
-      return APIResponse.error(500, err.message, res);
+      return ResponseHandler.error(res, 500, err.message);
     });
   }
 
