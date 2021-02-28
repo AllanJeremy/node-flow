@@ -11,7 +11,7 @@ exports.en = {
 		'response': {
 			'login_success': 'Logged in successfully.',
 			'token_required': 'Token is a required field.',
-			'permission_denied': 'Permission denied.',
+			'permission_denied': 'You don\'t have enough permission to access this module. Please contact administrator.',
 			'unauthorized': 'Unauthorized.',
 			'not_exist': 'Something went wrong or data does not exists',
 			'race_store_success': 'Race created successfully.',

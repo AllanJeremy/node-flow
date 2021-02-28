@@ -25,7 +25,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.AdminUser = require('../models/AdminUser.js')(sequelize, Sequelize);
-db.admin_permission = require('../models/AdminPermission.js')(sequelize, Sequelize);
+db.AdminPermission = require('../models/AdminPermission.js')(sequelize, Sequelize);
 db.HealthCategory = require('../models/HealthCategory.js')(sequelize, Sequelize);
 db.Gender = require('../models/Gender.js')(sequelize, Sequelize);
 db.SexualOrientation = require('../models/SexualOrientation.js')(sequelize, Sequelize);

@@ -1,7 +1,7 @@
 const VerifyApiToken = require('./VerifyApiToken');
-const CheckPermission = require('./CheckPermission');
+const HasPermission = require('./HasPermission');
 
 module.exports = {
   VerifyApiToken: VerifyApiToken.verify,
-  CheckPermission: CheckPermission.check
+  HasPermission: HasPermission.verify
 };
