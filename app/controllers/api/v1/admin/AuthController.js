@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 
-var APIResponse = require('../../../../helper/APIResponse');
+var APIResponse = require('../../../../helpers/APIResponse');
 APIResponse = new APIResponse();
 
 const config = require('../../../../config/auth.config.js');
@@ -19,36 +19,40 @@ UserTransform = new UserTransform();
 
 class AuthController {
 
-	/**
-	 * Signig for admin user.
-	 *
-	 * @param Object req
-	 * @return Object res
-	 */
-	SignIn = (req, res) => {
+  /**
+   * @api {post} /admin/auth/signin Handles admin user login operation
+   * @apiName Admin user login operation
+   * @apiGroup Admin
+   *
+   * @apiParam {String} [email] email
+   * @apiParam {String} [password] password
+   *
+   * @apiSuccess (200) {Object}
+   */
+  SignIn = (req, res) => {
 
-	  const errors = validationResult(req);
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
-
-    	return APIResponse.error(422, errors.array, res);
+      return APIResponse.error(400, errors.array(), res);
     }
 
-		AdminUser.findOne({
-	    where: {
-	      email: req.body.email
-	    }
-	  }).then(response => {
-	    if (!response) {
+    AdminUser.findOne({
+      where: {
+        email: req.body.email
+      }
+    }).then(response => {
 
-	      return APIResponse.error(422, validationLanguage.invalid_credentials, res);
-	    }
+      if (!response) {
 
-	    var passwordIsValid = bcrypt.compareSync(
-	      req.body.password,
-	      response.password
-	    );
+        return APIResponse.error(400, validationLanguage.invalid_credentials, res);
+      }
 
-	    if (!passwordIsValid) {
+      var passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        response.password
+      );
+
+      if (!passwordIsValid) {
 
         return APIResponse.error(422, validationLanguage.invalid_credentials, res);
       }
@@ -58,17 +62,17 @@ class AuthController {
       });
 
       var data = {
-    		token: token,
-    		user: UserTransform.SignIn(response)
-    	};
+        token: token,
+        user: UserTransform.SignIn(response)
+      };
 
       return APIResponse.success(responseLanguage.login_success, res, data);
-	  })
-	  .catch(err => {
+    })
+    .catch(err => {
 
-	    return APIResponse.error(500, err.message, res);
-	  });
-	}
+      return APIResponse.error(500, err.message, res);
+    });
+  }
 
 }
 

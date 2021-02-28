@@ -1,7 +1,7 @@
 const db = require('../models');
 const AdminPermission = db.admin_permission;
 
-var APIResponse = require('../helper/APIResponse');
+var APIResponse = require('../helpers/APIResponse');
 APIResponse = new APIResponse();
 
 const language = require('../language/en_default');
@@ -12,7 +12,7 @@ exports.check = (req, res, next) => {
     let permissions = adminpermission['permissions'];
     let currentRoute = req.originalUrl;
     currentRoute = currentRoute.replace('/admin/','').replace(/\d/g, '');
- 
+
     Object.keys(permissions).map((item, index) => {
       let routeName = item.replace('*', '');
       if(routeName == currentRoute) {
@@ -25,5 +25,5 @@ exports.check = (req, res, next) => {
   .catch(err => {
     return APIResponse.error(500, err.message, res);
   });
- 
+
 }

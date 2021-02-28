@@ -5,7 +5,7 @@ const config = require('../config/auth.config.js');
 var language = require('../language/en_default');
 var responsemessages = language.en.admin.response;
 
-var APIResponse = require('../helper/APIResponse');
+var APIResponse = require('../helpers/APIResponse');
 APIResponse = new APIResponse();
 
 exports.verify = (req, res, next) => {

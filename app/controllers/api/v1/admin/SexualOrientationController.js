@@ -1,6 +1,6 @@
 const { validationResult } = require('express-validator');
 
-var APIResponse = require('../../../../helper/APIResponse');
+var APIResponse = require('../../../../helpers/APIResponse');
 APIResponse = new APIResponse();
 
 const language = require('../../../../language/en_default');

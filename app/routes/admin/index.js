@@ -7,7 +7,7 @@ const {VerifyApiToken} = require('../../middleware');
 const {CheckPermission} = require('../../middleware');
 
 const auth = require('./auth');
-const UserValidation = require('../../validators/admin/UserValidation'); 
+const UserValidation = require('../../validators/admin/UserValidation');
 
 const CommonValidation = require('../../validators/admin/CommonValidation');
 
