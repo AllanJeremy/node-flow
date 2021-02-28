@@ -29,7 +29,7 @@ db.admin_permission = require('../models/AdminPermission.js')(sequelize, Sequeli
 db.HealthCategory = require('../models/HealthCategory.js')(sequelize, Sequelize);
 db.Gender = require('../models/Gender.js')(sequelize, Sequelize);
 db.sexual_orientation = require('../models/SexualOrientation.js')(sequelize, Sequelize);
-db.race = require('../models/Race.js')(sequelize, Sequelize);
+db.Race = require('../models/Race.js')(sequelize, Sequelize);
 db.workout = require('../models/Workout.js')(sequelize, Sequelize);
 
 module.exports = db;

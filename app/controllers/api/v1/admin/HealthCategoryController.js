@@ -60,7 +60,7 @@ class HealthCategoryController {
         name: req.body.name
       }
     }).then(response => {
-      if(!response) {
+      if (!response) {
         HealthCategory.create({
           name: req.body.name,
           status: req.body.status
