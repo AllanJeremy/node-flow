@@ -90,7 +90,7 @@ class GenderController {
   update = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, errors.array());
+      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
     Gender.findOne({
