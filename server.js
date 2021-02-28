@@ -7,7 +7,7 @@ const Joyn = express();
 dotenv.config();
 
 // Set CORS
-Joyn.use(cors({ origin: process.env.originURL }));
+Joyn.use(cors({ origin: process.env.CORS_ORIGIN }));
 
 Joyn.use(express.json());
 
