@@ -17,6 +17,7 @@ const Race = Models.Race;
  */
 const language = require('../../../../language/en_default');
 const responseLanguage = language.en.admin.response;
+const validationLanguage = language.en.admin.validation;
 
 /**
  * Transformers
