@@ -34,6 +34,10 @@ exports.en = {
 			'health_category_update_success': 'Health category updated successfully.',
 			'health_category_delete_success': 'Health category deleted successfully.',
 			'health_category_exist': 'Health category already exists.',
+      'family_dynamic_store_success': 'Family Dynamic created successfully.',
+      'family_dynamic_update_success': 'Family Dynamic updated successfully.',
+      'family_dynamic_delete_success': 'Family Dynamic deleted successfully.',
+      'family_dynamic_exist': 'Family Dynamic already exists.',
 		}
 	}
 }
