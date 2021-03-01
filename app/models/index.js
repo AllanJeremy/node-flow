@@ -31,5 +31,6 @@ db.Gender = require('../models/Gender.js')(sequelize, Sequelize);
 db.SexualOrientation = require('../models/SexualOrientation.js')(sequelize, Sequelize);
 db.Race = require('../models/Race.js')(sequelize, Sequelize);
 db.Workout = require('../models/Workout.js')(sequelize, Sequelize);
+db.FamilyDynamic = require('../models/FamilyDynamic.js')(sequelize, Sequelize);
 
 module.exports = db;

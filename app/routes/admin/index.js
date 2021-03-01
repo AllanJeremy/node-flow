@@ -17,6 +17,7 @@ const gender = require('./gender');
 const sexualOrientation = require('./sexual_orientation');
 const workout = require('./workout');
 const healthCategory = require('./health_category');
+const familyDynamic = require('./family_dynamic');
 
 router.post('/auth/signin', UserValidation.SignIn, auth.SignIn);
 
@@ -44,5 +45,10 @@ router.get('/health_category/list', [VerifyApiToken, HasPermission], healthCateg
 router.post('/health_category/store', [VerifyApiToken, HasPermission, CommonValidation.Validation], healthCategory.store);
 router.patch('/health_category/update/:id', [VerifyApiToken, HasPermission, CommonValidation.Validation], healthCategory.update);
 router.delete('/health_category/delete/:id', [VerifyApiToken], healthCategory.destroy);
+
+router.get('/family_dynamic/list', [VerifyApiToken, HasPermission], familyDynamic.list);
+router.post('/family_dynamic/store', [VerifyApiToken, HasPermission, CommonValidation.Validation], familyDynamic.store);
+router.patch('/family_dynamic/update/:id', [VerifyApiToken, HasPermission, CommonValidation.Validation], familyDynamic.update);
+router.delete('/family_dynamic/delete/:id', [VerifyApiToken], familyDynamic.destroy);
 
 module.exports = router
