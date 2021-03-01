@@ -22,7 +22,7 @@ exports.verify = (req, res, next) => {
     where: {admin_user_id: req.id }
   }).then(response => {
     let exists = false;
-    let permissions = JSON.parse(response.permissions);
+    let permissions = response.permissions;
     let currentRoute = req.originalUrl;
 
     currentRoute = currentRoute.replace('/admin/','').replace(/\d/g, '');
