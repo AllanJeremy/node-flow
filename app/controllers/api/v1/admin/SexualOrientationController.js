@@ -34,7 +34,7 @@ class SexualOrientationController {
    * @return Object res
    */
   list = (req, res) => {
-    SexualOrientation.findAll()
+    SexualOrientation.findAll({order: [['id', 'DESC']]})
     .then(response => {
       return ResponseHandler.success(res, '', CommonTransformer.transform(response));
     })

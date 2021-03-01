@@ -34,7 +34,7 @@ class HealthCategoryController {
    * @return Object res
    */
   list = (req, res) => {
-    HealthCategory.findAll()
+    HealthCategory.findAll({order: [['id', 'DESC']]})
     .then(response => {
       return ResponseHandler.success(res, '', CommonTransformer.transform(response));
     })

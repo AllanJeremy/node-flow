@@ -34,7 +34,7 @@ class GenderController {
    * @return Object res
    */
   list = (req, res) => {
-    Gender.findAll()
+    Gender.findAll({order: [['id', 'DESC']]})
     .then(response => {
       return ResponseHandler.success(res, '', CommonTransformer.transform(response));
     })
