@@ -29,8 +29,7 @@ Joyn.get('/', (req, res) => {
 });
 
 // admin routes
-const routes = require('./app/routes/admin');
-Joyn.use('/admin', routes);
+const routes = require('./app/routes/admin')(Joyn);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3001;

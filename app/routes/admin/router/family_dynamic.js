@@ -1,0 +1,39 @@
+var express = require('express');
+var router = express.Router();
+
+/**
+ * Route Configs
+ */
+const routeConfig = require('../config');
+const apiRoute = routeConfig.apiRoute;
+
+/**
+ * Validators
+ */
+const CommonValidation = require('../../../validators/admin/CommonValidation');
+
+/**
+ * Middlewares
+ */
+const { VerifyApiToken } = require('../../../middleware');
+const { HasPermission } = require('../../../middleware');
+
+/**
+ * Family Dynamic Controller
+ */
+var FamilyDynamicController = require('../../../controllers/api/v1/admin/FamilyDynamicController');
+FamilyDynamicController = new FamilyDynamicController();
+
+/**
+ * Family Dynamic Routes
+ */
+router.get(apiRoute.FAMILY_DYNAMIC_LIST.name, [VerifyApiToken, HasPermission], FamilyDynamicController.list);
+
+router.post(apiRoute.FAMILY_DYNAMIC_STORE.name, [VerifyApiToken, HasPermission, CommonValidation.Validation], FamilyDynamicController.store);
+
+router.patch(apiRoute.FAMILY_DYNAMIC_UPDATE.name, [VerifyApiToken, HasPermission, CommonValidation.Validation], FamilyDynamicController.update);
+
+router.delete(apiRoute.FAMILY_DYNAMIC_DELETE.name, [VerifyApiToken], FamilyDynamicController.destroy);
+
+
+module.exports = router;

@@ -11,6 +11,7 @@ const sequelize = new Sequelize(
     operatorsAliases: false,
     camelCase: true,
     camelCaseForFileName: true,
+    logging: false,
     define: {
       charset: 'utf8',
       collate: 'utf8_general_ci',
