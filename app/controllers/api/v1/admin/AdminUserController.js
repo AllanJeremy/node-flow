@@ -10,7 +10,7 @@ ResponseHandler = new ResponseHandler();
  * Models
  */
 const Models = require('../../../../models');
-const FamilyDynamic = Models.FamilyDynamic;
+const AdminUser = Models.AdminUser;
 
 /**
  * Languages
@@ -22,24 +22,24 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Transformers
  */
-var CommonTransformer = require('../../../../transformers/core/CommonTransformer');
-CommonTransformer = new CommonTransformer();
+var UserTransformer = require('../../../../transformers/admin/UserTransformer');
+UserTransformer = new UserTransformer();
 
 
-class FamilyDynamicController {
+class AdminUserController {
 
   /**
-   * @api {post} /admin/family_dynamic/list Show Family dynamic
-   * @apiName Family dynamic list
+   * @api {post} /admin/admin_user/list Show admin user list
+   * @apiName Admin user list
    * @apiGroup Admin
    *
    *
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
-    FamilyDynamic.findAll({order: [['id', 'DESC']]})
+    AdminUser.findAll({order: [['id', 'DESC']]})
     .then(response => {
-      return ResponseHandler.success(res, '', CommonTransformer.transform(response));
+      return ResponseHandler.success(res, '', UserTransformer.AdminUser(response));
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
@@ -48,8 +48,8 @@ class FamilyDynamicController {
 
 
   /**
-   * @api {post} /admin/family_dynamic/store Handles Family dynamic store operation
-   * @apiName Family dynamic store
+   * @api {post} /admin/admin_user/store Handles admin user store operation
+   * @apiName admin user store
    * @apiGroup Admin
    *
    * @apiParam {String} [name] name
@@ -62,26 +62,28 @@ class FamilyDynamicController {
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
-
-    FamilyDynamic.findOne({
+    AdminUser.findOne({
       where: {
-        name: req.body.name
+        email: req.body.email
       }
     }).then(response => {
       if (!response) {
-        FamilyDynamic.create({
-          name: req.body.name,
-          status: req.body.status
+        AdminUser.create({
+          email: req.body.email,
+          password: req.body.password,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          status: req.body.status,
         })
         .then(response => {
           return ResponseHandler.success(
-            res, responseLanguage.family_dynamic_store_success, CommonTransformer.transform(response));
+            res, responseLanguage.admin_user_store_success, UserTransformer.AdminUser(response));
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         })
       } else {
-        return ResponseHandler.error(res, 400, responseLanguage.family_dynamic_exist);
+        return ResponseHandler.error(res, 400, responseLanguage.admin_user_exist);
       }
     })
     .catch(err => {
@@ -90,8 +92,8 @@ class FamilyDynamicController {
   }
 
   /**
-   * @api {post} /admin/family_dynamic/update Handles Family dynamic update operation
-   * @apiName Family dynamic update
+   * @api {post} /admin/admin_user/update Handles admin user update operation
+   * @apiName Admin user update
    * @apiGroup Admin
    *
    * @apiParam {String} [name] name
@@ -106,15 +108,18 @@ class FamilyDynamicController {
       return ResponseHandler.error(res, 422, errors.array());
     }
 
-    FamilyDynamic.findOne({
+    AdminUser.findOne({
       where: {
         id: req.params.id
       }
     })
     .then(response => {
       if (response) {
-        FamilyDynamic.update({
-          name: req.body.name,
+        AdminUser.update({
+          email: req.body.email,
+          password: req.body.password,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
           status: req.body.status,
         },
         {
@@ -123,13 +128,13 @@ class FamilyDynamicController {
         })
         .then(result => {
           return ResponseHandler.success(
-            res, responseLanguage.family_dynamic_update_success, CommonTransformer.transform(result));
+            res, responseLanguage.admin_user_update_success, UserTransformer.AdminUser(result));
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         });
       } else {
-        return ResponseHandler.error(res, 400, responseLanguage.not_exist);
+        return ResponseHandler.error(res, 400, responseLanguage.admin_user_exist);
       }
     })
     .catch(err => {
@@ -138,8 +143,8 @@ class FamilyDynamicController {
   }
 
   /**
-   * @api {post} /admin/family_dynamic/destroy Handles Family dynamic destroy operation
-   * @apiName Family dynamic destroy
+   * @api {post} /admin/admin_user/destroy Handles admin user destroy operation
+   * @apiName Admin user destroy
    * @apiGroup Admin
    *
    * @apiParam {Integer} [id] id
@@ -147,16 +152,16 @@ class FamilyDynamicController {
    * @apiSuccess (200) {Object}
    */
   destroy = (req, res) => {
-    FamilyDynamic.findOne({
+    AdminUser.findOne({
       where: {
         id: req.params.id
       }
     })
     .then(response => {
       if (response) {
-        FamilyDynamic.destroy({ where: { id: req.params.id } })
+        AdminUser.destroy({ where: { id: req.params.id } })
         .then(response => {
-          return ResponseHandler.success(res, responseLanguage.family_dynamic_delete_success);
+          return ResponseHandler.success(res, responseLanguage.admin_user_delete_success);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
@@ -171,4 +176,4 @@ class FamilyDynamicController {
   }
 }
 
-module.exports = FamilyDynamicController;
+module.exports = AdminUserController;

@@ -29,10 +29,12 @@ CommonTransformer = new CommonTransformer();
 class WorkoutController {
 
   /**
-   * Returns the list of the workout.
+   * @api {post} /admin/workout/list Handles workout list
+   * @apiName Workout list
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   *
+   * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
     Workout.findAll({order: [['id', 'DESC']]})
@@ -46,10 +48,14 @@ class WorkoutController {
 
 
   /**
-   * Creates a new workout.
+   * @api {post} /admin/workout/store Handles workout store operation
+   * @apiName Workout store
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {String} [name] name
+   * @apiParam {String} [status] status
+   *
+   * @apiSuccess (200) {Object}
    */
   store = (req, res) => {
     const errors = validationResult(req);
@@ -84,10 +90,14 @@ class WorkoutController {
   }
 
   /**
-   * Updates the workout sepcified by id.
+   * @api {post} /admin/workout/update Handles workout update operation
+   * @apiName Workout update
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {String} [name] name
+   * @apiParam {String} [status] status
+   *
+   * @apiSuccess (200) {Object}
    */
   update = (req, res) => {
     const errors = validationResult(req);
@@ -127,10 +137,13 @@ class WorkoutController {
   }
 
   /**
-   * Deletes the workout.
+   * @api {post} /admin/workout/destroy Handles workout destroy operation
+   * @apiName Workout destroy
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {Integer} [id] id
+   *
+   * @apiSuccess (200) {Object}
    */
   destroy = (req, res) => {
     Workout.findOne({

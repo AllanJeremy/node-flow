@@ -28,10 +28,14 @@ CommonTransformer = new CommonTransformer();
 class SexualOrientationController {
 
   /**
-   * Returns the list of sexual orientations
+   * @api {post} /admin/sexual_orientation/list Handles sexual orientation list
+   * @apiName Sexual orientation list
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {String} [name] name
+   * @apiParam {String} [status] status
+   *
+   * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
     SexualOrientation.findAll({order: [['id', 'DESC']]})
@@ -44,10 +48,14 @@ class SexualOrientationController {
   }
 
   /**
-   * Creates a new sexual orientation
+   * @api {post} /admin/sexual_orientation/store Handles sexualorientation store operation
+   * @apiName Sexual orientation store
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {String} [name] name
+   * @apiParam {String} [status] status
+   *
+   * @apiSuccess (200) {Object}
    */
   store = (req, res) => {
     const errors = validationResult(req);
@@ -82,10 +90,14 @@ class SexualOrientationController {
   }
 
   /**
-   * Update the sexual orientation specified by id.
+   * @api {post} /admin/sexual_orientation/update Handles sexual orientation update operation
+   * @apiName Sexual orientation update
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {String} [name] name
+   * @apiParam {String} [status] status
+   *
+   * @apiSuccess (200) {Object}
    */
   update = (req, res) => {
     const errors = validationResult(req);
@@ -125,10 +137,13 @@ class SexualOrientationController {
   }
 
   /**
-   * Delete the sexual orientation.
+   * @api {post} /admin/sexual_orientation/destroy Handles sexual orientation destroy operation
+   * @apiName Sexual orientation destroy
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {Integer} [id] id
+   *
+   * @apiSuccess (200) {Object}
    */
   destroy = (req, res) => {
     SexualOrientation.findOne({

@@ -29,10 +29,12 @@ CommonTransformer = new CommonTransformer();
 class RaceController {
 
   /**
-   * Returns the list of the race.
+   * @api {post} /admin/race/list Show race list
+   * @apiName Race list
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   *
+   * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
     Race.findAll({order: [['id', 'DESC']]})
@@ -46,10 +48,14 @@ class RaceController {
 
 
   /**
-   * Creates a new race.
+   * @api {post} /admin/race/store Handles race store operation
+   * @apiName Race store
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {String} [name] name
+   * @apiParam {String} [status] status
+   *
+   * @apiSuccess (200) {Object}
    */
   store = (req, res) => {
     const errors = validationResult(req);
@@ -84,10 +90,15 @@ class RaceController {
   }
 
   /**
-   * Updates the race sepcified by id.
+   * @api {post} /admin/race/update Handles race update operation
+   * @apiName Race update
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {String} [name] name
+   * @apiParam {String} [status] status
+   * @apiParam {Integer} [id] id
+   *
+   * @apiSuccess (200) {Object}
    */
   update = (req, res) => {
     const errors = validationResult(req);
@@ -127,10 +138,13 @@ class RaceController {
   }
 
   /**
-   * Deletes the race.
+   * @api {post} /admin/race/destroy Handles race destroy operation
+   * @apiName Race destroy
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {Integer} [id] id
+   *
+   * @apiSuccess (200) {Object}
    */
   destroy = (req, res) => {
     Race.findOne({

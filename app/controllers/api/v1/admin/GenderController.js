@@ -28,10 +28,12 @@ CommonTransformer = new CommonTransformer();
 class GenderController {
 
   /**
-   * Returns the list of the genders.
+   * @api {post} /admin/gender/list Handles gender list
+   * @apiName Gender list
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   *
+   * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
     Gender.findAll({order: [['id', 'DESC']]})
@@ -44,10 +46,14 @@ class GenderController {
   }
 
   /**
-   * Creates a new gender.
+   * @api {post} /admin/gender/store Handles gender store operation
+   * @apiName Gender store
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {String} [name] name
+   * @apiParam {String} [status] status
+   *
+   * @apiSuccess (200) {Object}
    */
   store = (req, res) => {
     const errors = validationResult(req);
@@ -82,10 +88,15 @@ class GenderController {
   }
 
   /**
-   * Updates the gender sepcified by id.
+   * @api {post} /admin/gender/update Handles gender update operation
+   * @apiName Gender update
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {String} [name] name
+   * @apiParam {String} [status] status
+   * @apiParam {Integer} [id] id
+   *
+   * @apiSuccess (200) {Object}
    */
   update = (req, res) => {
     const errors = validationResult(req);
@@ -124,10 +135,13 @@ class GenderController {
   }
 
   /**
-   * Deletes the gender.
+   * @api {post} /admin/gender/destroy Handles gender destroy operation
+   * @apiName Gender destroy
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {Integer} [id] id
+   *
+   * @apiSuccess (200) {Object}
    */
   destroy = (req, res) => {
     Gender.findOne({

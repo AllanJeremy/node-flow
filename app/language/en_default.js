@@ -7,6 +7,8 @@ exports.en = {
 			'invalid_credentials': 'Invalid email address or password.',
 			'name_required': 'Name is a required field.',
 			'status_required': 'Status is a required field.',
+      'first_name_required': 'First name is a required field.',
+      'last_name_required': 'Last name is a required field.',
 		},
 		'response': {
 			'login_success': 'Logged in successfully.',
@@ -34,10 +36,14 @@ exports.en = {
 			'health_category_update_success': 'Health category updated successfully.',
 			'health_category_delete_success': 'Health category deleted successfully.',
 			'health_category_exist': 'Health category already exists.',
-      'family_dynamic_store_success': 'Family Dynamic created successfully.',
-      'family_dynamic_update_success': 'Family Dynamic updated successfully.',
-      'family_dynamic_delete_success': 'Family Dynamic deleted successfully.',
-      'family_dynamic_exist': 'Family Dynamic already exists.',
+      'family_dynamic_store_success': 'Family dynamic created successfully.',
+      'family_dynamic_update_success': 'Family dynamic updated successfully.',
+      'family_dynamic_delete_success': 'Family dynamic deleted successfully.',
+      'family_dynamic_exist': 'Family dynamic already exists.',
+      'admin_user_store_success': 'Admin user created successfully.',
+      'admin_user_update_success': 'Admin user updated successfully.',
+      'admin_user_delete_success': 'Admin user deleted successfully.',
+      'admin_user_exist': 'Admin user already exists.',
 		}
 	}
 }
