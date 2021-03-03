@@ -31,10 +31,13 @@ exports.verify = (req, res, next) => {
     let exists = false;
     let permissions = response.permissions.replace('{', '').replace('}', '');
     let currentRoute = req.originalUrl;
-    currentRoute = currentRoute.replace('/admin','').replace(/\d/g, '');
+    currentRoute = currentRoute.replace('/admin','');
 
     permissions.split(',').map((routeName, index) => {
-      if (routeConfig[routeName].name == currentRoute) {
+      var routeMatchName = routeConfig[routeName].name;
+      var routeRegex = routeMatchName.split(":id").join("([\\d-]+)");
+      routeRegex = "^" + routeRegex + "$";
+      if (currentRoute.match(routeRegex) !== null) {
         exists = true;
         next();
       }
@@ -45,7 +48,6 @@ exports.verify = (req, res, next) => {
     }
   })
   .catch(err => {
-    console.log("testing", err.message);
     return ResponseHandler.error(res, 500, err.message);
   });
 }

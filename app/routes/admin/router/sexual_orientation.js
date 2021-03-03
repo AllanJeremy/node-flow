@@ -27,13 +27,13 @@ SexualOrientationController = new SexualOrientationController();
 /**
  * Sexual Orientation Routes
  */
-router.get(apiRoute.SEXUAL_ORIENTATION_LIST.name, [VerifyApiToken, HasPermission], SexualOrientationController.list);
+router.get(apiRoute.SEXUAL_ORIENTATION_LIST.name, SexualOrientationController.list);
 
-router.post(apiRoute.SEXUAL_ORIENTATION_STORE.name, [VerifyApiToken, HasPermission, CommonValidation.Validation], SexualOrientationController.store);
+router.post(apiRoute.SEXUAL_ORIENTATION_STORE.name, [CommonValidation.Validation], SexualOrientationController.store);
 
-router.patch(apiRoute.SEXUAL_ORIENTATION_UPDATE.name, [VerifyApiToken, HasPermission, CommonValidation.Validation], SexualOrientationController.update);
+router.patch(apiRoute.SEXUAL_ORIENTATION_UPDATE.name, [CommonValidation.Validation], SexualOrientationController.update);
 
-router.delete(apiRoute.SEXUAL_ORIENTATION_DELETE.name, [VerifyApiToken], SexualOrientationController.destroy);
+router.delete(apiRoute.SEXUAL_ORIENTATION_DELETE.name, SexualOrientationController.destroy);
 
 
 module.exports = router;

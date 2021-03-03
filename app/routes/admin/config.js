@@ -6,7 +6,7 @@ const apiRoute = {
 
   RACE_LIST: {
     name: '/race/list',
-    label: 'Race list'
+    label: 'Race list',
   },
   RACE_STORE: {
     name: '/race/store',
