@@ -28,10 +28,12 @@ CommonTransformer = new CommonTransformer();
 class HealthCategoryController {
 
   /**
-   * Returns the list of health categories
+   * @api {post} /admin/health_category/list Handles health category list
+   * @apiName Health list
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   *
+   * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
     HealthCategory.findAll({order: [['id', 'DESC']]})
@@ -44,10 +46,14 @@ class HealthCategoryController {
   }
 
   /**
-   * Creates a new health category
+   * @api {post} /admin/health_category/store Handles health category store operation
+   * @apiName Health category store
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {String} [name] name
+   * @apiParam {String} [status] status
+   *
+   * @apiSuccess (200) {Object}
    */
   store = (req, res) => {
     const errors = validationResult(req);
@@ -82,10 +88,15 @@ class HealthCategoryController {
   }
 
   /**
-   * Update the health category specified by id.
+   * @api {post} /admin/health_category/update Handles health update operation
+   * @apiName Health category update
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {String} [name] name
+   * @apiParam {String} [status] status
+   * @apiParam {Integer} [id] id
+   *
+   * @apiSuccess (200) {Object}
    */
   update = (req, res) => {
     const errors = validationResult(req);
@@ -125,10 +136,13 @@ class HealthCategoryController {
   }
 
   /**
-   * Delete the health category.
+   * @api {post} /admin/health_category/destroy Handles health destroy operation
+   * @apiName Health category destroy
+   * @apiGroup Admin
    *
-   * @param Object req
-   * @return Object res
+   * @apiParam {Integer} [id] id
+   *
+   * @apiSuccess (200) {Object}
    */
   destroy = (req, res) => {
     HealthCategory.findOne({

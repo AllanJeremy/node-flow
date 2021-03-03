@@ -105,6 +105,23 @@ const apiRoute = {
     name: '/family_dynamic/delete/:id',
     label: 'Family Dynamic Delete'
   },
+
+  ADMIN_USER_LIST: {
+    name: '/admin_user/list',
+    label: 'Admin user list'
+  },
+  ADMIN_USER_STORE: {
+    name: '/admin_user/store',
+    label: 'Admin user create'
+  },
+  ADMIN_USER_UPDATE: {
+    name: '/admin_user/update/:id',
+    label: 'Admin user Edit'
+  },
+  ADMIN_USER_DELETE: {
+    name: '/admin_user/delete/:id',
+    label: 'Admin user Delete'
+  },
 };
 
 module.exports = {
