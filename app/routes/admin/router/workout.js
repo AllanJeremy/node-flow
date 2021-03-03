@@ -27,13 +27,13 @@ WorkoutController = new WorkoutController();
 /**
  * Workout Routes
  */
-router.get(apiRoute.WORKOUT_LIST.name, [VerifyApiToken, HasPermission], WorkoutController.list);
+router.get(apiRoute.WORKOUT_LIST.name, WorkoutController.list);
 
-router.post(apiRoute.WORKOUT_STORE.name, [VerifyApiToken, HasPermission, CommonValidation.Validation], WorkoutController.store);
+router.post(apiRoute.WORKOUT_STORE.name, [CommonValidation.Validation], WorkoutController.store);
 
-router.patch(apiRoute.WORKOUT_UPDATE.name, [VerifyApiToken, HasPermission, CommonValidation.Validation], WorkoutController.update);
+router.patch(apiRoute.WORKOUT_UPDATE.name, [CommonValidation.Validation], WorkoutController.update);
 
-router.delete(apiRoute.WORKOUT_DELETE.name, [VerifyApiToken], WorkoutController.destroy);
+router.delete(apiRoute.WORKOUT_DELETE.name, WorkoutController.destroy);
 
 
 module.exports = router;

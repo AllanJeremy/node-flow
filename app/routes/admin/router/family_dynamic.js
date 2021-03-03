@@ -27,13 +27,13 @@ FamilyDynamicController = new FamilyDynamicController();
 /**
  * Family Dynamic Routes
  */
-router.get(apiRoute.FAMILY_DYNAMIC_LIST.name, [VerifyApiToken, HasPermission], FamilyDynamicController.list);
+router.get(apiRoute.FAMILY_DYNAMIC_LIST.name, FamilyDynamicController.list);
 
-router.post(apiRoute.FAMILY_DYNAMIC_STORE.name, [VerifyApiToken, HasPermission, CommonValidation.Validation], FamilyDynamicController.store);
+router.post(apiRoute.FAMILY_DYNAMIC_STORE.name, [CommonValidation.Validation], FamilyDynamicController.store);
 
-router.patch(apiRoute.FAMILY_DYNAMIC_UPDATE.name, [VerifyApiToken, HasPermission, CommonValidation.Validation], FamilyDynamicController.update);
+router.patch(apiRoute.FAMILY_DYNAMIC_UPDATE.name, [CommonValidation.Validation], FamilyDynamicController.update);
 
-router.delete(apiRoute.FAMILY_DYNAMIC_DELETE.name, [VerifyApiToken], FamilyDynamicController.destroy);
+router.delete(apiRoute.FAMILY_DYNAMIC_DELETE.name, FamilyDynamicController.destroy);
 
 
 module.exports = router;

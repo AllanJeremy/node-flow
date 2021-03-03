@@ -28,13 +28,13 @@ RaceController = new RaceController();
 /**
  * Race Routes
  */
-router.get(apiRoute.RACE_LIST.name, [VerifyApiToken, HasPermission], RaceController.list);
+router.get(apiRoute.RACE_LIST.name, RaceController.list);
 
-router.post(apiRoute.RACE_STORE.name, [VerifyApiToken, HasPermission, CommonValidation.Validation], RaceController.store);
+router.post(apiRoute.RACE_STORE.name, [CommonValidation.Validation], RaceController.store);
 
-router.patch(apiRoute.RACE_UPDATE.name, [VerifyApiToken, HasPermission, CommonValidation.Validation], RaceController.update);
+router.patch(apiRoute.RACE_UPDATE.name, [CommonValidation.Validation], RaceController.update);
 
-router.delete(apiRoute.RACE_DELETE.name, [VerifyApiToken, HasPermission], RaceController.destroy);
+router.delete(apiRoute.RACE_DELETE.name, RaceController.destroy);
 
 
 module.exports = router;
