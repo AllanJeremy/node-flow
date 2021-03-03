@@ -17,21 +17,33 @@ const responseLanguage = language.en.admin.response;
 var ResponseHandler = require('../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
+/**
+ * Routes Config
+ */
+var RoutesConfig = require('../routes/admin/config');
+RoutesConfig = RoutesConfig.authRoute;
+
+
+
 exports.verify = (req, res, next) => {
-  let token = req.headers.authorization;
+  if (req.originalUrl.replace('/admin', '') === RoutesConfig.AUTH_LOGIN) {
+    return next();
+  } else {
+    let token = req.headers.authorization;
 
-  if (!token) {
-    return ResponseHandler.error(res, 403, responseLanguage.token_required);
-  }
-
-  token = token.split(' ')[1];
-
-  jwt.verify(token, config.secret, (err, decoded) => {
-    if (err) {
-      return ResponseHandler.error(res, 401, responseLanguage.unauthorized);
+    if (!token) {
+      return ResponseHandler.error(res, 403, responseLanguage.token_required);
     }
 
-    req.id = decoded.id
-    next();
-  });
+    token = token.split(' ')[1];
+
+    jwt.verify(token, config.secret, (err, decoded) => {
+      if (err) {
+        return ResponseHandler.error(res, 401, responseLanguage.unauthorized);
+      }
+
+      req.id = decoded.id
+      next();
+    });
+  }
 }
