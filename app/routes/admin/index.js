@@ -1,8 +1,17 @@
 var path = require('path')
 var fs = require('fs');
 
+/**
+ * Middlewares
+ */
 const { VerifyApiToken } = require('../../middleware');
 const { HasPermission } = require('../../middleware');
+
+/**
+ * Route Configs
+ */
+const routeConfig = require('./config');
+const routePrifix = routeConfig.routePrifix;
 
 module.exports = function(Joyn) {
   var routeFiles = fs.readdirSync(path.join(__dirname, 'router/'))
@@ -14,14 +23,10 @@ module.exports = function(Joyn) {
 
     var name = file.substr(0, file.indexOf('.'));
 
-    if(name === 'auth') {
-      Joyn.use('/admin', require('./router/' + name));
-    } else {
-      Joyn.use(VerifyApiToken);
-      Joyn.use(HasPermission);
+    Joyn.use(VerifyApiToken);
+    Joyn.use(HasPermission);
 
-      Joyn.use('/admin', require('./router/' + name));
-    }
+    Joyn.use(routePrifix, require('./router/' + name));
 
   });
 }

@@ -20,13 +20,14 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Route Config
  */
-var AllRoutesConfig = require('../routes/admin/config');
-var routeConfig = AllRoutesConfig.apiRoute;
-var authRoutesConfig = AllRoutesConfig.authRoute;
+const allRoutesConfig = require('../routes/admin/config');
+const apiRoute = allRoutesConfig.apiRoute;
+const authRoute = allRoutesConfig.authRoute;
+const routePrifix = allRoutesConfig.routePrifix;
 
 
 exports.verify = (req, res, next) => {
-  if (req.originalUrl.replace('/admin', '') === authRoutesConfig.AUTH_LOGIN) {
+  if (req.originalUrl.replace(routePrifix, '') === authRoute.AUTH_LOGIN) {
     return next();
   } else {
     AdminPermission.findOne({
@@ -36,10 +37,10 @@ exports.verify = (req, res, next) => {
       let exists = false;
       let permissions = response.permissions.replace('{', '').replace('}', '');
       let currentRoute = req.originalUrl;
-      currentRoute = currentRoute.replace('/admin','');
+      currentRoute = currentRoute.replace(routePrifix,'');
 
       permissions.split(',').map((routeName, index) => {
-        var routeMatchName = routeConfig[routeName].name;
+        var routeMatchName = apiRoute[routeName].name;
         var routeRegex = routeMatchName.split(':id').join('([\\d-]+)');
         routeRegex = '^' + routeRegex + '$';
         if (currentRoute.match(routeRegex) !== null) {

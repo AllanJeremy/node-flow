@@ -4,6 +4,7 @@ exports.en = {
       'required_fields': 'Please fill up all the required fields',
 			'email_required': 'Email address is a required field.',
 			'password_required': 'Password is a required field.',
+      'password_minimum_length': 'Password must be of minimum 8 characters length.',
 			'invalid_credentials': 'Invalid email address or password.',
 			'name_required': 'Name is a required field.',
 			'status_required': 'Status is a required field.',
