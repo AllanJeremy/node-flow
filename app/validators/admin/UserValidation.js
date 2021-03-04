@@ -59,3 +59,10 @@ exports.SignUp = [
     .bail(),
 ];
 
+exports.AdminPermission = [
+  check('permissions')
+    .isArray({min: 1})
+    .withMessage(validation.admin_permission_required)
+    .bail()
+];
+

@@ -33,7 +33,6 @@ exports.verify = (req, res, next) => {
     AdminPermission.findOne({
       where: {admin_user_id: req.id }
     }).then(response => {
-
       let exists = false;
       let permissions = response.permissions.replace('{', '').replace('}', '');
       let currentRoute = req.originalUrl;
@@ -41,7 +40,9 @@ exports.verify = (req, res, next) => {
 
       permissions.split(',').map((routeName, index) => {
         var routeMatchName = apiRoute[routeName].name;
-        var routeRegex = routeMatchName.split(':id').join('([\\d-]+)');
+        var slug = routeMatchName.split(':');
+        slug = slug.length > 1 ? slug[1] : "";
+        var routeRegex = generateMatchRoute(routeMatchName, slug);
         routeRegex = '^' + routeRegex + '$';
         if (currentRoute.match(routeRegex) !== null) {
           exists = true;
@@ -56,5 +57,18 @@ exports.verify = (req, res, next) => {
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
+  }
+}
+
+function generateMatchRoute(routeName, slug) {
+  switch(slug) {
+    case 'id':
+      return routeName.split(':id').join('([\\d-]+)');
+
+    case 'user_id':
+      return routeName.split(':user_id').join('([\\d-]+)');
+
+    default:
+      return routeName;
   }
 }

@@ -1,4 +1,6 @@
 const { validationResult } = require('express-validator');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op
 
 /**
  * Helpers
@@ -37,7 +39,14 @@ class AdminUserController {
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
-    AdminUser.findAll({order: [['id', 'DESC']]})
+    AdminUser.findAll({
+      where: {
+        id: {
+          [Op.ne]: req.id
+        }
+      },
+      order: [['id', 'DESC']]
+    })
     .then(response => {
       return ResponseHandler.success(res, '', UserTransformer.AdminUser(response));
     })

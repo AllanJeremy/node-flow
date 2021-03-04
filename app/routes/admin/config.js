@@ -124,6 +124,19 @@ const apiRoute = {
     name: '/admin_user/delete/:id',
     label: 'Admin user delete'
   },
+
+  ADMIN_PERMISSION_LIST: {
+    name: '/admin_permission/list',
+    label: 'Admin permission list'
+  },
+  ADMIN_USER_PERMISSION_LIST: {
+    name: '/admin_permission/list/:user_id',
+    label: 'Admin user permission list'
+  },
+  ADMIN_USER_PERMISSION_STORE: {
+    name: '/admin_permission/store',
+    label: 'Admin user permission create'
+  }
 };
 
 module.exports = {
