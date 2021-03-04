@@ -1,4 +1,4 @@
-const routePrifix = '/admin';
+const routePrefix = '/admin';
 
 const authRoute = {
   AUTH_LOGIN: '/auth/signin'
@@ -127,7 +127,7 @@ const apiRoute = {
 };
 
 module.exports = {
-  routePrifix,
+  routePrefix,
   authRoute,
   apiRoute
 }

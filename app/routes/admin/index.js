@@ -11,7 +11,7 @@ const { HasPermission } = require('../../middleware');
  * Route Configs
  */
 const routeConfig = require('./config');
-const routePrifix = routeConfig.routePrifix;
+const routePrefix = routeConfig.routePrefix;
 
 module.exports = function(Joyn) {
   var routeFiles = fs.readdirSync(path.join(__dirname, 'router/'))
@@ -26,7 +26,7 @@ module.exports = function(Joyn) {
     Joyn.use(VerifyApiToken);
     Joyn.use(HasPermission);
 
-    Joyn.use(routePrifix, require('./router/' + name));
+    Joyn.use(routePrefix, require('./router/' + name));
 
   });
 }

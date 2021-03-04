@@ -22,11 +22,11 @@ ResponseHandler = new ResponseHandler();
  */
 const allRoutesConfig = require('../routes/admin/config');
 const authRoute = allRoutesConfig.authRoute;
-const routePrifix = allRoutesConfig.routePrifix;
+const routePrefix = allRoutesConfig.routePrefix;
 
 
 exports.verify = (req, res, next) => {
-  if (req.originalUrl.replace(routePrifix, '') === authRoute.AUTH_LOGIN) {
+  if (req.originalUrl.replace(routePrefix, '') === authRoute.AUTH_LOGIN) {
     return next();
   } else {
     let token = req.headers.authorization;
