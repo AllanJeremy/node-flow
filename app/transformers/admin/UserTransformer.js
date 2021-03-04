@@ -9,6 +9,17 @@ class UserTransformer {
 		'email': 'email',
 		'status': 'status'
 	});
+
+  AdminPermission = (data) => fractal(data, {
+    'id': 'id',
+    'admin_user_id': 'admin_user_id',
+    'permissions': 'permissions'
+  });
+
+  AdminPermissionList = (data) => fractal(data, {
+    'key': 'key',
+    'value': 'value'
+  });
 }
 
 module.exports = UserTransformer;

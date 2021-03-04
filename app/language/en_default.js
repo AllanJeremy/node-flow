@@ -10,6 +10,7 @@ exports.en = {
 			'status_required': 'Status is a required field.',
       'first_name_required': 'First name is a required field.',
       'last_name_required': 'Last name is a required field.',
+      'admin_permission_required': 'Please select at least one permission.',
 		},
 		'response': {
 			'login_success': 'Logged in successfully.',
@@ -45,6 +46,8 @@ exports.en = {
       'admin_user_update_success': 'Admin user updated successfully.',
       'admin_user_delete_success': 'Admin user deleted successfully.',
       'admin_user_exist': 'Admin user already exists.',
+      'admin_permission_store_success': 'Admin user permission store successfully.',
+      'admin_permission_update_success': 'Admin user permission update successfully.',
 		}
 	}
 }
