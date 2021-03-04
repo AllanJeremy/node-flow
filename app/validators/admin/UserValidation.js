@@ -34,11 +34,14 @@ exports.SignUp = [
     .withMessage(validation.email_invalid)
     .bail(),
   check('password')
+    .optional({checkFalsy: true})
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.password_required)
+    .isLength({ min: 8 })
+    .withMessage(validation.password_minimum_length)
     .bail(),
   check('first_name')
     .trim()

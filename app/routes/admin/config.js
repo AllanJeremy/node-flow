@@ -1,3 +1,5 @@
+const routePrefix = '/admin';
+
 const authRoute = {
   AUTH_LOGIN: '/auth/signin'
 }
@@ -14,11 +16,11 @@ const apiRoute = {
   },
   RACE_UPDATE: {
     name: '/race/update/:id',
-    label: 'Race Edit'
+    label: 'Race edit'
   },
   RACE_DELETE: {
     name: '/race/delete/:id',
-    label: 'Race Delete'
+    label: 'Race delete'
   },
 
   GENDER_LIST: {
@@ -31,28 +33,28 @@ const apiRoute = {
   },
   GENDER_UPDATE: {
     name: '/gender/update/:id',
-    label: 'Gender Edit'
+    label: 'Gender edit'
   },
   GENDER_DELETE: {
     name: '/gender/delete/:id',
-    label: 'Gender Delete'
+    label: 'Gender delete'
   },
 
   SEXUAL_ORIENTATION_LIST: {
     name: '/sexual_orientation/list',
-    label: 'Sexual Orientation list'
+    label: 'Sexual orientation list'
   },
   SEXUAL_ORIENTATION_STORE: {
     name: '/sexual_orientation/store',
-    label: 'Sexual Orientation create'
+    label: 'Sexual orientation create'
   },
   SEXUAL_ORIENTATION_UPDATE: {
     name: '/sexual_orientation/update/:id',
-    label: 'Sexual Orientation Edit'
+    label: 'Sexual Orientation edit'
   },
   SEXUAL_ORIENTATION_DELETE: {
     name: '/sexual_orientation/delete/:id',
-    label: 'Sexual Orientation Delete'
+    label: 'Sexual orientation delete'
   },
 
   WORKOUT_LIST: {
@@ -65,45 +67,45 @@ const apiRoute = {
   },
   WORKOUT_UPDATE: {
     name: '/workout/update/:id',
-    label: 'Workout Edit'
+    label: 'Workout edit'
   },
   WORKOUT_DELETE: {
     name: '/workout/delete/:id',
-    label: 'Workout Delete'
+    label: 'Workout delete'
   },
 
   HEALTH_CATEGORY_LIST: {
     name: '/health_category/list',
-    label: 'Health Category list'
+    label: 'Health category list'
   },
   HEALTH_CATEGORY_STORE: {
     name: '/health_category/store',
-    label: 'Health Category create'
+    label: 'Health category create'
   },
   HEALTH_CATEGORY_UPDATE: {
     name: '/health_category/update/:id',
-    label: 'Health Category Edit'
+    label: 'Health category edit'
   },
   HEALTH_CATEGORY_DELETE: {
     name: '/health_category/delete/:id',
-    label: 'Health Category Delete'
+    label: 'Health category delete'
   },
 
   FAMILY_DYNAMIC_LIST: {
     name: '/family_dynamic/list',
-    label: 'Family Dynamic list'
+    label: 'Family dynamic list'
   },
   FAMILY_DYNAMIC_STORE: {
     name: '/family_dynamic/store',
-    label: 'Family Dynamic create'
+    label: 'Family dynamic create'
   },
   FAMILY_DYNAMIC_UPDATE: {
     name: '/family_dynamic/update/:id',
-    label: 'Family Dynamic Edit'
+    label: 'Family dynamic edit'
   },
   FAMILY_DYNAMIC_DELETE: {
     name: '/family_dynamic/delete/:id',
-    label: 'Family Dynamic Delete'
+    label: 'Family dynamic delete'
   },
 
   ADMIN_USER_LIST: {
@@ -116,15 +118,16 @@ const apiRoute = {
   },
   ADMIN_USER_UPDATE: {
     name: '/admin_user/update/:id',
-    label: 'Admin user Edit'
+    label: 'Admin user edit'
   },
   ADMIN_USER_DELETE: {
     name: '/admin_user/delete/:id',
-    label: 'Admin user Delete'
+    label: 'Admin user delete'
   },
 };
 
 module.exports = {
+  routePrefix,
   authRoute,
   apiRoute
 }
