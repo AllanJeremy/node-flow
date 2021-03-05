@@ -18,7 +18,7 @@ module.exports = {
     */
     return queryInterface.bulkInsert('admin_permissions', [{
       admin_user_id: '1',
-      permissions: Object.keys(routeConfig.apiRoute),
+      permissions: '"' + Object.keys(routeConfig.apiRoute).toString() + '"',
       created_at: new Date(),
       updated_at: new Date()
     }]);

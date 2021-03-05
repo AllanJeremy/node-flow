@@ -34,11 +34,11 @@ exports.verify = (req, res, next) => {
       where: {admin_user_id: req.id }
     }).then(response => {
       let exists = false;
-      let permissions = response.permissions.replace('{', '').replace('}', '');
+      let permissions = response.permissions.replace(/^"|"$/g, '').split(',');
       let currentRoute = req.originalUrl;
       currentRoute = currentRoute.replace(routePrefix,'');
 
-      permissions.split(',').map((routeName, index) => {
+      permissions.map((routeName, index) => {
         var routeMatchName = apiRoute[routeName].name;
         var slug = routeMatchName.split(':');
         slug = slug.length > 1 ? slug[1] : "";

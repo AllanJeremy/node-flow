@@ -46,7 +46,8 @@ class AdminPermissionController {
 
     Object.entries(apiRoute).map(item => {
       permissionList.push({
-        [item[0]] : item[1].label,
+        'label': item[1].label,
+        'value': item[0]
       })
     });
 
@@ -103,7 +104,7 @@ class AdminPermissionController {
       if (!response) {
         AdminPermission.create({
           admin_user_id: req.body.admin_user_id,
-          permissions: req.body.permissions
+          permissions: req.body.permissions.toString()
         })
         .then(response => {
           return ResponseHandler.success(
@@ -114,7 +115,7 @@ class AdminPermissionController {
         });
       } else {
         AdminPermission.update({
-          permissions: req.body.permissions
+          permissions: req.body.permissions.toString()
         },
         {
           where: { admin_user_id: req.body.admin_user_id },
