@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator');
 const Sequelize = require('sequelize');
-const Op = Sequelize.Op
+var bcrypt = require('bcryptjs');
+const Op = Sequelize.Op;
 
 /**
  * Helpers
@@ -79,7 +80,7 @@ class AdminUserController {
       if (!response) {
         AdminUser.create({
           email: req.body.email,
-          password: req.body.password,
+          password: bcrypt.hashSync(req.body.password),
           first_name: req.body.first_name,
           last_name: req.body.last_name,
           status: req.body.status,
@@ -126,7 +127,7 @@ class AdminUserController {
       if (response) {
         AdminUser.update({
           email: req.body.email,
-          password: req.body.password,
+          password: bcrypt.hashSync(req.body.password),
           first_name: req.body.first_name,
           last_name: req.body.last_name,
           status: req.body.status,
