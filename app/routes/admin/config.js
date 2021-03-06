@@ -22,6 +22,14 @@ const apiRoute = {
     name: '/race/delete/:id',
     label: 'Race delete'
   },
+  RACE_ACTIVE_LIST: {
+    name: '/race/active_list',
+    label: 'Race active status list'
+  },
+  RACE_MERGE: {
+    name: '/race/merge',
+    label: 'Race merge'
+  },
 
   GENDER_LIST: {
     name: '/gender/list',
