@@ -123,7 +123,7 @@ class AdminPermissionController {
         })
         .then(response => {
           return ResponseHandler.success(
-            res, responseLanguage.admin_permission_update_success, UserTransformer.AdminUser(response));
+            res, responseLanguage.admin_permission_update_success, UserTransformer.AdminPermission(response));
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);

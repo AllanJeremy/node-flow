@@ -127,7 +127,7 @@ class AdminUserController {
       if (response) {
         AdminUser.update({
           email: req.body.email,
-          password: bcrypt.hashSync(req.body.password),
+          password: req.body.password ? bcrypt.hashSync(req.body.password) : response.password,
           first_name: req.body.first_name,
           last_name: req.body.last_name,
           status: req.body.status,

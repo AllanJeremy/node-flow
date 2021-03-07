@@ -11,6 +11,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const Race = Models.Race;
+const UserDetail = Models.UserDetail;
 
 /**
  * Languages
@@ -169,6 +170,65 @@ class RaceController {
       return ResponseHandler.error(res, 500, err.message);
     });
   }
+
+  /**
+   * @api {post} /admin/race/active_list Show active status race list
+   * @apiName Active status
+   * @apiGroup Admin
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  getActiveList = (req, res) => {
+    Race.findAll({
+      where: {
+        status: 1
+      },
+      order: [['id', 'DESC']]
+    })
+    .then(response => {
+      return ResponseHandler.success(res, '', CommonTransformer.transform(response));
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /admin/race/merge Merge race
+   * @apiName Merge race
+   * @apiGroup Admin
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  merge = (req, res) => {
+    Race.findOne({
+      where: {
+        id: req.body.race_id
+      }
+    })
+    .then(response => {
+      UserDetail.update({
+          race_id: req.body.merged_race_id,
+        },
+        {
+        where: { race_id: req.body.race_id },
+        returning: true
+      })
+      .then(response => {
+        Race.destroy({ where: { id: req.body.race_id }, force: true });
+        return ResponseHandler.success(res, responseLanguage.race_merge_success);
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
 }
 
 module.exports = RaceController;

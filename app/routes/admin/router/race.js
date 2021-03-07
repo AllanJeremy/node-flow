@@ -36,5 +36,9 @@ router.patch(apiRoute.RACE_UPDATE.name, [CommonValidation.Validation], RaceContr
 
 router.delete(apiRoute.RACE_DELETE.name, RaceController.destroy);
 
+router.get(apiRoute.RACE_ACTIVE_LIST.name, RaceController.getActiveList);
+
+router.post(apiRoute.RACE_MERGE.name, RaceController.merge);
+
 
 module.exports = router;

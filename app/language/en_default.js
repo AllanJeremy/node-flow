@@ -48,6 +48,7 @@ exports.en = {
       'admin_user_exist': 'Admin user already exists.',
       'admin_permission_store_success': 'Admin user permission store successfully.',
       'admin_permission_update_success': 'Admin user permission update successfully.',
+      'race_merge_success': 'Race merged successfully.',
 		}
 	}
 }
