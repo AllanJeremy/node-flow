@@ -49,6 +49,11 @@ exports.en = {
       'admin_permission_store_success': 'Admin user permission store successfully.',
       'admin_permission_update_success': 'Admin user permission update successfully.',
       'race_merge_success': 'Race merged successfully.',
+      'sexual_orientation_merge_success': 'Sexual orientation merged successfully.',
+      'workout_merge_success': 'Workout merged successfully.',
+      'gender_merge_success': 'Gender merged successfully.',
+      'family_dynamic_merge_success': 'Family dynamic merged successfully.',
+      'health_category_merge_success': 'Health category merged successfully.',
 		}
 	}
 }

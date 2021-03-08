@@ -35,5 +35,6 @@ router.patch(apiRoute.WORKOUT_UPDATE.name, [CommonValidation.Validation], Workou
 
 router.delete(apiRoute.WORKOUT_DELETE.name, WorkoutController.destroy);
 
+router.post(apiRoute.WORKOUT_MERGE.name, WorkoutController.merge);
 
 module.exports = router;

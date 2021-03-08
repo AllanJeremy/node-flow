@@ -35,5 +35,6 @@ router.patch(apiRoute.GENDER_UPDATE.name, [CommonValidation.Validation], GenderC
 
 router.delete(apiRoute.GENDER_DELETE.name, GenderController.destroy);
 
+router.post(apiRoute.GENDER_MERGE.name, GenderController.merge);
 
 module.exports = router;

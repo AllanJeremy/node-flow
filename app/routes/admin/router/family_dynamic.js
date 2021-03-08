@@ -35,5 +35,6 @@ router.patch(apiRoute.FAMILY_DYNAMIC_UPDATE.name, [CommonValidation.Validation],
 
 router.delete(apiRoute.FAMILY_DYNAMIC_DELETE.name, FamilyDynamicController.destroy);
 
+router.post(apiRoute.FAMILY_DYNAMIC_MERGE.name, FamilyDynamicController.merge);
 
 module.exports = router;

@@ -11,6 +11,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const SexualOrientation = Models.SexualOrientation;
+const UserDetail = Models.UserDetail;
 
 /**
  * Languages
@@ -168,6 +169,42 @@ class SexualOrientationController {
       return ResponseHandler.error(res, 500, err.message);
     });
   }
+
+  /**
+   * @api {post} /admin/sexual_orientation/merge Merge sexual orientation
+   * @apiName Merge sexual orientation
+   * @apiGroup Admin
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  merge = (req, res) => {
+    SexualOrientation.findOne({
+      where: {
+        id: req.body.id
+      }
+    })
+    .then(response => {
+      UserDetail.update({
+          sexual_orientation_id: req.body.merged_id,
+        },
+        {
+        where: { sexual_orientation_id: req.body.id },
+        returning: true
+      })
+      .then(response => {
+        SexualOrientation.destroy({ where: { id: req.body.id }, force: true });
+        return ResponseHandler.success(res, responseLanguage.sexual_orientation_merge_success);
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
 }
 
 module.exports = SexualOrientationController;
