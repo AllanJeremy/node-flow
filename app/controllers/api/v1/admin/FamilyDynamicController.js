@@ -11,6 +11,8 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const FamilyDynamic = Models.FamilyDynamic;
+const UserDetail = Models.UserDetail;
+
 
 /**
  * Languages
@@ -164,6 +166,41 @@ class FamilyDynamicController {
       } else {
         return ResponseHandler.error(res, 400, responseLanguage.not_exist);
       }
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /admin/family_dynamic/merge Merge Family dynamic
+   * @apiName Merge family dynamic
+   * @apiGroup Admin
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  merge = (req, res) => {
+    FamilyDynamic.findOne({
+      where: {
+        id: req.body.id
+      }
+    })
+    .then(response => {
+      UserDetail.update({
+          family_detail_id: req.body.merged_id,
+        },
+        {
+        where: { family_detail_id: req.body.id },
+        returning: true
+      })
+      .then(response => {
+        FamilyDynamic.destroy({ where: { id: req.body.id }, force: true });
+        return ResponseHandler.success(res, responseLanguage.family_dynamic_merge_success);
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);

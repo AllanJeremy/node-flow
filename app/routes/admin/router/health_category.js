@@ -35,5 +35,6 @@ router.patch(apiRoute.HEALTH_CATEGORY_UPDATE.name, [CommonValidation.Validation]
 
 router.delete(apiRoute.HEALTH_CATEGORY_DELETE.name, HealthCategoryController.destroy);
 
+router.post(apiRoute.HEALTH_CATEGORY_MERGE.name, HealthCategoryController.merge);
 
 module.exports = router;

@@ -24,10 +24,6 @@ const apiRoute = {
     name: '/race/delete/:id',
     label: 'Race delete'
   },
-  RACE_ACTIVE_LIST: {
-    name: '/race/active_list',
-    label: 'Race active status list'
-  },
   RACE_MERGE: {
     name: '/race/merge',
     label: 'Race merge'
@@ -49,6 +45,10 @@ const apiRoute = {
     name: '/gender/delete/:id',
     label: 'Gender delete'
   },
+  GENDER_MERGE: {
+    name: '/gender/merge',
+    label: 'Gender merge'
+  },
 
   SEXUAL_ORIENTATION_LIST: {
     name: '/sexual_orientation/list',
@@ -65,6 +65,10 @@ const apiRoute = {
   SEXUAL_ORIENTATION_DELETE: {
     name: '/sexual_orientation/delete/:id',
     label: 'Sexual orientation delete'
+  },
+  SEXUAL_ORIENTATION_MERGE: {
+    name: '/sexual_orientation/merge',
+    label: 'Sexual orientation merge'
   },
 
   WORKOUT_LIST: {
@@ -83,6 +87,10 @@ const apiRoute = {
     name: '/workout/delete/:id',
     label: 'Workout delete'
   },
+  WORKOUT_MERGE: {
+    name: '/workout/merge',
+    label: 'Workout merge'
+  },
 
   HEALTH_CATEGORY_LIST: {
     name: '/health_category/list',
@@ -100,6 +108,10 @@ const apiRoute = {
     name: '/health_category/delete/:id',
     label: 'Health category delete'
   },
+  HEALTH_CATEGORY_MERGE: {
+    name: '/health_category/merge',
+    label: 'Health category merge'
+  },
 
   FAMILY_DYNAMIC_LIST: {
     name: '/family_dynamic/list',
@@ -116,6 +128,10 @@ const apiRoute = {
   FAMILY_DYNAMIC_DELETE: {
     name: '/family_dynamic/delete/:id',
     label: 'Family dynamic delete'
+  },
+  FAMILY_DYNAMIC_MERGE: {
+    name: '/family_dynamic/merge',
+    label: 'Family dynamic merge'
   },
 
   ADMIN_USER_LIST: {

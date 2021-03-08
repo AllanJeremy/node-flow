@@ -35,5 +35,6 @@ router.patch(apiRoute.SEXUAL_ORIENTATION_UPDATE.name, [CommonValidation.Validati
 
 router.delete(apiRoute.SEXUAL_ORIENTATION_DELETE.name, SexualOrientationController.destroy);
 
+router.post(apiRoute.SEXUAL_ORIENTATION_MERGE.name, SexualOrientationController.merge);
 
 module.exports = router;

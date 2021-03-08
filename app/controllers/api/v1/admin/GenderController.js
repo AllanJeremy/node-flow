@@ -11,6 +11,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const Gender = Models.Gender;
+const UserDetail = Models.UserDetail;
 
 /**
  * Languages
@@ -166,6 +167,42 @@ class GenderController {
       return ResponseHandler.error(res, 500, err.message);
     });
   }
+
+  /**
+   * @api {post} /admin/race/merge Merge gender
+   * @apiName Merge gender
+   * @apiGroup Admin
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  merge = (req, res) => {
+    Gender.findOne({
+      where: {
+        id: req.body.id
+      }
+    })
+    .then(response => {
+      UserDetail.update({
+          gender_id: req.body.merged_id,
+        },
+        {
+        where: { gender_id: req.body.id },
+        returning: true
+      })
+      .then(response => {
+        Gender.destroy({ where: { id: req.body.id }, force: true });
+        return ResponseHandler.success(res, responseLanguage.gender_merge_success);
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
 }
 
 module.exports = GenderController;

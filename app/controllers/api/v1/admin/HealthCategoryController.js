@@ -11,7 +11,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const HealthCategory = Models.HealthCategory;
-
+const HealthCategoryUser = Models.HealthCategoryUser;
 /**
  * Languages
  */
@@ -162,6 +162,41 @@ class HealthCategoryController {
       } else {
         return ResponseHandler.error(res, 400, responseLanguage.not_exist);
       }
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /admin/health_category/merge Merge health category
+   * @apiName Merge health category
+   * @apiGroup Admin
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  merge = (req, res) => {
+    HealthCategory.findOne({
+      where: {
+        id: req.body.id
+      }
+    })
+    .then(response => {
+      HealthCategoryUser.update({
+          health_category_id: req.body.merged_id,
+        },
+        {
+        where: { health_category_id: req.body.id },
+        returning: true
+      })
+      .then(response => {
+        HealthCategory.destroy({ where: { id: req.body.id }, force: true });
+        return ResponseHandler.success(res, responseLanguage.health_category_merge_success);
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);

@@ -11,6 +11,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const Workout = Models.Workout;
+const WorkoutUser = Models.WorkoutUser;
 
 /**
  * Languages
@@ -163,6 +164,41 @@ class WorkoutController {
       } else {
         return ResponseHandler.error(res, 400, responseLanguage.not_exist);
       }
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /admin/workout/merge Merge workout
+   * @apiName Merge workout
+   * @apiGroup Admin
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  merge = (req, res) => {
+    Workout.findOne({
+      where: {
+        id: req.body.id
+      }
+    })
+    .then(response => {
+      WorkoutUser.update({
+          workout_id: req.body.merged_id,
+        },
+        {
+        where: { workout_id: req.body.id },
+        returning: true
+      })
+      .then(response => {
+        Workout.destroy({ where: { id: req.body.id }, force: true });
+        return ResponseHandler.success(res, responseLanguage.workout_merge_success);
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
