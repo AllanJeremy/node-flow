@@ -1,7 +1,9 @@
 const routePrefix = '/admin';
 
 const authRoute = {
-  AUTH_LOGIN: '/auth/signin'
+  AUTH_LOGIN: '/auth/signin',
+  ADMIN_PERMISSION_LIST:'/admin_permission/list',
+  ADMIN_USER_PERMISSION_LIST:'/admin_permission/list/:user_id'
 }
 
 const apiRoute = {
@@ -136,10 +138,6 @@ const apiRoute = {
   ADMIN_PERMISSION_LIST: {
     name: '/admin_permission/list',
     label: 'Admin permission list'
-  },
-  ADMIN_USER_PERMISSION_LIST: {
-    name: '/admin_permission/list/:user_id',
-    label: 'Admin user permission list'
   },
   ADMIN_USER_PERMISSION_STORE: {
     name: '/admin_permission/store',

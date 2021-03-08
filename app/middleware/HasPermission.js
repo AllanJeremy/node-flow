@@ -27,7 +27,21 @@ const routePrefix = allRoutesConfig.routePrefix;
 
 
 exports.verify = (req, res, next) => {
-  if (req.originalUrl.replace(routePrefix, '') === authRoute.AUTH_LOGIN) {
+  let currentRoute = req.originalUrl;
+  currentRoute = currentRoute.replace(routePrefix, '');
+  let isAuthRoute = false;
+  Object.entries(authRoute).map((routeName, index) => {
+    var routeMatchName = routeName[1];
+    var slug = routeMatchName.split(':');
+    slug = slug.length > 1 ? slug[1] : "";
+    var routeRegex = generateMatchRoute(routeMatchName, slug);
+    routeRegex = '^' + routeRegex + '$';
+    if (currentRoute.match(routeRegex) !== null) {
+      isAuthRoute = true
+    }
+  });
+
+  if (isAuthRoute) {
     return next();
   } else {
     AdminPermission.findOne({
@@ -35,8 +49,6 @@ exports.verify = (req, res, next) => {
     }).then(response => {
       let exists = false;
       let permissions = response.permissions.replace(/^"|"$/g, '').split(',');
-      let currentRoute = req.originalUrl;
-      currentRoute = currentRoute.replace(routePrefix,'');
 
       permissions.map((routeName, index) => {
         var routeMatchName = apiRoute[routeName].name;
