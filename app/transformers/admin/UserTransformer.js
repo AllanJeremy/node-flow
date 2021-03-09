@@ -7,7 +7,9 @@ class UserTransformer {
 		'first_name': 'first_name',
 		'last_name': 'last_name',
 		'email': 'email',
-		'status': 'status'
+		'status': function (data) {
+      return data.get('status');
+    }
 	});
 
   AdminPermission = (data) => fractal(data, {
