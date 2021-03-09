@@ -1,8 +1,9 @@
 exports.en = {
 	'admin': {
 		'validation': {
-      'required_fields': 'Please fill up all the required fields',
+      'required_fields': 'Please fill up all the required fields.',
 			'email_required': 'Email address is a required field.',
+      'email_invalid': 'Invalid email address.',
 			'password_required': 'Password is a required field.',
       'password_minimum_length': 'Password must be of minimum 8 characters length.',
 			'invalid_credentials': 'Invalid email address or password.',
@@ -55,5 +56,23 @@ exports.en = {
       'family_dynamic_merge_success': 'Family dynamic merged successfully.',
       'health_category_merge_success': 'Health category merged successfully.',
 		}
-	}
+	},
+  'front': {
+    'validation': {
+      'required_fields': 'Please fill up all the required fields.',
+      'email_required': 'Email address is a required field.',
+      'email_invalid': 'Invalid email address.',
+      'password_required': 'Password is a required field.',
+      'password_minimum_length': 'Password must be of minimum 8 characters length.',
+      'password_alphanumeric': 'Password must contains alphanumeric letters.',
+      'invalid_credentials': 'Invalid email address or password.'
+    },
+    'response': {
+      'login_success': 'Logged in successfully.',
+      'email_already_exist': 'Email already exists.',
+      'email_added_successfully': 'Registered successfully.',
+      'user_not_exist': 'User not exists.',
+    },
+
+  }
 }

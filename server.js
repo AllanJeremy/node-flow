@@ -28,8 +28,11 @@ Joyn.get('/', (req, res) => {
   });
 });
 
+// front routes
+require('./app/routes/front')(Joyn);
+
 // admin routes
-const routes = require('./app/routes/admin')(Joyn);
+require('./app/routes/admin')(Joyn);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3001;
