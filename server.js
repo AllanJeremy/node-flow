@@ -11,6 +11,7 @@ Joyn.use(cors({ origin: process.env.CORS_ORIGIN }));
 
 Joyn.use(express.json());
 
+
 // parse requests of content-type - application/x-www-form-urlencoded
 Joyn.use(bodyParser.urlencoded({ extended: true }));
 
