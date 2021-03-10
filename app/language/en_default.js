@@ -63,15 +63,22 @@ exports.en = {
       'email_required': 'Email address is a required field.',
       'email_invalid': 'Invalid email address.',
       'password_required': 'Password is a required field.',
-      'password_minimum_length': 'Password must be of minimum 8 characters length.',
-      'password_alphanumeric': 'Password must contains alphanumeric letters.',
-      'invalid_credentials': 'Invalid email address or password.'
+      'password_alphanumeric': 'Password must be atleast 8 characters long and alphanumeric.',
+      'invalid_credentials': 'Invalid email address or password.',
+      'invalid_email': 'Email address does not exists.',
+      'password_confirm_password_match': 'Password and confirm password must be same.'
     },
     'response': {
       'login_success': 'Logged in successfully.',
-      'email_already_exist': 'Email already exists.',
-      'email_added_successfully': 'Registered successfully.',
-      'user_not_exist': 'User not exists.',
+      'email_already_exist': 'Your email address already exists.',
+      'register_successfully': 'We have sent you to a verification link to your email address. In order to complete the sign-up process, please click the verification link.',
+      'not_verified_account': 'Your email address is not verified. Please verify your email to continue. Click on this link to re-send email.',
+      'blocked_account': 'Your account has been suspended by administrator. Please contact support team for more details.',
+      'mail_not_send': 'Something went wrong. Please try again.',
+      'invalid_code': 'Invalid verification code.',
+      'verified_success': 'Verified successfully.',
+      'reset_password_request_success': 'We have sent you a link to change the password on email address.',
+      'password_reset_success': 'Password reset successfully.'
     },
 
   }

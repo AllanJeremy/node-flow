@@ -23,4 +23,10 @@ router.post(authRoute.AUTH_LOGIN, AuthValidation.SignIn, AuthController.SignIn);
 
 router.post(authRoute.AUTH_REGISTER, AuthValidation.SignUp, AuthController.SignUp);
 
+router.get(authRoute.VERIFY_EMAIL, AuthController.Verify);
+
+router.post(authRoute.FORGOT_PASSWORD_REQUEST, AuthValidation.ForgotPasswordRequest, AuthController.ForgotPasswordRequest);
+
+router.post(authRoute.FORGOT_PASSWORD, AuthValidation.ForgotPassword, AuthController.ForgotPassword);
+
 module.exports = router;
