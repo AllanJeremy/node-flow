@@ -1,16 +1,11 @@
-const hbs = require("nodemailer-express-handlebars");
+const hbs = require('nodemailer-express-handlebars');
 var path = require('path');
 
 /**
  * Configs
  */
-const config = require('../config/config.js');
+const config = require('../config/email.config.js');
 
-/**
- * Models
- */
-const Models = require('../models');
-const SystemSetting = Models.SystemSetting;
 
 /**
  * Languages
@@ -45,12 +40,14 @@ class MailHandler {
   send = async(template, message, to, cc = '', bcc = '') => {
 
     switch (template) {
-      case "email_verification":
+      case 'email_verification':
+        message['subject'] = 'Email Verification';
         message['params']['line1'] = emailLanguage.register.line1;
         message['params']['line2'] = emailLanguage.register.line2;
         break;
 
-      case "reset_password":
+      case 'reset_password':
+        message['subject'] = 'Reset Password';
         message['params']['line1'] = emailLanguage.reset_password.line1;
         break;
 
@@ -70,7 +67,7 @@ class MailHandler {
     MailTransporter.use('compile', hbs(options));
 
     const mailData = {
-      from: config.email.notification.from_name + " " + config.email.notification.from_email,
+      from: config.email.notification.from_name + ' ' + config.email.notification.from_email,
       to: to,
       subject: message['subject'],
       template: template,

@@ -1,4 +1,7 @@
-const config = require('../config/db.config.js');
+require('dotenv').config();
+var config = require('../config/db.config.js');
+let env = process.env.APP_ENV;
+config = config[env];
 
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(
