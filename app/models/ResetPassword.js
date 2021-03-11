@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   ResetPassword.init({
     user_id: DataTypes.INTEGER,
-    token: DataTypes.STRING
+    verification_code: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'ResetPassword',

@@ -1,28 +1,17 @@
 require('dotenv').config();
 
 module.exports = {
-  "local": {
-    "username": process.env.DB_USERNAME,
-    "password": process.env.DB_PASSWORD,
-    "database": process.env.DB_DATABASE,
-    "host": process.env.DB_HOST,
-    "dialect": process.env.DB_DIALECT,
-    "migrationStorageTableName": "sequelize_meta"
-  },
-  "development": {
-    "username": process.env.DB_USERNAME,
-    "password": process.env.DB_PASSWORD,
-    "database": process.env.DB_DATABASE,
-    "host": process.env.DB_HOST,
-    "dialect": process.env.DB_DIALECT,
-    "migrationStorageTableName": "sequelize_meta"
-  },
-  "production": {
-    "username": process.env.DB_USERNAME,
-    "password": process.env.DB_PASSWORD,
-    "database": process.env.DB_DATABASE,
-    "host": process.env.DB_HOST,
-    "dialect": process.env.DB_DIALECT,
-    "migrationStorageTableName": "sequelize_meta"
+  'email': {
+    'system': {
+      'from_email': 'system@joyn.one',
+      'from_name': ['Joyn Alert'],
+      'to_email': [],
+      'cc_email': [],
+      'bcc_email': []
+    },
+    'notification': {
+      'from_email': 'psofttech123@gmail.com',
+      'from_name': 'Joyn'
+    }
   }
 }

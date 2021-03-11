@@ -143,7 +143,7 @@ class AuthController {
         })
         .then(response => {
 
-          let verificationCode = RandomStringGenerator.string(40);
+          let verificationCode = RandomStringGenerator.string(5);
 
           VerificationCode.create({
             user_id: response.id,
@@ -156,8 +156,7 @@ class AuthController {
             let data = [];
             data['subject'] = 'Email Verification';
             data['params'] = {
-              name: '',
-              verification_link: process.env.APP_URL + authRoute.VERIFY_EMAIL.split(':')[0] + verificationCode
+              verificationCode: verificationCode
             }
 
             MailHandler.send(template, data, to);
@@ -182,6 +181,62 @@ class AuthController {
 
 
   /**
+   * @api {post} /signup/resend_code Handles user register resend code operation
+   * @apiName Front user register resend code operation
+   * @apiGroup Front
+   *
+   * @apiParam {String} [email] email
+   *
+   * @apiSuccess (200) {Object}
+   */
+  ResendCode = async(req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, errors.array());
+    }
+
+    User.findOne({
+      where: {
+        email: req.body.email
+      }
+    }).then(response => {
+      if(response) {
+        let verificationCode = RandomStringGenerator.string(5);
+
+        VerificationCode.update({
+          verification_code: verificationCode
+        },
+        {
+          where: {user_id: response.id}
+        })
+        .then(async response => {
+
+          let template = 'email_verification';
+          let to = req.body.email;
+          let data = [];
+          data['subject'] = 'Email Verification';
+          data['params'] = {
+            verificationCode: verificationCode
+          }
+
+          MailHandler.send(template, data, to);
+
+          return ResponseHandler.success(res, responseLanguage.code_resend);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        })
+      } else {
+        return ResponseHandler.error(res, 422, responseLanguage.email_not_exist);
+      }
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
    * @api {get} /verify Handles email verification operation
    * @apiName Front email verification operation
    * @apiGroup Front
@@ -191,12 +246,14 @@ class AuthController {
    * @apiSuccess (200) {Object}
    */
   Verify = (req, res) => {
-    const currentURL = req.originalUrl;
-    const verificationCode = currentURL.substring(currentURL.lastIndexOf('/') + 1)
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, errors.array());
+    }
 
     VerificationCode.findOne({
       where: {
-        verification_code: verificationCode
+        verification_code: req.body.verification_code
       }
     }).then(response => {
       if (!response) {
@@ -254,19 +311,42 @@ class AuthController {
         return ResponseHandler.error(res, 422, validationLanguage.invalid_email);
       }
 
-      let token = RandomStringGenerator.string(40);
+      let verificationCode = RandomStringGenerator.string(5);
 
-      ResetPassword.create({
-        user_id: response.id,
-        token: token
-      }).then(response => {
+      ResetPassword.findOne({
+        where: {
+          user_id: response.id
+        }
+      }).then(result => {
+        if (!result) {
+          ResetPassword.create({
+            user_id: response.id,
+            verification_code: verificationCode
+          }).then(response => {
+          })
+          .catch(err => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
+        } else {
+          ResetPassword.update({
+            verification_code: verificationCode
+          }, {
+            where: { user_id: response.id },
+            returning: true
+          })
+          .then(response => {
+          })
+          .catch(err => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
+        }
 
         let template = 'reset_password';
         let to = req.body.email;
         let data = [];
         data['subject'] = 'Reset Password';
         data['params'] = {
-          reset_link: process.env.APP_URL + authRoute.FORGOT_PASSWORD.split(':')[0] + token
+          verificationCode: verificationCode
         }
 
         MailHandler.send(template, data, to);
@@ -289,7 +369,7 @@ class AuthController {
    * @apiName Front reset password operation
    * @apiGroup Front
    *
-   * @apiParam {String} [token] token
+   * @apiParam {String} [verification_code] verification_code
    *
    * @apiSuccess (200) {Object}
    */
@@ -300,12 +380,9 @@ class AuthController {
       return ResponseHandler.error(res, 422, errors.array());
     }
 
-    const currentURL = req.originalUrl;
-    const token = currentURL.substring(currentURL.lastIndexOf('/') + 1)
-
     ResetPassword.findOne({
       where: {
-        token: token
+        verification_code: req.body.verification_code
       }
     }).then(response => {
       if (!response) {

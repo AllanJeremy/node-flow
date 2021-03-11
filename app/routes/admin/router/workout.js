@@ -13,12 +13,6 @@ const apiRoute = routeConfig.apiRoute;
 const CommonValidation = require('../../../validators/admin/CommonValidation');
 
 /**
- * Middlewares
- */
-const { VerifyApiToken } = require('../../../middleware');
-const { HasPermission } = require('../../../middleware');
-
-/**
  * Workout Controller
  */
 var WorkoutController = require('../../../controllers/api/v1/admin/WorkoutController');

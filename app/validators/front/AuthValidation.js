@@ -46,7 +46,18 @@ exports.SignUp = [
     .bail(),
 ];
 
-exports.ForgotPasswordRequest = [
+exports.SignUpVerification = [
+  check('verification_code')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .isLength({ min: 5 })
+    .withMessage(validation.invalid_code)
+    .bail(),
+];
+
+exports.EmailValidation = [
   check('email')
     .trim()
     .escape()
@@ -59,6 +70,14 @@ exports.ForgotPasswordRequest = [
 ];
 
 exports.ForgotPassword = [
+  check('verification_code')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .isLength({ min: 5 })
+    .withMessage(validation.invalid_code)
+    .bail(),
   check('password')
     .trim()
     .escape()
@@ -70,5 +89,12 @@ exports.ForgotPassword = [
       return value.match(/^(?=.*[A-Za-z])(?=.*\d).{8,}$/);
     })
     .withMessage(validation.password_alphanumeric)
+    .custom((value,{req, loc, path}) => {
+        if (value !== req.body.confirm_password) {
+            throw new Error(validation.password_confirm_password_match);
+        } else {
+            return value;
+        }
+    })
     .bail(),
 ];

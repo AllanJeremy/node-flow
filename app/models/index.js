@@ -37,7 +37,6 @@ db.User = require('../models/User.js')(sequelize, Sequelize);
 db.UserDetail = require('../models/UserDetail.js')(sequelize, Sequelize);
 db.WorkoutUser = require('../models/WorkoutUser.js')(sequelize, Sequelize);
 db.HealthCategoryUser = require('../models/HealthCategoryUser.js')(sequelize, Sequelize);
-db.SystemSetting = require('../models/SystemSetting.js')(sequelize, Sequelize);
 db.VerificationCode = require('../models/VerificationCode.js')(sequelize, Sequelize);
 db.ResetPassword = require('../models/ResetPassword.js')(sequelize, Sequelize);
 

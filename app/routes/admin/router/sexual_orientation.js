@@ -12,11 +12,6 @@ const apiRoute = routeConfig.apiRoute;
  */
 const CommonValidation = require('../../../validators/admin/CommonValidation');
 
-/**
- * Middlewares
- */
-const { VerifyApiToken } = require('../../../middleware');
-const { HasPermission } = require('../../../middleware');
 
 /**
  * Sexual Orientation Controller
