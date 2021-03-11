@@ -158,7 +158,20 @@ const apiRoute = {
   ADMIN_USER_PERMISSION_STORE: {
     name: '/admin_permission/store',
     label: 'Admin user permission create'
-  }
+  },
+
+  EMAIL_TEMPLATE_LIST: {
+    name: '/email_template/list',
+    label: 'Email template list'
+  },
+  EMAIL_TEMPLATE_TYPE: {
+    name: '/email_template/type',
+    label: 'Email template type'
+  },
+  EMAIL_TEMPLATE_STORE: {
+    name: '/email_template/store',
+    label: 'Email template create'
+  },
 };
 
 module.exports = {

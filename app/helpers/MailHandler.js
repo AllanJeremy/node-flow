@@ -2,10 +2,21 @@ const hbs = require("nodemailer-express-handlebars");
 var path = require('path');
 
 /**
+ * Configs
+ */
+const config = require('../config/config.js');
+
+/**
  * Models
  */
 const Models = require('../models');
 const SystemSetting = Models.SystemSetting;
+
+/**
+ * Languages
+ */
+const language = require('../language/en_default');
+const emailLanguage = language.en.email;
 
 /**
  * Mail Transporter
@@ -33,23 +44,19 @@ class MailHandler {
    */
   send = async(template, message, to, cc = '', bcc = '') => {
 
-    const fromEmail = await SystemSetting.findOne({
-      where: {
-        name: 'from_email'
-      }
-    });
+    switch (template) {
+      case "email_verification":
+        message['params']['line1'] = emailLanguage.register.line1;
+        message['params']['line2'] = emailLanguage.register.line2;
+        break;
 
-    const fromName = await SystemSetting.findOne({
-      where: {
-        name: 'from_name'
-      }
-    });
+      case "reset_password":
+        message['params']['line1'] = emailLanguage.reset_password.line1;
+        break;
 
-    const noreplyEmail = await SystemSetting.findOne({
-      where: {
-        name: 'noreply_email'
-      }
-    });
+      default:
+        break;
+    }
 
     const options = {
       viewEngine: {
@@ -60,11 +67,10 @@ class MailHandler {
       extName: '.hbs',
       viewPath: path.resolve(__dirname, '../views/email')
     };
-
     MailTransporter.use('compile', hbs(options));
 
     const mailData = {
-      from: fromName.value + " " + fromEmail.value,
+      from: config.email.notification.from_name + " " + config.email.notification.from_email,
       to: to,
       subject: message['subject'],
       template: template,

@@ -66,11 +66,12 @@ exports.en = {
       'password_alphanumeric': 'Password must be atleast 8 characters long and alphanumeric.',
       'invalid_credentials': 'Invalid email address or password.',
       'invalid_email': 'Email address does not exists.',
-      'password_confirm_password_match': 'Password and confirm password must be same.'
+      'password_confirm_password_match': 'Password and confirm password must be same.',
     },
     'response': {
       'login_success': 'Logged in successfully.',
       'email_already_exist': 'Your email address already exists.',
+      'email_not_exist': 'Your email address does not exists.',
       'register_successfully': 'We have sent you to a verification link to your email address. In order to complete the sign-up process, please click the verification link.',
       'not_verified_account': 'Your email address is not verified. Please verify your email to continue. Click on this link to re-send email.',
       'blocked_account': 'Your account has been suspended by administrator. Please contact support team for more details.',
@@ -78,8 +79,17 @@ exports.en = {
       'invalid_code': 'Invalid verification code.',
       'verified_success': 'Verified successfully.',
       'reset_password_request_success': 'We have sent you a link to change the password on email address.',
-      'password_reset_success': 'Password reset successfully.'
+      'password_reset_success': 'Password reset successfully.',
+      'code_resend': 'Verification code resend successfully.',
     },
-
+  },
+  'email': {
+    'register': {
+      'line1': 'Hello',
+      'line2': 'You have successfully created a Joyn account. Your verification code is'
+    },
+    'reset_password': {
+      'line1': 'Your reset password verification code'
+    }
   }
 }
