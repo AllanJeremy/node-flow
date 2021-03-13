@@ -34,6 +34,9 @@ module.exports = {
       status: {
         type: Sequelize.INTEGER
       },
+      access_token: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         field: "created_at",

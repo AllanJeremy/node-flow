@@ -1,7 +1,8 @@
 const { check } = require('express-validator');
 
 const language = require('../../language/en_default');
-const validation = language.en.admin.validation
+const validation = language.en.admin.validation;
+const responseLanguage = language.en.admin.response;
 
 exports.SignIn = [
   check('email')
@@ -63,6 +64,16 @@ exports.AdminPermission = [
   check('permissions')
     .isArray({min: 1})
     .withMessage(validation.admin_permission_required)
+    .bail()
+];
+
+exports.AuthToken = [
+  check('access_token')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(responseLanguage.token_required)
     .bail()
 ];
 

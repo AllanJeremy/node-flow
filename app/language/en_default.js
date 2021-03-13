@@ -55,6 +55,7 @@ exports.en = {
       'gender_merge_success': 'Gender merged successfully.',
       'family_dynamic_merge_success': 'Family dynamic merged successfully.',
       'health_category_merge_success': 'Health category merged successfully.',
+      'token_success': 'Token generated successfully.',
 		}
 	},
   'front': {

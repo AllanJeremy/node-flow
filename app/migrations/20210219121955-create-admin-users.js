@@ -28,6 +28,9 @@ module.exports = {
       remember_token: {
         type: Sequelize.STRING
       },
+      access_token: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         field: "created_at",
