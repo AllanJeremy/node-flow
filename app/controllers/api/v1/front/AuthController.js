@@ -51,6 +51,11 @@ UserTransformer = new UserTransformer();
 const routeConfig = require('../../../../routes/front/config');
 const authRoute = routeConfig.authRoute;
 
+const templateName = [
+  'email_verification',
+  'reset_password',
+]
+
 class AuthController {
 
 
@@ -151,10 +156,9 @@ class AuthController {
           })
           .then(async response => {
 
-            let template = 'email_verification';
+            let template = templateName[0];
             let to = req.body.email;
             let data = [];
-            data['subject'] = 'Email Verification';
             data['params'] = {
               verificationCode: verificationCode
             }
@@ -211,11 +215,9 @@ class AuthController {
           where: {user_id: response.id}
         })
         .then(async response => {
-
-          let template = 'email_verification';
+          let template = templateName[0];
           let to = req.body.email;
           let data = [];
-          data['subject'] = 'Email Verification';
           data['params'] = {
             verificationCode: verificationCode
           }
@@ -341,10 +343,9 @@ class AuthController {
           });
         }
 
-        let template = 'reset_password';
+        let template = templateName[1];
         let to = req.body.email;
         let data = [];
-        data['subject'] = 'Reset Password';
         data['params'] = {
           verificationCode: verificationCode
         }

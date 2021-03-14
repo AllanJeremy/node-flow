@@ -26,7 +26,7 @@ const routePrefix = allRoutesConfig.routePrefix;
 
 
 exports.verify = (req, res, next) => {
-  if (req.originalUrl.replace(routePrefix, '') === authRoute.AUTH_LOGIN) {
+  if (req.originalUrl.replace(routePrefix, '') === authRoute.AUTH_LOGIN || req.originalUrl.replace(routePrefix, '') === authRoute.AUTH_TOKEN) {
     return next();
   } else {
     let token = req.headers.authorization;

@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     birth_date: DataTypes.STRING,
     profile_picture: DataTypes.STRING,
     status: DataTypes.INTEGER,
+    access_token: DataTypes.STRING,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,

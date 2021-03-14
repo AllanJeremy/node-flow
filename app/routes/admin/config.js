@@ -3,7 +3,8 @@ const routePrefix = '/admin';
 const authRoute = {
   AUTH_LOGIN: '/auth/signin',
   ADMIN_PERMISSION_LIST:'/admin_permission/list',
-  ADMIN_USER_PERMISSION_LIST:'/admin_permission/list/:user_id'
+  ADMIN_USER_PERMISSION_LIST:'/admin_permission/list/:user_id',
+  AUTH_TOKEN: '/auth/token',
 }
 
 const apiRoute = {

@@ -1,6 +1,7 @@
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
+const { DateTime } = require("luxon");
 
 /**
  * Helpers
@@ -10,6 +11,7 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
+const RandomStringGenerator = require('../../../../helpers/RandomStringGenerator');
 /**
  * Configs
  */
@@ -77,12 +79,94 @@ class AuthController {
         expiresIn: authConfig.tokenExpiryTime
       });
 
-      var data = {
-        token: token,
-        user: UserTransformer.AdminUser(response)
-      };
+      var refresh_token = RandomStringGenerator.string(60);
 
-      return ResponseHandler.success(res, responseLanguage.login_success, data);
+      var expires_at  = DateTime.now().plus({ second: 10 }).toISO();
+
+
+      AdminUser.update({
+        access_token: token,
+      },
+      {
+        where: { id: response.id },
+        returning: true
+      })
+      .then(result => {
+        var data = {
+          token: {
+            token: token,
+            refresh_token: refresh_token,
+            expires_at: expires_at
+          },
+          user: UserTransformer.AdminUser(response)
+        };
+
+        return ResponseHandler.success(res, responseLanguage.login_success, data);
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+
+  /**
+   * @api {post} /admin/auth/token Handles admin user token operation
+   * @apiName Admin user token operation
+   * @apiGroup Admin
+   *
+   * @apiParam {String} [token] token
+   *
+   * @apiSuccess (200) {Object}
+   */
+  accessToken = (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, errors.array());
+    }
+
+    AdminUser.findOne({
+      where: {
+        access_token: req.body.access_token
+      }
+    }).then(response => {
+
+      if (!response) {
+        return ResponseHandler.error(res, 422, responseLanguage.unauthorized);
+      }
+
+      var token = jwt.sign({ id: response.id }, authConfig.secret, {
+        expiresIn: authConfig.tokenExpiryTime
+      });
+
+      var refresh_token = RandomStringGenerator.string(60);
+
+      var expires_at  = DateTime.now().plus({ hour: 24 }).toISO();
+
+      AdminUser.update(
+        { access_token: token },
+        { where: { id: response.id }
+      }).then(result => {
+        if(result) {
+          var data = {
+            token: {
+              token: token,
+              refresh_token: refresh_token,
+              expires_at: expires_at
+            },
+          };
+
+          return ResponseHandler.success(res, responseLanguage.token_success, data);
+        } else {
+          return ResponseHandler.error(res, 401, responseLanguage.unauthorized);
+        }
+      }).catch(err => {
+        return ResponseHandler.error(res, 401, responseLanguage.unauthorized);
+      });
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);

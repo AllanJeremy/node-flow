@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     status: DataTypes.INTEGER,
     remember_token: DataTypes.STRING,
+    access_token: DataTypes.STRING,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,
@@ -33,5 +34,5 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   return AdminUser;
-  
+
 };

@@ -21,6 +21,8 @@ AuthController = new AuthController();
 
 router.post(authRoute.AUTH_LOGIN, UserValidation.SignIn, AuthController.SignIn);
 
+router.post(authRoute.AUTH_TOKEN, UserValidation.AuthToken, AuthController.accessToken);
+
 
 module.exports = router;
 
