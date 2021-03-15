@@ -29,7 +29,7 @@ const authConfig = require('../../../../config/auth.config.js');
 const Models = require('../../../../models');
 const User = Models.User;
 const SystemSetting = Models.SystemSetting;
-const VerificationCode = Models.VerificationCode;
+const VerifyUser = Models.VerifyUser;
 const ResetPassword = Models.ResetPassword;
 
 /**
@@ -45,11 +45,6 @@ const validationLanguage = language.en.front.validation;
 var UserTransformer = require('../../../../transformers/front/UserTransformer');
 UserTransformer = new UserTransformer();
 
-/**
- * Route Configs
- */
-const routeConfig = require('../../../../routes/front/config');
-const authRoute = routeConfig.authRoute;
 
 const templateName = [
   'email_verification',
@@ -61,7 +56,7 @@ class AuthController {
 
 
   /**
-   * @api {post} /signin Handles user login operation
+   * @api {post} /auth/signin Handles user login operation
    * @apiName Front user login operation
    * @apiGroup Front
    *
@@ -120,7 +115,7 @@ class AuthController {
   }
 
   /**
-   * @api {post} /signup Handles user register operation
+   * @api {post} /auth/signup Handles user register operation
    * @apiName Front user register operation
    * @apiGroup Front
    *
@@ -150,7 +145,7 @@ class AuthController {
 
           let verificationCode = RandomStringGenerator.string(5);
 
-          VerificationCode.create({
+          VerifyUser.create({
             user_id: response.id,
             verification_code: verificationCode
           })
@@ -185,7 +180,7 @@ class AuthController {
 
 
   /**
-   * @api {post} /signup/resend_code Handles user register resend code operation
+   * @api {post} /auth/email/resend_code Handles user register resend code operation
    * @apiName Front user register resend code operation
    * @apiGroup Front
    *
@@ -208,7 +203,7 @@ class AuthController {
       if(response) {
         let verificationCode = RandomStringGenerator.string(5);
 
-        VerificationCode.update({
+        VerifyUser.update({
           verification_code: verificationCode
         },
         {
@@ -239,7 +234,7 @@ class AuthController {
   }
 
   /**
-   * @api {get} /verify Handles email verification operation
+   * @api {get} /auth/email/verify Handles email verification operation
    * @apiName Front email verification operation
    * @apiGroup Front
    *
@@ -253,7 +248,7 @@ class AuthController {
       return ResponseHandler.error(res, 422, errors.array());
     }
 
-    VerificationCode.findOne({
+    VerifyUser.findOne({
       where: {
         verification_code: req.body.verification_code
       }
@@ -270,7 +265,7 @@ class AuthController {
         returning: true
       })
       .then(result => {
-        VerificationCode.destroy({ where: { id: response.id }, force: true })
+        VerifyUser.destroy({ where: { id: response.id }, force: true })
         .then(response => {
           return ResponseHandler.success(res, responseLanguage.verified_success);
         })
@@ -289,7 +284,7 @@ class AuthController {
 
 
   /**
-   * @api {post} /forgot_password_request Handles forgot password request operation
+   * @api {post} /auth/reset_password Handles forgot password request operation
    * @apiName Front forgot password request operation
    * @apiGroup Front
    *
@@ -366,7 +361,7 @@ class AuthController {
   }
 
   /**
-   * @api {get} /forgot_password Handles reset password operation
+   * @api {get} /auth/reset_password/verify Handles reset password operation
    * @apiName Front reset password operation
    * @apiGroup Front
    *

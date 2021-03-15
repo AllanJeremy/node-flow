@@ -25,10 +25,6 @@ module.exports = {
         field: "updated_at",
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
-      },
-      deleted_at: {
-        type: Sequelize.DATE,
-        defaultValue: null
       }
     });
   },

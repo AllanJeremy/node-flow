@@ -68,6 +68,10 @@ exports.en = {
       'invalid_credentials': 'Invalid email address or password.',
       'invalid_email': 'Email address does not exists.',
       'password_confirm_password_match': 'Password and confirm password must be same.',
+      'first_name': 'First name is a required field.',
+      'name_prefix': 'Name prefix is a required field.',
+      'birth_date': 'Birth date is a required field.',
+      'profile_picture': 'Profile Picture is a required field.',
     },
     'response': {
       'login_success': 'Logged in successfully.',
@@ -82,6 +86,7 @@ exports.en = {
       'reset_password_request_success': 'We have sent you a link to change the password on email address.',
       'password_reset_success': 'Password reset successfully.',
       'code_resend': 'Verification code resend successfully.',
+      'profile': 'Profile created successfully.',
     },
   },
   'email': {
