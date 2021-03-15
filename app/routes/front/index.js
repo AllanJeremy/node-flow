@@ -1,14 +1,15 @@
 var path = require('path')
 var fs = require('fs');
 
-
 /**
- * Route Configs
+ * Middlewares
  */
-const routeConfig = require('./config');
+const { VerifyApiToken } = require('../../middleware');
 
 module.exports = function(Joyn) {
   var routeFiles = fs.readdirSync(path.join(__dirname, 'router/'))
+
+  Joyn.use(VerifyApiToken);
 
   routeFiles.forEach(function(file) {
 
