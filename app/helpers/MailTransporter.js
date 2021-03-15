@@ -5,16 +5,16 @@ var nodemailer = require('nodemailer');
  *
  */
 const MailTransporter = nodemailer.createTransport({
-  port: process.env.GMAIL_SERVICE_PORT,
-  host: process.env.GMAIL_SERVICE_HOST,
+  port: process.env.EMAIL_SERVICE_PORT,
+  host: process.env.EMAIL_SERVICE_HOST,
   auth: {
-    user: process.env.GMAIL_USER_NAME,
-    pass: process.env.GMAIL_USER_PASSWORD,
+    user: process.env.EMAIL_USER_NAME,
+    pass: process.env.EMAIL_USER_PASSWORD,
   },
   tls:{
     ciphers:'SSLv3'
   },
-  secure: process.env.GMAIL_SERVICE_SECURE,
+  secure: process.env.EMAIL_SERVICE_SECURE,
 });
 
 module.exports = MailTransporter;
