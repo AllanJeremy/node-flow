@@ -8,7 +8,13 @@ const authRoute = {
 }
 
 const apiRoute = {
-  PROFILE_BASIC: '/profile/basic'
+  PROFILE_BASIC: '/profile/basic',
+  PROFILE_RACE_LIST:'/profile/race/list',
+  PROFILE_RACE_STORE:'/profile/race/store',
+  PROFILE_GENDER_LIST:'/profile/gender/list',
+  PROFILE_GENDER_STORE:'/profile/gender/store',
+  PROFILE_SEXUAL_ORIENTATION_LIST:'/profile/sexual_orientation/list',
+  PROFILE_SEXUAL_ORIENTATION_STORE:'/profile/sexual_orientation/store',
 }
 
 module.exports = {
