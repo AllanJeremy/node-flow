@@ -19,6 +19,9 @@ var AuthController = require('../../../controllers/api/v1/front/AuthController')
 AuthController = new AuthController();
 
 
+/**
+ * Auth Routes
+ */
 router.post(authRoute.AUTH_LOGIN, AuthValidation.SignIn, AuthController.SignIn);
 
 router.post(authRoute.AUTH_REGISTER, AuthValidation.SignUp, AuthController.SignUp);

@@ -86,7 +86,8 @@ exports.en = {
       'reset_password_request_success': 'We have sent you a link to change the password on email address.',
       'password_reset_success': 'Password reset successfully.',
       'code_resend': 'Verification code resend successfully.',
-      'profile': 'Profile created successfully.',
+      'profile_create': 'Profile created successfully.',
+      'profile_update': 'Profile updated successfully.',
     },
   },
   'email': {
