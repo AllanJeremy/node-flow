@@ -78,8 +78,8 @@ class AuthController {
       var token = jwt.sign({ id: response.id }, authConfig.secret, {
         expiresIn: authConfig.tokenExpiryTime
       });
-      var refresh_token = RandomStringGenerator.string(60);
-      var expires_at  = DateTime.now().plus({ hour: authConfig.expiryTime }).toISO();
+      var refreshToken = RandomStringGenerator.string(60);
+      var expiresAt  = DateTime.now().plus({ hour: authConfig.expiryTime }).toISO();
 
       AdminUser.update({
         access_token: token,
@@ -92,8 +92,8 @@ class AuthController {
         var data = {
           token: {
             token: token,
-            refresh_token: refresh_token,
-            expires_at: expires_at
+            refresh_token: refreshToken,
+            expires_at: expiresAt
           },
           user: UserTransformer.AdminUser(response)
         };
@@ -139,8 +139,8 @@ class AuthController {
       var token = jwt.sign({ id: response.id }, authConfig.secret, {
         expiresIn: authConfig.tokenExpiryTime
       });
-      var refresh_token = RandomStringGenerator.string(60);
-      var expires_at  = DateTime.now().plus({ hour: authConfig.expiryTime }).toISO();
+      var refreshToken = RandomStringGenerator.string(60);
+      var expiresAt  = DateTime.now().plus({ hour: authConfig.expiryTime }).toISO();
 
       AdminUser.update(
         { access_token: token },
@@ -150,8 +150,8 @@ class AuthController {
           var data = {
             token: {
               token: token,
-              refresh_token: refresh_token,
-              expires_at: expires_at
+              refresh_token: refreshToken,
+              expires_at: expiresAt
             },
           };
 
