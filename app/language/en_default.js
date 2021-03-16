@@ -12,6 +12,8 @@ exports.en = {
       'first_name_required': 'First name is a required field.',
       'last_name_required': 'Last name is a required field.',
       'admin_permission_required': 'Please select at least one permission.',
+      'question_required': 'Question is a required field.',
+      'options_required': 'Options is a required field.',
 		},
 		'response': {
 			'login_success': 'Logged in successfully.',
@@ -56,6 +58,10 @@ exports.en = {
       'family_dynamic_merge_success': 'Family dynamic merged successfully.',
       'health_category_merge_success': 'Health category merged successfully.',
       'token_success': 'Token generated successfully.',
+      'personality_question_store_success': 'Personality question created successfully.',
+      'personality_question_update_success': 'Personality question updated successfully.',
+      'personality_question_delete_success': 'Personality question deleted successfully.',
+      'personality_question_exist': 'Personality question already exists.',
 		}
 	},
   'front': {

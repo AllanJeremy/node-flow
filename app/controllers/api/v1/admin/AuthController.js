@@ -1,7 +1,7 @@
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
-const { DateTime } = require("luxon");
+const { DateTime } = require('luxon');
 
 /**
  * Helpers
