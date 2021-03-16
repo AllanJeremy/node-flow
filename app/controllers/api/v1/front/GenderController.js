@@ -99,14 +99,14 @@ class GenderController {
     });
   }
 
-  updateUser = (res, user_id, gender_id) => {
+  updateUser = (res, userId, genderId) => {
     UserDetail.findOne({
       where: {
-        id: user_id
+        id: userId
       }
     }).then(response => {
       UserDetail.update({
-        gender_id: gender_id
+        gender_id: genderId
       },
       {
         where: {id: response.id}

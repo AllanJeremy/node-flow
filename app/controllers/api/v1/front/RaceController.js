@@ -99,17 +99,15 @@ class RaceController {
     });
   }
 
-  updateUser = (res, user_id, race_id) => {
+  updateUser = (res, userId, raceId) => {
     UserDetail.findOne({
       where: {
-        id: user_id
+        id: userId
       }
     }).then(response => {
-      UserDetail.update({
-        race_id: race_id
-      },
-      {
-        where: {id: response.id}
+      UserDetail.create({
+        user_id: userId,
+        race_id: raceId
       })
       .then(response => {
         return ResponseHandler.success(res, responseLanguage.profile_update);

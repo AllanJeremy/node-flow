@@ -15,8 +15,8 @@ const StatusHandler = require('../../../../helpers/StatusHandler');
  * Models
  */
 const Models = require('../../../../models');
-const SexualOrientation = Models.SexualOrientation;
-const UserDetail = Models.UserDetail;
+const HealthCategory = Models.HealthCategory;
+const HealthCategoryUser = Models.HealthCategoryUser;
 
 /**
  * Languages
@@ -32,18 +32,18 @@ var CommonTransformer = require('../../../../transformers/core/CommonTransformer
 CommonTransformer = new CommonTransformer();
 
 
-class SexualOrientationController {
+class HealthCategoryController {
 
   /**
-   * @api {post} /profile/sexual_orientation/list Show sexual orientation list
-   * @apiName Sexual orientation list
+   * @api {post} /profile/health_category/list Show health category list
+   * @apiName Health category list
    * @apiGroup Front
    *
    *
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
-    SexualOrientation.findAll({
+    HealthCategory.findAll({
       where: {
         status: StatusHandler.active
       }
@@ -58,8 +58,8 @@ class SexualOrientationController {
 
 
   /**
-   * @api {post} /profile/sexual_orientation/store Handles user profile sexual orientation store operation
-   * @apiName Front user profile sexual orientation store operation
+   * @api {post} /profile/health_category/store Handles user profile health category store operation
+   * @apiName Front user profile health category store operation
    * @apiGroup Front
    *
    * @apiParam {String} [name] name
@@ -73,50 +73,42 @@ class SexualOrientationController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    SexualOrientation.findOne({
-      where: {
-        name: req.body.name
-      }
-    }).then(response => {
-      if (!response) {
-        SexualOrientation.create({
-          name: req.body.name,
-          status: StatusHandler.pending
-        })
-        .then(response => {
-          this.updateUser(res, req.id, response.id);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        })
-      } else {
-        this.updateUser(res, req.id, response.id);
-      }
+    let HealthCategoriesName= req.body.name
 
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
-  updateUser = (res, userId, sexualOrientationId) => {
-    UserDetail.findOne({
-      where: {
-        id: userId
-      }
-    }).then(response => {
-      UserDetail.update({
-        sexual_orientation_id: sexualOrientationId
-      },
-      {
-        where: {id: response.id}
-      })
-      .then(response => {
-        return ResponseHandler.success(res, responseLanguage.profile_update);
+    HealthCategoriesName.map((item, index) => {
+      HealthCategory.findOne({
+        where: {
+          name: item
+        }
+      }).then(response => {
+        if (!response) {
+          HealthCategory.create({
+            name: item,
+            status: StatusHandler.pending
+          })
+          .then(response => {
+            this.updateHealthCategoryUser(res, req.id, response.id);
+          })
+          .catch(err => {
+            return ResponseHandler.error(res, 500, err.message);
+          })
+        } else {
+          this.updateHealthCategoryUser(res, req.id, response.id);
+        }
       })
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
       });
+    });
+  }
+
+  updateHealthCategoryUser = (res, userId, healthCategoryId) => {
+    HealthCategoryUser.create({
+      user_id: userId,
+      health_category_id: healthCategoryId
+    })
+    .then(response => {
+      return ResponseHandler.success(res, responseLanguage.profile_update);
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
@@ -127,4 +119,4 @@ class SexualOrientationController {
 
 }
 
-module.exports = SexualOrientationController;
+module.exports = HealthCategoryController;
