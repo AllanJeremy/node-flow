@@ -173,6 +173,23 @@ const apiRoute = {
     name: '/email_template/store',
     label: 'Email template create'
   },
+
+  PERSONALITY_QUESTION_LIST: {
+    name: '/personality_question/list',
+    label: 'Personality question list'
+  },
+  PERSONALITY_QUESTION_STORE: {
+    name: '/personality_question/store',
+    label: 'Personality question create'
+  },
+  PERSONALITY_QUESTION_UPDATE: {
+    name: '/personality_question/update/:id',
+    label: 'Personality question edit'
+  },
+  PERSONALITY_QUESTION_DELETE: {
+    name: '/personality_question/delete/:id',
+    label: 'Personality question delete'
+  },
 };
 
 module.exports = {

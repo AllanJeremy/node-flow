@@ -42,5 +42,7 @@ db.WorkoutUser = require('../models/WorkoutUser.js')(sequelize, Sequelize);
 db.HealthCategoryUser = require('../models/HealthCategoryUser.js')(sequelize, Sequelize);
 db.VerifyUser = require('../models/VerifyUser.js')(sequelize, Sequelize);
 db.ResetPassword = require('../models/ResetPassword.js')(sequelize, Sequelize);
+db.PersonalityQuestion = require('../models/PersonalityQuestion.js')(sequelize, Sequelize);
+db.UserPersonalityQuestion = require('../models/UserPersonalityQuestion.js')(sequelize, Sequelize);
 
 module.exports = db;
