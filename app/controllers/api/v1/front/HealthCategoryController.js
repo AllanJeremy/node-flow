@@ -73,9 +73,9 @@ class HealthCategoryController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    let HealthCategoriesName = req.body.name;
+    let healthCategoriesName = req.body.name;
 
-    HealthCategoriesName.length > 0 && HealthCategoriesName.map((item, index) => {
+    healthCategoriesName.length > 0 && HealthCategoriesName.map((item, index) => {
       HealthCategory.findOne({
         where: {
           name: item
