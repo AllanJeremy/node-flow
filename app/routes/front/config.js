@@ -19,6 +19,8 @@ const apiRoute = {
   PROFILE_HEALTH_CATEGORY_STORE:'/profile/health_category/store',
   PROFILE_FAMILY_DYNAMIC_LIST:'/profile/family_dynamic/list',
   PROFILE_FAMILY_DYNAMIC_STORE:'/profile/family_dynamic/store',
+  USER_PROFILE_WORKOUT_LIST:'/user/profile/workout/list',
+  USER_PROFILE_WORKOUT_STORE:'/user/profile/workout/store',
 }
 
 module.exports = {
