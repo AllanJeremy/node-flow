@@ -34,7 +34,7 @@ const apiRoute = routeConfig.apiRoute;
 class AdminPermissionController {
 
   /**
-   * @api {post} /admin/admin_permission/list Handles admin permission list
+   * @api {get} /admin/admin_permission/list Handles admin permission list
    * @apiName Admin permission list
    * @apiGroup Admin
    *
@@ -56,7 +56,7 @@ class AdminPermissionController {
 
 
   /**
-   * @api {post} /admin/admin_permission/list/user_id Handles admin user permission list
+   * @api {get} /admin/admin_permission/list/user_id Handles admin user permission list
    * @apiName Admin user permission list
    * @apiGroup Admin
    *

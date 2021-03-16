@@ -136,8 +136,6 @@ class FamilyDynamicController {
     });
   }
 
-
-
 }
 
 module.exports = FamilyDynamicController;

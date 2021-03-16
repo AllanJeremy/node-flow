@@ -1,7 +1,7 @@
 const { check } = require('express-validator');
 
 const language = require('../../language/en_default');
-const validationLanguage = language.en.admin.validation
+const validationLanguage = language.en.front.validation
 
 exports.Validation = [
   check('name')

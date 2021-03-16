@@ -22,14 +22,14 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Transformers
  */
-var PersonalityQuestionTransformer = require('../../../../transformers/admin/PersonalityQuestionTransformer');
+var PersonalityQuestionTransformer = require('../../../../transformers/core/PersonalityQuestionTransformer');
 PersonalityQuestionTransformer = new PersonalityQuestionTransformer();
 
 
 class PersonalityQuestionController {
 
   /**
-   * @api {post} /admin/personal_question/list Show personal question list
+   * @api {get} /admin/personality_question/list Show personal question list
    * @apiName Personal question list
    * @apiGroup Admin
    *
@@ -48,7 +48,7 @@ class PersonalityQuestionController {
 
 
   /**
-   * @api {post} /admin/personal_question/store Handles personal question store operation
+   * @api {post} /admin/personality_question/store Handles personal question store operation
    * @apiName Personal question store
    * @apiGroup Admin
    *
@@ -92,7 +92,7 @@ class PersonalityQuestionController {
   }
 
   /**
-   * @api {post} /admin/personal_question/update Handles personal question update operation
+   * @api {patch} /admin/personality_question/update Handles personal question update operation
    * @apiName Personal question update
    * @apiGroup Admin
    *
@@ -142,7 +142,7 @@ class PersonalityQuestionController {
   }
 
   /**
-   * @api {post} /admin/personal_question/destroy Handles personal question destroy operation
+   * @api {delete} /admin/personality_question/destroy Handles personal question destroy operation
    * @apiName Personal question destroy
    * @apiGroup Admin
    *

@@ -18,15 +18,33 @@ var ResponseHandler = require('../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
 /**
- * Routes Config
+ * Admin Routes Config
  */
-const allRoutesConfig = require('../routes/admin/config');
-const authRoute = allRoutesConfig.authRoute;
-const routePrefix = allRoutesConfig.routePrefix;
+const allAdminRoutesConfig = require('../routes/admin/config');
+const authAdminRoute = allAdminRoutesConfig.authRoute;
+const routePrefix = allAdminRoutesConfig.routePrefix;
+
+/**
+ * Admin Routes Config
+ */
+const allFrontRoutesConfig = require('../routes/front/config');
+const authFrontRoute = allFrontRoutesConfig.authRoute;
 
 
 exports.verify = (req, res, next) => {
-  if (req.originalUrl.replace(routePrefix, '') === authRoute.AUTH_LOGIN || req.originalUrl.replace(routePrefix, '') === authRoute.AUTH_TOKEN) {
+
+  let currentURL = req.originalUrl;
+  let isAdminUrl = currentURL.includes(routePrefix);
+  let isAuthRoute = false;
+
+
+  if(isAdminUrl) {
+    isAuthRoute = (currentURL.replace(routePrefix, '') === authAdminRoute.AUTH_LOGIN || currentURL.replace(routePrefix, '') === authAdminRoute.AUTH_TOKEN) ? true : false;
+  } else {
+    isAuthRoute = Object.values(authFrontRoute).indexOf(currentURL) > -1 ? true : false;
+  }
+
+  if (isAuthRoute) {
     return next();
   } else {
     let token = req.headers.authorization;

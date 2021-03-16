@@ -21,6 +21,8 @@ const apiRoute = {
   USER_PROFILE_FAMILY_DYNAMIC_STORE: '/user/profile/family_dynamic/store',
   USER_PROFILE_WORKOUT_LIST: '/user/profile/workout/list',
   USER_PROFILE_WORKOUT_STORE: '/user/profile/workout/store',
+  USER_PERSONALITY_QUESTION_LIST: '/user/profile/personality_question/list',
+  USER_PERSONALITY_QUESTION_STORE: '/user/profile/personality_question/store',
 }
 
 module.exports = {

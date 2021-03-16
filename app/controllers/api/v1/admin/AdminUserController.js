@@ -32,7 +32,7 @@ UserTransformer = new UserTransformer();
 class AdminUserController {
 
   /**
-   * @api {post} /admin/admin_user/list Show admin user list
+   * @api {get} /admin/admin_user/list Show admin user list
    * @apiName Admin user list
    * @apiGroup Admin
    *
@@ -102,7 +102,7 @@ class AdminUserController {
   }
 
   /**
-   * @api {post} /admin/admin_user/update Handles admin user update operation
+   * @api {patch} /admin/admin_user/update Handles admin user update operation
    * @apiName Admin user update
    * @apiGroup Admin
    *
@@ -153,7 +153,7 @@ class AdminUserController {
   }
 
   /**
-   * @api {post} /admin/admin_user/destroy Handles admin user destroy operation
+   * @api {delete} /admin/admin_user/destroy Handles admin user destroy operation
    * @apiName Admin user destroy
    * @apiGroup Admin
    *
