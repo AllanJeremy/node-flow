@@ -15,6 +15,8 @@ const apiRoute = {
   PROFILE_GENDER_STORE:'/profile/gender/store',
   PROFILE_SEXUAL_ORIENTATION_LIST:'/profile/sexual_orientation/list',
   PROFILE_SEXUAL_ORIENTATION_STORE:'/profile/sexual_orientation/store',
+  PROFILE_FAMILY_DYNAMIC_LIST:'/profile/family_dynamic/list',
+  PROFILE_FAMILY_DYNAMIC_STORE:'/profile/family_dynamic/store',
 }
 
 module.exports = {
