@@ -35,7 +35,7 @@ CommonTransformer = new CommonTransformer();
 class FamilyDynamicController {
 
   /**
-   * @api {post} /profile/family_dynamic/list Show family dynamic list
+   * @api {get} /user/profile/family_dynamic/list Show family dynamic list
    * @apiName Family dynamic list
    * @apiGroup Front
    *
@@ -58,7 +58,7 @@ class FamilyDynamicController {
 
 
   /**
-   * @api {post} /profile/family_dynamic/store Handles user profile family dynamic store operation
+   * @api {post} /user/profile/family_dynamic/store Handles user profile family dynamic store operation
    * @apiName Front user profile family dynamic store operation
    * @apiGroup Front
    *
@@ -84,13 +84,13 @@ class FamilyDynamicController {
           status: StatusHandler.pending
         })
         .then(response => {
-          this.updateUser(res, req.id, response.id);
+          this.update(res, req.id, response.id);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         })
       } else {
-        this.updateUser(res, req.id, response.id);
+        this.update(res, req.id, response.id);
       }
 
     })
@@ -99,24 +99,37 @@ class FamilyDynamicController {
     });
   }
 
-  updateUser = (res, user_id, family_dynamic_id) => {
+  update = (res, userId, familyDynamicId) => {
     UserDetail.findOne({
       where: {
-        id: user_id
+        user_id: userId
       }
     }).then(response => {
-      UserDetail.update({
-        family_detail_id: family_dynamic_id
-      },
-      {
-        where: {id: response.id}
-      })
-      .then(response => {
-        return ResponseHandler.success(res, responseLanguage.profile_update);
-      })
-      .catch(err => {
-        return ResponseHandler.error(res, 500, err.message);
-      });
+      if(!response) {
+        UserDetail.create({
+          user_id: userId,
+          family_detail_id: familyDynamicId
+        })
+        .then(response => {
+          return ResponseHandler.success(res, responseLanguage.profile_update);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      } else {
+        UserDetail.update({
+          family_detail_id: familyDynamicId
+        },
+        {
+          where: {user_id: userId}
+        })
+        .then(response => {
+          return ResponseHandler.success(res, responseLanguage.profile_update);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);

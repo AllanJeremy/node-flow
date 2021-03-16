@@ -18,8 +18,8 @@ const CommonValidation = require('../../../validators/front/CommonValidation');
 var SexualOrientationController = require('../../../controllers/api/v1/front/SexualOrientationController');
 SexualOrientationController = new SexualOrientationController();
 
-router.get(apiRoute.PROFILE_SEXUAL_ORIENTATION_LIST, SexualOrientationController.list);
+router.get(apiRoute.USER_PROFILE_SEXUAL_ORIENTATION_LIST, SexualOrientationController.list);
 
-router.post(apiRoute.PROFILE_SEXUAL_ORIENTATION_STORE, CommonValidation.Validation, SexualOrientationController.store);
+router.post(apiRoute.USER_PROFILE_SEXUAL_ORIENTATION_STORE, CommonValidation.Validation, SexualOrientationController.store);
 
 module.exports = router;

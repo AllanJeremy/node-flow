@@ -35,7 +35,7 @@ CommonTransformer = new CommonTransformer();
 class HealthCategoryController {
 
   /**
-   * @api {post} /profile/health_category/list Show health category list
+   * @api {get} /user/profile/health_category/list Show health category list
    * @apiName Health category list
    * @apiGroup Front
    *
@@ -58,7 +58,7 @@ class HealthCategoryController {
 
 
   /**
-   * @api {post} /profile/health_category/store Handles user profile health category store operation
+   * @api {post} /user/profile/health_category/store Handles user profile health category store operation
    * @apiName Front user profile health category store operation
    * @apiGroup Front
    *
@@ -73,9 +73,9 @@ class HealthCategoryController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    let HealthCategoriesName= req.body.name
+    let HealthCategoriesName = req.body.name;
 
-    HealthCategoriesName.map((item, index) => {
+    HealthCategoriesName.length > 0 && HealthCategoriesName.map((item, index) => {
       HealthCategory.findOne({
         where: {
           name: item
@@ -87,13 +87,13 @@ class HealthCategoryController {
             status: StatusHandler.pending
           })
           .then(response => {
-            this.updateHealthCategoryUser(res, req.id, response.id);
+            this.update(res, req.id, response.id);
           })
           .catch(err => {
             return ResponseHandler.error(res, 500, err.message);
           })
         } else {
-          this.updateHealthCategoryUser(res, req.id, response.id);
+          this.update(res, req.id, response.id);
         }
       })
       .catch(err => {
@@ -102,7 +102,7 @@ class HealthCategoryController {
     });
   }
 
-  updateHealthCategoryUser = (res, userId, healthCategoryId) => {
+  update = (res, userId, healthCategoryId) => {
     HealthCategoryUser.create({
       user_id: userId,
       health_category_id: healthCategoryId
@@ -114,8 +114,6 @@ class HealthCategoryController {
       return ResponseHandler.error(res, 500, err.message);
     });
   }
-
-
 
 }
 

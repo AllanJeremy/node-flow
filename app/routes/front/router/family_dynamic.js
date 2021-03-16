@@ -22,8 +22,8 @@ FamilyDynamicController = new FamilyDynamicController();
 /**
  * Family dynamic Routes
  */
-router.get(apiRoute.PROFILE_FAMILY_DYNAMIC_LIST, FamilyDynamicController.list);
+router.get(apiRoute.USER_PROFILE_FAMILY_DYNAMIC_LIST, FamilyDynamicController.list);
 
-router.post(apiRoute.PROFILE_FAMILY_DYNAMIC_STORE, CommonValidation.Validation, FamilyDynamicController.store);
+router.post(apiRoute.USER_PROFILE_FAMILY_DYNAMIC_STORE, CommonValidation.Validation, FamilyDynamicController.store);
 
 module.exports = router;

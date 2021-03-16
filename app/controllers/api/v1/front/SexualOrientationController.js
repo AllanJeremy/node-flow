@@ -35,7 +35,7 @@ CommonTransformer = new CommonTransformer();
 class SexualOrientationController {
 
   /**
-   * @api {post} /profile/sexual_orientation/list Show sexual orientation list
+   * @api {post} /user/profile/sexual_orientation/list Show sexual orientation list
    * @apiName Sexual orientation list
    * @apiGroup Front
    *
@@ -58,7 +58,7 @@ class SexualOrientationController {
 
 
   /**
-   * @api {post} /profile/sexual_orientation/store Handles user profile sexual orientation store operation
+   * @api {post} /user/profile/sexual_orientation/store Handles user profile sexual orientation store operation
    * @apiName Front user profile sexual orientation store operation
    * @apiGroup Front
    *
@@ -84,13 +84,13 @@ class SexualOrientationController {
           status: StatusHandler.pending
         })
         .then(response => {
-          this.updateUser(res, req.id, response.id);
+          this.update(res, req.id, response.id);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         })
       } else {
-        this.updateUser(res, req.id, response.id);
+        this.update(res, req.id, response.id);
       }
 
     })
@@ -99,24 +99,37 @@ class SexualOrientationController {
     });
   }
 
-  updateUser = (res, userId, sexualOrientationId) => {
+  update = (res, userId, sexualOrientationId) => {
     UserDetail.findOne({
       where: {
-        id: userId
+        user_id: userId
       }
     }).then(response => {
-      UserDetail.update({
-        sexual_orientation_id: sexualOrientationId
-      },
-      {
-        where: {id: response.id}
-      })
-      .then(response => {
-        return ResponseHandler.success(res, responseLanguage.profile_update);
-      })
-      .catch(err => {
-        return ResponseHandler.error(res, 500, err.message);
-      });
+      if(!response) {
+        UserDetail.create({
+          user_id: userId,
+          sexual_orientation_id: sexualOrientationId
+        })
+        .then(response => {
+          return ResponseHandler.success(res, responseLanguage.profile_update);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      } else {
+        UserDetail.update({
+          sexual_orientation_id: sexualOrientationId
+        },
+        {
+          where: {user_id: userId}
+        })
+        .then(response => {
+          return ResponseHandler.success(res, responseLanguage.profile_update);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
