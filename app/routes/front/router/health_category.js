@@ -22,8 +22,8 @@ HealthCategoryController = new HealthCategoryController();
 /**
  * Health Category Routes
  */
-router.get(apiRoute.PROFILE_HEALTH_CATEGORY_LIST, HealthCategoryController.list);
+router.get(apiRoute.USER_PROFILE_HEALTH_CATEGORY_LIST, HealthCategoryController.list);
 
-router.post(apiRoute.PROFILE_HEALTH_CATEGORY_STORE, HealthCategoryController.store);
+router.post(apiRoute.USER_PROFILE_HEALTH_CATEGORY_STORE, CommonValidation.ListValidation, HealthCategoryController.store);
 
 module.exports = router;

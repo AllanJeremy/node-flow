@@ -35,7 +35,7 @@ CommonTransformer = new CommonTransformer();
 class RaceController {
 
   /**
-   * @api {post} /profile/race/list Show race list
+   * @api {post} /user/profile/race/list Show race list
    * @apiName Race list
    * @apiGroup Front
    *
@@ -58,7 +58,7 @@ class RaceController {
 
 
   /**
-   * @api {post} /profile/race/store Handles user profile race store operation
+   * @api {post} /user/profile/race/store Handles user profile race store operation
    * @apiName Front user profile race store operation
    * @apiGroup Front
    *
@@ -84,13 +84,13 @@ class RaceController {
           status: StatusHandler.pending
         })
         .then(response => {
-          this.updateUser(res, req.id, response.id);
+          this.update(res, req.id, response.id);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         })
       } else {
-        this.updateUser(res, req.id, response.id);
+        this.update(res, req.id, response.id);
       }
 
     })
@@ -99,29 +99,41 @@ class RaceController {
     });
   }
 
-  updateUser = (res, userId, raceId) => {
+  update = (res, userId, raceId) => {
     UserDetail.findOne({
       where: {
-        id: userId
+        user_id: userId
       }
     }).then(response => {
-      UserDetail.create({
-        user_id: userId,
-        race_id: raceId
-      })
-      .then(response => {
-        return ResponseHandler.success(res, responseLanguage.profile_update);
-      })
-      .catch(err => {
-        return ResponseHandler.error(res, 500, err.message);
-      });
+      if(!response) {
+        UserDetail.create({
+          user_id: userId,
+          race_id: raceId
+        })
+        .then(response => {
+          return ResponseHandler.success(res, responseLanguage.profile_update);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      } else {
+        UserDetail.update({
+          race_id: raceId
+        },{
+          where: {user_id: userId}
+        })
+        .then(response => {
+          return ResponseHandler.success(res, responseLanguage.profile_update);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
   }
-
-
 
 }
 

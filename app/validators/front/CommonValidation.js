@@ -12,3 +12,11 @@ exports.Validation = [
     .withMessage(validationLanguage.name_required)
     .bail(),
 ];
+
+
+exports.ListValidation = [
+  check('name')
+    .isArray({min: 1})
+    .withMessage(validationLanguage.name_required)
+    .bail()
+];

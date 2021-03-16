@@ -22,11 +22,11 @@ const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
 
 
-class ProfileController {
+class UserProfileController {
 
 
   /**
-   * @api {post} /profile/basic Handles user profile store operation
+   * @api {post} /user/profile/basic Handles user profile store operation
    * @apiName Front user profile store operation
    * @apiGroup Front
    *
@@ -36,7 +36,7 @@ class ProfileController {
    *
    * @apiSuccess (200) {Object}
    */
-  storeUserProfile = (req, res) => {
+  store = (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -73,4 +73,4 @@ class ProfileController {
 
 }
 
-module.exports = ProfileController;
+module.exports = UserProfileController;

@@ -35,7 +35,7 @@ CommonTransformer = new CommonTransformer();
 class GenderController {
 
   /**
-   * @api {post} /profile/gender/list Show race list
+   * @api {get} /user/profile/gender/list Show race list
    * @apiName Race list
    * @apiGroup Front
    *
@@ -58,7 +58,7 @@ class GenderController {
 
 
   /**
-   * @api {post} /profile/gender/store Handles user profile gender store operation
+   * @api {post} /user/profile/gender/store Handles user profile gender store operation
    * @apiName Front user profile gender store operation
    * @apiGroup Front
    *
@@ -84,13 +84,13 @@ class GenderController {
           status: StatusHandler.pending
         })
         .then(response => {
-          this.updateUser(res, req.id, response.id);
+          this.update(res, req.id, response.id);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         })
       } else {
-        this.updateUser(res, req.id, response.id);
+        this.update(res, req.id, response.id);
       }
 
     })
@@ -99,31 +99,42 @@ class GenderController {
     });
   }
 
-  updateUser = (res, userId, genderId) => {
+  update = (res, userId, genderId) => {
     UserDetail.findOne({
       where: {
-        id: userId
+        user_id: userId
       }
     }).then(response => {
-      UserDetail.update({
-        gender_id: genderId
-      },
-      {
-        where: {id: response.id}
-      })
-      .then(response => {
-        return ResponseHandler.success(res, responseLanguage.profile_update);
-      })
-      .catch(err => {
-        return ResponseHandler.error(res, 500, err.message);
-      });
+      if(!response) {
+        UserDetail.create({
+          user_id: userId,
+          gender_id: genderId
+        })
+        .then(response => {
+          return ResponseHandler.success(res, responseLanguage.profile_update);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      } else {
+        UserDetail.update({
+          gender_id: genderId
+        },
+        {
+          where: {user_id: userId}
+        })
+        .then(response => {
+          return ResponseHandler.success(res, responseLanguage.profile_update);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
   }
-
-
 
 }
 

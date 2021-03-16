@@ -22,8 +22,8 @@ GenderController = new GenderController();
 /**
  * Gender Routes
  */
-router.get(apiRoute.PROFILE_GENDER_LIST, GenderController.list);
+router.get(apiRoute.USER_PROFILE_GENDER_LIST, GenderController.list);
 
-router.post(apiRoute.PROFILE_GENDER_STORE, CommonValidation.Validation, GenderController.store);
+router.post(apiRoute.USER_PROFILE_GENDER_STORE, CommonValidation.Validation, GenderController.store);
 
 module.exports = router;

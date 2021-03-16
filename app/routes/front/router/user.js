@@ -13,15 +13,15 @@ const apiRoute = routeConfig.apiRoute;
 const UserValidation = require('../../../validators/front/UserValidation');
 
 /**
- * Profile Controller
+ * User Profile Controller
  */
-var ProfileController = require('../../../controllers/api/v1/front/ProfileController');
-ProfileController = new ProfileController();
+var UserProfileController = require('../../../controllers/api/v1/front/UserProfileController');
+UserProfileController = new UserProfileController();
 
 
 /**
- * Profile Routes
+ * User Profile Routes
  */
-router.post(apiRoute.PROFILE_BASIC, UserValidation.Profile, ProfileController.storeUserProfile);
+router.post(apiRoute.USER_PROFILE_BASIC, UserValidation.Profile, UserProfileController.store);
 
 module.exports = router;
