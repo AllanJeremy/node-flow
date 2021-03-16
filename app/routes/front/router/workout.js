@@ -24,6 +24,6 @@ WorkoutController = new WorkoutController();
  */
 router.get(apiRoute.USER_PROFILE_WORKOUT_LIST, WorkoutController.list);
 
-router.post(apiRoute.USER_PROFILE_WORKOUT_STORE, WorkoutController.store);
+router.post(apiRoute.USER_PROFILE_WORKOUT_STORE, CommonValidation.ListValidation, WorkoutController.store);
 
 module.exports = router;
