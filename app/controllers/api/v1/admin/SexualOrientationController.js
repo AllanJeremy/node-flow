@@ -29,7 +29,7 @@ CommonTransformer = new CommonTransformer();
 class SexualOrientationController {
 
   /**
-   * @api {post} /admin/sexual_orientation/list Handles sexual orientation list
+   * @api {get} /admin/sexual_orientation/list Handles sexual orientation list
    * @apiName Sexual orientation list
    * @apiGroup Admin
    *
@@ -91,7 +91,7 @@ class SexualOrientationController {
   }
 
   /**
-   * @api {post} /admin/sexual_orientation/update Handles sexual orientation update operation
+   * @api {patch} /admin/sexual_orientation/update Handles sexual orientation update operation
    * @apiName Sexual orientation update
    * @apiGroup Admin
    *
@@ -138,7 +138,7 @@ class SexualOrientationController {
   }
 
   /**
-   * @api {post} /admin/sexual_orientation/destroy Handles sexual orientation destroy operation
+   * @api {delete} /admin/sexual_orientation/destroy Handles sexual orientation destroy operation
    * @apiName Sexual orientation destroy
    * @apiGroup Admin
    *

@@ -30,7 +30,7 @@ CommonTransformer = new CommonTransformer();
 class RaceController {
 
   /**
-   * @api {post} /admin/race/list Show race list
+   * @api {get} /admin/race/list Show race list
    * @apiName Race list
    * @apiGroup Admin
    *
@@ -91,7 +91,7 @@ class RaceController {
   }
 
   /**
-   * @api {post} /admin/race/update Handles race update operation
+   * @api {patch} /admin/race/update Handles race update operation
    * @apiName Race update
    * @apiGroup Admin
    *
@@ -139,7 +139,7 @@ class RaceController {
   }
 
   /**
-   * @api {post} /admin/race/destroy Handles race destroy operation
+   * @api {delete} /admin/race/destroy Handles race destroy operation
    * @apiName Race destroy
    * @apiGroup Admin
    *

@@ -14,14 +14,14 @@ const PersonalityQuestionValidation = require('../../../validators/admin/Persona
 
 
 /**
- * Race Controller
+ * Personality Question Controller
  */
 var PersonalityQuestionController = require('../../../controllers/api/v1/admin/PersonalityQuestionController');
 PersonalityQuestionController = new PersonalityQuestionController();
 
 
 /**
- * Race Routes
+ * Personality Question Routes
  */
 router.get(apiRoute.PERSONALITY_QUESTION_LIST.name, PersonalityQuestionController.list);
 

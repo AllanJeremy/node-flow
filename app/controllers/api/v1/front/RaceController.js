@@ -35,7 +35,7 @@ CommonTransformer = new CommonTransformer();
 class RaceController {
 
   /**
-   * @api {post} /user/profile/race/list Show race list
+   * @api {get} /user/profile/race/list Show race list
    * @apiName Race list
    * @apiGroup Front
    *

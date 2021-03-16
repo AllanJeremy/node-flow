@@ -30,7 +30,7 @@ CommonTransformer = new CommonTransformer();
 class WorkoutController {
 
   /**
-   * @api {post} /admin/workout/list Handles workout list
+   * @api {get} /admin/workout/list Handles workout list
    * @apiName Workout list
    * @apiGroup Admin
    *
@@ -91,7 +91,7 @@ class WorkoutController {
   }
 
   /**
-   * @api {post} /admin/workout/update Handles workout update operation
+   * @api {patch} /admin/workout/update Handles workout update operation
    * @apiName Workout update
    * @apiGroup Admin
    *
@@ -138,7 +138,7 @@ class WorkoutController {
   }
 
   /**
-   * @api {post} /admin/workout/destroy Handles workout destroy operation
+   * @api {delete} /admin/workout/destroy Handles workout destroy operation
    * @apiName Workout destroy
    * @apiGroup Admin
    *

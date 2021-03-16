@@ -28,7 +28,7 @@ CommonTransformer = new CommonTransformer();
 class HealthCategoryController {
 
   /**
-   * @api {post} /admin/health_category/list Handles health category list
+   * @api {get} /admin/health_category/list Handles health category list
    * @apiName Health list
    * @apiGroup Admin
    *
@@ -88,7 +88,7 @@ class HealthCategoryController {
   }
 
   /**
-   * @api {post} /admin/health_category/update Handles health update operation
+   * @api {patch} /admin/health_category/update Handles health update operation
    * @apiName Health category update
    * @apiGroup Admin
    *
@@ -136,7 +136,7 @@ class HealthCategoryController {
   }
 
   /**
-   * @api {post} /admin/health_category/destroy Handles health destroy operation
+   * @api {delete} /admin/health_category/destroy Handles health destroy operation
    * @apiName Health category destroy
    * @apiGroup Admin
    *

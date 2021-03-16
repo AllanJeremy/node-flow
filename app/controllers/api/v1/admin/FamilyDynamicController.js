@@ -31,7 +31,7 @@ CommonTransformer = new CommonTransformer();
 class FamilyDynamicController {
 
   /**
-   * @api {post} /admin/family_dynamic/list Show Family dynamic
+   * @api {get} /admin/family_dynamic/list Show Family dynamic
    * @apiName Family dynamic list
    * @apiGroup Admin
    *
@@ -92,7 +92,7 @@ class FamilyDynamicController {
   }
 
   /**
-   * @api {post} /admin/family_dynamic/update Handles Family dynamic update operation
+   * @api {patch} /admin/family_dynamic/update Handles Family dynamic update operation
    * @apiName Family dynamic update
    * @apiGroup Admin
    *
@@ -140,7 +140,7 @@ class FamilyDynamicController {
   }
 
   /**
-   * @api {post} /admin/family_dynamic/destroy Handles Family dynamic destroy operation
+   * @api {delete} /admin/family_dynamic/destroy Handles Family dynamic destroy operation
    * @apiName Family dynamic destroy
    * @apiGroup Admin
    *

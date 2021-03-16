@@ -35,7 +35,7 @@ CommonTransformer = new CommonTransformer();
 class SexualOrientationController {
 
   /**
-   * @api {post} /user/profile/sexual_orientation/list Show sexual orientation list
+   * @api {get} /user/profile/sexual_orientation/list Show sexual orientation list
    * @apiName Sexual orientation list
    * @apiGroup Front
    *
@@ -135,9 +135,6 @@ class SexualOrientationController {
       return ResponseHandler.error(res, 500, err.message);
     });
   }
-
-
-
 }
 
 module.exports = SexualOrientationController;

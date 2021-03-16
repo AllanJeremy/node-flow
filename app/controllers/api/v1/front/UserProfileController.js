@@ -67,8 +67,6 @@ class UserProfileController {
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
-
-
   }
 
 }
