@@ -62,6 +62,7 @@ exports.en = {
       'personality_question_update_success': 'Personality question updated successfully.',
       'personality_question_delete_success': 'Personality question deleted successfully.',
       'personality_question_exist': 'Personality question already exists.',
+      'user_status_change': 'User status updated successfully.',
 		}
 	},
   'front': {

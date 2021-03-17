@@ -63,10 +63,12 @@ exports.verify = (req, res, next) => {
       });
 
       if (!exists) {
+
         return ResponseHandler.error(res, 400, responseLanguage.permission_denied);
       }
     })
     .catch(err => {
+
       return ResponseHandler.error(res, 500, err.message);
     });
   }

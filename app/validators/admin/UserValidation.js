@@ -77,3 +77,13 @@ exports.AuthToken = [
     .bail()
 ];
 
+exports.UserUpdateStatus = [
+  check('status')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(responseLanguage.status_required)
+    .bail()
+];
+

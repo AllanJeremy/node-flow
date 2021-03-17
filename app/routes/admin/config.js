@@ -161,19 +161,6 @@ const apiRoute = {
     label: 'Admin user permission create'
   },
 
-  EMAIL_TEMPLATE_LIST: {
-    name: '/email_template/list',
-    label: 'Email template list'
-  },
-  EMAIL_TEMPLATE_TYPE: {
-    name: '/email_template/type',
-    label: 'Email template type'
-  },
-  EMAIL_TEMPLATE_STORE: {
-    name: '/email_template/store',
-    label: 'Email template create'
-  },
-
   PERSONALITY_QUESTION_LIST: {
     name: '/personality_question/list',
     label: 'Personality question list'
@@ -189,6 +176,19 @@ const apiRoute = {
   PERSONALITY_QUESTION_DELETE: {
     name: '/personality_question/delete/:id',
     label: 'Personality question delete'
+  },
+
+  USER_LIST: {
+    name: '/user/list',
+    label: 'User list',
+  },
+  USER_SHOW: {
+    name: '/user/show/:id',
+    label: 'User show',
+  },
+  USER_UPDATE_STATUS: {
+    name: '/user/update/status',
+    label: 'User update status',
   },
 };
 
