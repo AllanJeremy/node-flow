@@ -73,46 +73,41 @@ class WorkoutController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    let workoutName= req.body.name
+    let workoutsName= req.body.name
 
-    workoutName.map((item, index) => {
-      Workout.findOne({
+    workoutsName.map(async(item, index) => {
+      let isWorkoutExist = await Workout.findOne({
         where: {
           name: item
         }
-      }).then(response => {
-        if (!response) {
-          Workout.create({
-            name: item,
-            status: StatusHandler.pending
-          })
-          .then(response => {
-            this.update(res, req.id, response.id);
-          })
-          .catch(err => {
-            return ResponseHandler.error(res, 500, err.message);
-          })
-        } else {
-          this.update(res, req.id, response.id);
-        }
-      })
-      .catch(err => {
-        return ResponseHandler.error(res, 500, err.message);
       });
+
+      if(!isWorkoutExist) {
+        let workout = await Workout.create({
+          name: item,
+          status: StatusHandler.pending
+        });
+        this.update(req.id, workout.id);
+      } else {
+        this.update(req.id, isWorkoutExist.id);
+      }
     });
+    return ResponseHandler.success(res, responseLanguage.profile_update);
   }
 
-  update = (res, userId, workoutId) => {
-    WorkoutUser.create({
-      user_id: userId,
-      workout_id: workoutId
-    })
-    .then(response => {
-      return ResponseHandler.success(res, responseLanguage.profile_update);
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
+  update = async(userId, workoutId) => {
+    let isWorkoutUserExist = await WorkoutUser.findOne({
+      where: {
+        user_id: userId,
+        workout_id: workoutId
+      }
     });
+    if(!isWorkoutUserExist) {
+      await WorkoutUser.create({
+        user_id: userId,
+        workout_id: workoutId
+      });
+    }
   }
 
 }

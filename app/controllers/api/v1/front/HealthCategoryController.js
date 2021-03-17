@@ -73,46 +73,41 @@ class HealthCategoryController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    let HealthCategoriesName = req.body.name;
+    let healthCategoriesName= req.body.name
 
-    HealthCategoriesName.length > 0 && HealthCategoriesName.map((item, index) => {
-      HealthCategory.findOne({
+    healthCategoriesName.map(async(item, index) => {
+      let isHealthCategoryExist = await HealthCategory.findOne({
         where: {
           name: item
         }
-      }).then(response => {
-        if (!response) {
-          HealthCategory.create({
-            name: item,
-            status: StatusHandler.pending
-          })
-          .then(response => {
-            this.update(res, req.id, response.id);
-          })
-          .catch(err => {
-            return ResponseHandler.error(res, 500, err.message);
-          })
-        } else {
-          this.update(res, req.id, response.id);
-        }
-      })
-      .catch(err => {
-        return ResponseHandler.error(res, 500, err.message);
       });
+
+      if(!isHealthCategoryExist) {
+        let healthCategory = await HealthCategory.create({
+          name: item,
+          status: StatusHandler.pending
+        });
+        this.update(req.id, healthCategory.id);
+      } else {
+        this.update(req.id, isHealthCategoryExist.id);
+      }
     });
+    return ResponseHandler.success(res, responseLanguage.profile_update);
   }
 
-  update = (res, userId, healthCategoryId) => {
-    HealthCategoryUser.create({
-      user_id: userId,
-      health_category_id: healthCategoryId
-    })
-    .then(response => {
-      return ResponseHandler.success(res, responseLanguage.profile_update);
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
+  update = async(userId, healthCategoryId) => {
+    let isHealthCategoryUserExist = await HealthCategoryUser.findOne({
+      where: {
+        user_id: userId,
+        health_category_id: healthCategoryId
+      }
     });
+    if(!isHealthCategoryUserExist) {
+      await HealthCategoryUser.create({
+        user_id: userId,
+        health_category_id: healthCategoryId
+      });
+    }
   }
 
 }
