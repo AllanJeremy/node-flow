@@ -73,10 +73,10 @@ class HealthCategoryController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    let healthCategoriesName= req.body.name
+    let healthCategoriesName = req.body.name;
 
-    healthCategoriesName.map(async(item, index) => {
-      let isHealthCategoryExist = await HealthCategory.findOne({
+    healthCategoriesName.length > 0 && HealthCategoriesName.map((item, index) => {
+      HealthCategory.findOne({
         where: {
           name: item
         }

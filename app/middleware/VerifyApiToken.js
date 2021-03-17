@@ -34,17 +34,21 @@ const authFrontRoute = allFrontRoutesConfig.authRoute;
 exports.verify = (req, res, next) => {
 
   let currentURL = req.originalUrl;
-  let isAdminUrl = currentURL.includes(routePrefix);
-  let isAuthRoute = false;
+  let isAdmin = currentURL.includes(routePrefix);
+  let isPublicRoute = false;
+  let adminPublicRoute = [
+    authAdminRoute.AUTH_LOGIN,
+    authAdminRoute.AUTH_TOKEN
+  ]
 
+  if(isAdmin) {
+    isPublicRoute = adminPublicRoute.indexOf(currentURL.replace(routePrefix, '')) > -1 ? true : false;
 
-  if(isAdminUrl) {
-    isAuthRoute = (currentURL.replace(routePrefix, '') === authAdminRoute.AUTH_LOGIN || currentURL.replace(routePrefix, '') === authAdminRoute.AUTH_TOKEN) ? true : false;
   } else {
-    isAuthRoute = Object.values(authFrontRoute).indexOf(currentURL) > -1 ? true : false;
+    isPublicRoute = Object.values(authFrontRoute).indexOf(currentURL) > -1 ? true : false;
   }
 
-  if (isAuthRoute) {
+  if (isPublicRoute) {
     return next();
   } else {
     let token = req.headers.authorization;
@@ -58,8 +62,10 @@ exports.verify = (req, res, next) => {
     jwt.verify(token, config.secret, (err, decoded) => {
       if (err) {
         if(err.name == 'TokenExpiredError') {
+
           return ResponseHandler.error(res, 410, responseLanguage.unauthorized);
         }
+
         return ResponseHandler.error(res, 401, responseLanguage.unauthorized);
       }
 
