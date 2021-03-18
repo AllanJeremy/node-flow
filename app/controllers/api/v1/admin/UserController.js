@@ -105,7 +105,7 @@ class UserController {
         attributes: ['id', 'user_id', 'question_id', 'answer'],
         include: [{
           model: PersonalityQuestion,
-          attributes: ['question'],
+          attributes: ['question', 'options'],
           as: 'personality_question'
         }],
         as: 'personality_questions'

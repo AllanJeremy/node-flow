@@ -30,7 +30,7 @@ class PersonalityQuestionController {
 
   /**
    * @api {get} /admin/personality_question/list Show personal question list
-   * @apiName Personal question list
+   * @apiName Personality question list
    * @apiGroup Admin
    *
    *
@@ -49,7 +49,7 @@ class PersonalityQuestionController {
 
   /**
    * @api {post} /admin/personality_question/store Handles personal question store operation
-   * @apiName Personal question store
+   * @apiName Personality question store
    * @apiGroup Admin
    *
    * @apiParam {String} [question] name
@@ -73,6 +73,7 @@ class PersonalityQuestionController {
         PersonalityQuestion.create({
           question: req.body.question,
           options: req.body.options,
+          sequence: req.body.sequence,
           status: req.body.status
         })
         .then(response => {
@@ -93,7 +94,7 @@ class PersonalityQuestionController {
 
   /**
    * @api {patch} /admin/personality_question/update Handles personal question update operation
-   * @apiName Personal question update
+   * @apiName Personality question update
    * @apiGroup Admin
    *
    * @apiParam {String} [question] name
@@ -117,7 +118,9 @@ class PersonalityQuestionController {
     .then(response => {
       if (response) {
         PersonalityQuestion.update({
-          name: req.body.name,
+          question: req.body.question,
+          options: req.body.options,
+          sequence: req.body.sequence,
           status: req.body.status,
         },
         {
@@ -143,7 +146,7 @@ class PersonalityQuestionController {
 
   /**
    * @api {delete} /admin/personality_question/destroy Handles personal question destroy operation
-   * @apiName Personal question destroy
+   * @apiName Personality question destroy
    * @apiGroup Admin
    *
    * @apiParam {Integer} [id] id

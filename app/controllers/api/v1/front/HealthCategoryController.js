@@ -75,7 +75,7 @@ class HealthCategoryController {
 
     let healthCategoriesName = req.body.name;
 
-    healthCategoriesName.length > 0 && HealthCategoriesName.map((item, index) => {
+    healthCategoriesName.length > 0 && HealthCategoriesName.map(async(item, index) => {
       HealthCategory.findOne({
         where: {
           name: item

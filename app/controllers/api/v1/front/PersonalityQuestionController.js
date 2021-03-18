@@ -47,7 +47,7 @@ class RaceController {
       where: {
         status: StatusHandler.active
       }
-    , order: [['id', 'DESC']]})
+    , order: [['sequence', 'ASC']]})
     .then(response => {
       return ResponseHandler.success(res, '', PersonalityQuestionTransformer.transform(response));
     })

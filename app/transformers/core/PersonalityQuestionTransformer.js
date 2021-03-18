@@ -6,6 +6,7 @@ class PersonalityQuestionTransformer {
     'id': 'id',
     'question': 'question',
     'options': 'options',
+    'sequence': 'sequence',
     'status': function (data) {
       return data.get('status');
     }
