@@ -14,6 +14,7 @@ exports.en = {
       'admin_permission_required': 'Please select at least one permission.',
       'question_required': 'Question is a required field.',
       'options_required': 'Options is a required field.',
+      'sequence_required': 'Sequence is a required field.'
 		},
 		'response': {
 			'login_success': 'Logged in successfully.',

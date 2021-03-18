@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   PersonalityQuestion.init({
     question: DataTypes.STRING,
     options: DataTypes.STRING,
+    sequence: DataTypes.INTEGER,
     status: DataTypes.INTEGER
   }, {
     sequelize,
