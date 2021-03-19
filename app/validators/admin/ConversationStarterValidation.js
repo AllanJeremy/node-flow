@@ -11,13 +11,6 @@ exports.Validation = [
     .isEmpty()
     .withMessage(validationLanguage.question_required)
     .bail(),
-  check('options')
-    .trim()
-    .escape()
-    .not()
-    .isEmpty()
-    .withMessage(validationLanguage.options_required)
-    .bail(),
   check('sequence')
     .trim()
     .escape()

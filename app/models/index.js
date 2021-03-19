@@ -44,6 +44,7 @@ db.VerifyUser = require('../models/VerifyUser.js')(sequelize, Sequelize);
 db.ResetPassword = require('../models/ResetPassword.js')(sequelize, Sequelize);
 db.PersonalityQuestion = require('../models/PersonalityQuestion.js')(sequelize, Sequelize);
 db.UserPersonalityQuestion = require('../models/UserPersonalityQuestion.js')(sequelize, Sequelize);
+db.ConversationStarter = require('../models/ConversationStarter.js')(sequelize, Sequelize);
 
 
 // relationships

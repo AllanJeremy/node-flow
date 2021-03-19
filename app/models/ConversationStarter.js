@@ -1,10 +1,9 @@
 'use strict';
-
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class PeerReport extends Model {
+  class ConversationStarter extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -14,18 +13,18 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  PeerReport.init({
-    user_id: DataTypes.INTEGER,
-    peer_user_id: DataTypes.INTEGER,
-    description: DataTypes.STRING,
-    deleted_at: DataTypes.DATE
+  ConversationStarter.init({
+    question: DataTypes.STRING,
+    sequence: DataTypes.INTEGER,
+    status: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'PeerReport',
+    modelName: 'ConversationStarter',
+    tableName: 'conversation_starters',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
     paranoid: true,
-    deletedAt: 'deleted_at'
   });
-  
-  return PeerReport;
-
+  return ConversationStarter;
 };
