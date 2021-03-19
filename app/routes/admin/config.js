@@ -190,6 +190,23 @@ const apiRoute = {
     name: '/user/update/status',
     label: 'User update status',
   },
+
+  CONVERSATION_STARTER_LIST: {
+    name: '/conversation_starter/list',
+    label: 'Conversation starter list',
+  },
+  CONVERSATION_STARTER_STORE: {
+    name: '/conversation_starter/store',
+    label: 'Conversation starter create'
+  },
+  CONVERSATION_STARTER_UPDATE: {
+    name: '/conversation_starter/update/:id',
+    label: 'Conversation starter edit'
+  },
+  CONVERSATION_STARTER_DELETE: {
+    name: '/conversation_starter/delete/:id',
+    label: 'Conversation starter delete'
+  },
 };
 
 module.exports = {

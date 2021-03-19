@@ -14,7 +14,8 @@ exports.en = {
       'admin_permission_required': 'Please select at least one permission.',
       'question_required': 'Question is a required field.',
       'options_required': 'Options is a required field.',
-      'sequence_required': 'Sequence is a required field.'
+      'sequence_required': 'Sequence is a required field.',
+      'sequence_number': 'Sequence must be number.'
 		},
 		'response': {
 			'login_success': 'Logged in successfully.',
@@ -64,6 +65,10 @@ exports.en = {
       'personality_question_delete_success': 'Personality question deleted successfully.',
       'personality_question_exist': 'Personality question already exists.',
       'user_status_change': 'User status updated successfully.',
+      'conversation_starter_store_success': 'Conversation starter created successfully.',
+      'conversation_starter_update_success': 'Conversation starter updated successfully.',
+      'conversation_starter_delete_success': 'Conversation starter deleted successfully.',
+      'conversation_starter_exist': 'Conversation starter already exists.',
 		}
 	},
   'front': {
