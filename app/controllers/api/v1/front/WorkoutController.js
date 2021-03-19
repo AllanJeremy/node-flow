@@ -16,7 +16,7 @@ const StatusHandler = require('../../../../helpers/StatusHandler');
  */
 const Models = require('../../../../models');
 const Workout = Models.Workout;
-const WorkoutUser = Models.WorkoutUser;
+const UserWorkout = Models.UserWorkout;
 
 /**
  * Languages
@@ -96,14 +96,14 @@ class WorkoutController {
   }
 
   update = async(userId, workoutId) => {
-    let isWorkoutUserExist = await WorkoutUser.findOne({
+    let isUserWorkoutExist = await UserWorkout.findOne({
       where: {
         user_id: userId,
         workout_id: workoutId
       }
     });
-    if(!isWorkoutUserExist) {
-      await WorkoutUser.create({
+    if(!isUserWorkoutExist) {
+      await UserWorkout.create({
         user_id: userId,
         workout_id: workoutId
       });

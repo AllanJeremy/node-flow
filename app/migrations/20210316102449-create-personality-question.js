@@ -14,6 +14,9 @@ module.exports = {
       options: {
         type: Sequelize.STRING
       },
+      sequence: {
+        type: Sequelize.INTEGER
+      },
       status: {
         type: Sequelize.INTEGER
       },

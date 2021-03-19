@@ -11,7 +11,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const Workout = Models.Workout;
-const WorkoutUser = Models.WorkoutUser;
+const UserWorkout = Models.UserWorkout;
 
 /**
  * Languages
@@ -185,7 +185,7 @@ class WorkoutController {
       }
     })
     .then(response => {
-      WorkoutUser.update({
+      UserWorkout.update({
           workout_id: req.body.merged_id,
         },
         {

@@ -9,6 +9,7 @@ const authRoute = {
 
 const apiRoute = {
   USER_PROFILE_BASIC: '/user/profile/basic',
+  USER_PROFILE_BASIC_SUMMARY: '/user/profile/basic/store/summary',
   USER_PROFILE_RACE_LIST: '/user/profile/race/list',
   USER_PROFILE_RACE_STORE: '/user/profile/race/store',
   USER_PROFILE_GENDER_LIST: '/user/profile/gender/list',
@@ -23,6 +24,7 @@ const apiRoute = {
   USER_PROFILE_WORKOUT_STORE: '/user/profile/workout/store',
   USER_PERSONALITY_QUESTION_LIST: '/user/profile/personality_question/list',
   USER_PERSONALITY_QUESTION_STORE: '/user/profile/personality_question/store',
+
 }
 
 module.exports = {

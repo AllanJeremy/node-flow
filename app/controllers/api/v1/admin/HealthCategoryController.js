@@ -11,7 +11,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const HealthCategory = Models.HealthCategory;
-const HealthCategoryUser = Models.HealthCategoryUser;
+const UserHealthCategory = Models.UserHealthCategory;
 /**
  * Languages
  */
@@ -183,7 +183,7 @@ class HealthCategoryController {
       }
     })
     .then(response => {
-      HealthCategoryUser.update({
+      UserHealthCategory.update({
           health_category_id: req.body.merged_id,
         },
         {
