@@ -17,9 +17,9 @@ const Gender = Models.Gender;
 const SexualOrientation = Models.SexualOrientation;
 const FamilyDynamic = Models.FamilyDynamic;
 const HealthCategory = Models.HealthCategory;
-const HealthCategoryUser = Models.HealthCategoryUser;
+const UserHealthCategory = Models.UserHealthCategory;
 const Workout = Models.Workout;
-const WorkoutUser = Models.WorkoutUser;
+const UserWorkout = Models.UserWorkout;
 const PersonalityQuestion = Models.PersonalityQuestion;
 const UserPersonalityQuestion = Models.UserPersonalityQuestion;
 
@@ -81,7 +81,7 @@ class UserController {
         as: 'UserDetail'
       },
       {
-        model: HealthCategoryUser,
+        model: UserHealthCategory,
         attributes: ['id', 'user_id', 'health_category_id'],
         include: [{
             model: HealthCategory,
@@ -91,7 +91,7 @@ class UserController {
         as: 'health_categories'
       },
       {
-        model: WorkoutUser,
+        model: UserWorkout,
         attributes: ['id', 'user_id', 'workout_id'],
         include: [{
           model: Workout,

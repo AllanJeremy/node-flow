@@ -16,7 +16,7 @@ const StatusHandler = require('../../../../helpers/StatusHandler');
  */
 const Models = require('../../../../models');
 const HealthCategory = Models.HealthCategory;
-const HealthCategoryUser = Models.HealthCategoryUser;
+const UserHealthCategory = Models.UserHealthCategory;
 
 /**
  * Languages
@@ -96,14 +96,14 @@ class HealthCategoryController {
   }
 
   update = async(userId, healthCategoryId) => {
-    let isHealthCategoryUserExist = await HealthCategoryUser.findOne({
+    let isUserHealthCategoryExist = await UserHealthCategory.findOne({
       where: {
         user_id: userId,
         health_category_id: healthCategoryId
       }
     });
-    if(!isHealthCategoryUserExist) {
-      await HealthCategoryUser.create({
+    if(!isUserHealthCategoryExist) {
+      await UserHealthCategory.create({
         user_id: userId,
         health_category_id: healthCategoryId
       });

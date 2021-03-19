@@ -13,6 +13,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const User = Models.User;
+const UserDetail = Models.UserDetail;
 
 /**
  * Languages
@@ -63,6 +64,58 @@ class UserProfileController {
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
       });
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+
+  /**
+   * @api {post} /user/profile/basic/store/summary Handles user profile store summary operation
+   * @apiName Front user profile store summary operation
+   * @apiGroup Front
+   *
+   * @apiParam {String} [summary] summary
+   *
+   * @apiSuccess (200) {Object}
+   */
+  update = (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, errors.array());
+    }
+
+    UserDetail.findOne({
+      where: {
+        user_id: req.id
+      }
+    }).then(response => {
+      if(!response) {
+        UserDetail.create({
+          user_id: req.id,
+          summary: req.body.summary
+        })
+        .then(response => {
+          return ResponseHandler.success(res, responseLanguage.profile_update);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      } else {
+        UserDetail.update({
+          summary: req.body.summary
+        },{
+          where: {user_id: req.id}
+        })
+        .then(response => {
+          return ResponseHandler.success(res, responseLanguage.profile_update);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
