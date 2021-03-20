@@ -25,6 +25,9 @@ const apiRoute = {
   USER_PERSONALITY_QUESTION_LIST: '/user/profile/personality_question/list',
   USER_PERSONALITY_QUESTION_STORE: '/user/profile/personality_question/store',
 
+  COVERSATION_STARTER__LIST: '/user/conversation_starter/list',
+  COVERSATION_STARTER_STORE: '/user/conversation_starter/store',
+
 }
 
 module.exports = {
