@@ -46,7 +46,6 @@ class AdminPermissionController {
 
     Object.entries(apiRoute).map(item => {
       permissionList.push({
-        'label': item[1].label,
         'value': item[0]
       })
     });

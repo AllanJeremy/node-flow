@@ -21,10 +21,10 @@ UserController = new UserController();
 /**
  * User Routes
  */
-router.get(apiRoute.USER_LIST.name, UserController.list);
+router.get(apiRoute.USER.LIST, UserController.list);
 
-router.get(apiRoute.USER_SHOW.name, UserController.show);
+router.get(apiRoute.USER.SHOW, UserController.show);
 
-router.post(apiRoute.USER_UPDATE_STATUS.name, UserValidation.UserUpdateStatus, UserController.updateStatus);
+router.post(apiRoute.USER.UPDATE_STATUS, UserValidation.UserUpdateStatus, UserController.updateStatus);
 
 module.exports = router;

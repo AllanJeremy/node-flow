@@ -22,14 +22,14 @@ FamilyDynamicController = new FamilyDynamicController();
 /**
  * Family Dynamic Routes
  */
-router.get(apiRoute.FAMILY_DYNAMIC_LIST.name, FamilyDynamicController.list);
+router.get(apiRoute.FAMILY_DYNAMIC.LIST, FamilyDynamicController.list);
 
-router.post(apiRoute.FAMILY_DYNAMIC_STORE.name, [CommonValidation.Validation], FamilyDynamicController.store);
+router.post(apiRoute.FAMILY_DYNAMIC.STORE, [CommonValidation.Validation], FamilyDynamicController.store);
 
-router.patch(apiRoute.FAMILY_DYNAMIC_UPDATE.name, [CommonValidation.Validation], FamilyDynamicController.update);
+router.patch(apiRoute.FAMILY_DYNAMIC.UPDATE, [CommonValidation.Validation], FamilyDynamicController.update);
 
-router.delete(apiRoute.FAMILY_DYNAMIC_DELETE.name, FamilyDynamicController.destroy);
+router.delete(apiRoute.FAMILY_DYNAMIC.DELETE, FamilyDynamicController.destroy);
 
-router.post(apiRoute.FAMILY_DYNAMIC_MERGE.name, FamilyDynamicController.merge);
+router.post(apiRoute.FAMILY_DYNAMIC.MERGE, FamilyDynamicController.merge);
 
 module.exports = router;

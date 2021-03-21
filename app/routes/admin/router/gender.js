@@ -22,14 +22,14 @@ GenderController = new GenderController();
 /**
  * Gender Routes
  */
-router.get(apiRoute.GENDER_LIST.name, GenderController.list);
+router.get(apiRoute.GENDER.LIST, GenderController.list);
 
-router.post(apiRoute.GENDER_STORE.name, [CommonValidation.Validation], GenderController.store);
+router.post(apiRoute.GENDER.STORE, [CommonValidation.Validation], GenderController.store);
 
-router.patch(apiRoute.GENDER_UPDATE.name, [CommonValidation.Validation], GenderController.update);
+router.patch(apiRoute.GENDER.UPDATE, [CommonValidation.Validation], GenderController.update);
 
-router.delete(apiRoute.GENDER_DELETE.name, GenderController.destroy);
+router.delete(apiRoute.GENDER.DELETE, GenderController.destroy);
 
-router.post(apiRoute.GENDER_MERGE.name, GenderController.merge);
+router.post(apiRoute.GENDER.MERGE, GenderController.merge);
 
 module.exports = router;

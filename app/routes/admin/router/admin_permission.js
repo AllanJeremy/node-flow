@@ -23,7 +23,7 @@ router.get(authRoute.ADMIN_PERMISSION_LIST, AdminPermissionController.permission
 
 router.get(authRoute.ADMIN_USER_PERMISSION_LIST, AdminPermissionController.list);
 
-router.post(apiRoute.ADMIN_USER_PERMISSION_STORE.name, [UserValidation.AdminPermission], AdminPermissionController.store);
+router.post(apiRoute.ADMIN_PERMISSION.STORE, [UserValidation.AdminPermission], AdminPermissionController.store);
 
 
 module.exports = router;

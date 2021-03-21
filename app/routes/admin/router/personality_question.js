@@ -23,13 +23,13 @@ PersonalityQuestionController = new PersonalityQuestionController();
 /**
  * Personality Question Routes
  */
-router.get(apiRoute.PERSONALITY_QUESTION_LIST.name, PersonalityQuestionController.list);
+router.get(apiRoute.PERSONALITY_QUESTION.LIST, PersonalityQuestionController.list);
 
-router.post(apiRoute.PERSONALITY_QUESTION_STORE.name, [PersonalityQuestionValidation.Validation], PersonalityQuestionController.store);
+router.post(apiRoute.PERSONALITY_QUESTION.STORE, [PersonalityQuestionValidation.Validation], PersonalityQuestionController.store);
 
-router.patch(apiRoute.PERSONALITY_QUESTION_UPDATE.name, [PersonalityQuestionValidation.Validation], PersonalityQuestionController.update);
+router.patch(apiRoute.PERSONALITY_QUESTION.UPDATE, [PersonalityQuestionValidation.Validation], PersonalityQuestionController.update);
 
-router.delete(apiRoute.PERSONALITY_QUESTION_DELETE.name, PersonalityQuestionController.destroy);
+router.delete(apiRoute.PERSONALITY_QUESTION.DELETE, PersonalityQuestionController.destroy);
 
 
 module.exports = router;

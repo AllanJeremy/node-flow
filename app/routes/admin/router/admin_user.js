@@ -19,13 +19,13 @@ var AdminUserController = require('../../../controllers/api/v1/admin/AdminUserCo
 AdminUserController = new AdminUserController();
 
 
-router.get(apiRoute.ADMIN_USER_LIST.name, AdminUserController.list);
+router.get(apiRoute.ADMIN_USER.LIST, AdminUserController.list);
 
-router.post(apiRoute.ADMIN_USER_STORE.name, [UserValidation.SignUp], AdminUserController.store);
+router.post(apiRoute.ADMIN_USER.STORE, [UserValidation.SignUp], AdminUserController.store);
 
-router.patch(apiRoute.ADMIN_USER_UPDATE.name, [UserValidation.SignUp], AdminUserController.update);
+router.patch(apiRoute.ADMIN_USER.UPDATE, [UserValidation.SignUp], AdminUserController.update);
 
-router.delete(apiRoute.ADMIN_USER_DELETE.name, AdminUserController.destroy);
+router.delete(apiRoute.ADMIN_USER.DELETE, AdminUserController.destroy);
 
 
 module.exports = router;
