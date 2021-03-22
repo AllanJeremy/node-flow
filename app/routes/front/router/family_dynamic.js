@@ -10,7 +10,7 @@ const apiRoute = routeConfig.apiRoute;
 /**
  * Validators
  */
-const CommonValidation = require('../../../validators/front/CommonValidation');
+const FamilyDynamicValidation = require('../../../validators/front/FamilyDynamicValidation');
 
 /**
  * Family dynamic Controller
@@ -24,6 +24,6 @@ FamilyDynamicController = new FamilyDynamicController();
  */
 router.get(apiRoute.USER_PROFILE_FAMILY_DYNAMIC_LIST, FamilyDynamicController.list);
 
-router.post(apiRoute.USER_PROFILE_FAMILY_DYNAMIC_STORE, CommonValidation.Validation, FamilyDynamicController.store);
+router.post(apiRoute.USER_PROFILE_FAMILY_DYNAMIC_STORE, FamilyDynamicValidation.Validation, FamilyDynamicController.store);
 
 module.exports = router;

@@ -10,7 +10,7 @@ const apiRoute = routeConfig.apiRoute;
 /**
  * Validators
  */
-const CommonValidation = require('../../../validators/front/CommonValidation');
+const HealthCategoryValidation = require('../../../validators/front/HealthCategoryValidation');
 
 /**
  * Health Category Controller
@@ -24,6 +24,6 @@ HealthCategoryController = new HealthCategoryController();
  */
 router.get(apiRoute.USER_PROFILE_HEALTH_CATEGORY_LIST, HealthCategoryController.list);
 
-router.post(apiRoute.USER_PROFILE_HEALTH_CATEGORY_STORE, CommonValidation.ListValidation, HealthCategoryController.store);
+router.post(apiRoute.USER_PROFILE_HEALTH_CATEGORY_STORE, HealthCategoryValidation.Validation, HealthCategoryController.store);
 
 module.exports = router;

@@ -62,7 +62,7 @@ class GenderController {
    * @apiName Front user profile gender store operation
    * @apiGroup Front
    *
-   * @apiParam {String} [name] name
+   * @apiParam {String} [gender] gender
    *
    * @apiSuccess (200) {Object}
    */
@@ -72,31 +72,20 @@ class GenderController {
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
-
-    Gender.findOne({
-      where: {
-        name: req.body.name
-      }
-    }).then(response => {
-      if (!response) {
-        Gender.create({
-          name: req.body.name,
-          status: StatusHandler.pending
-        })
-        .then(response => {
-          this.update(res, req.id, response.id);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        })
-      } else {
+    if(req.body.others) {
+      Gender.create({
+        name: req.body.others,
+        status: StatusHandler.pending
+      })
+      .then(response => {
         this.update(res, req.id, response.id);
-      }
-
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      })
+    } else {
+      this.update(res, req.id, req.body.gender);
+    }
   }
 
   update = (res, userId, genderId) => {
@@ -111,7 +100,7 @@ class GenderController {
           gender_id: genderId
         })
         .then(response => {
-          return ResponseHandler.success(res, responseLanguage.profile_update);
+          return ResponseHandler.success(res, responseLanguage.gender_save);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
@@ -124,7 +113,7 @@ class GenderController {
           where: {user_id: userId}
         })
         .then(response => {
-          return ResponseHandler.success(res, responseLanguage.profile_update);
+          return ResponseHandler.success(res, responseLanguage.gender_save);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);

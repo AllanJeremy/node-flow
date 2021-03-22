@@ -10,7 +10,7 @@ const apiRoute = routeConfig.apiRoute;
 /**
  * Validators
  */
-const CommonValidation = require('../../../validators/front/CommonValidation');
+const GenderValidation = require('../../../validators/front/GenderValidation');
 
 /**
  * Gender Controller
@@ -24,6 +24,6 @@ GenderController = new GenderController();
  */
 router.get(apiRoute.USER_PROFILE_GENDER_LIST, GenderController.list);
 
-router.post(apiRoute.USER_PROFILE_GENDER_STORE, CommonValidation.Validation, GenderController.store);
+router.post(apiRoute.USER_PROFILE_GENDER_STORE, GenderValidation.Validation, GenderController.store);
 
 module.exports = router;
