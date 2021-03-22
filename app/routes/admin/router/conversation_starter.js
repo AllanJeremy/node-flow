@@ -23,13 +23,13 @@ ConversationStarterController = new ConversationStarterController();
 /**
  * Conversation Starter Routes
  */
-router.get(apiRoute.CONVERSATION_STARTER_LIST.name, ConversationStarterController.list);
+router.get(apiRoute.CONVERSATION_STARTER.LIST, ConversationStarterController.list);
 
-router.post(apiRoute.CONVERSATION_STARTER_STORE.name, [ConversationStarterValidation.Validation], ConversationStarterController.store);
+router.post(apiRoute.CONVERSATION_STARTER.STORE, [ConversationStarterValidation.Validation], ConversationStarterController.store);
 
-router.patch(apiRoute.CONVERSATION_STARTER_UPDATE.name, [ConversationStarterValidation.Validation], ConversationStarterController.update);
+router.patch(apiRoute.CONVERSATION_STARTER.UPDATE, [ConversationStarterValidation.Validation], ConversationStarterController.update);
 
-router.delete(apiRoute.CONVERSATION_STARTER_DELETE.name, ConversationStarterController.destroy);
+router.delete(apiRoute.CONVERSATION_STARTER.DELETE, ConversationStarterController.destroy);
 
 
 module.exports = router;

@@ -51,15 +51,18 @@ exports.verify = (req, res, next) => {
       let permissions = response.permissions.replace(/^"|"$/g, '').split(',');
 
       permissions.map((routeName, index) => {
-        var routeMatchName = apiRoute[routeName].name;
-        var slug = routeMatchName.split(':');
-        slug = slug.length > 1 ? slug[1] : '';
-        var routeRegex = generateMatchRoute(routeMatchName, slug);
-        routeRegex = '^' + routeRegex + '$';
-        if (currentRoute.match(routeRegex) !== null) {
-          exists = true;
-          next();
-        }
+        let apiRouteName = apiRoute[routeName];
+        Object.values(apiRoute[routeName]).map((value, key) => {
+          var routeMatchName = value;
+          var slug = routeMatchName.split(':');
+          slug = slug.length > 1 ? slug[1] : '';
+          var routeRegex = generateMatchRoute(routeMatchName, slug);
+          routeRegex = '^' + routeRegex + '$';
+          if (currentRoute.match(routeRegex) !== null) {
+            exists = true;
+            next();
+          }
+        });       
       });
 
       if (!exists) {

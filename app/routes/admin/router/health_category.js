@@ -22,14 +22,14 @@ HealthCategoryController = new HealthCategoryController();
 /**
  * Health Category Routes
  */
-router.get(apiRoute.HEALTH_CATEGORY_LIST.name, HealthCategoryController.list);
+router.get(apiRoute.HEALTH_CATEGORY.LIST, HealthCategoryController.list);
 
-router.post(apiRoute.HEALTH_CATEGORY_STORE.name, [CommonValidation.Validation], HealthCategoryController.store);
+router.post(apiRoute.HEALTH_CATEGORY.STORE, [CommonValidation.Validation], HealthCategoryController.store);
 
-router.patch(apiRoute.HEALTH_CATEGORY_UPDATE.name, [CommonValidation.Validation], HealthCategoryController.update);
+router.patch(apiRoute.HEALTH_CATEGORY.UPDATE, [CommonValidation.Validation], HealthCategoryController.update);
 
-router.delete(apiRoute.HEALTH_CATEGORY_DELETE.name, HealthCategoryController.destroy);
+router.delete(apiRoute.HEALTH_CATEGORY.DELETE, HealthCategoryController.destroy);
 
-router.post(apiRoute.HEALTH_CATEGORY_MERGE.name, HealthCategoryController.merge);
+router.post(apiRoute.HEALTH_CATEGORY.MERGE, HealthCategoryController.merge);
 
 module.exports = router;
