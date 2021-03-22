@@ -88,6 +88,7 @@ exports.en = {
       'name_required': 'Name is a required field.',
       'question_answers_required': 'Question Answers is a required field.',
       'summary_required': 'Summary is a required field.',
+      'conversation_starter_answer_required': 'Conversation starter answer is a required field.'
     },
     'response': {
       'login_success': 'Logged in successfully.',
@@ -104,6 +105,7 @@ exports.en = {
       'code_resend': 'Verification code resend successfully.',
       'profile_create': 'Profile created successfully.',
       'profile_update': 'Profile updated successfully.',
+      'conversation_starter_store_success': 'Conversation starter stored successfully.',
     },
   },
   'email': {
