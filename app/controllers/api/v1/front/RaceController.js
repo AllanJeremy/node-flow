@@ -62,7 +62,8 @@ class RaceController {
    * @apiName Front user profile race store operation
    * @apiGroup Front
    *
-   * @apiParam {String} [name] name
+   * @apiParam {String} [race] race
+   * @apiParam {String} [others] others 
    *
    * @apiSuccess (200) {Object}
    */
@@ -73,30 +74,21 @@ class RaceController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    Race.findOne({
-      where: {
-        name: req.body.name
-      }
-    }).then(response => {
-      if (!response) {
-        Race.create({
-          name: req.body.name,
-          status: StatusHandler.pending
-        })
-        .then(response => {
-          this.update(res, req.id, response.id);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        })
-      } else {
+    if(req.body.others) {  
+      Race.create({
+        name: req.body.others,
+        status: StatusHandler.pending
+      })
+      .then(response => {
         this.update(res, req.id, response.id);
-      }
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      })
+    } else {
+      this.update(res, req.id, req.body.race);
+    }
 
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
   }
 
   update = (res, userId, raceId) => {
@@ -111,7 +103,7 @@ class RaceController {
           race_id: raceId
         })
         .then(response => {
-          return ResponseHandler.success(res, responseLanguage.profile_update);
+          return ResponseHandler.success(res, responseLanguage.race_save);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
@@ -123,7 +115,7 @@ class RaceController {
           where: {user_id: userId}
         })
         .then(response => {
-          return ResponseHandler.success(res, responseLanguage.profile_update);
+          return ResponseHandler.success(res, responseLanguage.race_save);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);

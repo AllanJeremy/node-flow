@@ -10,7 +10,7 @@ const apiRoute = routeConfig.apiRoute;
 /**
  * Validators
  */
-const CommonValidation = require('../../../validators/front/CommonValidation');
+const RaceValidation = require('../../../validators/front/RaceValidation');
 
 /**
  * Race Controller
@@ -24,6 +24,6 @@ RaceController = new RaceController();
  */
 router.get(apiRoute.USER_PROFILE_RACE_LIST, RaceController.list);
 
-router.post(apiRoute.USER_PROFILE_RACE_STORE, CommonValidation.Validation, RaceController.store);
+router.post(apiRoute.USER_PROFILE_RACE_STORE, [RaceValidation.Validation], RaceController.store);
 
 module.exports = router;

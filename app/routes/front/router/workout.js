@@ -10,7 +10,7 @@ const apiRoute = routeConfig.apiRoute;
 /**
  * Validators
  */
-const CommonValidation = require('../../../validators/front/CommonValidation');
+const WorkoutValidation = require('../../../validators/front/WorkoutValidation');
 
 /**
  * Workout Controller
@@ -24,6 +24,6 @@ WorkoutController = new WorkoutController();
  */
 router.get(apiRoute.USER_PROFILE_WORKOUT_LIST, WorkoutController.list);
 
-router.post(apiRoute.USER_PROFILE_WORKOUT_STORE, CommonValidation.ListValidation, WorkoutController.store);
+router.post(apiRoute.USER_PROFILE_WORKOUT_STORE, WorkoutValidation.Validation, WorkoutController.store);
 
 module.exports = router;

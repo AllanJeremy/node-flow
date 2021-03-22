@@ -62,7 +62,7 @@ class FamilyDynamicController {
    * @apiName Front user profile family dynamic store operation
    * @apiGroup Front
    *
-   * @apiParam {String} [name] name
+   * @apiParam {String} [family_dynamic] family_dynamic
    *
    * @apiSuccess (200) {Object}
    */
@@ -73,30 +73,20 @@ class FamilyDynamicController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    FamilyDynamic.findOne({
-      where: {
-        name: req.body.name
-      }
-    }).then(response => {
-      if (!response) {
-        FamilyDynamic.create({
-          name: req.body.name,
-          status: StatusHandler.pending
-        })
-        .then(response => {
-          this.update(res, req.id, response.id);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        })
-      } else {
+    if (req.body.others) {
+      FamilyDynamic.create({
+        name: req.body.others,
+        status: StatusHandler.pending
+      })
+      .then(response => {
         this.update(res, req.id, response.id);
-      }
-
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      })
+    } else {
+      this.update(res, req.id, req.body.family_dynamic);
+    }
   }
 
   update = (res, userId, familyDynamicId) => {
@@ -111,7 +101,7 @@ class FamilyDynamicController {
           family_detail_id: familyDynamicId
         })
         .then(response => {
-          return ResponseHandler.success(res, responseLanguage.profile_update);
+          return ResponseHandler.success(res, responseLanguage.family_dynamic_save);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
@@ -124,7 +114,7 @@ class FamilyDynamicController {
           where: {user_id: userId}
         })
         .then(response => {
-          return ResponseHandler.success(res, responseLanguage.profile_update);
+          return ResponseHandler.success(res, responseLanguage.family_dynamic_save);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);

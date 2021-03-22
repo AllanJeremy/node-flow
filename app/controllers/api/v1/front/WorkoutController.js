@@ -62,37 +62,31 @@ class WorkoutController {
    * @apiName Front user profile workout store operation
    * @apiGroup Front
    *
-   * @apiParam {String} [name] name
+   * @apiParam {Array} [workouts] workouts
    *
    * @apiSuccess (200) {Object}
    */
-  store = (req, res) => {
+  store = async (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    let workoutsName= req.body.name
+    let workouts= req.body.workouts
 
-    workoutsName.map(async(item, index) => {
-      let isWorkoutExist = await Workout.findOne({
-        where: {
-          name: item
-        }
-      });
+    workouts && workouts.length > 0 && workouts.map(async(item, index) => {
+      this.update(req.id, item);
 
-      if(!isWorkoutExist) {
-        let workout = await Workout.create({
-          name: item,
-          status: StatusHandler.pending
-        });
-        this.update(req.id, workout.id);
-      } else {
-        this.update(req.id, isWorkoutExist.id);
-      }
     });
-    return ResponseHandler.success(res, responseLanguage.profile_update);
+    if(req.body.others) {
+      let workout = await Workout.create({
+        name: req.body.others,
+        status: StatusHandler.pending
+      });
+      this.update(req.id, workout.id);
+    }
+    return ResponseHandler.success(res, responseLanguage.workout_save);
   }
 
   update = async(userId, workoutId) => {

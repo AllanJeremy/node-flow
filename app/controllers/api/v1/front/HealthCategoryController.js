@@ -62,37 +62,30 @@ class HealthCategoryController {
    * @apiName Front user profile health category store operation
    * @apiGroup Front
    *
-   * @apiParam {String} [name] name
+   * @apiParam {Array} [health_categories] health_categories
    *
    * @apiSuccess (200) {Object}
    */
-  store = (req, res) => {
+  store = async (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    let healthCategoriesName = req.body.name;
+    let healthCategories = req.body.health_categories;
 
-    healthCategoriesName.length > 0 && HealthCategoriesName.map(async(item, index) => {
-      HealthCategory.findOne({
-        where: {
-          name: item
-        }
-      });
-
-      if(!isHealthCategoryExist) {
-        let healthCategory = await HealthCategory.create({
-          name: item,
-          status: StatusHandler.pending
-        });
-        this.update(req.id, healthCategory.id);
-      } else {
-        this.update(req.id, isHealthCategoryExist.id);
-      }
+    healthCategories && healthCategories.length > 0 && healthCategories.length > 0 && healthCategories.map(async(item, index) => {
+      this.update(req.id, item);
     });
-    return ResponseHandler.success(res, responseLanguage.profile_update);
+    if(req.body.others) {
+      let healthCategory = await HealthCategory.create({
+        name: req.body.others,
+        status: StatusHandler.pending
+      });
+      this.update(req.id, healthCategory.id);
+    }
+    return ResponseHandler.success(res, responseLanguage.health_category_save);
   }
 
   update = async(userId, healthCategoryId) => {

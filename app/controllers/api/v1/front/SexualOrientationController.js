@@ -73,30 +73,20 @@ class SexualOrientationController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    SexualOrientation.findOne({
-      where: {
-        name: req.body.name
-      }
-    }).then(response => {
-      if (!response) {
-        SexualOrientation.create({
-          name: req.body.name,
-          status: StatusHandler.pending
-        })
-        .then(response => {
-          this.update(res, req.id, response.id);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        })
-      } else {
+    if (req.body.others) {
+      SexualOrientation.create({
+        name: req.body.others,
+        status: StatusHandler.pending
+      })
+      .then(response => {
         this.update(res, req.id, response.id);
-      }
-
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      })
+    } else {
+      this.update(res, req.id, req.body.sexual_orientation);
+    }
   }
 
   update = (res, userId, sexualOrientationId) => {
@@ -111,7 +101,7 @@ class SexualOrientationController {
           sexual_orientation_id: sexualOrientationId
         })
         .then(response => {
-          return ResponseHandler.success(res, responseLanguage.profile_update);
+          return ResponseHandler.success(res, responseLanguage.sexual_orientation_save);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
@@ -124,7 +114,7 @@ class SexualOrientationController {
           where: {user_id: userId}
         })
         .then(response => {
-          return ResponseHandler.success(res, responseLanguage.profile_update);
+          return ResponseHandler.success(res, responseLanguage.sexual_orientation_save);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);

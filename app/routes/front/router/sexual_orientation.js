@@ -10,7 +10,7 @@ const apiRoute = routeConfig.apiRoute;
 /**
  * Validators
  */
-const CommonValidation = require('../../../validators/front/CommonValidation');
+const SexualOrientationValidation = require('../../../validators/front/SexualOrientationValidation');
 
 /**
  * Sexual Orientation Controller
@@ -20,6 +20,6 @@ SexualOrientationController = new SexualOrientationController();
 
 router.get(apiRoute.USER_PROFILE_SEXUAL_ORIENTATION_LIST, SexualOrientationController.list);
 
-router.post(apiRoute.USER_PROFILE_SEXUAL_ORIENTATION_STORE, CommonValidation.Validation, SexualOrientationController.store);
+router.post(apiRoute.USER_PROFILE_SEXUAL_ORIENTATION_STORE, SexualOrientationValidation.Validation, SexualOrientationController.store);
 
 module.exports = router;
