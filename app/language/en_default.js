@@ -97,7 +97,8 @@ exports.en = {
       'sexual_orientation_required': 'Sexual orientation is a required field.',
       'health_category_required': 'Health category is a required field.',
       'workout_required': 'Workout is a required field.',
-      'user_interest_required': 'User interest is a required field.'
+      'user_interest_required': 'User interest is a required field.',
+      'peer_id_required': 'Peer id is a required field.',
     },
     'response': {
       'login_success': 'Logged in successfully.',
@@ -121,7 +122,8 @@ exports.en = {
       'health_category_save': 'Health category saved successfully.',
       'workout_save': 'Workout saved successfully.',
       'conversation_starter_store_success': 'Conversation starter saved successfully.',
-      'user_interest_save': 'User interest saved successfully.'
+      'user_interest_save': 'User interest saved successfully.',
+      'peer_match_store': 'Matched peer saved successfully.',
     },
   },
   'email': {
