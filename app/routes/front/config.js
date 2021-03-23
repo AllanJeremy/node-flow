@@ -30,6 +30,7 @@ const apiRoute = {
   COVERSATION_STARTER_STORE: '/user/conversation_starter/store',
 
   USER_PEER_MATCH: '/user/peer/match',
+  USER_PEER_UNMATCH: '/user/peer/unmatch',
 
 }
 

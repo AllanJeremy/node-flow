@@ -16,6 +16,8 @@ const StatusHandler = require('../../../../helpers/StatusHandler');
  */
 const Models = require('../../../../models');
 const ListedPeer = Models.ListedPeer;
+const DelistedPeer = Models.DelistedPeer;
+
 
 /**
  * Languages
@@ -37,7 +39,7 @@ class PeerController {
    *
    * @apiSuccess (200) {Object}
    */
-  store = (req, res) => {
+  storePeerMatch = (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -60,9 +62,51 @@ class PeerController {
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
-
   }
 
+  /**
+   * @api {post} /user/peer/unmatch Handles storing unmatched peer id operation
+   * @apiName Front user peer unmatch store operation
+   * @apiGroup Front
+   *
+   * @apiParam {Integer} [peer_id] peer_id
+   *
+   * @apiSuccess (200) {Object}
+   */
+  storePeerUnMatch = (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+    }
+
+    DelistedPeer.findOrCreate({
+      where: {
+        user_id: req.id,
+        peer_id: req.body.peer_id
+      },
+      defaults: { 
+        user_id: req.id,
+        peer_id: req.body.peer_id
+      }
+    })
+    .then(response => {
+      ListedPeer.destroy({
+        where: {
+          user_id: req.id,
+          peer_id: req.body.peer_id
+      }})
+      .then(response => {
+        return ResponseHandler.success(res, responseLanguage.peer_unmatch_store);
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
 
 }
 

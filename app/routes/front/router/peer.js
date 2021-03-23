@@ -25,4 +25,6 @@ PeerController = new PeerController();
 
 router.post(apiRoute.USER_PEER_MATCH, [PeerValidation.Validation], PeerController.store);
 
+router.post(apiRoute.USER_PEER_UNMATCH, [PeerValidation.Validation], PeerController.storePeerUnMatch);
+
 module.exports = router;
