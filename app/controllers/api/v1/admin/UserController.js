@@ -22,6 +22,9 @@ const Workout = Models.Workout;
 const UserWorkout = Models.UserWorkout;
 const PersonalityQuestion = Models.PersonalityQuestion;
 const UserPersonalityQuestion = Models.UserPersonalityQuestion;
+const ConversationStarter = Models.ConversationStarter;
+const UserConversationStarter = Models.UserConversationStarter;
+
 
 /**
  * Languages
@@ -109,7 +112,18 @@ class UserController {
           as: 'personality_question'
         }],
         as: 'personality_questions'
-      }]
+      },
+      {
+      model: UserConversationStarter,
+        attributes: ['id', 'user_id', 'conversation_starter_id', 'answer'],
+        include: [{
+          model: ConversationStarter,
+          attributes: ['question'],
+          as: 'conversation_starter'
+        }],
+        as: 'conversation_starters'
+      }
+      ]
       })
     .then(response => {
       return ResponseHandler.success(res, '', UserTransformer.UserDetail(response));
