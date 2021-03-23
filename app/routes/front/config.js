@@ -29,6 +29,8 @@ const apiRoute = {
   COVERSATION_STARTER__LIST: '/user/conversation_starter/list',
   COVERSATION_STARTER_STORE: '/user/conversation_starter/store',
 
+  USER_PEER_MATCH: '/user/peer/match',
+
 }
 
 module.exports = {

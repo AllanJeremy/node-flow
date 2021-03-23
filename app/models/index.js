@@ -47,6 +47,8 @@ db.UserPersonalityQuestion = require('../models/UserPersonalityQuestion.js')(seq
 db.ConversationStarter = require('../models/ConversationStarter.js')(sequelize, Sequelize);
 db.UserConversationStarter = require('../models/UserConversationStarter.js')(sequelize, Sequelize);
 db.UserInterest = require('../models/UserInterest.js')(sequelize, Sequelize);
+db.ListedPeer = require('../models/ListedPeer.js')(sequelize, Sequelize);
+db.DelistedPeer = require('../models/DelistedPeer.js')(sequelize, Sequelize);
 
 
 // relationships
