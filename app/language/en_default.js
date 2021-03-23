@@ -124,6 +124,7 @@ exports.en = {
       'conversation_starter_store_success': 'Conversation starter saved successfully.',
       'user_interest_save': 'User interest saved successfully.',
       'peer_match_store': 'Matched peer saved successfully.',
+      'peer_unmatch_store': 'Unmatched peer saved successfully.',
     },
   },
   'email': {
