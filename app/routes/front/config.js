@@ -8,6 +8,7 @@ const authRoute = {
 }
 
 const apiRoute = {
+  USER_PROFILE_INTEREST: '/user/profile/interest',
   USER_PROFILE_BASIC: '/user/profile/basic',
   USER_PROFILE_BASIC_SUMMARY: '/user/profile/basic/store/summary',
   USER_PROFILE_RACE_LIST: '/user/profile/race/list',

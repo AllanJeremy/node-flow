@@ -43,3 +43,13 @@ exports.ProfileSummary = [
     .withMessage(validation.summary_required)
     .bail(),
 ];
+
+exports.UserInterest = [
+  check('interest')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.user_interest_required)
+    .bail(),
+];

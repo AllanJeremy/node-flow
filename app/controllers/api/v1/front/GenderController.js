@@ -72,9 +72,9 @@ class GenderController {
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
-    if(req.body.others) {
+    if(req.body.other) {
       Gender.create({
-        name: req.body.others,
+        name: req.body.other,
         status: StatusHandler.pending
       })
       .then(response => {

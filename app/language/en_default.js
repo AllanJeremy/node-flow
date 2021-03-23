@@ -88,14 +88,16 @@ exports.en = {
       'name_required': 'Name is a required field.',
       'question_answers_required': 'Question Answers is a required field.',
       'summary_required': 'Summary is a required field.',
-      'conversation_starter_answer_required': 'Conversation starter answer is a required field.',
+      'conversation_starter_id_required': 'Conversation starter id is a required field.',
+      'answer_required': 'Answer is a required field.',
       'race_required': 'Race is a required field.',
-      'others_required': 'Others is a required field.',
+      'other_required': 'Other is a required field.',
       'gender_required': 'Gender is a required field.',
       'family_dynamic_required': 'Family dynamic is a required field.',
       'sexual_orientation_required': 'Sexual orientation is a required field.',
       'health_category_required': 'Health category is a required field.',
       'workout_required': 'Workout is a required field.',
+      'user_interest_required': 'User interest is a required field.'
     },
     'response': {
       'login_success': 'Logged in successfully.',
@@ -119,6 +121,7 @@ exports.en = {
       'health_category_save': 'Health category saved successfully.',
       'workout_save': 'Workout saved successfully.',
       'conversation_starter_store_success': 'Conversation starter saved successfully.',
+      'user_interest_save': 'User interest saved successfully.'
     },
   },
   'email': {

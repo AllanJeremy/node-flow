@@ -73,33 +73,29 @@ class ConversationStarterController {
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
-
-    let conversationStarterAnswers = req.body.conversation_starter_answer;
-
-    conversationStarterAnswers.map(async(item, index) => {
-      let isConversationStarterExist = await UserConversationStarter.findOne({
-        where: {
-          user_id: req.id,
-          conversation_starter_id: item.conversation_starter_id,
-        }
-      });
-      if(!isConversationStarterExist) {
-        await UserConversationStarter.create({
-          user_id: req.id,
-          conversation_starter_id: item.conversation_starter_id,
-          answer: item.answer
-        });
-      } else {
-        await UserConversationStarter.update({
-          answer: item.answer
-        },{
-          where: {
-            user_id: req.id,
-            conversation_starter_id: item.conversation_starter_id,
-          }
-        });
+    
+    let isConversationStarterExist = await UserConversationStarter.findOne({
+      where: {
+        user_id: req.id,
+        conversation_starter_id: req.body.conversation_starter_id,
       }
     });
+    if(!isConversationStarterExist) {
+      await UserConversationStarter.create({
+        user_id: req.id,
+        conversation_starter_id: req.body.conversation_starter_id,
+        answer: req.body.answer
+      });
+    } else {
+      await UserConversationStarter.update({
+        answer: req.body.answer
+      },{
+        where: {
+          user_id: req.id,
+          conversation_starter_id: req.body.conversation_starter_id,
+        }
+      });
+    }
     return ResponseHandler.success(res, responseLanguage.conversation_starter_store_success);
   }
 

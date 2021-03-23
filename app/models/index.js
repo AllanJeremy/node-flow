@@ -46,6 +46,7 @@ db.PersonalityQuestion = require('../models/PersonalityQuestion.js')(sequelize, 
 db.UserPersonalityQuestion = require('../models/UserPersonalityQuestion.js')(sequelize, Sequelize);
 db.ConversationStarter = require('../models/ConversationStarter.js')(sequelize, Sequelize);
 db.UserConversationStarter = require('../models/UserConversationStarter.js')(sequelize, Sequelize);
+db.UserInterest = require('../models/UserInterest.js')(sequelize, Sequelize);
 
 
 // relationships
@@ -60,5 +61,9 @@ db.User.hasMany(db.UserWorkout, {foreignKey: 'user_id', as: 'workouts'});
 db.UserWorkout.belongsTo(db.Workout, {foreignKey: 'workout_id', as: 'workout'});
 db.User.hasMany(db.UserPersonalityQuestion, {foreignKey: 'user_id', as: 'personality_questions'});
 db.UserPersonalityQuestion.belongsTo(db.PersonalityQuestion, {foreignKey: 'question_id', as: 'personality_question'});
+db.User.hasMany(db.UserConversationStarter, {foreignKey: 'user_id', as: 'conversation_starters'});
+db.UserConversationStarter.belongsTo(db.ConversationStarter, {foreignKey: 'conversation_starter_id', as: 'conversation_starter'});
+db.User.hasOne(db.UserInterest, {foreignKey: 'user_id', as: 'user_interest'});
+
 
 module.exports = db;

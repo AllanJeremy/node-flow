@@ -26,4 +26,6 @@ router.post(apiRoute.USER_PROFILE_BASIC, UserValidation.Profile, UserProfileCont
 
 router.post(apiRoute.USER_PROFILE_BASIC_SUMMARY, UserValidation.ProfileSummary, UserProfileController.update);
 
+router.post(apiRoute.USER_PROFILE_INTEREST, UserValidation.UserInterest, UserProfileController.userInterestStore);
+
 module.exports = router;

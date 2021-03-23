@@ -59,6 +59,10 @@ class UserTransformer {
           "options": "personality_question.options",
           "answer": "answer"
       }) : [],
+      'conversation_starters': data.conversation_starters.length > 0 ? fractal(data.conversation_starters, {
+          "question": "conversation_starter.question",
+          "answer": "answer"
+      }) : [],
       'summary': 'UserDetail.summary',
     }
   });

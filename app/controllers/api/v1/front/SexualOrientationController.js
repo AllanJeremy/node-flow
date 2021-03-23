@@ -73,9 +73,9 @@ class SexualOrientationController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    if (req.body.others) {
+    if (req.body.other) {
       SexualOrientation.create({
-        name: req.body.others,
+        name: req.body.other,
         status: StatusHandler.pending
       })
       .then(response => {

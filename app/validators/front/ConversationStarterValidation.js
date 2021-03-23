@@ -4,8 +4,18 @@ const language = require('../../language/en_default');
 const validationLanguage = language.en.front.validation
 
 exports.Validation = [
-  check('conversation_starter_answer')
-    .isArray({min: 1})
-    .withMessage(validationLanguage.conversation_starter_answer_required)
-    .bail()
+  check('conversation_starter_id')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validationLanguage.conversation_starter_id_required)
+    .bail(),
+  check('answer')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validationLanguage.answer_required)
+    .bail(),
 ];
