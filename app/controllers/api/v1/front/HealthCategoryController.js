@@ -78,9 +78,9 @@ class HealthCategoryController {
     healthCategories && healthCategories.length > 0 && healthCategories.length > 0 && healthCategories.map(async(item, index) => {
       this.update(req.id, item);
     });
-    if(req.body.others) {
+    if(req.body.other) {
       let healthCategory = await HealthCategory.create({
-        name: req.body.others,
+        name: req.body.other,
         status: StatusHandler.pending
       });
       this.update(req.id, healthCategory.id);

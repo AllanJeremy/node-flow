@@ -122,9 +122,8 @@ class UserController {
           as: 'conversation_starter'
         }],
         as: 'conversation_starters'
-      }
-      ]
-      })
+      }]
+    })
     .then(response => {
       return ResponseHandler.success(res, '', UserTransformer.UserDetail(response));
     })

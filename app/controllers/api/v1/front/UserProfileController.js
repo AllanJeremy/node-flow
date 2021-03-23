@@ -14,6 +14,7 @@ ResponseHandler = new ResponseHandler();
 const Models = require('../../../../models');
 const User = Models.User;
 const UserDetail = Models.UserDetail;
+const UserInterest = Models.UserInterest;
 
 /**
  * Languages
@@ -116,6 +117,35 @@ class UserProfileController {
           return ResponseHandler.error(res, 500, err.message);
         });
       }
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+
+  /**
+   * @api {post} /user/profile/interest Handles user profile interest option store operation
+   * @apiName Front user profile interest option store operation
+   * @apiGroup Front
+   *
+   * @apiParam {String} [interest] interest
+   *
+   * @apiSuccess (200) {Object}
+   */
+  userInterestStore = (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, errors.array());
+    }
+
+    UserInterest.create({
+      user_id: req.id,
+      value: req.body.interest
+    })
+    .then(response => {
+      return ResponseHandler.success(res, responseLanguage.user_interest_save);
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);

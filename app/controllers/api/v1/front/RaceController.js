@@ -63,7 +63,6 @@ class RaceController {
    * @apiGroup Front
    *
    * @apiParam {String} [race] race
-   * @apiParam {String} [others] others 
    *
    * @apiSuccess (200) {Object}
    */
@@ -74,9 +73,9 @@ class RaceController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    if(req.body.others) {  
+    if(req.body.other) {  
       Race.create({
-        name: req.body.others,
+        name: req.body.other,
         status: StatusHandler.pending
       })
       .then(response => {

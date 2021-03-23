@@ -11,11 +11,11 @@ exports.Validation = oneOf([
     .isEmpty()
     .withMessage(validationLanguage.race_required)
     .bail(),
-  check('others')
+  check('other')
     .trim()
     .escape()
     .not()
     .isEmpty()
-    .withMessage(validationLanguage.others_required)
+    .withMessage(validationLanguage.other_required)
     .bail(),
 ]);
