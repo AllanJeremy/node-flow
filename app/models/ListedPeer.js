@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   ListedPeer.init({
     user_id: DataTypes.INTEGER,
-    peer_id: DataTypes.INTEGER
+    peer_id: DataTypes.INTEGER,
+    status: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'ListedPeer',

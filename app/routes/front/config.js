@@ -31,6 +31,10 @@ const apiRoute = {
 
   USER_PEER_MATCH: '/user/peer/match',
   USER_PEER_UNMATCH: '/user/peer/unmatch',
+  USER_PEER_LIST: '/user/peer/list',
+  USER_PEER_MUTE: '/user/peer/mute',
+  USER_PEER_UNMUTE: '/user/peer/unmute',
+  USER_HIDDEN_PEER_LIST: '/user/peer/hidden/list',
 
 }
 

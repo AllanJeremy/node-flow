@@ -10,6 +10,8 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
+const PeerStatusHandler = require('../../../../helpers/PeerStatusHandler');
+
 
 /**
  * Models
@@ -17,6 +19,7 @@ const StatusHandler = require('../../../../helpers/StatusHandler');
 const Models = require('../../../../models');
 const ListedPeer = Models.ListedPeer;
 const DelistedPeer = Models.DelistedPeer;
+const User = Models.User;
 
 
 /**
@@ -25,6 +28,13 @@ const DelistedPeer = Models.DelistedPeer;
 const language = require('../../../../language/en_default');
 const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
+
+
+/**
+ * Transformers
+ */
+var PeerTransformer = require('../../../../transformers/front/PeerTransformer');
+PeerTransformer = new PeerTransformer();
 
 
 class PeerController {
@@ -53,7 +63,8 @@ class PeerController {
       },
       defaults: { 
         user_id: req.id,
-        peer_id: req.body.peer_id
+        peer_id: req.body.peer_id,
+        status: PeerStatusHandler.active
       }
     })
     .then(response => {
@@ -102,6 +113,164 @@ class PeerController {
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
       });
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+
+  /**
+   * @api {get} /user/peer/list Handles show list of matched peers
+   * @apiName Front show user's peer list
+   * @apiGroup Front
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  list = (req, res) => {
+
+    ListedPeer.findAll({
+      where: {
+        user_id: req.id,
+        status: PeerStatusHandler.active
+      },
+      include: [{
+        model: User,
+        attributes: ['id', 'first_name', 'profile_picture'],
+        where: { status: StatusHandler.active },
+        as: 'peer'
+      }]
+    })
+    .then(response => {
+      return ResponseHandler.success(res, '', PeerTransformer.peer(response));
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+
+  /**
+   * @api {post} /user/peer/mute Handles store mute peer
+   * @apiName Front mute peer store operation
+   * @apiGroup Front
+   *
+   * @apiParam {Integer} [peer_id] peer_id
+   *
+   * @apiSuccess (200) {Object}
+   */
+  storePeerMute = (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+    }
+
+    ListedPeer.findOne({
+      where: {
+        user_id: req.id,
+        peer_id: req.body.peer_id,
+      }
+    })
+    .then(response => {
+      if(response) {
+        ListedPeer.update({
+          status: PeerStatusHandler.mute,
+        },
+        {
+          where: { 
+            user_id: req.id,
+            peer_id: req.body.peer_id
+          },
+          returning: true
+        })
+        .then(result => {
+          return ResponseHandler.success(
+            res, responseLanguage.mute_peer_store);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /user/peer/unmute Handles store unmute peer
+   * @apiName Front unmute peer store operation
+   * @apiGroup Front
+   *
+   * @apiParam {Integer} [peer_id] peer_id
+   *
+   * @apiSuccess (200) {Object}
+   */
+  storePeerUnMute = (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+    }
+
+    ListedPeer.findOne({
+      where: {
+        user_id: req.id,
+        peer_id: req.body.peer_id,
+      }
+    })
+    .then(response => {
+      if(response) {
+        ListedPeer.update({
+          status: PeerStatusHandler.active,
+        },
+        {
+          where: { 
+            user_id: req.id,
+            peer_id: req.body.peer_id
+          },
+          returning: true
+        })
+        .then(result => {
+          return ResponseHandler.success(
+            res, responseLanguage.unmute_peer_store);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {get} /user/peer/hidden/list Handles show list of hidden peers
+   * @apiName Front show user's hidden peer list
+   * @apiGroup Front
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  hiddenPeerList = (req, res) => {
+
+    ListedPeer.findAll({
+      where: {
+        user_id: req.id,
+        status: PeerStatusHandler.mute
+      },
+      include: [{
+        model: User,
+        attributes: ['id', 'first_name', 'profile_picture'],
+        where: { status: StatusHandler.active },
+        as: 'peer'
+      }]
+    })
+    .then(response => {
+      return ResponseHandler.success(res, '', PeerTransformer.peer(response));
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
