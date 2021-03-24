@@ -12,6 +12,8 @@ ResponseHandler = new ResponseHandler();
 const Models = require('../../../../models');
 const HealthCategory = Models.HealthCategory;
 const UserHealthCategory = Models.UserHealthCategory;
+
+
 /**
  * Languages
  */

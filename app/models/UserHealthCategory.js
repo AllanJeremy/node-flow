@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   UserHealthCategory.init({
     user_id: DataTypes.INTEGER,
     health_category_id: DataTypes.INTEGER,
+    status: DataTypes.INTEGER,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,

@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   UserWorkout.init({
     user_id: DataTypes.INTEGER,
     workout_id: DataTypes.INTEGER,
+    status: DataTypes.INTEGER,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,

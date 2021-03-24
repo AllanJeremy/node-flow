@@ -11,7 +11,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const FamilyDynamic = Models.FamilyDynamic;
-const UserDetail = Models.UserDetail;
+const UserMetaData = Models.UserMetaData;
 
 
 /**
@@ -187,7 +187,7 @@ class FamilyDynamicController {
       }
     })
     .then(response => {
-      UserDetail.update({
+      UserMetaData.update({
           family_detail_id: req.body.merged_id,
         },
         {

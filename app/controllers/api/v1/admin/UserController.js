@@ -11,7 +11,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const User = Models.User;
-const UserDetail = Models.UserDetail;
+const UserMetaData = Models.UserMetaData;
 const Race = Models.Race;
 const Gender = Models.Gender;
 const SexualOrientation = Models.SexualOrientation;
@@ -74,14 +74,15 @@ class UserController {
   show = (req, res) => {
     User.findOne({
       where: {id: req.params.id},
-      include: [{
-        model: UserDetail,
+      include: [
+      {
+        model: UserMetaData,
         include: [
           { model: Race, attributes: ['name'] },
           { model: Gender, attributes: ['name'] },
           { model: SexualOrientation, attributes: ['name'] },
           { model: FamilyDynamic, attributes: ['name'] }],
-        as: 'UserDetail'
+        as: 'user_meta_data'
       },
       {
         model: UserHealthCategory,

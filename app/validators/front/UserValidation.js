@@ -53,3 +53,46 @@ exports.UserInterest = [
     .withMessage(validation.user_interest_required)
     .bail(),
 ];
+
+
+exports.UserProfileVisibilitySetting = [
+  check('race_status')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.race_status_required)
+    .bail(),
+  check('gender_status')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.gender_status_required)
+    .bail(),
+  check('family_dynamic_status')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.family_dynamic_status_required)
+    .bail(),
+  check('sexual_orientation_status')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.sexual_orientation_status_required)
+    .bail(),
+  check('workouts_status')
+    .isArray({min: 1})
+    .withMessage(validation.workouts_status_required)
+    .bail(),
+  check('health_categories_status')
+    .isArray({min: 1})
+    .withMessage(validation.health_categories_status_required)
+    .bail(),
+];
+
+
+

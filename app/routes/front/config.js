@@ -34,7 +34,8 @@ const apiRoute = {
   USER_PEER_LIST: '/user/peer/list',
   USER_PEER_MUTE: '/user/peer/mute',
   USER_PEER_UNMUTE: '/user/peer/unmute',
-  USER_HIDDEN_PEER_LIST: '/user/peer/hidden/list',
+
+  USER_PROFILE_VISIBILITY_STATUS: '/user/profile/visibility/settings'
 
 }
 

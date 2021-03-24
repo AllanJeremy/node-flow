@@ -49,7 +49,7 @@ class PeerController {
    *
    * @apiSuccess (200) {Object}
    */
-  storePeerMatch = (req, res) => {
+  match = (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -84,7 +84,7 @@ class PeerController {
    *
    * @apiSuccess (200) {Object}
    */
-  storePeerUnMatch = (req, res) => {
+  unmatch = (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -133,7 +133,7 @@ class PeerController {
     ListedPeer.findAll({
       where: {
         user_id: req.id,
-        status: PeerStatusHandler.active
+        status: req.query.type ? PeerStatusHandler.mute : PeerStatusHandler.active
       },
       include: [{
         model: User,
@@ -160,7 +160,7 @@ class PeerController {
    *
    * @apiSuccess (200) {Object}
    */
-  storePeerMute = (req, res) => {
+  mute = (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -208,7 +208,7 @@ class PeerController {
    *
    * @apiSuccess (200) {Object}
    */
-  storePeerUnMute = (req, res) => {
+  unmute = (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -241,36 +241,6 @@ class PeerController {
           return ResponseHandler.error(res, 500, err.message);
         });
       }
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
-  /**
-   * @api {get} /user/peer/hidden/list Handles show list of hidden peers
-   * @apiName Front show user's hidden peer list
-   * @apiGroup Front
-   *
-   *
-   * @apiSuccess (200) {Object}
-   */
-  hiddenPeerList = (req, res) => {
-
-    ListedPeer.findAll({
-      where: {
-        user_id: req.id,
-        status: PeerStatusHandler.mute
-      },
-      include: [{
-        model: User,
-        attributes: ['id', 'first_name', 'profile_picture'],
-        where: { status: StatusHandler.active },
-        as: 'peer'
-      }]
-    })
-    .then(response => {
-      return ResponseHandler.success(res, '', PeerTransformer.peer(response));
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
