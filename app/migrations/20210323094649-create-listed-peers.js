@@ -14,6 +14,9 @@ module.exports = {
       peer_id: {
         type: Sequelize.INTEGER
       },
+      status: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         field: "created_at",

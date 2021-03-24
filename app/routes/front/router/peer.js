@@ -23,8 +23,16 @@ PeerController = new PeerController();
  * Peer Routes
  */
 
-router.post(apiRoute.USER_PEER_MATCH, [PeerValidation.Validation], PeerController.store);
+router.post(apiRoute.USER_PEER_MATCH, [PeerValidation.Validation], PeerController.storePeerMatch);
 
 router.post(apiRoute.USER_PEER_UNMATCH, [PeerValidation.Validation], PeerController.storePeerUnMatch);
+
+router.get(apiRoute.USER_PEER_LIST, PeerController.list);
+
+router.post(apiRoute.USER_PEER_MUTE, [PeerValidation.Validation], PeerController.storePeerMute);
+
+router.post(apiRoute.USER_PEER_UNMUTE, [PeerValidation.Validation], PeerController.storePeerUnMute);
+
+router.get(apiRoute.USER_HIDDEN_PEER_LIST, PeerController.hiddenPeerList);
 
 module.exports = router;
