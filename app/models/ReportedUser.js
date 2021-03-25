@@ -17,7 +17,10 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER,
     reported_by: DataTypes.INTEGER,
     reason: DataTypes.STRING,
-    type: DataTypes.ENUM,
+    type: {
+      type: DataTypes.ENUM,
+      values: ['reported', 'flagged']
+    },
     status: DataTypes.INTEGER
   }, {
     sequelize,
