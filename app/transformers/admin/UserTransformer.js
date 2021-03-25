@@ -43,11 +43,11 @@ class UserTransformer {
       return data.get('status');
     },
     'user_detail': {
-      'id': 'UserDetail.id',
-      'race': 'UserDetail.Race.name',
-      'gender': 'UserDetail.Gender.name',
-      'sexual_orientation': 'UserDetail.SexualOrientation.name',
-      'family_dynamic': 'UserDetail.FamilyDynamic.name',
+      'id': 'user_meta_data.id',
+      'race': 'user_meta_data.Race.name',
+      'gender': 'user_meta_data.Gender.name',
+      'sexual_orientation': 'user_meta_data.SexualOrientation.name',
+      'family_dynamic': 'user_meta_data.FamilyDynamic.name',
       'health_categories': data.health_categories.length > 0 ? fractal(data.health_categories, {
         'name': 'health_category.name'
       }) : [],
@@ -63,7 +63,7 @@ class UserTransformer {
           'question': 'conversation_starter.question',
           'answer': 'answer'
       }) : [],
-      'summary': 'UserDetail.summary',
+      'summary': 'user_meta_data.summary',
     }
   });
 }

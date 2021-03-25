@@ -16,7 +16,7 @@ const StatusHandler = require('../../../../helpers/StatusHandler');
  */
 const Models = require('../../../../models');
 const Gender = Models.Gender;
-const UserDetail = Models.UserDetail;
+const UserMetaData = Models.UserMetaData;
 
 /**
  * Languages
@@ -89,13 +89,13 @@ class GenderController {
   }
 
   update = (res, userId, genderId) => {
-    UserDetail.findOne({
+    UserMetaData.findOne({
       where: {
         user_id: userId
       }
     }).then(response => {
       if(!response) {
-        UserDetail.create({
+        UserMetaData.create({
           user_id: userId,
           gender_id: genderId
         })
@@ -106,7 +106,7 @@ class GenderController {
           return ResponseHandler.error(res, 500, err.message);
         });
       } else {
-        UserDetail.update({
+        UserMetaData.update({
           gender_id: genderId
         },
         {

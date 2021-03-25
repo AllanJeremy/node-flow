@@ -13,8 +13,17 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const User = Models.User;
-const UserDetail = Models.UserDetail;
+const UserMetaData = Models.UserMetaData;
 const UserInterest = Models.UserInterest;
+const Race = Models.Race;
+const Gender = Models.Gender;
+const SexualOrientation = Models.SexualOrientation;
+const FamilyDynamic = Models.FamilyDynamic;
+const HealthCategory = Models.HealthCategory;
+const UserHealthCategory = Models.UserHealthCategory;
+const Workout = Models.Workout;
+const UserWorkout = Models.UserWorkout;
+
 
 /**
  * Languages
@@ -23,6 +32,12 @@ const language = require('../../../../language/en_default');
 const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
 
+
+/**
+ * Transformers
+ */
+var UserTransformer = require('../../../../transformers/front/UserTransformer');
+UserTransformer = new UserTransformer();
 
 class UserProfileController {
 
@@ -88,13 +103,13 @@ class UserProfileController {
       return ResponseHandler.error(res, 422, errors.array());
     }
 
-    UserDetail.findOne({
+    UserMetaData.findOne({
       where: {
         user_id: req.id
       }
     }).then(response => {
       if(!response) {
-        UserDetail.create({
+        UserMetaData.create({
           user_id: req.id,
           summary: req.body.summary
         })
@@ -105,7 +120,7 @@ class UserProfileController {
           return ResponseHandler.error(res, 500, err.message);
         });
       } else {
-        UserDetail.update({
+        UserMetaData.update({
           summary: req.body.summary
         },{
           where: {user_id: req.id}
@@ -146,6 +161,201 @@ class UserProfileController {
     })
     .then(response => {
       return ResponseHandler.success(res, responseLanguage.user_interest_save);
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /user/profile/visibility/settings Handles user profile visibility settings store operation
+   * @apiName Front user profile visibility settings store operation
+   * @apiGroup Front
+   *
+   * @apiParam {Integer} [race_status] race_status
+   * @apiParam {Integer} [gender_status] gender_status
+   * @apiParam {Integer} [family_dynamic_status] family_dynamic_status
+   * @apiParam {Integer} [sexual_orientation_status] sexual_orientation_status
+   * @apiParam {Integer} [workouts_status] workouts_status
+   * @apiParam {Integer} [health_categories_status] health_categories_status
+   *
+   * @apiSuccess (200) {Object}
+   */
+  storeVisibilityStatus = async(req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, errors.array());
+    }
+
+    UserMetaData.findOne({
+      where: {
+        user_id: req.id
+      }
+    }).then(async response => {
+      await UserMetaData.update({
+        race_status: req.body.race_status,
+        gender_status: req.body.gender_status,
+        family_detail_status: req.body.family_dynamic_status,
+        sexual_orientation_status: req.body.sexual_orientation_status,
+      },
+      {
+        where: { id: response.id }
+      });
+
+      let workoutStatus = req.body.workouts_status;
+
+      workoutStatus.map(async (item, index) => {
+        await UserWorkout.update({
+          status: item.status
+        },
+        {
+          where: { 
+            user_id: req.id,
+            workout_id: item.id 
+          }
+        });
+      });
+
+      let healthCategoryStatus = req.body.health_categories_status;
+
+      healthCategoryStatus.map(async (item, index) => {
+        await UserHealthCategory.update({
+          status: item.status
+        },
+        {
+          where: { 
+            user_id: req.id,
+            health_category_id: item.id
+          }
+        });
+      });
+
+      return ResponseHandler.success(res, responseLanguage.visibility_settings);
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /user/profile/visibility/settings Handles user profile visibility settings store operation
+   * @apiName Front user profile visibility settings store operation
+   * @apiGroup Front
+   *
+   * @apiParam {Integer} [race_status] race_status
+   * @apiParam {Integer} [gender_status] gender_status
+   * @apiParam {Integer} [family_dynamic_status] family_dynamic_status
+   * @apiParam {Integer} [sexual_orientation_status] sexual_orientation_status
+   * @apiParam {Integer} [workouts_status] workouts_status
+   * @apiParam {Integer} [health_categories_status] health_categories_status
+   *
+   * @apiSuccess (200) {Object}
+   */
+  storeVisibilityStatus = async(req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, errors.array());
+    }
+
+    UserMetaData.findOne({
+      where: {
+        user_id: req.id
+      }
+    }).then(async response => {
+      await UserMetaData.update({
+        race_status: req.body.race_status,
+        gender_status: req.body.gender_status,
+        family_detail_status: req.body.family_dynamic_status,
+        sexual_orientation_status: req.body.sexual_orientation_status,
+      },
+      {
+        where: { id: response.id }
+      });
+
+      let workoutStatus = req.body.workouts_status;
+
+      workoutStatus.map(async (item, index) => {
+        await UserWorkout.update({
+          status: item.status
+        },
+        {
+          where: { 
+            user_id: req.id,
+            workout_id: item.id 
+          }
+        });
+      });
+
+      let healthCategoryStatus = req.body.health_categories_status;
+      
+      healthCategoryStatus.map(async (item, index) => {
+        await UserHealthCategory.update({
+          status: item.status
+        },
+        {
+          where: { 
+            user_id: req.id,
+            health_category_id: item.id
+          }
+        });
+      });
+
+      return ResponseHandler.success(res, responseLanguage.visibility_settings);
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {get} /user Handles user profile show operation
+   * @apiName Front user profile profile show operation
+   * @apiGroup Front
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  show = (req, res) => {
+
+    let userId = req.params.id ? req.params.id : req.id
+
+    User.findOne({
+      where: { id: userId },
+      include: [
+      {
+        model: UserMetaData,
+        include: [
+          { model: Race, attributes: ['name'] },
+          { model: Gender, attributes: ['name'] },
+          { model: SexualOrientation, attributes: ['name'] },
+          { model: FamilyDynamic, attributes: ['name'] }],
+        as: 'user_meta_data'
+      },
+      {
+        model: UserHealthCategory,
+        attributes: ['id', 'status'],
+        include: [{
+            model: HealthCategory,
+            attributes: ['name'],
+            as: 'health_category'
+          }],
+        as: 'health_categories'
+      },
+      {
+        model: UserWorkout,
+        attributes: ['id', 'status'],
+        include: [{
+          model: Workout,
+          attributes: ['name'],
+          as: 'workout'
+        }],
+        as: 'workouts'
+      }]
+    })
+    .then(response => {
+      return ResponseHandler.success(res, '', UserTransformer.UserDetail(response));
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);

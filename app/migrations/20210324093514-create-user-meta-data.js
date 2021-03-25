@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('health_category_users', {
+    await queryInterface.createTable('user_meta_data', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,8 +11,32 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER
       },
-      health_category_id: {
+      race_id: {
         type: Sequelize.INTEGER
+      },
+      race_status: {
+        type: Sequelize.INTEGER
+      },
+      gender_id: {
+        type: Sequelize.INTEGER
+      },
+      gender_status: {
+        type: Sequelize.INTEGER
+      },
+      sexual_orientation_id: {
+        type: Sequelize.INTEGER
+      },
+      sexual_orientation_status: {
+        type: Sequelize.INTEGER
+      },
+      family_detail_id: {
+        type: Sequelize.INTEGER
+      },
+      family_detail_status: {
+        type: Sequelize.INTEGER
+      },
+      summary: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -33,6 +57,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('health_category_users');
+    await queryInterface.dropTable('user_meta_data');
   }
 };
