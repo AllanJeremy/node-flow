@@ -130,6 +130,10 @@ class PeerController {
    */
   list = (req, res) => {
 
+    let limit = 10;
+    let page = req.query.page ? req.query.page - 1 : 0;
+    page = page < 0 ? 0 : page;
+
     ListedPeer.findAll({
       where: {
         user_id: req.id,
@@ -140,7 +144,9 @@ class PeerController {
         attributes: ['id', 'first_name', 'profile_picture'],
         where: { status: StatusHandler.active },
         as: 'peer'
-      }]
+      }],
+      offset: page * limit,
+      limit: limit,
     })
     .then(response => {
       return ResponseHandler.success(res, '', PeerTransformer.peer(response));

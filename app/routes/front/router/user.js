@@ -30,4 +30,6 @@ router.post(apiRoute.USER_PROFILE_INTEREST, UserValidation.UserInterest, UserPro
 
 router.post(apiRoute.USER_PROFILE_VISIBILITY_STATUS, UserValidation.UserProfileVisibilitySetting, UserProfileController.storeVisibilityStatus);
 
+router.get(apiRoute.USER, UserProfileController.show);
+
 module.exports = router;

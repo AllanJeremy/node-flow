@@ -15,7 +15,13 @@ const Models = require('../../../../models');
 const User = Models.User;
 const UserMetaData = Models.UserMetaData;
 const UserInterest = Models.UserInterest;
+const Race = Models.Race;
+const Gender = Models.Gender;
+const SexualOrientation = Models.SexualOrientation;
+const FamilyDynamic = Models.FamilyDynamic;
+const HealthCategory = Models.HealthCategory;
 const UserHealthCategory = Models.UserHealthCategory;
+const Workout = Models.Workout;
 const UserWorkout = Models.UserWorkout;
 
 
@@ -297,6 +303,59 @@ class UserProfileController {
       });
 
       return ResponseHandler.success(res, responseLanguage.visibility_settings);
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {get} /user Handles user profile show operation
+   * @apiName Front user profile profile show operation
+   * @apiGroup Front
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  show = (req, res) => {
+
+    let userId = req.params.id ? req.params.id : req.id
+
+    User.findOne({
+      where: { id: userId },
+      include: [
+      {
+        model: UserMetaData,
+        include: [
+          { model: Race, attributes: ['name'] },
+          { model: Gender, attributes: ['name'] },
+          { model: SexualOrientation, attributes: ['name'] },
+          { model: FamilyDynamic, attributes: ['name'] }],
+        as: 'user_meta_data'
+      },
+      {
+        model: UserHealthCategory,
+        attributes: ['id', 'status'],
+        include: [{
+            model: HealthCategory,
+            attributes: ['name'],
+            as: 'health_category'
+          }],
+        as: 'health_categories'
+      },
+      {
+        model: UserWorkout,
+        attributes: ['id', 'status'],
+        include: [{
+          model: Workout,
+          attributes: ['name'],
+          as: 'workout'
+        }],
+        as: 'workouts'
+      }]
+    })
+    .then(response => {
+      return ResponseHandler.success(res, '', UserTransformer.UserDetail(response));
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
