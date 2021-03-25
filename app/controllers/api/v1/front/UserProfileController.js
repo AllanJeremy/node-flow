@@ -166,10 +166,11 @@ class UserProfileController {
       return ResponseHandler.error(res, 500, err.message);
     });
   }
+  
 
   /**
-   * @api {post} /user/profile/visibility/settings Handles user profile visibility settings store operation
-   * @apiName Front user profile visibility settings store operation
+   * @api {post} /user/profile/visibility Handles user profile visibility store operation
+   * @apiName Front user profile visibility store operation
    * @apiGroup Front
    *
    * @apiParam {Integer} [race_status] race_status
@@ -181,7 +182,7 @@ class UserProfileController {
    *
    * @apiSuccess (200) {Object}
    */
-  storeVisibilityStatus = async(req, res) => {
+  visibility = async(req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -231,83 +232,13 @@ class UserProfileController {
         });
       });
 
-      return ResponseHandler.success(res, responseLanguage.visibility_settings);
+      return ResponseHandler.success(res, responseLanguage.visibility);
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
   }
 
-  /**
-   * @api {post} /user/profile/visibility/settings Handles user profile visibility settings store operation
-   * @apiName Front user profile visibility settings store operation
-   * @apiGroup Front
-   *
-   * @apiParam {Integer} [race_status] race_status
-   * @apiParam {Integer} [gender_status] gender_status
-   * @apiParam {Integer} [family_dynamic_status] family_dynamic_status
-   * @apiParam {Integer} [sexual_orientation_status] sexual_orientation_status
-   * @apiParam {Integer} [workouts_status] workouts_status
-   * @apiParam {Integer} [health_categories_status] health_categories_status
-   *
-   * @apiSuccess (200) {Object}
-   */
-  storeVisibilityStatus = async(req, res) => {
-
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, errors.array());
-    }
-
-    UserMetaData.findOne({
-      where: {
-        user_id: req.id
-      }
-    }).then(async response => {
-      await UserMetaData.update({
-        race_status: req.body.race_status,
-        gender_status: req.body.gender_status,
-        family_detail_status: req.body.family_dynamic_status,
-        sexual_orientation_status: req.body.sexual_orientation_status,
-      },
-      {
-        where: { id: response.id }
-      });
-
-      let workoutStatus = req.body.workouts_status;
-
-      workoutStatus.map(async (item, index) => {
-        await UserWorkout.update({
-          status: item.status
-        },
-        {
-          where: { 
-            user_id: req.id,
-            workout_id: item.id 
-          }
-        });
-      });
-
-      let healthCategoryStatus = req.body.health_categories_status;
-      
-      healthCategoryStatus.map(async (item, index) => {
-        await UserHealthCategory.update({
-          status: item.status
-        },
-        {
-          where: { 
-            user_id: req.id,
-            health_category_id: item.id
-          }
-        });
-      });
-
-      return ResponseHandler.success(res, responseLanguage.visibility_settings);
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
 
   /**
    * @api {get} /user Handles user profile show operation

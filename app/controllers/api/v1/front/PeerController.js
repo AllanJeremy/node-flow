@@ -131,8 +131,7 @@ class PeerController {
   list = (req, res) => {
 
     let limit = 10;
-    let page = req.query.page ? req.query.page - 1 : 0;
-    page = page < 0 ? 0 : page;
+    let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
 
     ListedPeer.findAll({
       where: {
