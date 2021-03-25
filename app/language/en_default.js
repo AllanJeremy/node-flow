@@ -104,6 +104,8 @@ exports.en = {
       'sexual_orientation_status_required': 'Sexual orientation status is a required field.',
       'workouts_status_required': 'Workout status is a required field.',
       'health_categories_status_required': 'Health category status is a required field.',
+      'user_id_required': 'User id is a required field.',
+      'reason_required': 'Reason is a required field.',
     },
     'response': {
       'login_success': 'Logged in successfully.',
@@ -133,6 +135,7 @@ exports.en = {
       'mute_peer_store': 'Peer has been muted successfully.',
       'unmute_peer_store': 'Peer has been unmuted successfully.',
       'visibility': 'Profile visibility saved successfully.',
+      'reported_successfully': 'User has been reported successfully.'
     },
   },
   'email': {

@@ -40,6 +40,8 @@ const apiRoute = {
 
   USER: '/user/:id?',
 
+  USER_REPORTED: '/user/reported',
+
 }
 
 module.exports = {
