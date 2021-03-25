@@ -132,7 +132,7 @@ exports.en = {
       'peer_unmatch_store': 'Unmatched peer saved successfully.',
       'mute_peer_store': 'Peer has been muted successfully.',
       'unmute_peer_store': 'Peer has been unmuted successfully.',
-      'visibility_settings': 'Profile visibility settings saved successfully.',
+      'visibility': 'Profile visibility saved successfully.',
     },
   },
   'email': {

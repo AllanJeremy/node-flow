@@ -55,7 +55,7 @@ exports.UserInterest = [
 ];
 
 
-exports.UserProfileVisibilitySetting = [
+exports.visibility = [
   check('race_status')
     .trim()
     .escape()
