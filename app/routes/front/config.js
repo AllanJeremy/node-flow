@@ -5,6 +5,7 @@ const authRoute = {
   RESEND_CODE: '/auth/email/resend_code',
   FORGOT_PASSWORD_REQUEST: '/auth/reset_password',
   FORGOT_PASSWORD: '/auth/reset_password/verify',
+  REPORTED_REASON: '/reported_reasons',
 }
 
 const apiRoute = {
