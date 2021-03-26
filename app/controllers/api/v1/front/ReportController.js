@@ -82,6 +82,7 @@ class ReportController {
 
     ReportedUser.create({
       user_id: req.body.user_id,
+      reported_by: req.id,
       reason: reason,
       type: req.query.type && req.query.type == 'flagged' ?  ReportTypes[0] : ReportTypes[1],
       status: StatusHandler.pending
