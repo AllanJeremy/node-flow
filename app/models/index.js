@@ -68,5 +68,7 @@ db.User.hasMany(db.UserConversationStarter, {foreignKey: 'user_id', as: 'convers
 db.UserConversationStarter.belongsTo(db.ConversationStarter, {foreignKey: 'conversation_starter_id', as: 'conversation_starter'});
 db.User.hasOne(db.UserInterest, {foreignKey: 'user_id', as: 'user_interest'});
 db.ListedPeer.belongsTo(db.User, {foreignKey: 'peer_id', as: 'peer'});
+db.ReportedUser.belongsTo(db.User, {foreignKey: 'user_id', as: 'reported_user'});
+db.ReportedUser.belongsTo(db.User, {foreignKey: 'reported_by', as: 'reported_by_user'});
 
 module.exports = db;

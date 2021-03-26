@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: ['reported', 'flagged']
     },
-    status: DataTypes.INTEGER
+    status: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'ReportedUser',

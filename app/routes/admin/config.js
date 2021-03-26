@@ -89,6 +89,13 @@ const apiRoute = {
     DELETE: '/conversation_starter/delete/:id'
   },
 
+  REPORTED_USERS: {
+    LIST:  '/reported_users/list',
+    NEW: '/reported_users/new',
+    READ: '/reported_users/read/:id',
+    UNREAD: '/reported_users/unread/:id'
+  },
+
 };
 
 module.exports = {
