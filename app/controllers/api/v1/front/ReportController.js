@@ -77,9 +77,12 @@ class ReportController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
+    let allReasons = Object.keys(ReportReasonHandler);
+    let reason = allReasons.indexOf(req.body.reason) > -1 ? ReportReasonHandler[req.body.reason] : req.body.reason;
+
     ReportedUser.create({
       user_id: req.body.user_id,
-      reason: req.body.reason,
+      reason: reason,
       type: req.query.type && req.query.type == 'flagged' ?  ReportTypes[0] : ReportTypes[1],
       status: StatusHandler.pending
     })
