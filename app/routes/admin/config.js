@@ -89,7 +89,7 @@ const apiRoute = {
     DELETE: '/conversation_starter/delete/:id'
   },
 
-  REPORTED_USERS: {
+  REPORTED_USER: {
     LIST:  '/reported_users/list',
     NEW: '/reported_users/new',
     READ: '/reported_users/read/:id',

@@ -18,12 +18,12 @@ ReportController = new ReportController();
 /**
  * Report Routes
  */
-router.get(apiRoute.REPORTED_USERS.LIST, ReportController.userList);
+router.get(apiRoute.REPORTED_USER.LIST, ReportController.userList);
 
-router.get(apiRoute.REPORTED_USERS.NEW, ReportController.newUser);
+router.get(apiRoute.REPORTED_USER.NEW, ReportController.newUser);
 
-router.patch(apiRoute.REPORTED_USERS.READ, ReportController.status);
+router.patch(apiRoute.REPORTED_USER.READ, ReportController.status);
 
-router.patch(apiRoute.REPORTED_USERS.UNREAD, ReportController.status);
+router.patch(apiRoute.REPORTED_USER.UNREAD, ReportController.status);
 
 module.exports = router;
