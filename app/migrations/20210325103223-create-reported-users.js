@@ -22,7 +22,7 @@ module.exports = {
         defaultValue: 'reported',
       },
       status: {
-        type: Sequelize.INTEGER
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

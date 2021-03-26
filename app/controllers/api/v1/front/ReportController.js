@@ -10,6 +10,8 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
+const ReportTypes = require('../../../../helpers/ReportTypes');
+
 const ReportReasonHandler = require('../../../../helpers/ReportReasonHandler');
 
 /**
@@ -30,11 +32,6 @@ const validationLanguage = language.en.front.validation;
  */
 var ReportTransformer = require('../../../../transformers/front/ReportTransformer');
 ReportTransformer = new ReportTransformer();
-
-const ReportTypes = [
-  'flagged',
-  'reported'
-];
 
 
 class ReportController {
@@ -80,7 +77,7 @@ class ReportController {
     ReportedUser.create({
       user_id: req.body.user_id,
       reason: req.body.reason,
-      type: req.query.type && req.query.type == 'flagged' ?  ReportTypes[0] : ReportTypes[1],
+      type: req.query.type && req.query.type == 'flagged' ?  Object.keys(ReportTypes)[0] : Object.keys(ReportTypes)[1],
       status: StatusHandler.pending
     })
     .then(response => {
