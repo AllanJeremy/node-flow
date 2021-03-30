@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class UserMetaData extends Model {
+  class UserMetadata extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  UserMetaData.init({
+  UserMetadata.init({
     user_id: DataTypes.INTEGER,
     race_id: DataTypes.INTEGER,
     race_status: DataTypes.INTEGER,
@@ -27,12 +27,12 @@ module.exports = (sequelize, DataTypes) => {
     deleted_at: DataTypes.DATE
   }, {
     sequelize,
-    modelName: 'UserMetaData',
-    tableName: 'user_meta_data',
+    modelName: 'UserMetadata',
+    tableName: 'user_metadata',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
     deletedAt: 'deleted_at',
     paranoid: true,
   });
-  return UserMetaData;
+  return UserMetadata;
 };

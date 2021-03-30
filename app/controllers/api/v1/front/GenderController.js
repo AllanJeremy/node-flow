@@ -10,13 +10,18 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
+
 
 /**
  * Models
  */
 const Models = require('../../../../models');
 const Gender = Models.Gender;
-const UserMetaData = Models.UserMetaData;
+const UserMetadata = Models.UserMetadata;
 
 /**
  * Languages
@@ -78,41 +83,63 @@ class GenderController {
         status: StatusHandler.pending
       })
       .then(response => {
-        this.update(res, req.id, response.id);
+        this.update(res, req.id, response.id, req.body.other);
       })
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
       })
     } else {
-      this.update(res, req.id, req.body.gender);
+      Gender.findOne({
+        where: {
+          id: req.body.gender
+        }
+      }).then(response => {
+        this.update(res, req.id, req.body.gender, response.name);
+      });
     }
   }
 
-  update = (res, userId, genderId) => {
-    UserMetaData.findOne({
+  update = (res, userId, genderId, name) => {
+    UserMetadata.findOne({
       where: {
         user_id: userId
       }
     }).then(response => {
       if(!response) {
-        UserMetaData.create({
+        UserMetadata.create({
           user_id: userId,
           gender_id: genderId
         })
         .then(response => {
+
+          let data = {
+            id: userId,
+            name: name
+          }
+
+          SearchActivityHandler.store(SearchActivityAction.gender, data);
+
           return ResponseHandler.success(res, responseLanguage.gender_save);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         });
       } else {
-        UserMetaData.update({
+        UserMetadata.update({
           gender_id: genderId
         },
         {
           where: {user_id: userId}
         })
         .then(response => {
+
+          let data = {
+            id: userId,
+            name: name
+          }
+
+          SearchActivityHandler.store(SearchActivityAction.gender, data);
+
           return ResponseHandler.success(res, responseLanguage.gender_save);
         })
         .catch(err => {

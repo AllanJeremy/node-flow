@@ -10,13 +10,18 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
+
 
 /**
  * Models
  */
 const Models = require('../../../../models');
 const SexualOrientation = Models.SexualOrientation;
-const UserMetaData = Models.UserMetaData;
+const UserMetadata = Models.UserMetadata;
 
 /**
  * Languages
@@ -79,41 +84,63 @@ class SexualOrientationController {
         status: StatusHandler.pending
       })
       .then(response => {
-        this.update(res, req.id, response.id);
+        this.update(res, req.id, response.id, req.body.other);
       })
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
       })
     } else {
-      this.update(res, req.id, req.body.sexual_orientation);
+      SexualOrientation.findOne({
+        where: {
+          id: req.body.sexual_orientation
+        }
+      }).then(response => {
+        this.update(res, req.id, req.body.sexual_orientation, response.name);
+      });
     }
   }
 
-  update = (res, userId, sexualOrientationId) => {
-    UserMetaData.findOne({
+  update = (res, userId, sexualOrientationId, name) => {
+    UserMetadata.findOne({
       where: {
         user_id: userId
       }
     }).then(response => {
       if(!response) {
-        UserMetaData.create({
+        UserMetadata.create({
           user_id: userId,
           sexual_orientation_id: sexualOrientationId
         })
         .then(response => {
+
+          let data = {
+            id: userId,
+            name: name
+          }
+
+          SearchActivityHandler.store(SearchActivityAction.sexualOrientation, data);
+
           return ResponseHandler.success(res, responseLanguage.sexual_orientation_save);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         });
       } else {
-        UserMetaData.update({
+        UserMetadata.update({
           sexual_orientation_id: sexualOrientationId
         },
         {
           where: {user_id: userId}
         })
         .then(response => {
+
+          let data = {
+            id: userId,
+            name: name
+          }
+
+          SearchActivityHandler.store(SearchActivityAction.sexualOrientation, data);
+
           return ResponseHandler.success(res, responseLanguage.sexual_orientation_save);
         })
         .catch(err => {

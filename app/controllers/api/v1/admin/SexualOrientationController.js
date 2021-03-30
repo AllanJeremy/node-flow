@@ -11,7 +11,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const SexualOrientation = Models.SexualOrientation;
-const UserMetaData = Models.UserMetaData;
+const UserMetadata = Models.UserMetadata;
 
 /**
  * Languages
@@ -185,7 +185,7 @@ class SexualOrientationController {
       }
     })
     .then(response => {
-      UserMetaData.update({
+      UserMetadata.update({
           sexual_orientation_id: req.body.merged_id,
         },
         {

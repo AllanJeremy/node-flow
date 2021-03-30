@@ -10,6 +10,11 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
+
 
 /**
  * Models
@@ -85,6 +90,7 @@ class HealthCategoryController {
       });
       this.update(req.id, healthCategory.id);
     }
+
     return ResponseHandler.success(res, responseLanguage.health_category_save);
   }
 
@@ -96,9 +102,28 @@ class HealthCategoryController {
       }
     });
     if(!isUserHealthCategoryExist) {
-      await UserHealthCategory.create({
+      UserHealthCategory.create({
         user_id: userId,
         health_category_id: healthCategoryId
+      }).then(response => {
+        UserHealthCategory.findAll({
+          where: {
+            user_id: userId
+          },
+          include: [{
+            model: HealthCategory,
+            attributes: ['name'],
+            as: 'health_category'
+          }],
+          raw: true
+        }).then(response => {
+          let healthCategories = response.map(item => item['health_category.name']);
+          let data = {
+            id: userId,
+            name: healthCategories
+          }
+          SearchActivityHandler.store(SearchActivityAction.healthCategory, data);
+        });
       });
     }
   }

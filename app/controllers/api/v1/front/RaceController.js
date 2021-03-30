@@ -10,13 +10,18 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
+
 
 /**
  * Models
  */
 const Models = require('../../../../models');
 const Race = Models.Race;
-const UserMetaData = Models.UserMetaData;
+const UserMetadata = Models.UserMetadata;
 
 /**
  * Languages
@@ -66,54 +71,79 @@ class RaceController {
    *
    * @apiSuccess (200) {Object}
    */
-  store = (req, res) => {
-
+  store = async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    if(req.body.other) {  
+    if(req.body.other) {
       Race.create({
         name: req.body.other,
         status: StatusHandler.pending
+      },
+      {
+        returning: true,
+        raw:true
       })
-      .then(response => {
-        this.update(res, req.id, response.id);
+      .then(response => {        
+        this.update(res, req.id, response.id, req.body.other);
       })
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
       })
     } else {
-      this.update(res, req.id, req.body.race);
+      Race.findOne({
+        where: {
+          id: req.body.race
+        }
+      }).then(response => {
+        this.update(res, req.id, req.body.race, response.name);
+      });
     }
 
   }
 
-  update = (res, userId, raceId) => {
-    UserMetaData.findOne({
+  update = (res, userId, raceId, name) => {
+    UserMetadata.findOne({
       where: {
         user_id: userId
       }
     }).then(response => {
       if(!response) {
-        UserMetaData.create({
+        UserMetadata.create({
           user_id: userId,
           race_id: raceId
         })
         .then(response => {
+
+          let data = {
+            id: userId,
+            name: name
+          }
+
+          SearchActivityHandler.store(SearchActivityAction.race, data);
+
           return ResponseHandler.success(res, responseLanguage.race_save);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         });
       } else {
-        UserMetaData.update({
+        UserMetadata.update({
           race_id: raceId
         },{
           where: {user_id: userId}
         })
         .then(response => {
+
+          let data = {
+            id: userId,
+            name: name
+          }
+
+          SearchActivityHandler.store(SearchActivityAction.race, data);
+
           return ResponseHandler.success(res, responseLanguage.race_save);
         })
         .catch(err => {
