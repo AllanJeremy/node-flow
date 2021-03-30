@@ -35,9 +35,14 @@ require('./app/routes/front')(Joyn);
 // admin routes
 require('./app/routes/admin')(Joyn);
 
+// cron job
+var cronJob = require('./app/cron');
+cronJob = new cronJob();
+
 // set port, listen for requests
 const PORT = process.env.PORT || 3001;
 
 Joyn.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
+  cronJob.start();
 });

@@ -37,7 +37,7 @@ db.Race = require('../models/Race.js')(sequelize, Sequelize);
 db.Workout = require('../models/Workout.js')(sequelize, Sequelize);
 db.FamilyDynamic = require('../models/FamilyDynamic.js')(sequelize, Sequelize);
 db.User = require('../models/User.js')(sequelize, Sequelize);
-db.UserMetaData = require('../models/UserMetaData.js')(sequelize, Sequelize);
+db.UserMetadata = require('../models/UserMetadata.js')(sequelize, Sequelize);
 db.UserWorkout = require('../models/UserWorkout.js')(sequelize, Sequelize);
 db.UserHealthCategory = require('../models/UserHealthCategory.js')(sequelize, Sequelize);
 db.VerifyUser = require('../models/VerifyUser.js')(sequelize, Sequelize);
@@ -50,14 +50,15 @@ db.UserInterest = require('../models/UserInterest.js')(sequelize, Sequelize);
 db.ListedPeer = require('../models/ListedPeer.js')(sequelize, Sequelize);
 db.DelistedPeer = require('../models/DelistedPeer.js')(sequelize, Sequelize);
 db.ReportedUser = require('../models/ReportedUser.js')(sequelize, Sequelize);
+db.SearchActivity = require('../models/SearchActivity.js')(sequelize, Sequelize);
 
 
 // relationships
-db.User.hasOne(db.UserMetaData, {foreignKey: 'user_id', as: 'user_meta_data'});
-db.UserMetaData.belongsTo(db.Race, {foreignKey: 'race_id'});
-db.UserMetaData.belongsTo(db.Gender, {foreignKey: 'gender_id'});
-db.UserMetaData.belongsTo(db.SexualOrientation, {foreignKey: 'sexual_orientation_id'});
-db.UserMetaData.belongsTo(db.FamilyDynamic, {foreignKey: 'family_detail_id'});
+db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
+db.UserMetadata.belongsTo(db.Race, {foreignKey: 'race_id'});
+db.UserMetadata.belongsTo(db.Gender, {foreignKey: 'gender_id'});
+db.UserMetadata.belongsTo(db.SexualOrientation, {foreignKey: 'sexual_orientation_id'});
+db.UserMetadata.belongsTo(db.FamilyDynamic, {foreignKey: 'family_detail_id'});
 db.User.hasMany(db.UserHealthCategory, {foreignKey: 'user_id', as: 'health_categories'});
 db.UserHealthCategory.belongsTo(db.HealthCategory, {foreignKey: 'health_category_id', as: 'health_category'});
 db.User.hasMany(db.UserWorkout, {foreignKey: 'user_id', as: 'workouts'});

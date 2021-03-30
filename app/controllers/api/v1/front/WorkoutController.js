@@ -10,6 +10,10 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
 
 /**
  * Models
@@ -97,9 +101,28 @@ class WorkoutController {
       }
     });
     if(!isUserWorkoutExist) {
-      await UserWorkout.create({
+      UserWorkout.create({
         user_id: userId,
         workout_id: workoutId
+      }).then(response => {
+        UserWorkout.findAll({
+          where: {
+            user_id: userId
+          },
+          include: [{
+            model: Workout,
+            attributes: ['name'],
+            as: 'workout'
+          }],
+          raw: true
+        }).then(response => {
+          let workouts = response.map(item => item['workout.name']);
+          let data = {
+            id: userId,
+            name: workouts
+          }
+          SearchActivityHandler.store(SearchActivityAction.workout, data);
+        });
       });
     }
   }

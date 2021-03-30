@@ -12,6 +12,11 @@ const StatusHandler = require('../../../../helpers/StatusHandler');
 
 const PeerStatusHandler = require('../../../../helpers/PeerStatusHandler');
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
+
 
 /**
  * Models
@@ -68,6 +73,20 @@ class PeerController {
       }
     })
     .then(response => {
+      ListedPeer.findAll({
+        where: {
+          user_id: req.id
+        },
+        attributes: ['peer_id'],
+        raw: true
+      }).then(response => {
+        let peers = response.map(item => item.peer_id);
+        let data = {
+          id: req.id,
+          listed_peers: peers
+        }
+        SearchActivityHandler.store(SearchActivityAction.listedPeerUpdate, data);
+      });
       return ResponseHandler.success(res, responseLanguage.peer_match_store);
     })
     .catch(err => {
@@ -102,6 +121,22 @@ class PeerController {
       }
     })
     .then(response => {
+
+      DelistedPeer.findAll({
+        where: {
+          user_id: req.id
+        },
+        attributes: ['peer_id'],
+        raw: true
+      }).then(response => {
+        let peers = response.map(item => item.peer_id);
+        let data = {
+          id: req.id,
+          delisted_peers: peers
+        }
+        SearchActivityHandler.store(SearchActivityAction.delistedPeerUpdate, data);
+      });
+
       ListedPeer.destroy({
         where: {
           user_id: req.id,

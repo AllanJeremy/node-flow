@@ -11,7 +11,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const Race = Models.Race;
-const UserMetaData = Models.UserMetaData;
+const UserMetadata = Models.UserMetadata;
 
 /**
  * Languages
@@ -186,7 +186,7 @@ class RaceController {
       }
     })
     .then(response => {
-      UserMetaData.update({
+      UserMetadata.update({
           race_id: req.body.merged_id,
         },
         {

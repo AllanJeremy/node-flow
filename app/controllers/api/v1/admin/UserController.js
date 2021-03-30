@@ -11,7 +11,7 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const User = Models.User;
-const UserMetaData = Models.UserMetaData;
+const UserMetadata = Models.UserMetadata;
 const Race = Models.Race;
 const Gender = Models.Gender;
 const SexualOrientation = Models.SexualOrientation;
@@ -76,7 +76,7 @@ class UserController {
       where: {id: req.params.id},
       include: [
       {
-        model: UserMetaData,
+        model: UserMetadata,
         include: [
           { model: Race, attributes: ['name'] },
           { model: Gender, attributes: ['name'] },

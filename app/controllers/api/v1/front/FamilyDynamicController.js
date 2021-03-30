@@ -10,13 +10,18 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
+
 
 /**
  * Models
  */
 const Models = require('../../../../models');
 const FamilyDynamic = Models.FamilyDynamic;
-const UserMetaData = Models.UserMetaData;
+const UserMetadata = Models.UserMetadata;
 
 /**
  * Languages
@@ -79,41 +84,61 @@ class FamilyDynamicController {
         status: StatusHandler.pending
       })
       .then(response => {
-        this.update(res, req.id, response.id);
+        this.update(res, req.id, response.id, req.body.other);
       })
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
       })
     } else {
-      this.update(res, req.id, req.body.family_dynamic);
+      FamilyDynamic.findOne({
+        where: {
+          id: req.body.family_dynamic
+        }
+      }).then(response => {
+        this.update(res, req.id, req.body.family_dynamic, response.name);
+      });
     }
   }
 
-  update = (res, userId, familyDynamicId) => {
-    UserMetaData.findOne({
+  update = (res, userId, familyDynamicId, name) => {
+    UserMetadata.findOne({
       where: {
         user_id: userId
       }
     }).then(response => {
       if(!response) {
-        UserMetaData.create({
+        UserMetadata.create({
           user_id: userId,
           family_detail_id: familyDynamicId
         })
         .then(response => {
+          let data = {
+            id: userId,
+            name: name
+          }
+
+          SearchActivityHandler.store(SearchActivityAction.familyDynamic, data);
+
           return ResponseHandler.success(res, responseLanguage.family_dynamic_save);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         });
       } else {
-        UserMetaData.update({
+        UserMetadata.update({
           family_detail_id: familyDynamicId
         },
         {
           where: {user_id: userId}
         })
         .then(response => {
+          let data = {
+            id: userId,
+            name: name
+          }
+
+          SearchActivityHandler.store(SearchActivityAction.familyDynamic, data);
+
           return ResponseHandler.success(res, responseLanguage.family_dynamic_save);
         })
         .catch(err => {

@@ -8,12 +8,17 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
+
 /**
  * Models
  */
 const Models = require('../../../../models');
 const User = Models.User;
-const UserMetaData = Models.UserMetaData;
+const UserMetadata = Models.UserMetadata;
 const UserInterest = Models.UserInterest;
 const Race = Models.Race;
 const Gender = Models.Gender;
@@ -72,9 +77,22 @@ class UserProfileController {
         profile_picture: req.body.profile_picture,
       },
       {
-        where: {id: response.id}
+        where: {id: response.id},
+        returning: true,
+        raw: true
       })
       .then(response => {
+        let res_data = response[1][0];
+        let data = {
+          id: req.id,
+          first_name: res_data.first_name,
+          name_prefix: res_data.name_prefix,
+          birth_date: res_data.birth_date,
+          profile_picture: res_data.profile_picture
+        }
+
+        SearchActivityHandler.store(SearchActivityAction.basicProfile, data);
+
         return ResponseHandler.success(res, responseLanguage.profile_create);
       })
       .catch(err => {
@@ -103,13 +121,13 @@ class UserProfileController {
       return ResponseHandler.error(res, 422, errors.array());
     }
 
-    UserMetaData.findOne({
+    UserMetadata.findOne({
       where: {
         user_id: req.id
       }
     }).then(response => {
       if(!response) {
-        UserMetaData.create({
+        UserMetadata.create({
           user_id: req.id,
           summary: req.body.summary
         })
@@ -120,7 +138,7 @@ class UserProfileController {
           return ResponseHandler.error(res, 500, err.message);
         });
       } else {
-        UserMetaData.update({
+        UserMetadata.update({
           summary: req.body.summary
         },{
           where: {user_id: req.id}
@@ -189,12 +207,12 @@ class UserProfileController {
       return ResponseHandler.error(res, 422, errors.array());
     }
 
-    UserMetaData.findOne({
+    UserMetadata.findOne({
       where: {
         user_id: req.id
       }
     }).then(async response => {
-      await UserMetaData.update({
+      await UserMetadata.update({
         race_status: req.body.race_status,
         gender_status: req.body.gender_status,
         family_detail_status: req.body.family_dynamic_status,
@@ -256,7 +274,7 @@ class UserProfileController {
       where: { id: userId },
       include: [
       {
-        model: UserMetaData,
+        model: UserMetadata,
         include: [
           { model: Race, attributes: ['name'] },
           { model: Gender, attributes: ['name'] },
