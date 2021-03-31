@@ -84,7 +84,7 @@ class SexualOrientationController {
         status: StatusHandler.pending
       })
       .then(response => {
-        this.update(res, req.id, response.id, req.body.other);
+        this.update(res, req.id, response.id);
       })
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
@@ -100,25 +100,26 @@ class SexualOrientationController {
     }
   }
 
-  update = (res, userId, sexualOrientationId, name) => {
+  update = (res, userId, sexualOrientationId, name = '') => {
     UserMetadata.findOne({
       where: {
         user_id: userId
       }
     }).then(response => {
-      if(!response) {
+      if (!response) {
         UserMetadata.create({
           user_id: userId,
           sexual_orientation_id: sexualOrientationId
         })
         .then(response => {
+          if (name) {
+            let data = {
+              id: userId,
+              name: name
+            }
 
-          let data = {
-            id: userId,
-            name: name
+            SearchActivityHandler.store(SearchActivityAction.sexualOrientationUpdate, data);
           }
-
-          SearchActivityHandler.store(SearchActivityAction.sexualOrientation, data);
 
           return ResponseHandler.success(res, responseLanguage.sexual_orientation_save);
         })
@@ -133,13 +134,14 @@ class SexualOrientationController {
           where: {user_id: userId}
         })
         .then(response => {
+          if (name) {
+            let data = {
+              id: userId,
+              name: name
+            }
 
-          let data = {
-            id: userId,
-            name: name
+            SearchActivityHandler.store(SearchActivityAction.sexualOrientationUpdate, data);
           }
-
-          SearchActivityHandler.store(SearchActivityAction.sexualOrientation, data);
 
           return ResponseHandler.success(res, responseLanguage.sexual_orientation_save);
         })

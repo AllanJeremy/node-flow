@@ -83,7 +83,7 @@ class RaceController {
           question_id: item.question_id,
         }
       });
-      if(!isQuestionExist) {
+      if (!isQuestionExist) {
         await UserPersonalityQuestion.create({
           user_id: req.id,
           question_id: item.question_id,

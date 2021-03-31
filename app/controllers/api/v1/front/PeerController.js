@@ -66,7 +66,7 @@ class PeerController {
         user_id: req.id,
         peer_id: req.body.peer_id
       },
-      defaults: { 
+      defaults: {
         user_id: req.id,
         peer_id: req.body.peer_id,
         status: PeerStatusHandler.active
@@ -115,7 +115,7 @@ class PeerController {
         user_id: req.id,
         peer_id: req.body.peer_id
       },
-      defaults: { 
+      defaults: {
         user_id: req.id,
         peer_id: req.body.peer_id
       }
@@ -214,12 +214,12 @@ class PeerController {
       }
     })
     .then(response => {
-      if(response) {
+      if (response) {
         ListedPeer.update({
           status: PeerStatusHandler.mute,
         },
         {
-          where: { 
+          where: {
             user_id: req.id,
             peer_id: req.body.peer_id
           },
@@ -262,12 +262,12 @@ class PeerController {
       }
     })
     .then(response => {
-      if(response) {
+      if (response) {
         ListedPeer.update({
           status: PeerStatusHandler.active,
         },
         {
-          where: { 
+          where: {
             user_id: req.id,
             peer_id: req.body.peer_id
           },

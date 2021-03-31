@@ -6,6 +6,11 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
+
 /**
  * Models
  */
@@ -124,6 +129,22 @@ class FamilyDynamicController {
           returning: true
         })
         .then(result => {
+
+          UserMetadata.findAll({
+            where: { family_detail_id: req.params.id },
+            raw: true
+          }).then(response => {
+            if(response && response.length > 0) {
+              response.map((item, index) => {
+                let data = {
+                  id: item.user_id,
+                  name: req.body.name
+                }
+                SearchActivityHandler.store(SearchActivityAction.familyDynamicUpdate, data);
+              });
+            }
+          });
+
           return ResponseHandler.success(
             res, responseLanguage.family_dynamic_update_success, CommonTransformer.transform(result));
         })
@@ -192,9 +213,23 @@ class FamilyDynamicController {
         },
         {
         where: { family_detail_id: req.body.id },
-        returning: true
+        returning: true,
+        plain: true
       })
       .then(response => {
+
+        FamilyDynamic.findOne({
+          where: {
+            id: req.body.merged_id
+          }
+        }).then(result => {
+          let data = {
+            id: response[1].dataValues.user_id,
+            name: result.name
+          }
+          SearchActivityHandler.store(SearchActivityAction.familyDynamicUpdate, data);
+        });
+
         FamilyDynamic.destroy({ where: { id: req.body.id }, force: true });
         return ResponseHandler.success(res, responseLanguage.family_dynamic_merge_success);
       })

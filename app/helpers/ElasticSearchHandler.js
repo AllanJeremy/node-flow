@@ -29,12 +29,12 @@ const indexName = "users";
  * @package app
  * @subpackage helpers
  */
-class elasticSearchHandler {
+class ElasticSearchHandler {
 
 	/**
 	* Create the index
 	*/
-	initIndex = () => {  
+	initIndex = () => {
     return client.indices.create({
       index: indexName
     });
@@ -44,7 +44,7 @@ class elasticSearchHandler {
 	/**
 	* Check if the index exists
 	*/
-	indexExists = () => {  
+	indexExists = () => {
     return client.indices.exists({
       index: indexName
     });
@@ -55,7 +55,7 @@ class elasticSearchHandler {
 	*/
 	addDocument = async(id, body) => {
     let res = await client.index({
-     	index: 'users',
+     	index: indexName,
      	id: id,
 	    body: body
     });
@@ -65,15 +65,35 @@ class elasticSearchHandler {
   /**
 	* Update data by id in the index
 	*/
-  updateDocument = (id, body) => {
-    let res = client.update({
-     	index: 'users',
+  updateDocument = async(id, body) => {
+    let res = await client.update({
+     	index: indexName,
      	id: id,
 	    body: { doc: body}
+    });
+
+    return res;
+  }
+
+  /**
+  * Delete document field by id in the index
+  */
+  deleteDocumentField = async(deleteField, matchQuery) => {
+    let res = await client.updateByQuery({
+      index: indexName,
+      body: {
+        script: {
+          'source': 'ctx._source.remove("' + deleteField + '")',
+          'lang': 'painless'
+        },
+        query: {
+          term: { deleteField : matchQuery }
+        }
+      }
     });
     return res;
   }
 
 }
 
-module.exports = elasticSearchHandler;
+module.exports = ElasticSearchHandler;

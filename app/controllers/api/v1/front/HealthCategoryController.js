@@ -83,7 +83,7 @@ class HealthCategoryController {
     healthCategories && healthCategories.length > 0 && healthCategories.length > 0 && healthCategories.map(async(item, index) => {
       this.update(req.id, item);
     });
-    if(req.body.other) {
+    if (req.body.other) {
       let healthCategory = await HealthCategory.create({
         name: req.body.other,
         status: StatusHandler.pending
@@ -101,7 +101,7 @@ class HealthCategoryController {
         health_category_id: healthCategoryId
       }
     });
-    if(!isUserHealthCategoryExist) {
+    if (!isUserHealthCategoryExist) {
       UserHealthCategory.create({
         user_id: userId,
         health_category_id: healthCategoryId
@@ -113,16 +113,19 @@ class HealthCategoryController {
           include: [{
             model: HealthCategory,
             attributes: ['name'],
-            as: 'health_category'
+            as: 'health_category',
+            where: { status: StatusHandler.active }
           }],
           raw: true
         }).then(response => {
-          let healthCategories = response.map(item => item['health_category.name']);
-          let data = {
-            id: userId,
-            name: healthCategories
+          if (response && response.length > 0) {
+            let healthCategories = response.map(item => item['health_category.name']);
+            let data = {
+              id: userId,
+              name: healthCategories
+            }
+            SearchActivityHandler.store(SearchActivityAction.healthCategoryUpdate, data);
           }
-          SearchActivityHandler.store(SearchActivityAction.healthCategory, data);
         });
       });
     }

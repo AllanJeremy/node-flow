@@ -6,6 +6,12 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
+
+
 /**
  * Models
  */
@@ -122,6 +128,22 @@ class SexualOrientationController {
           returning: true
         })
         .then(result => {
+
+          UserMetadata.findAll({
+            where: { sexual_orientation_id: req.params.id },
+            raw: true
+          }).then(response => {
+            if (response && response.length > 0) {
+              response.map((item, index) => {
+                let data = {
+                  id: item.user_id,
+                  name: req.body.name
+                }
+                SearchActivityHandler.store(SearchActivityAction.sexualOrientationUpdate, data);
+              });
+            }
+          });
+
           return ResponseHandler.success(
             res, responseLanguage.sexual_orientation_update_success, CommonTransformer.transform(result));
         })
@@ -190,9 +212,22 @@ class SexualOrientationController {
         },
         {
         where: { sexual_orientation_id: req.body.id },
-        returning: true
+        returning: true,
+        plain: true
       })
       .then(response => {
+        SexualOrientation.findOne({
+          where: {
+            id: req.body.merged_id
+          }
+        }).then(result => {
+          let data = {
+            id: response[1].dataValues.user_id,
+            name: result.name
+          }
+          SearchActivityHandler.store(SearchActivityAction.sexualOrientationUpdate, data);
+        });
+
         SexualOrientation.destroy({ where: { id: req.body.id }, force: true });
         return ResponseHandler.success(res, responseLanguage.sexual_orientation_merge_success);
       })

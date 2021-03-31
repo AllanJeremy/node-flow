@@ -41,7 +41,7 @@ exports.verify = (req, res, next) => {
     authAdminRoute.AUTH_TOKEN
   ]
 
-  if(isAdmin) {
+  if (isAdmin) {
     isPublicRoute = adminPublicRoute.indexOf(currentURL.replace(routePrefix, '')) > -1 ? true : false;
 
   } else {

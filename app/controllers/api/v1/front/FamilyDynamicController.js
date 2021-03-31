@@ -84,7 +84,7 @@ class FamilyDynamicController {
         status: StatusHandler.pending
       })
       .then(response => {
-        this.update(res, req.id, response.id, req.body.other);
+        this.update(res, req.id, response.id);
       })
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
@@ -100,24 +100,27 @@ class FamilyDynamicController {
     }
   }
 
-  update = (res, userId, familyDynamicId, name) => {
+  update = (res, userId, familyDynamicId, name = '') => {
     UserMetadata.findOne({
       where: {
         user_id: userId
       }
     }).then(response => {
-      if(!response) {
+      if (!response) {
         UserMetadata.create({
           user_id: userId,
           family_detail_id: familyDynamicId
         })
         .then(response => {
-          let data = {
-            id: userId,
-            name: name
-          }
 
-          SearchActivityHandler.store(SearchActivityAction.familyDynamic, data);
+          if (name) {
+            let data = {
+              id: userId,
+              name: name
+            }
+
+            SearchActivityHandler.store(SearchActivityAction.familyDynamicUpdate, data);
+          }
 
           return ResponseHandler.success(res, responseLanguage.family_dynamic_save);
         })
@@ -132,12 +135,14 @@ class FamilyDynamicController {
           where: {user_id: userId}
         })
         .then(response => {
-          let data = {
-            id: userId,
-            name: name
-          }
+          if (name) {
+            let data = {
+              id: userId,
+              name: name
+            }
 
-          SearchActivityHandler.store(SearchActivityAction.familyDynamic, data);
+            SearchActivityHandler.store(SearchActivityAction.familyDynamicUpdate, data);
+          }
 
           return ResponseHandler.success(res, responseLanguage.family_dynamic_save);
         })
