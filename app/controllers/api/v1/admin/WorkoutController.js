@@ -6,6 +6,11 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
+
 /**
  * Models
  */
@@ -122,6 +127,22 @@ class WorkoutController {
           returning: true
         })
         .then(result => {
+
+          UserWorkout.findAll({
+            where: { workout_id: req.params.id },
+            raw: true
+          }).then(response => {
+            if(response && response.length > 0) {
+              response.map((item, index) => {
+                let data = {
+                  id: item.user_id,
+                  name: req.body.name
+                }
+                SearchActivityHandler.store(SearchActivityAction.workoutUpdate, data);
+              });
+            }
+          });
+
           return ResponseHandler.success(
             res, responseLanguage.workout_update_success, CommonTransformer.transform(result));
         })
@@ -190,9 +211,23 @@ class WorkoutController {
         },
         {
         where: { workout_id: req.body.id },
-        returning: true
+        returning: true,
+        plain: true
       })
       .then(response => {
+
+        Workout.findOne({
+          where: {
+            id: req.body.merged_id
+          }
+        }).then(result => {
+          let data = {
+            id: response[1].dataValues.user_id,
+            name: result.name
+          }
+          SearchActivityHandler.store(SearchActivityAction.workoutUpdate, data);
+        });
+
         Workout.destroy({ where: { id: req.body.id }, force: true });
         return ResponseHandler.success(res, responseLanguage.workout_merge_success);
       })

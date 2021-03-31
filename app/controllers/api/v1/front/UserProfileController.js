@@ -126,7 +126,7 @@ class UserProfileController {
         user_id: req.id
       }
     }).then(response => {
-      if(!response) {
+      if (!response) {
         UserMetadata.create({
           user_id: req.id,
           summary: req.body.summary
@@ -184,7 +184,7 @@ class UserProfileController {
       return ResponseHandler.error(res, 500, err.message);
     });
   }
-  
+
 
   /**
    * @api {post} /user/profile/visibility Handles user profile visibility store operation
@@ -229,9 +229,9 @@ class UserProfileController {
           status: item.status
         },
         {
-          where: { 
+          where: {
             user_id: req.id,
-            workout_id: item.id 
+            workout_id: item.id
           }
         });
       });
@@ -243,7 +243,7 @@ class UserProfileController {
           status: item.status
         },
         {
-          where: { 
+          where: {
             user_id: req.id,
             health_category_id: item.id
           }

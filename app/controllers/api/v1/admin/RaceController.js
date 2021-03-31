@@ -6,6 +6,11 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
+
 /**
  * Models
  */
@@ -123,6 +128,22 @@ class RaceController {
           returning: true
         })
         .then(result => {
+
+          UserMetadata.findAll({
+            where: { race_id: req.params.id },
+            raw: true
+          }).then(response => {
+            if (response && response.length > 0) {
+              response.map((item, index) => {
+                let data = {
+                  id: item.user_id,
+                  name: req.body.name
+                }
+                SearchActivityHandler.store(SearchActivityAction.raceUpdate, data);
+              });
+            }
+          });
+
           return ResponseHandler.success(
             res, responseLanguage.race_update_success, CommonTransformer.transform(result));
         })
@@ -155,6 +176,11 @@ class RaceController {
     })
     .then(response => {
       if (response) {
+        let data = {
+          name: response.name
+        }
+        SearchActivityHandler.store(SearchActivityAction.raceDelete, data);
+
         Race.destroy({ where: { id: req.params.id } })
         .then(response => {
           return ResponseHandler.success(res, responseLanguage.race_delete_success);
@@ -191,9 +217,23 @@ class RaceController {
         },
         {
         where: { race_id: req.body.id },
-        returning: true
+        returning: true,
+        plain: true
       })
       .then(response => {
+
+        Race.findOne({
+          where: {
+            id: req.body.merged_id
+          }
+        }).then(result => {
+          let data = {
+            id: response[1].dataValues.user_id,
+            name: result.name
+          }
+          SearchActivityHandler.store(SearchActivityAction.raceUpdate, data);
+        });
+
         Race.destroy({ where: { id: req.body.id }, force: true });
         return ResponseHandler.success(res, responseLanguage.race_merge_success);
       })

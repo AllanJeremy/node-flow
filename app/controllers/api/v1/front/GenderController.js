@@ -40,8 +40,8 @@ CommonTransformer = new CommonTransformer();
 class GenderController {
 
   /**
-   * @api {get} /user/profile/gender/list Show race list
-   * @apiName Race list
+   * @api {get} /user/profile/gender/list Show gender list
+   * @apiName Gender list
    * @apiGroup Front
    *
    *
@@ -77,13 +77,13 @@ class GenderController {
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
-    if(req.body.other) {
+    if (req.body.other) {
       Gender.create({
         name: req.body.other,
         status: StatusHandler.pending
       })
       .then(response => {
-        this.update(res, req.id, response.id, req.body.other);
+        this.update(res, req.id, response.id);
       })
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
@@ -99,25 +99,27 @@ class GenderController {
     }
   }
 
-  update = (res, userId, genderId, name) => {
+  update = (res, userId, genderId, name = '') => {
     UserMetadata.findOne({
       where: {
         user_id: userId
       }
     }).then(response => {
-      if(!response) {
+      if (!response) {
         UserMetadata.create({
           user_id: userId,
           gender_id: genderId
         })
         .then(response => {
 
-          let data = {
-            id: userId,
-            name: name
-          }
+          if (name) {
+            let data = {
+              id: userId,
+              name: name
+            }
 
-          SearchActivityHandler.store(SearchActivityAction.gender, data);
+            SearchActivityHandler.store(SearchActivityAction.genderUpdate, data);
+          }
 
           return ResponseHandler.success(res, responseLanguage.gender_save);
         })
@@ -133,12 +135,14 @@ class GenderController {
         })
         .then(response => {
 
-          let data = {
-            id: userId,
-            name: name
-          }
+          if (name) {
+            let data = {
+              id: userId,
+              name: name
+            }
 
-          SearchActivityHandler.store(SearchActivityAction.gender, data);
+            SearchActivityHandler.store(SearchActivityAction.genderUpdate, data);
+          }
 
           return ResponseHandler.success(res, responseLanguage.gender_save);
         })

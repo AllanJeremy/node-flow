@@ -83,7 +83,7 @@ class WorkoutController {
       this.update(req.id, item);
 
     });
-    if(req.body.other) {
+    if (req.body.other) {
       let workout = await Workout.create({
         name: req.body.other,
         status: StatusHandler.pending
@@ -100,7 +100,7 @@ class WorkoutController {
         workout_id: workoutId
       }
     });
-    if(!isUserWorkoutExist) {
+    if (!isUserWorkoutExist) {
       UserWorkout.create({
         user_id: userId,
         workout_id: workoutId
@@ -112,16 +112,19 @@ class WorkoutController {
           include: [{
             model: Workout,
             attributes: ['name'],
-            as: 'workout'
+            as: 'workout',
+            where: { status: StatusHandler.active }
           }],
           raw: true
         }).then(response => {
-          let workouts = response.map(item => item['workout.name']);
-          let data = {
-            id: userId,
-            name: workouts
+          if (response && response.length > 0) {
+            let workouts = response.map(item => item['workout.name']);
+            let data = {
+              id: userId,
+              name: workouts
+            }
+            SearchActivityHandler.store(SearchActivityAction.workoutUpdate, data);
           }
-          SearchActivityHandler.store(SearchActivityAction.workout, data);
         });
       });
     }

@@ -77,7 +77,7 @@ class RaceController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    if(req.body.other) {
+    if (req.body.other) {
       Race.create({
         name: req.body.other,
         status: StatusHandler.pending
@@ -86,8 +86,8 @@ class RaceController {
         returning: true,
         raw:true
       })
-      .then(response => {        
-        this.update(res, req.id, response.id, req.body.other);
+      .then(response => {
+        this.update(res, req.id, response.id);
       })
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
@@ -104,7 +104,7 @@ class RaceController {
 
   }
 
-  update = (res, userId, raceId, name) => {
+  update = (res, userId, raceId, name = '') => {
     UserMetadata.findOne({
       where: {
         user_id: userId
@@ -116,13 +116,14 @@ class RaceController {
           race_id: raceId
         })
         .then(response => {
+          if (name) {
+            let data = {
+              id: userId,
+              name: name
+            }
 
-          let data = {
-            id: userId,
-            name: name
+            SearchActivityHandler.store(SearchActivityAction.raceUpdate, data);
           }
-
-          SearchActivityHandler.store(SearchActivityAction.race, data);
 
           return ResponseHandler.success(res, responseLanguage.race_save);
         })
@@ -137,12 +138,14 @@ class RaceController {
         })
         .then(response => {
 
-          let data = {
-            id: userId,
-            name: name
-          }
+          if (name) {
+            let data = {
+              id: userId,
+              name: name
+            }
 
-          SearchActivityHandler.store(SearchActivityAction.race, data);
+            SearchActivityHandler.store(SearchActivityAction.raceUpdate, data);
+          }
 
           return ResponseHandler.success(res, responseLanguage.race_save);
         })

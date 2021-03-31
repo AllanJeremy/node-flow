@@ -6,6 +6,11 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
+const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+
+var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
+SearchActivityHandler = new SearchActivityHandler();
+
 /**
  * Models
  */
@@ -122,6 +127,22 @@ class HealthCategoryController {
           returning: true
         })
         .then(result => {
+
+          UserHealthCategory.findAll({
+            where: { health_category_id: req.params.id },
+            raw: true
+          }).then(response => {
+            if (response && response.length > 0) {
+              response.map((item, index) => {
+                let data = {
+                  id: item.user_id,
+                  name: req.body.name
+                }
+                SearchActivityHandler.store(SearchActivityAction.healthCategoryUpdate, data);
+              });
+            }
+          });
+
           return ResponseHandler.success(
             res, responseLanguage.health_category_update_success, CommonTransformer.transform(result));
         })
@@ -190,9 +211,23 @@ class HealthCategoryController {
         },
         {
         where: { health_category_id: req.body.id },
-        returning: true
+        returning: true,
+        plain: true
       })
       .then(response => {
+
+        HealthCategory.findOne({
+          where: {
+            id: req.body.merged_id
+          }
+        }).then(result => {
+          let data = {
+            id: response[1].dataValues.user_id,
+            name: result.name
+          }
+          SearchActivityHandler.store(SearchActivityAction.healthCategoryUpdate, data);
+        });
+
         HealthCategory.destroy({ where: { id: req.body.id }, force: true });
         return ResponseHandler.success(res, responseLanguage.health_category_merge_success);
       })

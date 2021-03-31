@@ -90,11 +90,11 @@ class AuthController {
         return ResponseHandler.error(res, 422, validationLanguage.invalid_credentials);
       }
 
-      if(response.status == StatusHandler.pending) {
+      if (response.status == StatusHandler.pending) {
         return ResponseHandler.error(res, 401, responseLanguage.not_verified_account);
       }
 
-      if(response.status == StatusHandler.blocked) {
+      if (response.status == StatusHandler.blocked) {
         return ResponseHandler.error(res, 401, responseLanguage.blocked_account);
       }
 
@@ -200,7 +200,7 @@ class AuthController {
         email: req.body.email
       }
     }).then(response => {
-      if(response) {
+      if (response) {
         let verificationCode = RandomStringGenerator.string(5);
 
         VerifyUser.update({
