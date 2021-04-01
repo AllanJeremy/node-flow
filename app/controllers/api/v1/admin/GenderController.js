@@ -173,8 +173,16 @@ class GenderController {
     })
     .then(response => {
       if (response) {
+        let name = response.name;
+
         Gender.destroy({ where: { id: req.params.id } })
         .then(response => {
+
+          let data = {
+            name: name
+          }
+          SearchActivityHandler.store(SearchActivityAction.genderDelete, data);
+
           return ResponseHandler.success(res, responseLanguage.gender_delete_success);
         })
         .catch(err => {

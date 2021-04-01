@@ -176,8 +176,16 @@ class SexualOrientationController {
     })
     .then(response => {
       if (response) {
+        let name = response.name;
+
         SexualOrientation.destroy({ where: { id: req.params.id } })
         .then(response => {
+
+          let data = {
+            name: name
+          }
+          SearchActivityHandler.store(SearchActivityAction.sexualOrientationDelete, data);
+
           return ResponseHandler.success(res, responseLanguage.sexual_orientation_delete_success);
         })
         .catch(err => {

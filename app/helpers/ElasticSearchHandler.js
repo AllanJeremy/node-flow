@@ -87,7 +87,7 @@ class ElasticSearchHandler {
           'lang': 'painless'
         },
         query: {
-          term: { deleteField : matchQuery }
+          term: eval({[deleteField] : matchQuery.toLowerCase()})
         }
       }
     });

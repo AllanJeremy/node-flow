@@ -177,8 +177,16 @@ class FamilyDynamicController {
     })
     .then(response => {
       if (response) {
+        let name = response.name;
+
         FamilyDynamic.destroy({ where: { id: req.params.id } })
         .then(response => {
+
+          let data = {
+            name: name
+          }
+          SearchActivityHandler.store(SearchActivityAction.familyDynamicDelete, data);
+
           return ResponseHandler.success(res, responseLanguage.family_dynamic_delete_success);
         })
         .catch(err => {
