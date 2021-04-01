@@ -176,13 +176,16 @@ class RaceController {
     })
     .then(response => {
       if (response) {
-        let data = {
-          name: response.name
-        }
-        SearchActivityHandler.store(SearchActivityAction.raceDelete, data);
+        let name = response.name;
 
         Race.destroy({ where: { id: req.params.id } })
         .then(response => {
+
+          let data = {
+            name: name
+          }
+          SearchActivityHandler.store(SearchActivityAction.raceDelete, data);
+
           return ResponseHandler.success(res, responseLanguage.race_delete_success);
         })
         .catch(err => {

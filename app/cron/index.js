@@ -43,7 +43,7 @@ class job {
 				return await ElasticSearchHandler.updateDocument(data.metadata.id, {
 					gender: data.metadata.name
 				});
-			case SearchActivityAction.familyDynamicUpadte:
+			case SearchActivityAction.familyDynamicUpdate:
 				return await ElasticSearchHandler.updateDocument(data.metadata.id, {
 					family_dynamic: data.metadata.name
 				});
@@ -74,6 +74,16 @@ class job {
 				break;
       case SearchActivityAction.raceDelete:
         return await ElasticSearchHandler.deleteDocumentField('race', data.metadata.name);
+      case SearchActivityAction.genderDelete:
+        return await ElasticSearchHandler.deleteDocumentField('gender', data.metadata.name);
+      case SearchActivityAction.familyDynamicDelete:
+        return await ElasticSearchHandler.deleteDocumentField('family_dynamic', data.metadata.name);
+      case SearchActivityAction.sexualOrientationDelete:
+        return await ElasticSearchHandler.deleteDocumentField('sexual_orientation', data.metadata.name);
+      case SearchActivityAction.healthCategoryDelete:
+        return await ElasticSearchHandler.deleteDocumentField('health_category', data.metadata.name);
+      case SearchActivityAction.workoutDelete:
+        return await ElasticSearchHandler.deleteDocumentField('workout_delete', data.metadata.name);
 		}
 	}
 
@@ -93,6 +103,7 @@ class job {
 		    				SearchActivityHandler.update(item.id, res.body, item.attempted);
 		    			}
 		    		}).catch(err => {
+              console.log("err", err)
 		    			SearchActivityHandler.update(item.id, err.body, item.attempted);
 		    		});
 		    	}
