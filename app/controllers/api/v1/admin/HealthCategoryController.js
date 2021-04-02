@@ -175,8 +175,20 @@ class HealthCategoryController {
     })
     .then(response => {
       if (response) {
+        let name = response.name;
+
         HealthCategory.destroy({ where: { id: req.params.id } })
         .then(response => {
+
+          UserHealthCategory.destroy({
+            where: { health_category_id: req.params.id }
+          });
+
+          let data = {
+            name: name
+          }
+          SearchActivityHandler.store(SearchActivityAction.healthCategoryDelete, data);
+
           return ResponseHandler.success(res, responseLanguage.health_category_delete_success);
         })
         .catch(err => {

@@ -181,6 +181,12 @@ class RaceController {
         Race.destroy({ where: { id: req.params.id } })
         .then(response => {
 
+          UserMetadata.update({
+            race_id: null
+          },{
+            where: { race_id: req.params.id }
+          });
+
           let data = {
             name: name
           }

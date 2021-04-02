@@ -175,8 +175,20 @@ class WorkoutController {
     })
     .then(response => {
       if (response) {
+        let name = response.name;
+
         Workout.destroy({ where: { id: req.params.id } })
         .then(response => {
+
+          UserWorkout.destroy({
+            where: { workout_id: req.params.id }
+          });
+
+          let data = {
+            name: name
+          }
+          SearchActivityHandler.store(SearchActivityAction.workoutDelete, data);
+
           return ResponseHandler.success(res, responseLanguage.workout_delete_success);
         })
         .catch(err => {

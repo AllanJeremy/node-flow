@@ -54,12 +54,12 @@ class job {
 				break;
 			case SearchActivityAction.healthCategoryUpdate:
 				return await ElasticSearchHandler.updateDocument(data.metadata.id, {
-					health_category: data.metadata.name
+					health_categories: data.metadata.name
 				});
 				break;
 			case SearchActivityAction.workoutUpdate:
 				return await ElasticSearchHandler.updateDocument(data.metadata.id, {
-					workout: data.metadata.name
+					workouts: data.metadata.name
 				});
 				break;
 			case SearchActivityAction.listedPeerUpdate:
@@ -81,9 +81,9 @@ class job {
       case SearchActivityAction.sexualOrientationDelete:
         return await ElasticSearchHandler.deleteDocumentField('sexual_orientation', data.metadata.name);
       case SearchActivityAction.healthCategoryDelete:
-        return await ElasticSearchHandler.deleteDocumentField('health_category', data.metadata.name);
+        return await ElasticSearchHandler.deleteItemFromDocumentList('health_categories', data.metadata.name);
       case SearchActivityAction.workoutDelete:
-        return await ElasticSearchHandler.deleteDocumentField('workout_delete', data.metadata.name);
+        return await ElasticSearchHandler.deleteItemFromDocumentList('workouts', data.metadata.name);
 		}
 	}
 
@@ -100,11 +100,10 @@ class job {
 		    			if(res.statusCode == 200) {
 		    				SearchActivityHandler.destroy(item.id);
 		    			} else {
-		    				SearchActivityHandler.update(item.id, res.body, item.attempted);
+		    				SearchActivityHandler.update(item.id, res, item.attempted);
 		    			}
 		    		}).catch(err => {
-              console.log("err", err)
-		    			SearchActivityHandler.update(item.id, err.body, item.attempted);
+		    			SearchActivityHandler.update(item.id, err, item.attempted);
 		    		});
 		    	}
 	    	});

@@ -182,6 +182,12 @@ class FamilyDynamicController {
         FamilyDynamic.destroy({ where: { id: req.params.id } })
         .then(response => {
 
+          UserMetadata.update({
+            family_detail_id: null
+          },{
+            where: { family_detail_id: req.params.id }
+          });
+
           let data = {
             name: name
           }

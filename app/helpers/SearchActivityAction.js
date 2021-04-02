@@ -18,6 +18,7 @@ const SearchActivityAction = {
   workoutDelete: 'workout_delete',
   listedPeerUpdate: 'match_peer_update',
   delistedPeerUpdate: 'unmatch_peer_update',
+  userVisibility: 'user_visibility',
 };
 
 module.exports = SearchActivityAction;

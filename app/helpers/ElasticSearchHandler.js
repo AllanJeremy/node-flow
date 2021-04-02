@@ -76,7 +76,7 @@ class ElasticSearchHandler {
   }
 
   /**
-  * Delete document field by id in the index
+  * Delete document field by search query
   */
   deleteDocumentField = async(deleteField, matchQuery) => {
     let res = await client.updateByQuery({
@@ -92,6 +92,35 @@ class ElasticSearchHandler {
       }
     });
     return res;
+  }
+
+  /**
+  * Delete item from array in document field by name
+  */
+  deleteItemFromDocumentList = async(deleteField, matchParam) => {
+    let scriptQuery = ''
+    if(deleteField == 'health_categories') {
+      scriptQuery = "if(ctx._source.containsKey('health_categories') && ctx._source.health_categories.size() > 0){for(int i=0;i<ctx._source.health_categories.size();i++){if(ctx._source.health_categories[i]==params.name){ctx._source.health_categories.remove(i)}}}";
+    } else if(deleteField == 'workouts') {
+      scriptQuery = "if(ctx._source.containsKey('workouts') && ctx._source.workouts.size() > 0){for(int i=0;i<ctx._source.workouts.size();i++){if(ctx._source.workouts[i]==params.name){ctx._source.workouts.remove(i)}}}";
+    }
+
+    if(scriptQuery) {
+      let res = await client.updateByQuery({
+        index: indexName,
+        body: {
+          script: {
+            'inline':scriptQuery,
+            'lang': 'painless',
+            'params': {
+              'name': matchParam
+            }
+          }
+        }
+      });
+
+      return res;
+    }
   }
 
 }

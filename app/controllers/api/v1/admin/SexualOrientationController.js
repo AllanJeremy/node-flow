@@ -181,6 +181,12 @@ class SexualOrientationController {
         SexualOrientation.destroy({ where: { id: req.params.id } })
         .then(response => {
 
+          UserMetadata.update({
+            sexual_orientation_id: null
+          },{
+            where: { sexual_orientation_id: req.params.id }
+          });
+
           let data = {
             name: name
           }

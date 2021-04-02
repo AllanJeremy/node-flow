@@ -222,6 +222,7 @@ class UserProfileController {
         where: { id: response.id }
       });
 
+
       let workoutStatus = req.body.workouts_status;
 
       workoutStatus.map(async (item, index) => {
@@ -248,6 +249,93 @@ class UserProfileController {
             health_category_id: item.id
           }
         });
+      });
+
+
+        User.findOne({
+          where: { id: req.id },
+          include: [
+          {
+            model: UserMetadata,
+            include: [
+              { model: Race, attributes: ['name'] },
+              { model: Gender, attributes: ['name'] },
+              { model: SexualOrientation, attributes: ['name'] },
+              { model: FamilyDynamic, attributes: ['name'] }],
+            as: 'user_meta_data'
+          },
+          {
+            model: UserHealthCategory,
+            attributes: ['id', 'status'],
+            include: [{
+                model: HealthCategory,
+                attributes: ['name'],
+                as: 'health_category'
+              }],
+            as: 'health_categories'
+          },
+          {
+            model: UserWorkout,
+            attributes: ['id', 'status'],
+            include: [{
+              model: Workout,
+              attributes: ['name'],
+              as: 'workout'
+            }],
+            as: 'workouts'
+          }
+        ]
+      })
+      .then(response => {
+
+        let workouts = [];
+        response.workouts.map((item, index) => {
+          if(item.workout && item.workout.name) {
+            workouts.push({
+              id: req.id,
+              name: item.workout.name,
+              status: item.status,
+              id1: item.id,
+            });
+          }
+        });
+
+        let healthCategories = [];
+        response.health_categories.map((item, index) => {
+          if(item.health_category && item.health_category.name) {
+            healthCategories.push({
+              id: req.id,
+              name: item.health_category.name,
+              status: item.status
+            });
+          }
+        });
+
+        let data = {
+          id: req.id,
+          race: {
+            name: response.user_meta_data.Race.name,
+            status: req.body.race_status
+          },
+          gender: {
+            name: response.user_meta_data.Gender.name,
+            status: req.body.gender_status
+          },
+          familyDynamic: {
+            name: response.user_meta_data.FamilyDynamic.name,
+            status: req.body.family_dynamic_status
+          },
+          sexualOrientation: {
+            name: response.user_meta_data.sexualOrientation.name,
+            status: req.body.sexual_orientation_status
+          },
+          health_categories: healthCategories,
+          workouts: workouts
+        }
+
+
+        SearchActivityHandler.store(SearchActivityAction.userVisibility, data);
+
       });
 
       return ResponseHandler.success(res, responseLanguage.visibility);

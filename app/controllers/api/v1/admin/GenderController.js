@@ -178,6 +178,12 @@ class GenderController {
         Gender.destroy({ where: { id: req.params.id } })
         .then(response => {
 
+          UserMetadata.update({
+            gender_id: null
+          },{
+            where: { gender_id: req.params.id }
+          });
+
           let data = {
             name: name
           }
