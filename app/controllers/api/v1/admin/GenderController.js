@@ -126,20 +126,13 @@ class GenderController {
           returning: true
         }).then(result => {
 
-          UserMetadata.findAll({
-            where: { gender_id: req.params.id },
-            raw: true
-          }).then(response => {
-            if (response && response.length > 0) {
-              response.map((item, index) => {
-                let data = {
-                  id: item.user_id,
-                  name: req.body.name
-                }
-                SearchActivityHandler.store(SearchActivityAction.genderUpdate, data);
-              });
+          if(response.name != req.body.name) {
+            let data = {
+              old_name: response.name,
+              name: req.body.name
             }
-          });
+            SearchActivityHandler.store(SearchActivityAction.genderRenamed, data);
+          }
 
           return ResponseHandler.success(
             res, responseLanguage.gender_update_success, CommonTransformer.transform(result));

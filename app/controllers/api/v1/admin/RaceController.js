@@ -129,20 +129,13 @@ class RaceController {
         })
         .then(result => {
 
-          UserMetadata.findAll({
-            where: { race_id: req.params.id },
-            raw: true
-          }).then(response => {
-            if (response && response.length > 0) {
-              response.map((item, index) => {
-                let data = {
-                  id: item.user_id,
-                  name: req.body.name
-                }
-                SearchActivityHandler.store(SearchActivityAction.raceUpdate, data);
-              });
+          if(response.name != req.body.name) {
+            let data = {
+              old_name: response.name,
+              name: req.body.name
             }
-          });
+            SearchActivityHandler.store(SearchActivityAction.raceRenamed, data);
+          }
 
           return ResponseHandler.success(
             res, responseLanguage.race_update_success, CommonTransformer.transform(result));

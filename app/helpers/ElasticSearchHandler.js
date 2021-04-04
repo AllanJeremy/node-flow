@@ -51,7 +51,7 @@ class ElasticSearchHandler {
 	}
 
 	/**
-	* Add data in the index
+	* Add or update document in the index
 	*/
 	addDocument = async(id, body) => {
     let res = await client.index({
@@ -59,20 +59,79 @@ class ElasticSearchHandler {
      	id: id,
 	    body: body
     });
+
     return res;
   }
 
   /**
-	* Update data by id in the index
-	*/
-  updateDocument = async(id, body) => {
+  * Update document field by id in the index
+  */
+  updateDocumentField = async(id, body) => {
     let res = await client.update({
-     	index: indexName,
-     	id: id,
-	    body: { doc: body}
+      index: indexName,
+      id: id,
+      body: { doc: body}
     });
 
     return res;
+  }
+
+  /**
+  * Rename item from field in document by matching name
+  */
+  renameDocumentField = async(renameField, matchParam) => {
+    let scriptQuery = ''
+    if(renameField == 'race') {
+      scriptQuery = 'ctx._source.race = params.name';
+    }
+
+    let res = await client.updateByQuery({
+      index: indexName,
+      body: {
+        script: {
+          'inline': scriptQuery,
+          'lang': 'painless',
+          'params': {
+            'name': matchParam.name
+          }
+        },
+        query: {
+          match: eval({[renameField] : matchParam.old_name.toLowerCase()})
+        }
+      }
+    });
+
+    return res;
+  }
+
+  /**
+  * Rename item from array in document field by matching name
+  */
+  renameDocumentListItem = async(updateField, matchParam) => {
+    let scriptQuery = ''
+    if(updateField == 'health_categories') {
+      scriptQuery = "if(ctx._source.containsKey('health_categories') && ctx._source.health_categories.size() > 0){for(int i=0;i<ctx._source.health_categories.size();i++){if(ctx._source.health_categories[i]==params.searchName){ctx._source.health_categories[i] = params.name}}}";
+    } else if(updateField == 'workouts') {
+      scriptQuery = "if(ctx._source.containsKey('workouts') && ctx._source.workouts.size() > 0){for(int i=0;i<ctx._source.workouts.size();i++){if(ctx._source.workouts[i]==params.searchName){ctx._source.workouts[i] = params.name}}}";
+    }
+
+    if(scriptQuery) {
+      let res = await client.updateByQuery({
+        index: indexName,
+        body: {
+          script: {
+            'inline':scriptQuery,
+            'lang': 'painless',
+            'params': {
+              'name': matchParam.name,
+              'searchName': matchParam.old_name
+            }
+          }
+        }
+      });
+
+      return res;
+    }
   }
 
   /**
@@ -87,10 +146,11 @@ class ElasticSearchHandler {
           'lang': 'painless'
         },
         query: {
-          term: eval({[deleteField] : matchQuery.toLowerCase()})
+          match: eval({[deleteField] : matchQuery.toLowerCase()})
         }
       }
     });
+
     return res;
   }
 
