@@ -8,6 +8,8 @@ ResponseHandler = new ResponseHandler();
 
 const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
 
+const StatusHandler = require('../../../../helpers/StatusHandler');
+
 var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
 SearchActivityHandler = new SearchActivityHandler();
 
@@ -128,20 +130,13 @@ class HealthCategoryController {
         })
         .then(result => {
 
-          UserHealthCategory.findAll({
-            where: { health_category_id: req.params.id },
-            raw: true
-          }).then(response => {
-            if (response && response.length > 0) {
-              response.map((item, index) => {
-                let data = {
-                  id: item.user_id,
-                  name: req.body.name
-                }
-                SearchActivityHandler.store(SearchActivityAction.healthCategoryUpdate, data);
-              });
+          if(response.name != req.body.name) {
+            let data = {
+              old_name: response.name,
+              name: req.body.name
             }
-          });
+            SearchActivityHandler.store(SearchActivityAction.healthCategoryRenamed, data);
+          }
 
           return ResponseHandler.success(
             res, responseLanguage.health_category_update_success, CommonTransformer.transform(result));
@@ -175,8 +170,20 @@ class HealthCategoryController {
     })
     .then(response => {
       if (response) {
+        let name = response.name;
+
         HealthCategory.destroy({ where: { id: req.params.id } })
         .then(response => {
+
+          UserHealthCategory.destroy({
+            where: { health_category_id: req.params.id }
+          });
+
+          let data = {
+            name: name
+          }
+          SearchActivityHandler.store(SearchActivityAction.healthCategoryDelete, data);
+
           return ResponseHandler.success(res, responseLanguage.health_category_delete_success);
         })
         .catch(err => {
@@ -216,16 +223,26 @@ class HealthCategoryController {
       })
       .then(response => {
 
-        HealthCategory.findOne({
+        UserHealthCategory.findAll({
           where: {
-            id: req.body.merged_id
-          }
+            user_id: response[1].dataValues.user_id
+          },
+          include: [{
+            model: HealthCategory,
+            attributes: ['name'],
+            as: 'health_category',
+            where: { status: StatusHandler.active }
+          }],
+          raw: true
         }).then(result => {
-          let data = {
-            id: response[1].dataValues.user_id,
-            name: result.name
+          if (result && result.length > 0) {
+            let healthCategories = result.map(item => item['health_category.name']);
+            let data = {
+              id: response[1].dataValues.user_id,
+              name: healthCategories
+            }
+            SearchActivityHandler.store(SearchActivityAction.healthCategoryUpdate, data);
           }
-          SearchActivityHandler.store(SearchActivityAction.healthCategoryUpdate, data);
         });
 
         HealthCategory.destroy({ where: { id: req.body.id }, force: true });

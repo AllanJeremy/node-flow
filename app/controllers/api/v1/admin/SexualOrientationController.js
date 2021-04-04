@@ -129,20 +129,13 @@ class SexualOrientationController {
         })
         .then(result => {
 
-          UserMetadata.findAll({
-            where: { sexual_orientation_id: req.params.id },
-            raw: true
-          }).then(response => {
-            if (response && response.length > 0) {
-              response.map((item, index) => {
-                let data = {
-                  id: item.user_id,
-                  name: req.body.name
-                }
-                SearchActivityHandler.store(SearchActivityAction.sexualOrientationUpdate, data);
-              });
+          if(response.name != req.body.name) {
+            let data = {
+              old_name: response.name,
+              name: req.body.name
             }
-          });
+            SearchActivityHandler.store(SearchActivityAction.sexualOrientationRenamed, data);
+          }
 
           return ResponseHandler.success(
             res, responseLanguage.sexual_orientation_update_success, CommonTransformer.transform(result));
@@ -180,6 +173,12 @@ class SexualOrientationController {
 
         SexualOrientation.destroy({ where: { id: req.params.id } })
         .then(response => {
+
+          UserMetadata.update({
+            sexual_orientation_id: null
+          },{
+            where: { sexual_orientation_id: req.params.id }
+          });
 
           let data = {
             name: name

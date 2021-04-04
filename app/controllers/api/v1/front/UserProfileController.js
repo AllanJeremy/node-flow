@@ -84,14 +84,10 @@ class UserProfileController {
       .then(response => {
         let res_data = response[1][0];
         let data = {
-          id: req.id,
-          first_name: res_data.first_name,
-          name_prefix: res_data.name_prefix,
-          birth_date: res_data.birth_date,
-          profile_picture: res_data.profile_picture
+          id: req.id
         }
 
-        SearchActivityHandler.store(SearchActivityAction.basicProfile, data);
+        SearchActivityHandler.store(SearchActivityAction.createUser, data);
 
         return ResponseHandler.success(res, responseLanguage.profile_create);
       })
@@ -222,6 +218,7 @@ class UserProfileController {
         where: { id: response.id }
       });
 
+
       let workoutStatus = req.body.workouts_status;
 
       workoutStatus.map(async (item, index) => {
@@ -248,6 +245,82 @@ class UserProfileController {
             health_category_id: item.id
           }
         });
+      });
+
+      // store user settings in active search table
+      User.findOne({
+        where: { id: req.id },
+        include: [
+        {
+          model: UserMetadata,
+          include: [
+            { model: Race, attributes: ['name'] },
+            { model: Gender, attributes: ['name'] },
+            { model: SexualOrientation, attributes: ['name'] },
+            { model: FamilyDynamic, attributes: ['name'] }],
+          as: 'user_meta_data'
+        },
+        {
+          model: UserHealthCategory,
+          attributes: ['id', 'health_category_id', 'status'],
+          include: [{
+              model: HealthCategory,
+              attributes: ['name'],
+              as: 'health_category'
+            }],
+          as: 'health_categories'
+        },
+        {
+          model: UserWorkout,
+          attributes: ['id', 'workout_id', 'status'],
+          include: [{
+            model: Workout,
+            attributes: ['name'],
+            as: 'workout'
+          }],
+          as: 'workouts'
+        }]
+      })
+      .then(response => {
+
+        let workouts = [];
+        response.workouts.map((item, index) => {
+          let isActive = workoutStatus.filter(workoutItem => (workoutItem.id == item.workout_id))[0].status;
+          if(item.workout && item.workout.name && isActive == 1) {
+            workouts.push(item.workout.name);
+          }
+        });
+
+        let healthCategories = [];
+        response.health_categories.map((item, index) => {
+          let isActive = healthCategoryStatus.filter(healthCategoryItem => (healthCategoryItem.id == item.health_category_id))[0].status;
+          if(item.health_category && item.health_category.name && isActive == 1) {
+            healthCategories.push(item.health_category.name);
+          }
+        });
+
+        let userData = {id: req.id};
+        if(req.body.race_status == 1 && response.user_meta_data.Race) {
+          userData.race = response.user_meta_data.Race.name;
+        }
+        if(req.body.gender_status == 1 && response.user_meta_data.Gender) {
+          userData.gender = response.user_meta_data.Gender.name;
+        }
+        if(req.body.family_dynamic_status == 1 && response.user_meta_data.FamilyDynamic) {
+          userData.family_dynamic = response.user_meta_data.FamilyDynamic.name;
+        }
+        if(req.body.sexual_orientation_status == 1 && response.user_meta_data.SexualOrientation) {
+          userData.sexual_orientation = response.user_meta_data.SexualOrientation.name;
+        }
+        if(workouts.length > 0) {
+          userData.workouts = workouts;
+        }
+        if(healthCategories.length > 0) {
+          userData.health_categories = healthCategories;
+        }
+
+        SearchActivityHandler.store(SearchActivityAction.userVisibility, userData);
+
       });
 
       return ResponseHandler.success(res, responseLanguage.visibility);

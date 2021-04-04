@@ -6,6 +6,8 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
+const StatusHandler = require('../../../../helpers/StatusHandler');
+
 const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
 
 var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
@@ -128,20 +130,13 @@ class WorkoutController {
         })
         .then(result => {
 
-          UserWorkout.findAll({
-            where: { workout_id: req.params.id },
-            raw: true
-          }).then(response => {
-            if(response && response.length > 0) {
-              response.map((item, index) => {
-                let data = {
-                  id: item.user_id,
-                  name: req.body.name
-                }
-                SearchActivityHandler.store(SearchActivityAction.workoutUpdate, data);
-              });
+          if(response.name != req.body.name) {
+            let data = {
+              old_name: response.name,
+              name: req.body.name
             }
-          });
+            SearchActivityHandler.store(SearchActivityAction.workoutRenamed, data);
+          }
 
           return ResponseHandler.success(
             res, responseLanguage.workout_update_success, CommonTransformer.transform(result));
@@ -175,8 +170,20 @@ class WorkoutController {
     })
     .then(response => {
       if (response) {
+        let name = response.name;
+
         Workout.destroy({ where: { id: req.params.id } })
         .then(response => {
+
+          UserWorkout.destroy({
+            where: { workout_id: req.params.id }
+          });
+
+          let data = {
+            name: name
+          }
+          SearchActivityHandler.store(SearchActivityAction.workoutDelete, data);
+
           return ResponseHandler.success(res, responseLanguage.workout_delete_success);
         })
         .catch(err => {
@@ -216,16 +223,26 @@ class WorkoutController {
       })
       .then(response => {
 
-        Workout.findOne({
+        UserWorkout.findAll({
           where: {
-            id: req.body.merged_id
-          }
+            user_id: response[1].dataValues.user_id
+          },
+          include: [{
+            model: Workout,
+            attributes: ['name'],
+            as: 'workout',
+            where: { status: StatusHandler.active }
+          }],
+          raw: true
         }).then(result => {
-          let data = {
-            id: response[1].dataValues.user_id,
-            name: result.name
+          if (result && result.length > 0) {
+            let workouts = result.map(item => item['workout.name']);
+            let data = {
+              id: response[1].dataValues.user_id,
+              name: workouts
+            }
+            SearchActivityHandler.store(SearchActivityAction.workoutUpdate, data);
           }
-          SearchActivityHandler.store(SearchActivityAction.workoutUpdate, data);
         });
 
         Workout.destroy({ where: { id: req.body.id }, force: true });

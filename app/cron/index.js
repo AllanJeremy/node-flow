@@ -32,46 +32,61 @@ class job {
 	*/
 	elasticSearch = async(data) => {
 		switch(data.action){
-			case SearchActivityAction.basicProfile:
+			case SearchActivityAction.createUser:
 				return await ElasticSearchHandler.addDocument(data.metadata.id, data.metadata);
 				break;
 			case SearchActivityAction.raceUpdate:
-				return await ElasticSearchHandler.updateDocument(data.metadata.id, {
+				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
 					race: data.metadata.name
 				});
 			case SearchActivityAction.genderUpdate:
-				return await ElasticSearchHandler.updateDocument(data.metadata.id, {
+				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
 					gender: data.metadata.name
 				});
 			case SearchActivityAction.familyDynamicUpdate:
-				return await ElasticSearchHandler.updateDocument(data.metadata.id, {
+				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
 					family_dynamic: data.metadata.name
 				});
 			case SearchActivityAction.sexualOrientationUpdate:
-				return await ElasticSearchHandler.updateDocument(data.metadata.id, {
+				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
 					sexual_orientation: data.metadata.name
 				});
 				break;
 			case SearchActivityAction.healthCategoryUpdate:
-				return await ElasticSearchHandler.updateDocument(data.metadata.id, {
-					health_category: data.metadata.name
+				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
+					health_categories: data.metadata.name
 				});
 				break;
 			case SearchActivityAction.workoutUpdate:
-				return await ElasticSearchHandler.updateDocument(data.metadata.id, {
-					workout: data.metadata.name
+				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
+					workouts: data.metadata.name
 				});
 				break;
-			case SearchActivityAction.listedPeerUpdate:
-				return await ElasticSearchHandler.updateDocument(data.metadata.id, {
-					listed_peers: data.metadata.listed_peers
-				});
-				break;
-			case SearchActivityAction.delistedPeerUpdate:
-				return await ElasticSearchHandler.updateDocument(data.metadata.id, {
-					delisted_peers: data.metadata.delisted_peers
-				});
-				break;
+      case SearchActivityAction.listedPeerUpdate:
+        return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
+          listed_peers: data.metadata.listed_peers
+        });
+        break;
+      case SearchActivityAction.delistedPeerUpdate:
+        return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
+          delisted_peers: data.metadata.delisted_peers
+        });
+        break;
+      case SearchActivityAction.raceRenamed:
+        return await ElasticSearchHandler.renameDocumentField('race', data.metadata);
+      case SearchActivityAction.genderRenamed:
+        return await ElasticSearchHandler.renameDocumentField('gender', data.metadata);
+      case SearchActivityAction.familyDynamicRenamed:
+        return await ElasticSearchHandler.renameDocumentField('family_dynamic', data.metadata);
+      case SearchActivityAction.sexualOrientationRenamed:
+        return await ElasticSearchHandler.renameDocumentField('sexual_orientation', data.metadata);
+        break;
+      case SearchActivityAction.healthCategoryRenamed:
+        return await ElasticSearchHandler.renameDocumentListItem('health_categories', data.metadata);
+        break;
+      case SearchActivityAction.workoutRenamed:
+        return await ElasticSearchHandler.renameDocumentListItem('workouts', data.metadata);
+        break;
       case SearchActivityAction.raceDelete:
         return await ElasticSearchHandler.deleteDocumentField('race', data.metadata.name);
       case SearchActivityAction.genderDelete:
@@ -81,9 +96,11 @@ class job {
       case SearchActivityAction.sexualOrientationDelete:
         return await ElasticSearchHandler.deleteDocumentField('sexual_orientation', data.metadata.name);
       case SearchActivityAction.healthCategoryDelete:
-        return await ElasticSearchHandler.deleteDocumentField('health_category', data.metadata.name);
+        return await ElasticSearchHandler.deleteItemFromDocumentList('health_categories', data.metadata.name);
       case SearchActivityAction.workoutDelete:
-        return await ElasticSearchHandler.deleteDocumentField('workout_delete', data.metadata.name);
+        return await ElasticSearchHandler.deleteItemFromDocumentList('workouts', data.metadata.name);
+      case SearchActivityAction.userVisibility:
+        return await ElasticSearchHandler.addDocument(data.metadata.id, data.metadata);
 		}
 	}
 
@@ -97,14 +114,15 @@ class job {
 	    	response.map(async(item, index) => {
 	    		if(item.attempted < 3) {
 		    		this.elasticSearch(item.dataValues).then(res => {
-		    			if(res.statusCode == 200) {
+		    			if(res.statusCode == 200 || res.statusCode == 201) {
 		    				SearchActivityHandler.destroy(item.id);
 		    			} else {
-		    				SearchActivityHandler.update(item.id, res.body, item.attempted);
+		    				SearchActivityHandler.update(item.id, res, item.attempted);
 		    			}
 		    		}).catch(err => {
-              console.log("err", err)
-		    			SearchActivityHandler.update(item.id, err.body, item.attempted);
+              if(err.body) {
+		    			  SearchActivityHandler.update(item.id, err.body.error, item.attempted);
+              }
 		    		});
 		    	}
 	    	});
