@@ -2,7 +2,7 @@
  * Constant for managing search activities action across the system
  *
  */
-const SearchActivityAction = {
+const ElasticsearchEventsAction = {
   createUser: 'create_user',
   raceUpdate: 'race_update',
   raceRenamed: 'race_renamed',
@@ -27,4 +27,4 @@ const SearchActivityAction = {
   userVisibility: 'user_visibility',
 };
 
-module.exports = SearchActivityAction;
+module.exports = ElasticsearchEventsAction;

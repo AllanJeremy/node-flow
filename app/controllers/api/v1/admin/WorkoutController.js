@@ -8,10 +8,10 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventswAction = require('../../../../helpers/ElasticsearchEventswAction');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventswHandler = require('../../../../helpers/ElasticsearchEventswHandler');
+ElasticsearchEventswHandler = new ElasticsearchEventswHandler();
 
 /**
  * Models
@@ -135,7 +135,7 @@ class WorkoutController {
               old_name: response.name,
               name: req.body.name
             }
-            SearchActivityHandler.store(SearchActivityAction.workoutRenamed, data);
+            ElasticsearchEventswHandler.store(ElasticsearchEventswAction.workoutRenamed, data);
           }
 
           return ResponseHandler.success(
@@ -182,7 +182,7 @@ class WorkoutController {
           let data = {
             name: name
           }
-          SearchActivityHandler.store(SearchActivityAction.workoutDelete, data);
+          ElasticsearchEventswHandler.store(ElasticsearchEventswAction.workoutDelete, data);
 
           return ResponseHandler.success(res, responseLanguage.workout_delete_success);
         })
@@ -241,7 +241,7 @@ class WorkoutController {
               id: response[1].dataValues.user_id,
               name: workouts
             }
-            SearchActivityHandler.store(SearchActivityAction.workoutUpdate, data);
+            ElasticsearchEventswHandler.store(ElasticsearchEventswAction.workoutUpdate, data);
           }
         });
 

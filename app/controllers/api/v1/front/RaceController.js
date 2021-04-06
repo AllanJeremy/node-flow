@@ -10,10 +10,10 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 
 /**
@@ -122,7 +122,7 @@ class RaceController {
               name: name
             }
 
-            SearchActivityHandler.store(SearchActivityAction.raceUpdate, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
           }
 
           return ResponseHandler.success(res, responseLanguage.race_save);
@@ -144,7 +144,7 @@ class RaceController {
               name: name
             }
 
-            SearchActivityHandler.store(SearchActivityAction.raceUpdate, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
           }
 
           return ResponseHandler.success(res, responseLanguage.race_save);

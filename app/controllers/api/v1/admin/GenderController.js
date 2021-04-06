@@ -6,10 +6,10 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 /**
  * Models
@@ -131,7 +131,7 @@ class GenderController {
               old_name: response.name,
               name: req.body.name
             }
-            SearchActivityHandler.store(SearchActivityAction.genderRenamed, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderRenamed, data);
           }
 
           return ResponseHandler.success(
@@ -180,7 +180,7 @@ class GenderController {
           let data = {
             name: name
           }
-          SearchActivityHandler.store(SearchActivityAction.genderDelete, data);
+          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderDelete, data);
 
           return ResponseHandler.success(res, responseLanguage.gender_delete_success);
         })
@@ -230,7 +230,7 @@ class GenderController {
             id: response[1].dataValues.user_id,
             name: result.name
           }
-          SearchActivityHandler.store(SearchActivityAction.genderUpdate, data);
+          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderUpdate, data);
         });
 
         Gender.destroy({ where: { id: req.body.id }, force: true });

@@ -4,24 +4,24 @@ const { DateTime } = require('luxon');
  * Models
  */
 const Models = require('../models');
-const SearchActivity = Models.SearchActivity;
+const ElasticsearchEvents = Models.ElasticsearchEvents;
 
 
 /**
  * Manages search activity model operations
  *
- * @class SearchActivityHandler
+ * @class ElasticsearchEventsHandler
  * @package app
  * @subpackage helpers
  */
-class SearchActivityHandler {
+class ElasticsearchEventsHandler {
 
   /**
    * Used for getting data
    *
    */
   list = async() => {
-    let response = await SearchActivity.findAll({
+    let response = await ElasticsearchEvents.findAll({
       order: [['id', 'ASC']]
     });
     return response;
@@ -34,7 +34,7 @@ class SearchActivityHandler {
    * @param {Object} data
    */
   store = (action, data) => {
-    SearchActivity.create({
+    ElasticsearchEvents.create({
       action: action,
       metadata: data
     });
@@ -48,7 +48,7 @@ class SearchActivityHandler {
    * @param {Integer} attempted
    */
   update = (id, reason, attempted = 0) => {
-    SearchActivity.update({
+    ElasticsearchEvents.update({
       attempted_at: DateTime.now(),
       failed_reason: reason,
       attempted: attempted + 1
@@ -64,8 +64,8 @@ class SearchActivityHandler {
    * @param {Integer} id
    */
   destroy = (id) => {
-    SearchActivity.destroy({ where: { id: id } });
+    ElasticsearchEvents.destroy({ where: { id: id } });
   }
 }
 
-module.exports = SearchActivityHandler;
+module.exports = ElasticsearchEventsHandler;

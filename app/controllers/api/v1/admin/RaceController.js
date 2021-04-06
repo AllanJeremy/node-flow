@@ -6,10 +6,10 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 /**
  * Models
@@ -134,7 +134,7 @@ class RaceController {
               old_name: response.name,
               name: req.body.name
             }
-            SearchActivityHandler.store(SearchActivityAction.raceRenamed, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceRenamed, data);
           }
 
           return ResponseHandler.success(
@@ -183,7 +183,7 @@ class RaceController {
           let data = {
             name: name
           }
-          SearchActivityHandler.store(SearchActivityAction.raceDelete, data);
+          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceDelete, data);
 
           return ResponseHandler.success(res, responseLanguage.race_delete_success);
         })
@@ -233,7 +233,7 @@ class RaceController {
             id: response[1].dataValues.user_id,
             name: result.name
           }
-          SearchActivityHandler.store(SearchActivityAction.raceUpdate, data);
+          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
         });
 
         Race.destroy({ where: { id: req.body.id }, force: true });

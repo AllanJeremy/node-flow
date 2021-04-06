@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class SearchActivity extends Model {
+  class ElasticsearchEvents extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  SearchActivity.init({
+  ElasticsearchEvents.init({
     action: DataTypes.STRING,
     metadata: DataTypes.JSON,
     attempted_at: DataTypes.DATE,
@@ -21,10 +21,10 @@ module.exports = (sequelize, DataTypes) => {
     attempted: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'SearchActivity',
-    tableName: 'search_activities',
+    modelName: 'ElasticsearchEvents',
+    tableName: 'elasticsearch_events',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   });
-  return SearchActivity;
+  return ElasticsearchEvents;
 };

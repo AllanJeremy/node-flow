@@ -10,10 +10,10 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 
 /**
@@ -118,7 +118,7 @@ class SexualOrientationController {
               name: name
             }
 
-            SearchActivityHandler.store(SearchActivityAction.sexualOrientationUpdate, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.sexualOrientationUpdate, data);
           }
 
           return ResponseHandler.success(res, responseLanguage.sexual_orientation_save);
@@ -140,7 +140,7 @@ class SexualOrientationController {
               name: name
             }
 
-            SearchActivityHandler.store(SearchActivityAction.sexualOrientationUpdate, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.sexualOrientationUpdate, data);
           }
 
           return ResponseHandler.success(res, responseLanguage.sexual_orientation_save);
