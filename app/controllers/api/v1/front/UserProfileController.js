@@ -8,10 +8,10 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 /**
  * Models
@@ -87,7 +87,7 @@ class UserProfileController {
           id: req.id
         }
 
-        SearchActivityHandler.store(SearchActivityAction.createUser, data);
+        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.createUser, data);
 
         return ResponseHandler.success(res, responseLanguage.profile_create);
       })
@@ -319,7 +319,7 @@ class UserProfileController {
           userData.health_categories = healthCategories;
         }
 
-        SearchActivityHandler.store(SearchActivityAction.userVisibility, userData);
+        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.userVisibility, userData);
 
       });
 

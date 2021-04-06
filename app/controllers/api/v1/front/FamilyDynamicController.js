@@ -10,10 +10,10 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 
 /**
@@ -119,7 +119,7 @@ class FamilyDynamicController {
               name: name
             }
 
-            SearchActivityHandler.store(SearchActivityAction.familyDynamicUpdate, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.familyDynamicUpdate, data);
           }
 
           return ResponseHandler.success(res, responseLanguage.family_dynamic_save);
@@ -141,7 +141,7 @@ class FamilyDynamicController {
               name: name
             }
 
-            SearchActivityHandler.store(SearchActivityAction.familyDynamicUpdate, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.familyDynamicUpdate, data);
           }
 
           return ResponseHandler.success(res, responseLanguage.family_dynamic_save);

@@ -12,10 +12,10 @@ const StatusHandler = require('../../../../helpers/StatusHandler');
 
 const PeerStatusHandler = require('../../../../helpers/PeerStatusHandler');
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 
 /**
@@ -85,7 +85,7 @@ class PeerController {
           id: req.id,
           listed_peers: peers
         }
-        SearchActivityHandler.store(SearchActivityAction.listedPeerUpdate, data);
+        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.listedPeerUpdate, data);
       });
       return ResponseHandler.success(res, responseLanguage.peer_match_store);
     })
@@ -134,7 +134,7 @@ class PeerController {
           id: req.id,
           delisted_peers: peers
         }
-        SearchActivityHandler.store(SearchActivityAction.delistedPeerUpdate, data);
+        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.delistedPeerUpdate, data);
       });
 
       ListedPeer.destroy({

@@ -6,10 +6,10 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 /**
  * Models
@@ -135,7 +135,7 @@ class FamilyDynamicController {
               old_name: response.name,
               name: req.body.name
             }
-            SearchActivityHandler.store(SearchActivityAction.familyDynamicRenamed, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.familyDynamicRenamed, data);
           }
 
           return ResponseHandler.success(
@@ -184,7 +184,7 @@ class FamilyDynamicController {
           let data = {
             name: name
           }
-          SearchActivityHandler.store(SearchActivityAction.familyDynamicDelete, data);
+          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.familyDynamicDelete, data);
 
           return ResponseHandler.success(res, responseLanguage.family_dynamic_delete_success);
         })
@@ -234,7 +234,7 @@ class FamilyDynamicController {
             id: response[1].dataValues.user_id,
             name: result.name
           }
-          SearchActivityHandler.store(SearchActivityAction.familyDynamicUpdate, data);
+          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.familyDynamicUpdate, data);
         });
 
         FamilyDynamic.destroy({ where: { id: req.body.id }, force: true });

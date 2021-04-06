@@ -6,12 +6,12 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 /**
  * Models
@@ -135,7 +135,7 @@ class HealthCategoryController {
               old_name: response.name,
               name: req.body.name
             }
-            SearchActivityHandler.store(SearchActivityAction.healthCategoryRenamed, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.healthCategoryRenamed, data);
           }
 
           return ResponseHandler.success(
@@ -182,7 +182,7 @@ class HealthCategoryController {
           let data = {
             name: name
           }
-          SearchActivityHandler.store(SearchActivityAction.healthCategoryDelete, data);
+          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.healthCategoryDelete, data);
 
           return ResponseHandler.success(res, responseLanguage.health_category_delete_success);
         })
@@ -241,7 +241,7 @@ class HealthCategoryController {
               id: response[1].dataValues.user_id,
               name: healthCategories
             }
-            SearchActivityHandler.store(SearchActivityAction.healthCategoryUpdate, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.healthCategoryUpdate, data);
           }
         });
 

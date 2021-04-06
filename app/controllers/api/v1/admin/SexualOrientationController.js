@@ -6,10 +6,10 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 
 /**
@@ -134,7 +134,7 @@ class SexualOrientationController {
               old_name: response.name,
               name: req.body.name
             }
-            SearchActivityHandler.store(SearchActivityAction.sexualOrientationRenamed, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.sexualOrientationRenamed, data);
           }
 
           return ResponseHandler.success(
@@ -183,7 +183,7 @@ class SexualOrientationController {
           let data = {
             name: name
           }
-          SearchActivityHandler.store(SearchActivityAction.sexualOrientationDelete, data);
+          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.sexualOrientationDelete, data);
 
           return ResponseHandler.success(res, responseLanguage.sexual_orientation_delete_success);
         })
@@ -232,7 +232,7 @@ class SexualOrientationController {
             id: response[1].dataValues.user_id,
             name: result.name
           }
-          SearchActivityHandler.store(SearchActivityAction.sexualOrientationUpdate, data);
+          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.sexualOrientationUpdate, data);
         });
 
         SexualOrientation.destroy({ where: { id: req.body.id }, force: true });

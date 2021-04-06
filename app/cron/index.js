@@ -3,7 +3,7 @@ const cron = require("node-cron");
 /**
  * Helpers
  */
-const SearchActivityAction = require('../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../helpers/ElasticsearchEventsAction');
 
 /**
  * Elastic search handler
@@ -11,8 +11,8 @@ const SearchActivityAction = require('../helpers/SearchActivityAction');
 let ElasticSearchHandler = require('../helpers/ElasticSearchHandler');
 ElasticSearchHandler = new ElasticSearchHandler();
 
-var SearchActivityHandler = require('../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 
 /**
@@ -32,74 +32,74 @@ class job {
 	*/
 	elasticSearch = async(data) => {
 		switch(data.action){
-			case SearchActivityAction.createUser:
+			case ElasticsearchEventsAction.createUser:
 				return await ElasticSearchHandler.addDocument(data.metadata.id, data.metadata);
 				break;
-			case SearchActivityAction.raceUpdate:
+			case ElasticsearchEventsAction.raceUpdate:
 				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
 					race: data.metadata.name
 				});
-			case SearchActivityAction.genderUpdate:
+			case ElasticsearchEventsAction.genderUpdate:
 				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
 					gender: data.metadata.name
 				});
-			case SearchActivityAction.familyDynamicUpdate:
+			case ElasticsearchEventsAction.familyDynamicUpdate:
 				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
 					family_dynamic: data.metadata.name
 				});
-			case SearchActivityAction.sexualOrientationUpdate:
+			case ElasticsearchEventsAction.sexualOrientationUpdate:
 				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
 					sexual_orientation: data.metadata.name
 				});
 				break;
-			case SearchActivityAction.healthCategoryUpdate:
+			case ElasticsearchEventsAction.healthCategoryUpdate:
 				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
 					health_categories: data.metadata.name
 				});
 				break;
-			case SearchActivityAction.workoutUpdate:
+			case ElasticsearchEventsAction.workoutUpdate:
 				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
 					workouts: data.metadata.name
 				});
 				break;
-      case SearchActivityAction.listedPeerUpdate:
+      case ElasticsearchEventsAction.listedPeerUpdate:
         return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
           listed_peers: data.metadata.listed_peers
         });
         break;
-      case SearchActivityAction.delistedPeerUpdate:
+      case ElasticsearchEventsAction.delistedPeerUpdate:
         return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
           delisted_peers: data.metadata.delisted_peers
         });
         break;
-      case SearchActivityAction.raceRenamed:
+      case ElasticsearchEventsAction.raceRenamed:
         return await ElasticSearchHandler.renameDocumentField('race', data.metadata);
-      case SearchActivityAction.genderRenamed:
+      case ElasticsearchEventsAction.genderRenamed:
         return await ElasticSearchHandler.renameDocumentField('gender', data.metadata);
-      case SearchActivityAction.familyDynamicRenamed:
+      case ElasticsearchEventsAction.familyDynamicRenamed:
         return await ElasticSearchHandler.renameDocumentField('family_dynamic', data.metadata);
-      case SearchActivityAction.sexualOrientationRenamed:
+      case ElasticsearchEventsAction.sexualOrientationRenamed:
         return await ElasticSearchHandler.renameDocumentField('sexual_orientation', data.metadata);
         break;
-      case SearchActivityAction.healthCategoryRenamed:
+      case ElasticsearchEventsAction.healthCategoryRenamed:
         return await ElasticSearchHandler.renameDocumentListItem('health_categories', data.metadata);
         break;
-      case SearchActivityAction.workoutRenamed:
+      case ElasticsearchEventsAction.workoutRenamed:
         return await ElasticSearchHandler.renameDocumentListItem('workouts', data.metadata);
         break;
-      case SearchActivityAction.raceDelete:
+      case ElasticsearchEventsAction.raceDelete:
         return await ElasticSearchHandler.deleteDocumentField('race', data.metadata.name);
-      case SearchActivityAction.genderDelete:
+      case ElasticsearchEventsAction.genderDelete:
         return await ElasticSearchHandler.deleteDocumentField('gender', data.metadata.name);
-      case SearchActivityAction.familyDynamicDelete:
+      case ElasticsearchEventsAction.familyDynamicDelete:
         return await ElasticSearchHandler.deleteDocumentField('family_dynamic', data.metadata.name);
-      case SearchActivityAction.sexualOrientationDelete:
+      case ElasticsearchEventsAction.sexualOrientationDelete:
         return await ElasticSearchHandler.deleteDocumentField('sexual_orientation', data.metadata.name);
-      case SearchActivityAction.healthCategoryDelete:
+      case ElasticsearchEventsAction.healthCategoryDelete:
         return await ElasticSearchHandler.deleteItemFromDocumentList('health_categories', data.metadata.name);
-      case SearchActivityAction.workoutDelete:
+      case ElasticsearchEventsAction.workoutDelete:
         return await ElasticSearchHandler.deleteItemFromDocumentList('workouts', data.metadata.name);
-      case SearchActivityAction.userVisibility:
+      case ElasticsearchEventsAction.userVisibility:
         return await ElasticSearchHandler.addDocument(data.metadata.id, data.metadata);
 		}
 	}
@@ -109,19 +109,19 @@ class job {
 	*/
 	start = async() => {
 		if (ElasticSearchHandler.indexExists()) {
-			SearchActivityHandler.list()
+			ElasticsearchEventsHandler.list()
 	    .then(response => {
 	    	response.map(async(item, index) => {
 	    		if(item.attempted < 3) {
 		    		this.elasticSearch(item.dataValues).then(res => {
 		    			if(res.statusCode == 200 || res.statusCode == 201) {
-		    				SearchActivityHandler.destroy(item.id);
+		    				ElasticsearchEventsHandler.destroy(item.id);
 		    			} else {
-		    				SearchActivityHandler.update(item.id, res, item.attempted);
+		    				ElasticsearchEventsHandler.update(item.id, res, item.attempted);
 		    			}
 		    		}).catch(err => {
               if(err.body) {
-		    			  SearchActivityHandler.update(item.id, err.body.error, item.attempted);
+		    			  ElasticsearchEventsHandler.update(item.id, err.body.error, item.attempted);
               }
 		    		});
 		    	}

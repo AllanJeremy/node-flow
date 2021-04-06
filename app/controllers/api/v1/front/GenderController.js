@@ -10,10 +10,10 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 
 /**
@@ -118,7 +118,7 @@ class GenderController {
               name: name
             }
 
-            SearchActivityHandler.store(SearchActivityAction.genderUpdate, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderUpdate, data);
           }
 
           return ResponseHandler.success(res, responseLanguage.gender_save);
@@ -141,7 +141,7 @@ class GenderController {
               name: name
             }
 
-            SearchActivityHandler.store(SearchActivityAction.genderUpdate, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderUpdate, data);
           }
 
           return ResponseHandler.success(res, responseLanguage.gender_save);

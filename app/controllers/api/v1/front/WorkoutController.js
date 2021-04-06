@@ -10,10 +10,10 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
-const SearchActivityAction = require('../../../../helpers/SearchActivityAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
-var SearchActivityHandler = require('../../../../helpers/SearchActivityHandler');
-SearchActivityHandler = new SearchActivityHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 /**
  * Models
@@ -123,7 +123,7 @@ class WorkoutController {
               id: userId,
               name: workouts
             }
-            SearchActivityHandler.store(SearchActivityAction.workoutUpdate, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.workoutUpdate, data);
           }
         });
       });
