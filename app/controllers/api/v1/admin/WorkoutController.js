@@ -8,10 +8,10 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
-const ElasticsearchEventswAction = require('../../../../helpers/ElasticsearchEventswAction');
+const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
-var ElasticsearchEventswHandler = require('../../../../helpers/ElasticsearchEventswHandler');
-ElasticsearchEventswHandler = new ElasticsearchEventswHandler();
+var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 /**
  * Models
