@@ -5,19 +5,19 @@ exports.labels = {
     'button': 'Get Started'
   },
   'login': {
-      'title': 'Log In',
-      'form': {
-        'email_label': 'Email',
-        'email_placeholder': 'Email',
-        'password_label': 'Password',
-        'password_placeholder': 'Password',
-        'button': 'Log In'
-      },
-      'forgot_password_link': 'Forgot password?',
-      'sign_up_link': {
-        'text1': 'Don’t have an account?',
-        'text2': 'Sign Up'
-      }
+    'title': 'Log In',
+    'form': {
+      'email_label': 'Email',
+      'email_placeholder': 'Email',
+      'password_label': 'Password',
+      'password_placeholder': 'Password',
+      'button': 'Log In'
+    },
+    'forgot_password_link': 'Forgot password?',
+    'sign_up_link': {
+      'text1': 'Don’t have an account?',
+      'text2': 'Sign Up'
+    }
   },
   'signup': {
     'title': 'Sign Up',
