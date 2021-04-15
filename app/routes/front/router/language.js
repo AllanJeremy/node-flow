@@ -18,7 +18,7 @@ LanguageController = new LanguageController();
  * Language Routes
  */
 
-router.get(authRoute.APP_LABEL, LanguageController.list);
+router.get(authRoute.APP_LANGUAGE, LanguageController.list);
 
 
 module.exports = router;

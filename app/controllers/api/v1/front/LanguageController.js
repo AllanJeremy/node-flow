@@ -11,10 +11,7 @@ ResponseHandler = new ResponseHandler();
 /**
  * Languages
  */
-const language = require('../../../../language/en_default');
-const responseLanguage = language.en.front.response;
-
-const languageLabels = require('../../../../language/front/en_default');
+const en = require('../../../../language/front/en_default');
 
 class LanguageController {
 
@@ -27,7 +24,18 @@ class LanguageController {
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
-    return ResponseHandler.success(res, languageLabels);
+    if(req.params.lang_id) {
+      switch(req.params.lang_id) {
+        case en: 
+          return ResponseHandler.success(res, en);
+          break;
+        default:
+          return ResponseHandler.success(res, en);
+          break;
+      }
+    } else {
+      return ResponseHandler.success(res, en);
+    }
   }
 
 }
