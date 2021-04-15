@@ -47,13 +47,13 @@ exports.labels = {
     'code': 'Code',
     'send_again_button': 'Send code again',
     'button': 'Continue',
-    'resend_success': 'Code was re-sent to your email address'
+    'resend_success': 'Code is re-sent to your email address'
   },
   'validation': {
-    'required_fields': 'All fields are required',
-    'email_invalid': 'Please enter valid email',
-    'password_length_invalid': 'Atleast 8 characters in length',
-    'password_invalid': 'Should contain: Lower case letters (a-z), Upper case letters (A-Z), Numbers (0-9)',
-    'repeat_password': 'Repeat password does not match Password'
+    'required_fields': 'All the fields are required.',
+    'email_invalid': 'Please enter a valid email.',
+    'password_length_invalid': 'Atleast 8 characters in length.',
+    'password_invalid': 'Should contain: Lower case letters (a-z), Upper case letters (A-Z), Numbers (0-9).',
+    'confirm_password': 'Confirm password does not match password.'
   }
 }
