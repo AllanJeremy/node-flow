@@ -24,8 +24,8 @@ class LanguageController {
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
-    if(req.params.code) {
-      switch(req.params.code) {
+    if (req.params.code) {
+      switch (req.params.code) {
         case en: 
           return ResponseHandler.success(res, en);
           break;
