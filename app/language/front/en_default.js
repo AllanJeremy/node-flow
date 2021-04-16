@@ -26,8 +26,8 @@ exports.language = {
       'email_placeholder': 'Email',
       'password_label': 'Password',
       'password_placeholder': 'Password',
-      'repeat_password_label': 'Repeat password',
-      'repeat_password_placeholder': 'Repeat password',
+      'confirm_password_label': 'Confirm password',
+      'confirm_password_placeholder': 'Confirm password',
       'button': 'Sign Up'
     },
     'terms_and_policy': {
@@ -54,6 +54,7 @@ exports.language = {
     'email_invalid': 'Please enter a valid email.',
     'password_length_invalid': 'Atleast 8 characters in length.',
     'password_invalid': 'Should contain: Lower case letters (a-z), Upper case letters (A-Z), Numbers (0-9).',
-    'confirm_password': 'Confirm password does not match password.'
+    'confirm_password': 'Confirm password does not match password.',
+    'code_required': 'Code field is required.'
   }
 }
