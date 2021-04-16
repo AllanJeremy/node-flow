@@ -49,6 +49,15 @@ exports.language = {
     'button': 'Continue',
     'resend_success': 'Code is re-sent to your email address'
   },
+  'step1': {
+    'title': 'Welcome to Joyn',
+    'sub_title': 'How would you like to get started?',
+    'checkbox_label': 'Peer-to-Peer Matching',
+    'exploring_button': 'Just Exploring'
+  },
+  'common': {
+    'continue_button': 'Continue'
+  },
   'validation': {
     'required_fields': 'All the fields are required.',
     'email_invalid': 'Please enter a valid email.',
