@@ -1,4 +1,4 @@
-exports.labels = {
+exports.language = {
   'welcome': {
     'title': 'Welcome to Joyn',
     'description': 'A place to find daily joy in community. We are so happy to have you.',
