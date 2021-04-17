@@ -89,12 +89,5 @@ exports.ForgotPassword = [
       return value.match(/^(?=.*[A-Za-z])(?=.*\d).{8,}$/);
     })
     .withMessage(validation.password_alphanumeric)
-    .custom((value,{req, loc, path}) => {
-        if (value !== req.body.confirm_password) {
-            throw new Error(validation.password_confirm_password_match);
-        } else {
-            return value;
-        }
-    })
     .bail(),
 ];

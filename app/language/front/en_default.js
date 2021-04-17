@@ -55,8 +55,39 @@ exports.language = {
     'checkbox_label': 'Peer-to-Peer Matching',
     'exploring_button': 'Just Exploring'
   },
+  'forgot_password': {
+    'title': 'Forgot Password',
+    'sub_title': 'Please enter your email address so we can send an email to verify your identity.',
+    'email_label': 'Email',
+    'email_placeholder': 'Email',
+    'email_verification_title': 'Verify your email',
+    'email_verification_sub_title': 'Enter the confirmation code we sent to your email:',
+    'code_label': 'Code',
+    'send_again_button': 'Send code again',
+    'resend_success': 'Code is re-sent to your email address',
+    'new_password_title': 'Create new password',
+    'new_password_sub_title': 'Your new password should be different from the previous one',
+    'new_password_label': 'New password',
+    'confirm_password_label': 'Confirm password',
+    'confirm_password_label': 'Confirm password',
+    'success_title': 'Success!',
+    'success_sub_title': 'Your Password has been changed'
+  },
+  'home': {
+    'title': 'Welcome,',
+    'sub_title': 'You haven`t set-up your Joyn profile yet, to get started, click',
+    'here_text': 'here',
+    'profile_button': 'Create My Profile'
+  },
+  'footer_tab': {
+    'tab1': 'Support',
+    'tab1': 'Peers',
+    'tab1': 'Chat',
+    'tab1': 'Profile',
+  },
   'common': {
-    'continue_button': 'Continue'
+    'continue_button': 'Continue',
+    'save_button': 'Save',
   },
   'validation': {
     'required_fields': 'All the fields are required.',
@@ -64,6 +95,8 @@ exports.language = {
     'password_length_invalid': 'Atleast 8 characters in length.',
     'password_invalid': 'Should contain: Lower case letters (a-z), Upper case letters (A-Z), Numbers (0-9).',
     'confirm_password': 'Confirm password does not match password.',
-    'code_required': 'Code field is required.'
+    'code_required': 'Code field is required.',
+    'email_required': 'Email field is required.',
+
   }
 }
