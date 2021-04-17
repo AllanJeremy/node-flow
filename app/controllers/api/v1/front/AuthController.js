@@ -257,17 +257,28 @@ class AuthController {
         return ResponseHandler.error(res, 400, responseLanguage.invalid_code);
       }
 
+      let usetId = response.user_id;
+
       User.update({
         status: StatusHandler.active,
       },
       {
-        where: { id: response.user_id },
+        where: { id: usetId },
         returning: true
       })
       .then(result => {
         VerifyUser.destroy({ where: { id: response.id }, force: true })
         .then(response => {
-          return ResponseHandler.success(res, responseLanguage.verified_success);
+
+          var token = jwt.sign({ id: usetId }, authConfig.secret, {
+            expiresIn: authConfig.tokenExpiryTime
+          });
+
+          var data = {
+            token: token
+          };
+
+          return ResponseHandler.success(res, responseLanguage.verified_success, data);
         })
         .catch(err => {
           return ResponseHandler.error(res, 500, err.message);
