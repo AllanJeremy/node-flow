@@ -75,7 +75,7 @@ exports.language = {
   },
   'home': {
     'title': 'Welcome,',
-    'sub_title': 'You haven`t set-up your Joyn profile yet, to get started, click',
+    'sub_title': 'You haven\'t set-up your Joyn profile yet, to get started, click',
     'here_text': 'here',
     'profile_button': 'Create My Profile'
   },
