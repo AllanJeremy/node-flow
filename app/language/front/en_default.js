@@ -81,9 +81,9 @@ exports.language = {
   },
   'footer_tab': {
     'tab1': 'Support',
-    'tab1': 'Peers',
-    'tab1': 'Chat',
-    'tab1': 'Profile',
+    'tab2': 'Peers',
+    'tab3': 'Chat',
+    'tab4': 'Profile',
   },
   'common': {
     'continue_button': 'Continue',
