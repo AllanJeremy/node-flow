@@ -59,7 +59,7 @@ exports.language = {
     'title': 'Forgot Password',
     'sub_title': 'Please enter your email address so we can send an email to verify your identity.',
     'email_label': 'Email',
-    'email_placeholder': 'Email',
+    'email_placeholder': 'Enter your email',
     'email_verification_title': 'Verify your email',
     'email_verification_sub_title': 'Enter the confirmation code we sent to your email:',
     'code_label': 'Code',
