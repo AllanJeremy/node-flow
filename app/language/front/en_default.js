@@ -8,9 +8,9 @@ exports.language = {
     'title': 'Log In',
     'form': {
       'email_label': 'Email',
-      'email_placeholder': 'Email',
+      'email_placeholder': 'Enter your email',
       'password_label': 'Password',
-      'password_placeholder': 'Password',
+      'password_placeholder': 'Enter your password',
       'button': 'Log In'
     },
     'forgot_password_link': 'Forgot password?',
@@ -23,11 +23,11 @@ exports.language = {
     'title': 'Sign Up',
     'form': {
       'email_label': 'Email',
-      'email_placeholder': 'Email',
+      'email_placeholder': 'Enter your email',
       'password_label': 'Password',
-      'password_placeholder': 'Password',
+      'password_placeholder': 'Create your password',
       'confirm_password_label': 'Confirm password',
-      'confirm_password_placeholder': 'Confirm password',
+      'confirm_password_placeholder': 'Confirm your password',
       'button': 'Sign Up'
     },
     'terms_and_policy': {
