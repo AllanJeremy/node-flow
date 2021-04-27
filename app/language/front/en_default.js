@@ -79,6 +79,54 @@ exports.language = {
     'here_text': 'here',
     'profile_button': 'Create My Profile'
   },
+  'profile': {
+    'step1': {
+      'title': 'Let\'s start by learning more about you.',
+      'form': {
+        'first_name_label': 'First Name',
+        'first_name_placeholder': 'Enter your first name',
+        'first_name_hint_text': 'Your name will be shown on your profile. If you\'d like, you can use a nickname to help protect your identity',
+        'pronouns_label': 'Pronouns',
+        'pronouns_value': {
+          'he_him': 'He / Him',
+          'she_her': 'She / Her',
+          'they_them': 'They / Them',
+          'she_they': 'She / They',
+          'he_they': 'He / They',
+        },
+        'birthday_label': 'Birthday',
+        'profile_avatar_label': 'Profile Avatar'
+      }
+    },
+    'step2': {
+      'description': 'Let\'s get started! We\'ll walk you through your profile creation and then ask you a few questions about your matching preferences.'
+    },
+    'step3': {
+      'description': {
+        'text1': 'In these next steps, we\'ll ask you about your',
+        'text2': 'identities',
+        'text3': 'and',
+        'text4': 'experiences. You\'re always in control of what can be seen by others and we only use this information to:'
+      },
+      'information': {
+        'line1': {
+          'text1': '1. Find you a',
+          'text2': 'great',
+          'text3': 'match',
+        },
+        'line2': {
+          'text1': '2. Recommend',
+          'text2': 'relevant',
+          'text3': 'groups',
+        },
+        'line3': {
+          'text1': '3. Personalize',
+          'text2': 'your app experience'
+        }
+      }
+    },
+
+  },
   'footer_tab': {
     'tab1': 'Support',
     'tab2': 'Peers',
@@ -88,6 +136,9 @@ exports.language = {
   'common': {
     'continue_button': 'Continue',
     'save_button': 'Save',
+    'terms_of _service': 'Terms of Service',
+    'and': 'and',
+    'privacy_policy': 'Privacy Policy',
   },
   'validation': {
     'required_fields': 'All the fields are required.',
