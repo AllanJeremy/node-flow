@@ -32,9 +32,6 @@ exports.language = {
     },
     'terms_and_policy': {
       'text1': 'Signing up you agree to our',
-      'text2': 'Terms of Service',
-      'text3': 'and',
-      'text4': 'Privacy Policy',
     },
     'login_in_link': {
       'text1': 'Already have an account?',
@@ -74,7 +71,6 @@ exports.language = {
     'success_sub_title': 'Your Password has been changed'
   },
   'home': {
-    'title': 'Welcome,',
     'sub_title': 'You haven\'t set-up your Joyn profile yet, to get started, click',
     'here_text': 'here',
     'profile_button': 'Create My Profile'
@@ -87,13 +83,13 @@ exports.language = {
         'first_name_placeholder': 'Enter your first name',
         'first_name_hint_text': 'Your name will be shown on your profile. If you\'d like, you can use a nickname to help protect your identity',
         'pronouns_label': 'Pronouns',
-        'pronouns_value': {
-          'he_him': 'He / Him',
-          'she_her': 'She / Her',
-          'they_them': 'They / Them',
-          'she_they': 'She / They',
-          'he_they': 'He / They',
-        },
+        'pronouns_value': [
+          'He / Him',
+          'She / Her',
+          'They / Them',
+          'She / They',
+          'He / They',
+        ],
         'birthday_label': 'Birthday',
         'profile_avatar_label': 'Profile Avatar'
       }
@@ -106,7 +102,8 @@ exports.language = {
         'text1': 'In these next steps, we\'ll ask you about your',
         'text2': 'identities',
         'text3': 'and',
-        'text4': 'experiences. You\'re always in control of what can be seen by others and we only use this information to:'
+        'text4': 'experiences.',
+        'text5': 'You\'re always in control of what can be seen by others and we only use this information to:'
       },
       'information': {
         'line1': {
@@ -120,8 +117,9 @@ exports.language = {
           'text3': 'groups',
         },
         'line3': {
-          'text1': '3. Personalize',
-          'text2': 'your app experience'
+          'text1': '3.',
+          'text2': 'Personalize',
+          'text3': 'your app experience'
         }
       }
     },
@@ -136,9 +134,10 @@ exports.language = {
   'common': {
     'continue_button': 'Continue',
     'save_button': 'Save',
-    'terms_of _service': 'Terms of Service',
+    'terms_of_service': 'Terms of Service',
     'and': 'and',
     'privacy_policy': 'Privacy Policy',
+    'welcome': 'Welcome,',
   },
   'validation': {
     'required_fields': 'All the fields are required.',
@@ -148,6 +147,5 @@ exports.language = {
     'confirm_password': 'Confirm password does not match password.',
     'code_required': 'Code field is required.',
     'email_required': 'Email field is required.',
-
   }
 }
