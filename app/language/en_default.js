@@ -69,6 +69,11 @@ exports.en = {
       'conversation_starter_update_success': 'Conversation starter updated successfully.',
       'conversation_starter_delete_success': 'Conversation starter deleted successfully.',
       'conversation_starter_exist': 'Conversation starter already exists.',
+      'file_type': 'Invalid file type.',
+      'avatar_store_success': 'Avatar created successfully.',
+			'avatar_update_success': 'Avatar updated successfully.',
+			'avatar_delete_success': 'Avatar deleted successfully.',
+			'avatar_exist': 'Avatar already exists.',
 		}
 	},
   'front': {

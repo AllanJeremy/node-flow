@@ -96,6 +96,13 @@ const apiRoute = {
     UNREAD: '/reported_users/unread/:id'
   },
 
+  AVATAR: { 
+    LIST: '/avatar/list',
+    STORE: '/avatar/store',
+    UPDATE: '/avatar/update/:id',
+    DELETE: '/avatar/delete/:id'
+  },
+
 };
 
 module.exports = {
