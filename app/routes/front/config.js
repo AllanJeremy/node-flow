@@ -43,6 +43,10 @@ const apiRoute = {
 
   USER_REPORTED: '/user/reported',
 
+  PRONOUNS: '/api/pronouns/list',
+
+  AVATAR: '/api/avatar/list',
+
 }
 
 module.exports = {

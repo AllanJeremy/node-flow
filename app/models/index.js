@@ -51,6 +51,7 @@ db.ListedPeer = require('../models/ListedPeer.js')(sequelize, Sequelize);
 db.DelistedPeer = require('../models/DelistedPeer.js')(sequelize, Sequelize);
 db.ReportedUser = require('../models/ReportedUser.js')(sequelize, Sequelize);
 db.ElasticsearchEvents = require('../models/ElasticsearchEvents.js')(sequelize, Sequelize);
+db.Avatar = require('../models/Avatar.js')(sequelize, Sequelize);
 
 
 // relationships

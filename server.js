@@ -2,9 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 var dotenv = require('dotenv');
+const multer = require('multer');
 const Joyn = express();
 
 dotenv.config();
+
+// image folder
+const upload = multer({
+  dest: 'images'
+});
+
+Joyn.use('/images', express.static('./images'));
 
 // Set CORS
 Joyn.use(cors({ origin: process.env.CORS_ORIGIN }));
