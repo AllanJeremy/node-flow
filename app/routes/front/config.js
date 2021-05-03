@@ -45,6 +45,8 @@ const apiRoute = {
 
   PRONOUNS: '/api/pronouns/list',
 
+  AVATAR: '/api/avatar/list',
+
 }
 
 module.exports = {

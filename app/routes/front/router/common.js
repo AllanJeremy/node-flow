@@ -19,4 +19,6 @@ CommonController = new CommonController();
  */
 router.get(apiRoute.PRONOUNS, CommonController.pronouns);
 
+router.get(apiRoute.AVATAR, CommonController.avatar);
+
 module.exports = router;
