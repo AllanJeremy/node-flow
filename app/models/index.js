@@ -52,7 +52,7 @@ db.DelistedPeer = require('../models/DelistedPeer.js')(sequelize, Sequelize);
 db.ReportedUser = require('../models/ReportedUser.js')(sequelize, Sequelize);
 db.ElasticsearchEvents = require('../models/ElasticsearchEvents.js')(sequelize, Sequelize);
 db.Avatar = require('../models/Avatar.js')(sequelize, Sequelize);
-
+db.PersonalityOption = require('../models/PersonalityOption.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
@@ -72,5 +72,8 @@ db.User.hasOne(db.UserInterest, {foreignKey: 'user_id', as: 'user_interest'});
 db.ListedPeer.belongsTo(db.User, {foreignKey: 'peer_id', as: 'peer'});
 db.ReportedUser.belongsTo(db.User, {foreignKey: 'user_id', as: 'reported_user'});
 db.ReportedUser.belongsTo(db.User, {foreignKey: 'reported_by', as: 'reported_by_user'});
+//db.PersonalityOption.belongsTo(db.PersonalityQuestion, {foreignKey: 'question_id', as: 'personality_option'});
+db.PersonalityQuestion.hasMany(db.PersonalityOption, {foreignKey: 'question_id', as: 'personality_options'});
+db.UserPersonalityQuestion.belongsTo(db.PersonalityOption, {foreignKey: 'option_id', as: 'user_option'});
 
 module.exports = db;

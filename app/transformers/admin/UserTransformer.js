@@ -56,8 +56,7 @@ class UserTransformer {
       }) : [],
       'personality_questions': data.personality_questions.length > 0 ? fractal(data.personality_questions, {
           'question': 'personality_question.question',
-          'options': 'personality_question.options',
-          'answer': 'answer'
+          'answer': 'user_option.option'
       }) : [],
       'conversation_starters': data.conversation_starters.length > 0 ? fractal(data.conversation_starters, {
           'question': 'conversation_starter.question',

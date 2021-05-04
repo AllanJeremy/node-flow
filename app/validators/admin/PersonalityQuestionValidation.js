@@ -12,10 +12,7 @@ exports.Validation = [
     .withMessage(validationLanguage.question_required)
     .bail(),
   check('options')
-    .trim()
-    .escape()
-    .not()
-    .isEmpty()
+    .isArray({min: 1})
     .withMessage(validationLanguage.options_required)
     .bail(),
   check('sequence')
