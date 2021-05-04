@@ -21,7 +21,6 @@ const UserHealthCategory = Models.UserHealthCategory;
 const Workout = Models.Workout;
 const UserWorkout = Models.UserWorkout;
 const PersonalityQuestion = Models.PersonalityQuestion;
-const PersonalityOption = Models.PersonalityOption;
 const UserPersonalityQuestion = Models.UserPersonalityQuestion;
 const ConversationStarter = Models.ConversationStarter;
 const UserConversationStarter = Models.UserConversationStarter;
@@ -107,23 +106,12 @@ class UserController {
       },
       {
         model: UserPersonalityQuestion,
-        attributes: ['id', 'user_id', 'question_id', 'option_id'],
+        attributes: ['id', 'user_id', 'question_id', 'answer'],
         include: [{
           model: PersonalityQuestion,
-          attributes: ['question', 'id'],
-          as: 'personality_question',
-          include: [{ 
-             model: PersonalityOption,
-              as: 'personality_options',
-              attributes: ['option', 'caption'],
-          }]
-        },
-        {
-          model: PersonalityOption,
-          attributes: ['option', 'id'],
-          as: 'user_option',
-        }
-        ],
+          attributes: ['id', 'question', 'options'],
+          as: 'personality_question'
+        }],
         as: 'personality_questions'
       },
       {

@@ -11,6 +11,9 @@ module.exports = {
       question: {
         type: Sequelize.STRING
       },
+      options: {
+        type: Sequelize.JSON
+      },
       sequence: {
         type: Sequelize.INTEGER
       },

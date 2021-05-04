@@ -11,7 +11,6 @@ ResponseHandler = new ResponseHandler();
  */
 const Models = require('../../../../models');
 const PersonalityQuestion = Models.PersonalityQuestion;
-const PersonalityOption = Models.PersonalityOption;
 
 /**
  * Languages
@@ -39,12 +38,7 @@ class PersonalityQuestionController {
    */
   list = (req, res) => {
     PersonalityQuestion.findAll({
-      include: [{ 
-        model: PersonalityOption,
-        as: 'personality_options',
-        attributes: ['option', 'caption'],
-    }],
-    order: [['id', 'DESC']]
+      order: [['id', 'DESC']]
     })
     .then(response => {
       return ResponseHandler.success(res, '', PersonalityQuestionTransformer.transform(response));
@@ -80,20 +74,11 @@ class PersonalityQuestionController {
       if (!response) {
         PersonalityQuestion.create({
           question: req.body.question,
+          options: req.body.options,
           sequence: req.body.sequence,
           status: req.body.status
         })
         .then(response => {
-          
-          var options = req.body.options;
-          options.map(async (item, index) => {
-            await PersonalityOption.create({
-              question_id: response.id,
-              option: item.option,
-              caption: item.caption,
-            });
-          });          
-
           return ResponseHandler.success(
             res, responseLanguage.personality_question_store_success);
         })
@@ -136,6 +121,7 @@ class PersonalityQuestionController {
       if (response) {
         PersonalityQuestion.update({
           question: req.body.question,
+          options: req.body.options,
           sequence: req.body.sequence,
           status: req.body.status,
         },
@@ -145,17 +131,6 @@ class PersonalityQuestionController {
           plain: true
         })
         .then(result => {
-
-          PersonalityOption.destroy({ where: { question_id: req.params.id } });
-          var options = req.body.options;
-          options.map(async (item, index) => {
-            await PersonalityOption.create({
-              question_id: response.id,
-              option: item.option,
-              caption: item.caption,
-            });
-          });        
-
           return ResponseHandler.success(
             res, responseLanguage.personality_question_update_success);
         })
@@ -188,7 +163,6 @@ class PersonalityQuestionController {
     })
     .then(response => {
       if (response) {
-        PersonalityOption.destroy({ where: { question_id: req.params.id } });
         PersonalityQuestion.destroy({ where: { id: req.params.id } })
         .then(response => {
           return ResponseHandler.success(res, responseLanguage.personality_question_delete_success);

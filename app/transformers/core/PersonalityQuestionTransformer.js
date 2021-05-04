@@ -5,9 +5,7 @@ class PersonalityQuestionTransformer {
   transform = (data) => fractal(data, {
     'id': 'id',
     'question': 'question',
-    'options':  function (data) {
-      return data.get('personality_options');
-    },
+    'options':  'options',
     'sequence': 'sequence',
     'status': function (data) {
       return data.get('status');

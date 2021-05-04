@@ -14,8 +14,8 @@ module.exports = {
       question_id: {
         type: Sequelize.INTEGER
       },
-      option_id: {
-        type: Sequelize.INTEGER
+      answer: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
