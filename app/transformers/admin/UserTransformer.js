@@ -55,13 +55,13 @@ class UserTransformer {
         'name': 'workout.name'
       }) : [],
       'personality_questions': data.personality_questions.length > 0 ? fractal(data.personality_questions, {
-          'question': 'personality_question.question',
-          'options': 'personality_question.options',
-          'answer': 'answer'
+        'question': 'personality_question.question',
+        'options': 'personality_question.options',
+        'answer': 'answer'
       }) : [],
       'conversation_starters': data.conversation_starters.length > 0 ? fractal(data.conversation_starters, {
-          'question': 'conversation_starter.question',
-          'answer': 'answer'
+        'question': 'conversation_starter.question',
+        'answer': 'answer'
       }) : [],
       'summary': 'user_meta_data.summary',
     }

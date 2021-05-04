@@ -37,7 +37,9 @@ class PersonalityQuestionController {
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
-    PersonalityQuestion.findAll({order: [['id', 'DESC']]})
+    PersonalityQuestion.findAll({
+      order: [['id', 'DESC']]
+    })
     .then(response => {
       return ResponseHandler.success(res, '', PersonalityQuestionTransformer.transform(response));
     })

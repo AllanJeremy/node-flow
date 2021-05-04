@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   PersonalityQuestion.init({
     question: DataTypes.STRING,
-    options: DataTypes.STRING,
+    options: DataTypes.JSON,
     sequence: DataTypes.INTEGER,
     status: DataTypes.INTEGER
   }, {
