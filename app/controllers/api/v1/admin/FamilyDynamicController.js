@@ -215,28 +215,35 @@ class FamilyDynamicController {
       }
     })
     .then(response => {
-      UserMetadata.update({
-          family_detail_id: req.body.merged_id,
-        },
-        {
-        where: { family_detail_id: req.body.id },
-        returning: true,
-        plain: true
-      })
+      UserMetadata.findAll({where: { family_detail_id: req.body.id }})
       .then(response => {
+        if(response.length > 0) {
+          UserMetadata.update({
+              family_detail_id: req.body.merged_id,
+            },
+            {
+            where: { family_detail_id: req.body.id },
+            returning: true,
+            plain: true
+          })
+          .then(response => {
 
-        FamilyDynamic.findOne({
-          where: {
-            id: req.body.merged_id
-          }
-        }).then(result => {
-          let data = {
-            id: response[1].dataValues.user_id,
-            name: result.name
-          }
-          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.familyDynamicUpdate, data);
-        });
-
+            FamilyDynamic.findOne({
+              where: {
+                id: req.body.merged_id
+              }
+            }).then(result => {
+              let data = {
+                id: response[1].dataValues.user_id,
+                name: result.name
+              }
+              ElasticsearchEventsHandler.store(ElasticsearchEventsAction.familyDynamicUpdate, data);
+            });
+          })
+          .catch(err => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
+        }
         FamilyDynamic.destroy({ where: { id: req.body.id }, force: true });
         return ResponseHandler.success(res, responseLanguage.family_dynamic_merge_success);
       })

@@ -213,37 +213,45 @@ class HealthCategoryController {
       }
     })
     .then(response => {
-      UserHealthCategory.update({
-          health_category_id: req.body.merged_id,
-        },
-        {
-        where: { health_category_id: req.body.id },
-        returning: true,
-        plain: true
-      })
+      UserHealthCategory.findAll({where: { health_category_id: req.body.id }})
       .then(response => {
+        if(response.length > 0) {
+          UserHealthCategory.update({
+              health_category_id: req.body.merged_id,
+            },
+            {
+            where: { health_category_id: req.body.id },
+            returning: true,
+            plain: true
+          })
+          .then(response => {
 
-        UserHealthCategory.findAll({
-          where: {
-            user_id: response[1].dataValues.user_id
-          },
-          include: [{
-            model: HealthCategory,
-            attributes: ['name'],
-            as: 'health_category',
-            where: { status: StatusHandler.active }
-          }],
-          raw: true
-        }).then(result => {
-          if (result && result.length > 0) {
-            let healthCategories = result.map(item => item['health_category.name']);
-            let data = {
-              id: response[1].dataValues.user_id,
-              name: healthCategories
-            }
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.healthCategoryUpdate, data);
-          }
-        });
+            UserHealthCategory.findAll({
+              where: {
+                user_id: response[1].dataValues.user_id
+              },
+              include: [{
+                model: HealthCategory,
+                attributes: ['name'],
+                as: 'health_category',
+                where: { status: StatusHandler.active }
+              }],
+              raw: true
+            }).then(result => {
+              if (result && result.length > 0) {
+                let healthCategories = result.map(item => item['health_category.name']);
+                let data = {
+                  id: response[1].dataValues.user_id,
+                  name: healthCategories
+                }
+                ElasticsearchEventsHandler.store(ElasticsearchEventsAction.healthCategoryUpdate, data);
+              }
+            });
+          })
+          .catch(err => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
+        }
 
         HealthCategory.destroy({ where: { id: req.body.id }, force: true });
         return ResponseHandler.success(res, responseLanguage.health_category_merge_success);

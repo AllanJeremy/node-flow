@@ -55,14 +55,14 @@ db.Avatar = require('../models/Avatar.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
-db.UserMetadata.belongsTo(db.Race, {foreignKey: 'race_id'});
-db.UserMetadata.belongsTo(db.Gender, {foreignKey: 'gender_id'});
-db.UserMetadata.belongsTo(db.SexualOrientation, {foreignKey: 'sexual_orientation_id'});
-db.UserMetadata.belongsTo(db.FamilyDynamic, {foreignKey: 'family_detail_id'});
-db.User.hasMany(db.UserHealthCategory, {foreignKey: 'user_id', as: 'health_categories'});
-db.UserHealthCategory.belongsTo(db.HealthCategory, {foreignKey: 'health_category_id', as: 'health_category'});
-db.User.hasMany(db.UserWorkout, {foreignKey: 'user_id', as: 'workouts'});
-db.UserWorkout.belongsTo(db.Workout, {foreignKey: 'workout_id', as: 'workout'});
+db.UserMetadata.belongsTo(db.Race, {foreignKey: 'race_id', onDelete: 'cascade', hooks: true});
+db.UserMetadata.belongsTo(db.Gender, {foreignKey: 'gender_id', onDelete: 'cascade', hooks: true});
+db.UserMetadata.belongsTo(db.SexualOrientation, {foreignKey: 'sexual_orientation_id', onDelete: 'cascade', hooks: true});
+db.UserMetadata.belongsTo(db.FamilyDynamic, {foreignKey: 'family_detail_id', onDelete: 'cascade', hooks: true});
+db.User.hasMany(db.UserHealthCategory, {foreignKey: 'user_id', as: 'health_categories', onDelete: 'cascade', hooks: true});
+db.UserHealthCategory.belongsTo(db.HealthCategory, {foreignKey: 'health_category_id', as: 'health_category', onDelete: 'cascade', hooks: true});
+db.User.hasMany(db.UserWorkout, {foreignKey: 'user_id', as: 'workouts', onDelete: 'cascade', hooks: true});
+db.UserWorkout.belongsTo(db.Workout, {foreignKey: 'workout_id', as: 'workout', onDelete: 'cascade', hooks: true});
 db.User.hasMany(db.UserPersonalityQuestion, {foreignKey: 'user_id', as: 'personality_questions'});
 db.UserPersonalityQuestion.belongsTo(db.PersonalityQuestion, {foreignKey: 'question_id', as: 'personality_question'});
 db.User.hasMany(db.UserConversationStarter, {foreignKey: 'user_id', as: 'conversation_starters'});

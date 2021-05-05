@@ -214,28 +214,34 @@ class RaceController {
       }
     })
     .then(response => {
-      UserMetadata.update({
-          race_id: req.body.merged_id,
-        },
-        {
-        where: { race_id: req.body.id },
-        returning: true,
-        plain: true
-      })
+      UserMetadata.findAll({where: { race_id: req.body.id }})
       .then(response => {
-
-        Race.findOne({
-          where: {
-            id: req.body.merged_id
-          }
-        }).then(result => {
-          let data = {
-            id: response[1].dataValues.user_id,
-            name: result.name
-          }
-          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
-        });
-
+        if(response.length > 0) {
+          UserMetadata.update({
+              race_id: req.body.merged_id,
+            },
+            {
+            where: { race_id: req.body.id },
+            returning: true,
+            plain: true
+          })
+          .then(response => {
+            Race.findOne({
+              where: {
+                id: req.body.merged_id
+              }
+            }).then(result => {
+              let data = {
+                id: response[1].dataValues.user_id,
+                name: result.name
+              }
+              ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
+            });
+          })
+          .catch(err => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
+        }
         Race.destroy({ where: { id: req.body.id }, force: true });
         return ResponseHandler.success(res, responseLanguage.race_merge_success);
       })
