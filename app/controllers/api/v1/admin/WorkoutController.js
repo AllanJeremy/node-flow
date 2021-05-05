@@ -135,7 +135,7 @@ class WorkoutController {
               old_name: response.name,
               name: req.body.name
             }
-            ElasticsearchEventswHandler.store(ElasticsearchEventswAction.workoutRenamed, data);
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.workoutRenamed, data);
           }
 
           return ResponseHandler.success(
@@ -182,7 +182,7 @@ class WorkoutController {
           let data = {
             name: name
           }
-          ElasticsearchEventswHandler.store(ElasticsearchEventswAction.workoutDelete, data);
+          ElasticsearchEventsHandler.store(ElasticsearchEventsHandler.workoutDelete, data);
 
           return ResponseHandler.success(res, responseLanguage.workout_delete_success);
         })
@@ -213,38 +213,46 @@ class WorkoutController {
       }
     })
     .then(response => {
-      UserWorkout.update({
-          workout_id: req.body.merged_id,
-        },
-        {
-        where: { workout_id: req.body.id },
-        returning: true,
-        plain: true
-      })
+      UserWorkout.findAll({where: { workout_id: req.body.id }})
       .then(response => {
-
-        UserWorkout.findAll({
-          where: {
-            user_id: response[1].dataValues.user_id
-          },
-          include: [{
-            model: Workout,
-            attributes: ['name'],
-            as: 'workout',
-            where: { status: StatusHandler.active }
-          }],
-          raw: true
-        }).then(result => {
-          if (result && result.length > 0) {
-            let workouts = result.map(item => item['workout.name']);
-            let data = {
-              id: response[1].dataValues.user_id,
-              name: workouts
+        if(response.length > 0) {
+          UserWorkout.update({
+              workout_id: req.body.merged_id,
+            },
+            {
+            where: { workout_id: req.body.id },
+            returning: true,
+            plain: true
+          })
+          .then(response => {
+            if(response){ 
+              UserWorkout.findAll({
+                where: {
+                  user_id: response[1].dataValues.user_id
+                },
+                include: [{
+                  model: Workout,
+                  attributes: ['name'],
+                  as: 'workout',
+                  where: { status: StatusHandler.active }
+                }],
+                raw: true
+              }).then(result => {
+                if (result && result.length > 0) {
+                  let workouts = result.map(item => item['workout.name']);
+                  let data = {
+                    id: response[1].dataValues.user_id,
+                    name: workouts
+                  }
+                  ElasticsearchEventsHandler.store(ElasticsearchEventsHandler.workoutUpdate, data);
+                }
+              });
             }
-            ElasticsearchEventswHandler.store(ElasticsearchEventswAction.workoutUpdate, data);
-          }
-        });
-
+          })
+          .catch(err => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
+        }
         Workout.destroy({ where: { id: req.body.id }, force: true });
         return ResponseHandler.success(res, responseLanguage.workout_merge_success);
       })

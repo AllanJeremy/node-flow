@@ -214,26 +214,34 @@ class SexualOrientationController {
       }
     })
     .then(response => {
-      UserMetadata.update({
-          sexual_orientation_id: req.body.merged_id,
-        },
-        {
-        where: { sexual_orientation_id: req.body.id },
-        returning: true,
-        plain: true
-      })
+      UserMetadata.findAll({where: { sexual_orientation_id: req.body.id }})
       .then(response => {
-        SexualOrientation.findOne({
-          where: {
-            id: req.body.merged_id
-          }
-        }).then(result => {
-          let data = {
-            id: response[1].dataValues.user_id,
-            name: result.name
-          }
-          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.sexualOrientationUpdate, data);
-        });
+        if(response.length > 0) {
+          UserMetadata.update({
+              sexual_orientation_id: req.body.merged_id,
+            },
+            {
+            where: { sexual_orientation_id: req.body.id },
+            returning: true,
+            plain: true
+          })
+          .then(response => {
+            SexualOrientation.findOne({
+              where: {
+                id: req.body.merged_id
+              }
+            }).then(result => {
+              let data = {
+                id: response[1].dataValues.user_id,
+                name: result.name
+              }
+              ElasticsearchEventsHandler.store(ElasticsearchEventsAction.sexualOrientationUpdate, data);
+            });
+          })
+          .catch(err => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
+        }
 
         SexualOrientation.destroy({ where: { id: req.body.id }, force: true });
         return ResponseHandler.success(res, responseLanguage.sexual_orientation_merge_success);

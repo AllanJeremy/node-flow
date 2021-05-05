@@ -211,28 +211,35 @@ class GenderController {
       }
     })
     .then(response => {
-      UserMetadata.update({
-          gender_id: req.body.merged_id,
-        },
-        {
-        where: { gender_id: req.body.id },
-        returning: true,
-        plain: true
-      })
+      UserMetadata.findAll({where: { gender_id: req.body.id }})
       .then(response => {
+        if(response.length > 0) {
+          UserMetadata.update({
+              gender_id: req.body.merged_id,
+            },
+            {
+            where: { gender_id: req.body.id },
+            returning: true,
+            plain: true
+          })
+          .then(response => {
 
-        Gender.findOne({
-          where: {
-            id: req.body.merged_id
-          }
-        }).then(result => {
-          let data = {
-            id: response[1].dataValues.user_id,
-            name: result.name
-          }
-          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderUpdate, data);
-        });
-
+            Gender.findOne({
+              where: {
+                id: req.body.merged_id
+              }
+            }).then(result => {
+              let data = {
+                id: response[1].dataValues.user_id,
+                name: result.name
+              }
+              ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderUpdate, data);
+            });
+          })
+          .catch(err => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
+        }
         Gender.destroy({ where: { id: req.body.id }, force: true });
         return ResponseHandler.success(res, responseLanguage.gender_merge_success);
       })
