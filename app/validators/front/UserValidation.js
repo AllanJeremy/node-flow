@@ -26,6 +26,7 @@ exports.Profile = [
     .withMessage(validation.birth_date_required)
     .bail(),
   check('profile_picture')
+    .optional({checkFalsy: true})
     .trim()
     .escape()
     .not()
