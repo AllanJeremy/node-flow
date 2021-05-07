@@ -41,11 +41,6 @@ class AdminUserController {
    */
   list = (req, res) => {
     AdminUser.findAll({
-      where: {
-        id: {
-          [Op.ne]: req.id
-        }
-      },
       order: [['id', 'DESC']]
     })
     .then(response => {
