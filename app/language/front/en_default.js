@@ -123,7 +123,11 @@ exports.language = {
         }
       }
     },
-
+    'additional_info': {
+      'personality_question': {
+        'title': 'What type of person do you consider yourself to be ...'
+      }
+    }
   },
   'footer_tab': {
     'tab1': 'Support',
