@@ -36,21 +36,15 @@ exports.language = {
     'login_in_link': {
       'text1': 'Already have an account?',
       'text2': 'Log In'
-    }
-  },
-  'confirm_email': {
-    'title': 'Please confrim your email',
-    'sub_title': 'Enter the confirmation code we sent to your email:',
-    'code': 'Code',
-    'send_again_button': 'Send code again',
-    'button': 'Continue',
-    'resend_success': 'Code is re-sent to your email address'
-  },
-  'step1': {
-    'title': 'Welcome to Joyn',
-    'sub_title': 'How would you like to get started?',
-    'checkbox_label': 'Peer-to-Peer Matching',
-    'exploring_button': 'Just Exploring'
+    },
+    'confirm_email': {
+      'title': 'Please confrim your email',
+      'sub_title': 'Enter the confirmation code we sent to your email:',
+      'code': 'Code',
+      'send_again_button': 'Send code again',
+      'button': 'Continue',
+      'resend_success': 'Code is re-sent to your email address'
+    },
   },
   'forgot_password': {
     'title': 'Forgot Password',
@@ -75,55 +69,54 @@ exports.language = {
     'here_text': 'here',
     'profile_button': 'Create My Profile'
   },
-  'profile': {
-    'step1': {
-      'title': 'Let\'s start by learning more about you.',
-      'form': {
-        'first_name_label': 'First Name',
-        'first_name_placeholder': 'Enter your first name',
-        'first_name_hint_text': 'Your name will be shown on your profile. If you\'d like, you can use a nickname to help protect your identity',
-        'pronouns_label': 'Pronouns',
-        'pronouns_value': [
-          'He / Him',
-          'She / Her',
-          'They / Them',
-          'She / They',
-          'He / They',
-        ],
-        'birthday_label': 'Birthday',
-        'profile_avatar_label': 'Profile Avatar'
-      }
-    },
-    'step2': {
-      'description': 'Let\'s get started! We\'ll walk you through your profile creation and then ask you a few questions about your matching preferences.'
-    },
-    'step3': {
-      'description': {
-        'text1': 'In these next steps, we\'ll ask you about your',
-        'text2': 'identities',
-        'text3': 'and',
-        'text4': 'experiences.',
-        'text5': 'You\'re always in control of what can be seen by others and we only use this information to:'
-      },
-      'information': {
-        'line1': {
-          'text1': '1. Find you a',
-          'text2': 'great',
-          'text3': 'match',
-        },
-        'line2': {
-          'text1': '2. Recommend',
-          'text2': 'relevant',
-          'text3': 'groups',
-        },
-        'line3': {
-          'text1': '3.',
-          'text2': 'Personalize',
-          'text3': 'your app experience'
+  'user': {
+    'profile': {
+      'basic': {
+        'title': 'Let\'s start by learning more about you.',
+        'form': {
+          'first_name_label': 'First Name',
+          'first_name_placeholder': 'Enter your first name',
+          'first_name_hint_text': 'Your name will be shown on your profile. If you\'d like, you can use a nickname to help protect your identity',
+          'pronouns_label': 'Pronouns',
+          'birthday_label': 'Birthday',
+          'profile_avatar_label': 'Profile Avatar'
         }
-      }
-    },
-    'additional_info': {
+      },
+      'welcome': {
+        'description': 'Let\'s get started! We\'ll walk you through your profile creation and then ask you a few questions about your matching preferences.'
+      },
+      'terms': {
+        'description': {
+          'text1': 'In these next steps, we\'ll ask you about your',
+          'text2': 'identities',
+          'text3': 'and',
+          'text4': 'experiences.',
+          'text5': 'You\'re always in control of what can be seen by others and we only use this information to:'
+        },
+        'information': {
+          'line1': {
+            'text1': '1. Find you a',
+            'text2': 'great',
+            'text3': 'match',
+          },
+          'line2': {
+            'text1': '2. Recommend',
+            'text2': 'relevant',
+            'text3': 'groups',
+          },
+          'line3': {
+            'text1': '3.',
+            'text2': 'Personalize',
+            'text3': 'your app experience'
+          }
+        }
+      },
+      'interest': {
+        'title': 'Welcome to Joyn',
+        'sub_title': 'How would you like to get started?',
+        'checkbox_label': 'Peer-to-Peer Matching',
+        'exploring_button': 'Just Exploring'
+      },
       'personality_question': {
         'title': 'What type of person do you consider yourself to be ...'
       }
