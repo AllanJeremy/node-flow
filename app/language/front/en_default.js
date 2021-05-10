@@ -78,13 +78,6 @@ exports.language = {
           'first_name_placeholder': 'Enter your first name',
           'first_name_hint_text': 'Your name will be shown on your profile. If you\'d like, you can use a nickname to help protect your identity',
           'pronouns_label': 'Pronouns',
-          'pronouns_value': [
-            'He / Him',
-            'She / Her',
-            'They / Them',
-            'She / They',
-            'He / They',
-          ],
           'birthday_label': 'Birthday',
           'profile_avatar_label': 'Profile Avatar'
         }
