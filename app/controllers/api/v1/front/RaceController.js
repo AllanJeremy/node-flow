@@ -22,6 +22,7 @@ ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 const Models = require('../../../../models');
 const Race = Models.Race;
 const UserMetadata = Models.UserMetadata;
+const UserRace = Models.UserRace;
 
 /**
  * Languages
@@ -87,76 +88,59 @@ class RaceController {
         raw:true
       })
       .then(response => {
-        this.update(res, req.id, response.id);
+        this.update(req.id, response.id, StatusHandler.pending);
       })
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
       })
-    } else {
-      Race.findOne({
-        where: {
-          id: req.body.race
-        }
-      }).then(response => {
-        this.update(res, req.id, req.body.race, response.name);
-      });
     }
 
+    if(req.body.races.length > 0 ) {
+      var races = req.body.races;
+      var status = req.body.status;
+      races.map(async(item, index) => {
+        this.update(req.id, item, status);
+      });
+    }
+    return ResponseHandler.success(res, responseLanguage.race_save);
   }
 
-  update = (res, userId, raceId, name = '') => {
-    UserMetadata.findOne({
+  update = async (userId, raceId, status) => {
+    let isUserRaceExist = await UserRace.findOne({
       where: {
-        user_id: userId
+        user_id: userId,
+        race_id: raceId
       }
-    }).then(response => {
-      if(!response) {
-        UserMetadata.create({
-          user_id: userId,
-          race_id: raceId
-        })
-        .then(response => {
-          if (name) {
-            let data = {
-              id: userId,
-              name: name
-            }
-
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
-          }
-
-          return ResponseHandler.success(res, responseLanguage.race_save);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      } else {
-        UserMetadata.update({
-          race_id: raceId
-        },{
-          where: {user_id: userId}
-        })
-        .then(response => {
-
-          if (name) {
-            let data = {
-              id: userId,
-              name: name
-            }
-
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
-          }
-
-          return ResponseHandler.success(res, responseLanguage.race_save);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      }
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
     });
+    if (!isUserRaceExist) {
+      UserRace.create({
+        user_id: userId,
+        race_id: raceId,
+        status: status
+      }).then(response => {
+        UserRace.findAll({
+          where: {
+            user_id: userId
+          },
+          include: [{
+            model: Race,
+            attributes: ['name'],
+            as: 'race',
+            where: { status: StatusHandler.active }
+          }],
+          raw: true
+        }).then(response => {
+          if (response && response.length > 0) {
+            let race = response.map(item => item['race.name']);
+            let data = {
+              id: userId,
+              name: race
+            }
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
+          }
+        });
+      });
+    }
   }
 
 }

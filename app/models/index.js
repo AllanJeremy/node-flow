@@ -52,6 +52,7 @@ db.DelistedPeer = require('../models/DelistedPeer.js')(sequelize, Sequelize);
 db.ReportedUser = require('../models/ReportedUser.js')(sequelize, Sequelize);
 db.ElasticsearchEvents = require('../models/ElasticsearchEvents.js')(sequelize, Sequelize);
 db.Avatar = require('../models/Avatar.js')(sequelize, Sequelize);
+db.UserRace = require('../models/UserRace.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
@@ -71,5 +72,7 @@ db.User.hasOne(db.UserInterest, {foreignKey: 'user_id', as: 'user_interest'});
 db.ListedPeer.belongsTo(db.User, {foreignKey: 'peer_id', as: 'peer'});
 db.ReportedUser.belongsTo(db.User, {foreignKey: 'user_id', as: 'reported_user'});
 db.ReportedUser.belongsTo(db.User, {foreignKey: 'reported_by', as: 'reported_by_user'});
+db.User.hasMany(db.UserRace, {foreignKey: 'user_id', as: 'races', onDelete: 'cascade', hooks: true});
+db.UserRace.belongsTo(db.Race, {foreignKey: 'race_id', as: 'race', onDelete: 'cascade', hooks: true});
 
 module.exports = db;

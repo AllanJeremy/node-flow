@@ -83,7 +83,7 @@ class GenderController {
         status: StatusHandler.pending
       })
       .then(response => {
-        this.update(res, req.id, response.id);
+        this.update(res, req.id, response.id, StatusHandler.pending);
       })
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
@@ -94,12 +94,12 @@ class GenderController {
           id: req.body.gender
         }
       }).then(response => {
-        this.update(res, req.id, req.body.gender, response.name);
+        this.update(res, req.id, req.body.gender, req.body.status, response.name);
       });
     }
   }
 
-  update = (res, userId, genderId, name = '') => {
+  update = (res, userId, genderId, status, name = '') => {
     UserMetadata.findOne({
       where: {
         user_id: userId
@@ -108,7 +108,8 @@ class GenderController {
       if (!response) {
         UserMetadata.create({
           user_id: userId,
-          gender_id: genderId
+          gender_id: genderId,
+          gender_status: status
         })
         .then(response => {
 

@@ -32,7 +32,7 @@ var PersonalityQuestionTransformer = require('../../../../transformers/core/Pers
 PersonalityQuestionTransformer = new PersonalityQuestionTransformer();
 
 
-class RaceController {
+class PersonalityQuestionController {
 
   /**
    * @api {get} /user/profile/personality_question/list Show personality question list
@@ -105,4 +105,4 @@ class RaceController {
 
 }
 
-module.exports = RaceController;
+module.exports = PersonalityQuestionController;
