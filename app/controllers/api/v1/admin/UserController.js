@@ -24,7 +24,7 @@ const PersonalityQuestion = Models.PersonalityQuestion;
 const UserPersonalityQuestion = Models.UserPersonalityQuestion;
 const ConversationStarter = Models.ConversationStarter;
 const UserConversationStarter = Models.UserConversationStarter;
-
+const UserRace = Models.UserRace;
 
 /**
  * Languages
@@ -78,11 +78,20 @@ class UserController {
       {
         model: UserMetadata,
         include: [
-          { model: Race, attributes: ['name'] },
           { model: Gender, attributes: ['name'] },
           { model: SexualOrientation, attributes: ['name'] },
           { model: FamilyDynamic, attributes: ['name'] }],
         as: 'user_meta_data'
+      },
+      {
+        model: UserRace,
+        attributes: ['id', 'user_id', 'race_id'],
+        include: [{
+          model: Race,
+          attributes: ['name'],
+          as: 'race'
+        }],
+        as: 'races'
       },
       {
         model: UserHealthCategory,

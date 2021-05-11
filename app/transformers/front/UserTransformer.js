@@ -27,12 +27,12 @@ class UserTransformer {
     },
     'user_detail': {
       'id': 'user_meta_data.id',
-      'race': {
-        'name': 'user_meta_data.Race.name',
+      'races': data.races.length > 0 ? fractal(data.races, {
+        'name': 'race.name',
         'status': function (data) {
-          return data.get('user_meta_data.race_status');
+          return data.get('status');
         }
-      },
+      }) : [],
       'gender': {
         'name': 'user_meta_data.Gender.name',
         'status': function (data) {

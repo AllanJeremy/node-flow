@@ -28,6 +28,7 @@ const HealthCategory = Models.HealthCategory;
 const UserHealthCategory = Models.UserHealthCategory;
 const Workout = Models.Workout;
 const UserWorkout = Models.UserWorkout;
+const UserRace = Models.UserRace;
 
 
 /**
@@ -209,7 +210,6 @@ class UserProfileController {
       }
     }).then(async response => {
       await UserMetadata.update({
-        race_status: req.body.race_status,
         gender_status: req.body.gender_status,
         family_detail_status: req.body.family_dynamic_status,
         sexual_orientation_status: req.body.sexual_orientation_status,
@@ -247,6 +247,20 @@ class UserProfileController {
         });
       });
 
+      let raceStatus = req.body.races_status;
+
+      raceStatus.map(async (item, index) => {
+        await UserRace.update({
+          status: item.status
+        },
+        {
+          where: {
+            user_id: req.id,
+            race_id: item.id
+          }
+        });
+      });
+
       // store user settings in active search table
       User.findOne({
         where: { id: req.id },
@@ -254,7 +268,6 @@ class UserProfileController {
         {
           model: UserMetadata,
           include: [
-            { model: Race, attributes: ['name'] },
             { model: Gender, attributes: ['name'] },
             { model: SexualOrientation, attributes: ['name'] },
             { model: FamilyDynamic, attributes: ['name'] }],
@@ -279,6 +292,16 @@ class UserProfileController {
             as: 'workout'
           }],
           as: 'workouts'
+        },
+        {
+          model: UserRace,
+          attributes: ['id', 'race_id', 'status'],
+          include: [{
+            model: Race,
+            attributes: ['name'],
+            as: 'race'
+          }],
+          as: 'races'
         }]
       })
       .then(response => {
@@ -299,9 +322,17 @@ class UserProfileController {
           }
         });
 
+        let races = [];
+        response.races.map((item, index) => {
+          let isActive = raceStatus.filter(raceItem => (raceItem.id == item.race_id))[0].status;
+          if(item.race && item.race.name && isActive == 1) {
+            races.push(item.race.name);
+          }
+        });
+
         let userData = {id: req.id};
-        if(req.body.race_status == 1 && response.user_meta_data.Race) {
-          userData.race = response.user_meta_data.Race.name;
+        if(races.length > 0) {
+          userData.races = races;
         }
         if(req.body.gender_status == 1 && response.user_meta_data.Gender) {
           userData.gender = response.user_meta_data.Gender.name;
@@ -349,7 +380,6 @@ class UserProfileController {
       {
         model: UserMetadata,
         include: [
-          { model: Race, attributes: ['name'] },
           { model: Gender, attributes: ['name'] },
           { model: SexualOrientation, attributes: ['name'] },
           { model: FamilyDynamic, attributes: ['name'] }],
@@ -374,10 +404,20 @@ class UserProfileController {
           as: 'workout'
         }],
         as: 'workouts'
+      },
+      {
+        model: UserRace,
+        attributes: ['id', 'status'],
+        include: [{
+          model: Race,
+          attributes: ['name'],
+          as: 'race'
+        }],
+        as: 'races'
       }]
     })
     .then(response => {
-      return ResponseHandler.success(res, '', UserTransformer.UserDetail(response));
+      return ResponseHandler.success(res, '', response);
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);

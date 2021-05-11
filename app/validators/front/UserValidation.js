@@ -57,11 +57,8 @@ exports.UserInterest = [
 
 
 exports.visibility = [
-  check('race_status')
-    .trim()
-    .escape()
-    .not()
-    .isEmpty()
+  check('races_status')
+    .isArray({min: 1})
     .withMessage(validation.race_status_required)
     .bail(),
   check('gender_status')

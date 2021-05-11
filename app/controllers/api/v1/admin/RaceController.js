@@ -214,10 +214,10 @@ class RaceController {
       }
     })
     .then(response => {
-      UserMetadata.findAll({where: { race_id: req.body.id }})
+      UserRace.findAll({where: { race_id: req.body.id }})
       .then(response => {
         if(response.length > 0) {
-          UserMetadata.update({
+          UserRace.update({
               race_id: req.body.merged_id,
             },
             {
@@ -226,16 +226,26 @@ class RaceController {
             plain: true
           })
           .then(response => {
-            Race.findOne({
+            UserRace.findAll({
               where: {
-                id: req.body.merged_id
-              }
+                user_id: response[1].dataValues.user_id
+              },
+              include: [{
+                model: Race,
+                attributes: ['name'],
+                as: 'race',
+                where: { status: StatusHandler.active }
+              }],
+              raw: true
             }).then(result => {
-              let data = {
-                id: response[1].dataValues.user_id,
-                name: result.name
+              if (result && result.length > 0) {
+                let races = result.map(item => item['race.name']);
+                let data = {
+                  id: response[1].dataValues.user_id,
+                  name: races
+                }
+                ElasticsearchEventsHandler.store(ElasticsearchEventsHandler.raceUpdate, data);
               }
-              ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
             });
           })
           .catch(err => {
