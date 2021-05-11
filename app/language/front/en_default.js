@@ -135,6 +135,14 @@ exports.language = {
     'and': 'and',
     'privacy_policy': 'Privacy Policy',
     'welcome': 'Welcome,',
+    'skip': 'Skip',
+    'other': 'Other',
+    'race': 'Race',
+    'select_all_that_apply': 'Select all that apply',
+    'show_profile': 'Show on Profile',
+    'hide_profile': 'Hide on Profile',
+    'profile_selection_title': 'I identify as...',
+    'describe': 'Describe'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
