@@ -45,12 +45,12 @@ class UserTransformer {
           return data.get('user_meta_data.sexual_orientation_status');
         }
       },
-      'family_dynamic': {
-        'name': 'user_meta_data.FamilyDynamic.name',
+      'family_dynamic': data.family_dynamics.length > 0 ? fractal(data.family_dynamics, {
+        'name': 'family_dynamic.name',
         'status': function (data) {
-          return data.get('user_meta_data.family_detail_status');
+          return data.get('status');
         }
-      },
+      }) : [],
       'health_categories': data.health_categories.length > 0 ? fractal(data.health_categories, {
         'name': 'health_category.name',
         'status': function (data) {

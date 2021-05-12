@@ -21,7 +21,7 @@ ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
  */
 const Models = require('../../../../models');
 const FamilyDynamic = Models.FamilyDynamic;
-const UserMetadata = Models.UserMetadata;
+const UserFamilyDynamic = Models.UserFamilyDynamic;
 
 /**
  * Languages
@@ -68,6 +68,8 @@ class FamilyDynamicController {
    * @apiGroup Front
    *
    * @apiParam {String} [family_dynamic] family_dynamic
+   * @apiParam {String} [other] other
+   * @apiParam {boolean} [status] status
    *
    * @apiSuccess (200) {Object}
    */
@@ -89,73 +91,57 @@ class FamilyDynamicController {
       .catch(err => {
         return ResponseHandler.error(res, 500, err.message);
       })
-    } else {
-      FamilyDynamic.findOne({
-        where: {
-          id: req.body.family_dynamic
-        }
+    }
+
+    if(req.body.family_dynamics.length > 0 ) {
+      var familyDynamics = req.body.family_dynamics;
+      var status = req.body.status;
+      familyDynamics.map(async(item, index) => {
+        this.update(req.id, item, status);
+      });
+    }
+    return ResponseHandler.success(res, responseLanguage.family_dynamic_save);
+  }
+
+  update = async(userId, familyDynamicId, status) => {
+    let isUserFamilyDynamicExist = await UserFamilyDynamic.findOne({
+      where: {
+        user_id: userId,
+        family_dynamic_id: familyDynamicId
+      }
+    });
+    if (!isUserFamilyDynamicExist) {
+      UserFamilyDynamic.create({
+        user_id: userId,
+        family_dynamic_id: familyDynamicId,
+        status: status
       }).then(response => {
-        this.update(res, req.id, req.body.family_dynamic, response.name);
+        UserFamilyDynamic.findAll({
+          where: {
+            user_id: userId
+          },
+          include: [{
+            model: FamilyDynamic,
+            attributes: ['name'],
+            as: 'family_dynamic',
+            where: { status: StatusHandler.active }
+          }],
+          raw: true
+        }).then(response => {
+          if (response && response.length > 0) {
+            let familyDynamics = response.map(item => item['family_dynamic.name']);
+            let data = {
+              id: userId,
+              name: familyDynamics
+            }
+            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.familyDynamicUpdate, data);
+          }
+        }).catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
       });
     }
   }
-
-  update = (res, userId, familyDynamicId, name = '') => {
-    UserMetadata.findOne({
-      where: {
-        user_id: userId
-      }
-    }).then(response => {
-      if (!response) {
-        UserMetadata.create({
-          user_id: userId,
-          family_detail_id: familyDynamicId
-        })
-        .then(response => {
-
-          if (name) {
-            let data = {
-              id: userId,
-              name: name
-            }
-
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.familyDynamicUpdate, data);
-          }
-
-          return ResponseHandler.success(res, responseLanguage.family_dynamic_save);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      } else {
-        UserMetadata.update({
-          family_detail_id: familyDynamicId
-        },
-        {
-          where: {user_id: userId}
-        })
-        .then(response => {
-          if (name) {
-            let data = {
-              id: userId,
-              name: name
-            }
-
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.familyDynamicUpdate, data);
-          }
-
-          return ResponseHandler.success(res, responseLanguage.family_dynamic_save);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      }
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
 }
 
 module.exports = FamilyDynamicController;

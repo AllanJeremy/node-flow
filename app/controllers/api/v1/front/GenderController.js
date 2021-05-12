@@ -129,7 +129,8 @@ class GenderController {
         });
       } else {
         UserMetadata.update({
-          gender_id: genderId
+          gender_id: genderId,
+          gender_status: status
         },
         {
           where: {user_id: userId}

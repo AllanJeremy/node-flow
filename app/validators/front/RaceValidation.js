@@ -5,10 +5,12 @@ const validationLanguage = language.en.front.validation
 
 exports.Validation = oneOf([
   check('races')
+    .optional({checkFalsy: true})
     .isArray({min: 1})
     .withMessage(validationLanguage.race_required)
     .bail(),
   check('other')
+    .optional({checkFalsy: true})
     .trim()
     .escape()
     .not()

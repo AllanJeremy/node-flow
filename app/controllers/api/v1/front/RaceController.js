@@ -69,6 +69,8 @@ class RaceController {
    * @apiGroup Front
    *
    * @apiParam {String} [race] race
+   * @apiParam {String} [other] other
+   * @apiParam {boolean} [status] status
    *
    * @apiSuccess (200) {Object}
    */
@@ -138,6 +140,8 @@ class RaceController {
             }
             ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
           }
+        }).catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
         });
       });
     }
