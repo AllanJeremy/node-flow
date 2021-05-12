@@ -95,19 +95,18 @@ exports.language = {
         },
         'information': {
           'line1': {
-            'text1': '1. Find you a',
+            'text1': 'Find you a',
             'text2': 'great',
             'text3': 'match',
           },
           'line2': {
-            'text1': '2. Recommend',
+            'text1': 'Recommend',
             'text2': 'relevant',
             'text3': 'groups',
           },
           'line3': {
-            'text1': '3.',
-            'text2': 'Personalize',
-            'text3': 'your app experience'
+            'text1': 'Personalize',
+            'text2': 'your app experience'
           }
         }
       },
@@ -142,7 +141,10 @@ exports.language = {
     'show_profile': 'Show on Profile',
     'hide_profile': 'Hide on Profile',
     'profile_selection_title': 'I identify as...',
-    'describe': 'Describe'
+    'describe': 'Describe',
+    'gender': 'Gender',
+    'family': 'Family',
+    'sexual_orientation': 'SexualOrientation'
   },
   'validation': {
     'required_fields': 'All the fields are required.',

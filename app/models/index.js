@@ -56,7 +56,6 @@ db.UserRace = require('../models/UserRace.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
-db.UserMetadata.belongsTo(db.Race, {foreignKey: 'race_id', onDelete: 'cascade', hooks: true});
 db.UserMetadata.belongsTo(db.Gender, {foreignKey: 'gender_id', onDelete: 'cascade', hooks: true});
 db.UserMetadata.belongsTo(db.SexualOrientation, {foreignKey: 'sexual_orientation_id', onDelete: 'cascade', hooks: true});
 db.UserMetadata.belongsTo(db.FamilyDynamic, {foreignKey: 'family_detail_id', onDelete: 'cascade', hooks: true});
