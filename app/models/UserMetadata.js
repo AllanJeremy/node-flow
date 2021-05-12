@@ -15,8 +15,6 @@ module.exports = (sequelize, DataTypes) => {
   };
   UserMetadata.init({
     user_id: DataTypes.INTEGER,
-    race_id: DataTypes.INTEGER,
-    race_status: DataTypes.INTEGER,
     gender_id: DataTypes.INTEGER,
     gender_status: DataTypes.INTEGER,
     sexual_orientation_id: DataTypes.INTEGER,
