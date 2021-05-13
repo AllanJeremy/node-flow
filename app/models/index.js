@@ -53,12 +53,12 @@ db.ReportedUser = require('../models/ReportedUser.js')(sequelize, Sequelize);
 db.ElasticsearchEvents = require('../models/ElasticsearchEvents.js')(sequelize, Sequelize);
 db.Avatar = require('../models/Avatar.js')(sequelize, Sequelize);
 db.UserRace = require('../models/UserRace.js')(sequelize, Sequelize);
+db.UserFamilyDynamic = require('../models/UserFamilyDynamic.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
 db.UserMetadata.belongsTo(db.Gender, {foreignKey: 'gender_id', onDelete: 'cascade', hooks: true});
 db.UserMetadata.belongsTo(db.SexualOrientation, {foreignKey: 'sexual_orientation_id', onDelete: 'cascade', hooks: true});
-db.UserMetadata.belongsTo(db.FamilyDynamic, {foreignKey: 'family_detail_id', onDelete: 'cascade', hooks: true});
 db.User.hasMany(db.UserHealthCategory, {foreignKey: 'user_id', as: 'health_categories', onDelete: 'cascade', hooks: true});
 db.UserHealthCategory.belongsTo(db.HealthCategory, {foreignKey: 'health_category_id', as: 'health_category', onDelete: 'cascade', hooks: true});
 db.User.hasMany(db.UserWorkout, {foreignKey: 'user_id', as: 'workouts', onDelete: 'cascade', hooks: true});
@@ -73,5 +73,7 @@ db.ReportedUser.belongsTo(db.User, {foreignKey: 'user_id', as: 'reported_user'})
 db.ReportedUser.belongsTo(db.User, {foreignKey: 'reported_by', as: 'reported_by_user'});
 db.User.hasMany(db.UserRace, {foreignKey: 'user_id', as: 'races', onDelete: 'cascade', hooks: true});
 db.UserRace.belongsTo(db.Race, {foreignKey: 'race_id', as: 'race', onDelete: 'cascade', hooks: true});
+db.User.hasMany(db.UserRace, {foreignKey: 'user_id', as: 'family_dynamics', onDelete: 'cascade', hooks: true});
+db.UserFamilyDynamic.belongsTo(db.FamilyDynamic, {foreignKey: 'family_dynamic_id', as: 'family_dynamic', onDelete: 'cascade', hooks: true});
 
 module.exports = db;

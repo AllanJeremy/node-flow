@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class UserMetadata extends Model {
+  class UserFamilyDynamic extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,22 +13,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  UserMetadata.init({
+  UserFamilyDynamic.init({
     user_id: DataTypes.INTEGER,
-    gender_id: DataTypes.INTEGER,
-    gender_status: DataTypes.INTEGER,
-    sexual_orientation_id: DataTypes.INTEGER,
-    sexual_orientation_status: DataTypes.INTEGER,
-    summary: DataTypes.STRING,
+    family_dynamic_id: DataTypes.INTEGER,
+    status: DataTypes.INTEGER,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,
-    modelName: 'UserMetadata',
-    tableName: 'user_metadata',
+    modelName: 'UserFamilyDynamic',
+    tableName: 'user_family_dynamics',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
     deletedAt: 'deleted_at',
     paranoid: true,
   });
-  return UserMetadata;
+  return UserFamilyDynamic;
 };

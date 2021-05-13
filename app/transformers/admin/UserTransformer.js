@@ -46,9 +46,11 @@ class UserTransformer {
       'id': 'user_meta_data.id',
       'gender': 'user_meta_data.Gender.name',
       'sexual_orientation': 'user_meta_data.SexualOrientation.name',
-      'family_dynamic': 'user_meta_data.FamilyDynamic.name',
       'races': data.races.length > 0 ? fractal(data.races, {
         'name': 'race.name'
+      }) : [],
+      'family_dynamic': data.family_dynamics.length > 0 ? fractal(data.family_dynamics, {
+        'name': 'family_dynamic.name'
       }) : [],
       'health_categories': data.health_categories.length > 0 ? fractal(data.health_categories, {
         'name': 'health_category.name'

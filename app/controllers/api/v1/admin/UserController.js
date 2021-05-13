@@ -25,6 +25,7 @@ const UserPersonalityQuestion = Models.UserPersonalityQuestion;
 const ConversationStarter = Models.ConversationStarter;
 const UserConversationStarter = Models.UserConversationStarter;
 const UserRace = Models.UserRace;
+const UserFamilyDynamic = Models.UserFamilyDynamic;
 
 /**
  * Languages
