@@ -118,6 +118,12 @@ exports.language = {
       },
       'personality_question': {
         'title': 'What type of person do you consider yourself to be ...'
+      },
+      'health_category': {
+        'title': 'I am here to receive or provide support related to...',
+      },
+      'health_tools': {
+        'title': 'I am currently using these tools to help me with my mental well-being ...'
       }
     }
   },
@@ -144,7 +150,9 @@ exports.language = {
     'describe': 'Describe',
     'gender': 'Gender',
     'family': 'Family',
-    'sexual_orientation': 'SexualOrientation'
+    'sexual_orientation': 'SexualOrientation',
+    'search': 'Search',
+    'no_search_found': 'We did not find any matches for your request. You can choose "Other" and write your request in the input field.'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
