@@ -16,12 +16,5 @@ exports.Validation = oneOf([
     .not()
     .isEmpty()
     .withMessage(validationLanguage.other_required)
-    .bail(),
-  check('status')
-    .trim()
-    .escape()
-    .not()
-    .isEmpty()
-    .withMessage(validationLanguage.workout_status_required)
-    .bail(),
+    .bail()
 ]);

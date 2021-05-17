@@ -26,42 +26,57 @@ class UserTransformer {
       return data.get('status');
     },
     'user_detail': {
-      'id': 'user_meta_data.id',
       'races': data.races.length > 0 ? fractal(data.races, {
+        'id': 'race.id',
         'name': 'race.name',
         'status': function (data) {
           return data.get('status');
         }
       }) : [],
       'gender': {
-        'name': 'user_meta_data.Gender.name',
+        'id': 'user_meta_data.gender.id',
+        'name': 'user_meta_data.gender.name',
         'status': function (data) {
           return data.get('user_meta_data.gender_status');
         }
       },
       'sexual_orientation': {
-        'name': 'user_meta_data.SexualOrientation.name',
+        'id': 'user_meta_data.sexual_orientation.id',
+        'name': 'user_meta_data.sexual_orientation.name',
         'status': function (data) {
           return data.get('user_meta_data.sexual_orientation_status');
         }
       },
       'family_dynamic': data.family_dynamics.length > 0 ? fractal(data.family_dynamics, {
+        'id': 'family_dynamic.id',
         'name': 'family_dynamic.name',
         'status': function (data) {
           return data.get('status');
         }
       }) : [],
       'health_categories': data.health_categories.length > 0 ? fractal(data.health_categories, {
+        'id': 'health_category.id',
         'name': 'health_category.name',
         'status': function (data) {
           return data.get('status');
         }
       }) : [],
       'workouts': data.workouts.length > 0 ? fractal(data.workouts, {
+        'id': 'workout.id',
         'name': 'workout.name',
         'status': function (data) {
           return data.get('status');
         }
+      }) : [],
+      'personality_questions': data.personality_questions.length > 0 ? fractal(data.personality_questions, {
+        'id': 'personality_question.id',
+        'question': 'personality_question.question',
+        'options': 'personality_question.options',
+        'answer': 'answer'
+      }) : [],
+      'conversation_starters': data.conversation_starters.length > 0 ? fractal(data.conversation_starters, {
+        'question': 'conversation_starter.question',
+        'answer': 'answer'
       }) : [],
       'summary': 'user_meta_data.summary',
     }
