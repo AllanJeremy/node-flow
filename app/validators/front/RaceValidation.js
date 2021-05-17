@@ -3,10 +3,10 @@ const { check, oneOf } = require('express-validator');
 const language = require('../../language/en_default');
 const validationLanguage = language.en.front.validation
 
-exports.Validation = oneOf([
+exports.Validation = [
   check('races')
     .optional({checkFalsy: true})
-    .isArray({min: 1})
+    .isArray()
     .withMessage(validationLanguage.race_required)
     .bail(),
   check('other')
@@ -24,4 +24,4 @@ exports.Validation = oneOf([
     .isEmpty()
     .withMessage(validationLanguage.race_status_required)
     .bail(),
-]);
+];

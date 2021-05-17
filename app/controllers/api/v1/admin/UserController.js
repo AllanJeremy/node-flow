@@ -80,8 +80,7 @@ class UserController {
         model: UserMetadata,
         include: [
           { model: Gender, attributes: ['name'] },
-          { model: SexualOrientation, attributes: ['name'] },
-          { model: FamilyDynamic, attributes: ['name'] }],
+          { model: SexualOrientation, attributes: ['name'] }],
         as: 'user_meta_data'
       },
       {
@@ -103,6 +102,16 @@ class UserController {
             as: 'health_category'
           }],
         as: 'health_categories'
+      },
+      {
+        model: UserFamilyDynamic,
+        attributes: ['id', 'user_id', 'family_dynamic_id'],
+        include: [{
+            model: FamilyDynamic,
+            attributes: ['name'],
+            as: 'family_dynamic'
+          }],
+        as: 'family_dynamics'
       },
       {
         model: UserWorkout,

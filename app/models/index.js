@@ -73,7 +73,7 @@ db.ReportedUser.belongsTo(db.User, {foreignKey: 'user_id', as: 'reported_user'})
 db.ReportedUser.belongsTo(db.User, {foreignKey: 'reported_by', as: 'reported_by_user'});
 db.User.hasMany(db.UserRace, {foreignKey: 'user_id', as: 'races', onDelete: 'cascade', hooks: true});
 db.UserRace.belongsTo(db.Race, {foreignKey: 'race_id', as: 'race', onDelete: 'cascade', hooks: true});
-db.User.hasMany(db.UserRace, {foreignKey: 'user_id', as: 'family_dynamics', onDelete: 'cascade', hooks: true});
+db.User.hasMany(db.UserFamilyDynamic, {foreignKey: 'user_id', as: 'family_dynamics', onDelete: 'cascade', hooks: true});
 db.UserFamilyDynamic.belongsTo(db.FamilyDynamic, {foreignKey: 'family_dynamic_id', as: 'family_dynamic', onDelete: 'cascade', hooks: true});
 
 module.exports = db;
