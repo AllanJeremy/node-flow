@@ -95,7 +95,7 @@ class FamilyDynamicController {
     });
 
     if (req.body.other) {
-      if(isUserFamilyDynamicExist){
+      if(isUserFamilyDynamicExist) {
         FamilyDynamic.update({
           name: req.body.other
         },
@@ -121,7 +121,7 @@ class FamilyDynamicController {
         });
       }
     } else {
-      if(isUserFamilyDynamicExist){
+      if(isUserFamilyDynamicExist) {
         FamilyDynamic.destroy({
           where: {
             id: isUserFamilyDynamicExist['family_dynamic.id']

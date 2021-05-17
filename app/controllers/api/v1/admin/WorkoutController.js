@@ -225,7 +225,7 @@ class WorkoutController {
             plain: true
           })
           .then(response => {
-            if(response){ 
+            if(response) {
               UserWorkout.findAll({
                 where: {
                   user_id: response[1].dataValues.user_id

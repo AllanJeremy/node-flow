@@ -108,7 +108,7 @@ class SexualOrientationController {
     });
 
     if (req.body.other) {
-      if(isUserSexualOrientationExist){
+      if(isUserSexualOrientationExist) {
         SexualOrientation.update({
           name: req.body.other
         },
@@ -132,7 +132,7 @@ class SexualOrientationController {
       }
     } else {
 
-      if(isUserSexualOrientationExist){
+      if(isUserSexualOrientationExist) {
         SexualOrientation.destroy({
           where: {
             id: isUserSexualOrientationExist.sexual_orientation_id

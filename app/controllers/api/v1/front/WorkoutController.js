@@ -99,7 +99,7 @@ class WorkoutController {
     });
 
     if (req.body.other) {
-      if(isUserWorkoutExist){
+      if(isUserWorkoutExist) {
         Workout.update({
           name: req.body.other
         },
@@ -125,7 +125,7 @@ class WorkoutController {
         });
       }
     } else {
-      if(isUserWorkoutExist){
+      if(isUserWorkoutExist) {
         Workout.destroy({
           where: {
             id: isUserWorkoutExist['workout.id']
