@@ -99,7 +99,7 @@ class HealthCategoryController {
     });
 
     if (req.body.other) {
-      if(isUserHealthCategoryExist){
+      if(isUserHealthCategoryExist) {
         HealthCategory.update({
           name: req.body.other
         },
@@ -125,7 +125,7 @@ class HealthCategoryController {
         });
       }
     } else {
-      if(isUserHealthCategoryExist){
+      if(isUserHealthCategoryExist) {
         HealthCategory.destroy({
           where: {
             id: isUserHealthCategoryExist['health_category.id']

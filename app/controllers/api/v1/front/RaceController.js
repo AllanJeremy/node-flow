@@ -94,7 +94,7 @@ class RaceController {
       raw: true
     });
     if (req.body.other) {
-      if(isUserRaceExist){
+      if(isUserRaceExist) {
         Race.update({
           name: req.body.other
         },
@@ -120,7 +120,7 @@ class RaceController {
         });
       }
     } else {
-      if(isUserRaceExist){
+      if(isUserRaceExist) {
         Race.destroy({
           where: {
             id: isUserRaceExist['race.id']

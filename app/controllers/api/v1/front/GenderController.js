@@ -85,7 +85,7 @@ class GenderController {
       }
     });
     if (req.body.other) {
-      if(isUserGenderExist){
+      if(isUserGenderExist) {
         Gender.update({
           name: req.body.other
         },
@@ -109,7 +109,7 @@ class GenderController {
       }
     } else {
 
-      if(isUserGenderExist){
+      if(isUserGenderExist) {
         Gender.destroy({
           where: {
             id: isUserGenderExist.gender_id
