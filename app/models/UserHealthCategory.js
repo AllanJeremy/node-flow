@@ -24,8 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'user_health_categories',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
-    deletedAt: 'deleted_at',
-    paranoid: true
+    deletedAt: 'deleted_at'
   });
   return UserHealthCategory;
 };

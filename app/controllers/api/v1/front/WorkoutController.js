@@ -80,20 +80,73 @@ class WorkoutController {
     let workouts= req.body.workouts
 
     workouts && workouts.length > 0 && workouts.map(async(item, index) => {
-      this.update(req.id, item);
+      this.update(req.id, item, req.body.status);
 
     });
+
+    let isUserWorkoutExist = await UserWorkout.findOne({
+      where: {
+        user_id: req.id
+      },
+      include: [{
+        model: Workout,
+        attributes: ['id', 'name'],
+        as: 'workout',
+        where: { status: StatusHandler.pending }
+      }],
+      returning: true,
+      raw: true
+    });
+
     if (req.body.other) {
-      let workout = await Workout.create({
-        name: req.body.other,
-        status: StatusHandler.pending
-      });
-      this.update(req.id, workout.id);
+      if(isUserWorkoutExist){
+        Workout.update({
+          name: req.body.other
+        },
+        {
+          where: {
+            id: isUserWorkoutExist['workout.id']
+          }
+        });
+      } else {
+        Workout.create({
+          name: req.body.other,
+          status: StatusHandler.pending
+        },
+        {
+          returning: true,
+          raw:true
+        })
+        .then(response => {
+          this.update(req.id, response.id, StatusHandler.pending);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
+    } else {
+      if(isUserWorkoutExist){
+        Workout.destroy({
+          where: {
+            id: isUserWorkoutExist['workout.id']
+          }
+        }).then(response => {
+          UserWorkout.destroy({
+            where: {
+              workout_id: isUserWorkoutExist['workout.id']
+            }
+          });
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
     }
+
     return ResponseHandler.success(res, responseLanguage.workout_save);
   }
 
-  update = async(userId, workoutId) => {
+  update = async(userId, workoutId, status) => {
     let isUserWorkoutExist = await UserWorkout.findOne({
       where: {
         user_id: userId,
@@ -103,31 +156,53 @@ class WorkoutController {
     if (!isUserWorkoutExist) {
       UserWorkout.create({
         user_id: userId,
-        workout_id: workoutId
+        workout_id: workoutId,
+        status: status
       }).then(response => {
-        UserWorkout.findAll({
-          where: {
-            user_id: userId
-          },
-          include: [{
-            model: Workout,
-            attributes: ['name'],
-            as: 'workout',
-            where: { status: StatusHandler.active }
-          }],
-          raw: true
-        }).then(response => {
-          if (response && response.length > 0) {
-            let workouts = response.map(item => item['workout.name']);
-            let data = {
-              id: userId,
-              name: workouts
-            }
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.workoutUpdate, data);
-          }
-        });
+        if(status == StatusHandler.active) {
+          this.updateElaticsearch(userId);
+        }
+      });
+    } else {
+      UserWorkout.update({
+        status: status
+      }, {
+        where: {
+          user_id: userId,
+          workout_id: workoutId,
+        }
+      }).then(response => {
+        if(status == StatusHandler.active) {
+          this.updateElaticsearch(userId);
+        }
       });
     }
+  }
+
+  updateElaticsearch = (userId) => {
+    UserWorkout.findAll({
+      where: {
+        user_id: userId
+      },
+      include: [{
+        model: Workout,
+        attributes: ['name'],
+        as: 'workout',
+        where: { status: StatusHandler.active }
+      }],
+      raw: true
+    }).then(response => {
+      if (response && response.length > 0) {
+        let workouts = response.map(item => item['workout.name']);
+        let data = {
+          id: userId,
+          name: workouts
+        }
+        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.workoutUpdate, data);
+      }
+    }).catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
   }
 
 }

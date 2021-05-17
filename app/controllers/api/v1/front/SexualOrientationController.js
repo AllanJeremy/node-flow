@@ -71,7 +71,7 @@ class SexualOrientationController {
    *
    * @apiSuccess (200) {Object}
    */
-  store = (req, res) => {
+  store = async (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -98,7 +98,58 @@ class SexualOrientationController {
         this.update(res, req.id, req.body.sexual_orientation, req.body.status, response.name);
       });
     }
+
+
+    let isUserSexualOrientationExist = await UserMetadata.findOne({
+      where: {
+        user_id: req.id,
+        sexual_orientation_status: StatusHandler.pending
+      }
+    });
+
+    if (req.body.other) {
+      if(isUserSexualOrientationExist){
+        SexualOrientation.update({
+          name: req.body.other
+        },
+        {
+          where: {
+            id: isUserSexualOrientationExist.sexual_orientation_id
+          }
+        });
+        return ResponseHandler.success(res, responseLanguage.sexual_orientation_save);
+      } else {
+        SexualOrientation.create({
+          name: req.body.other,
+          status: StatusHandler.pending
+        })
+        .then(response => {
+          this.update(res, req.id, response.id, StatusHandler.pending);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
+    } else {
+
+      if(isUserSexualOrientationExist){
+        SexualOrientation.destroy({
+          where: {
+            id: isUserSexualOrientationExist.sexual_orientation_id
+          }
+        });
+      }
+
+      SexualOrientation.findOne({
+        where: {
+          id: req.body.SexualOrientation
+        }
+      }).then(response => {
+        this.update(res, req.id, req.body.sexual_orientation, req.body.status, response.name);
+      });
+    }
   }
+
 
   update = (res, userId, sexualOrientationId, status, name = '') => {
     UserMetadata.findOne({
@@ -113,13 +164,8 @@ class SexualOrientationController {
           sexual_orientation_status: status
         })
         .then(response => {
-          if (name) {
-            let data = {
-              id: userId,
-              name: name
-            }
-
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.sexualOrientationUpdate, data);
+          if(status == StatusHandler.active) {
+            this.updateElaticsearch(userId, name);
           }
 
           return ResponseHandler.success(res, responseLanguage.sexual_orientation_save);
@@ -136,13 +182,8 @@ class SexualOrientationController {
           where: {user_id: userId}
         })
         .then(response => {
-          if (name) {
-            let data = {
-              id: userId,
-              name: name
-            }
-
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.sexualOrientationUpdate, data);
+          if(status == StatusHandler.active) {
+            this.updateElaticsearch(userId, name);
           }
 
           return ResponseHandler.success(res, responseLanguage.sexual_orientation_save);
@@ -155,6 +196,17 @@ class SexualOrientationController {
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
+  }
+
+  updateElaticsearch = (userId, name) => {
+    if (name) {
+      let data = {
+        id: userId,
+        name: name
+      }
+
+      ElasticsearchEventsHandler.store(ElasticsearchEventsAction.sexualOrientationUpdate, data);
+    }
   }
 }
 

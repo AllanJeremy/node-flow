@@ -164,23 +164,43 @@ class UserProfileController {
    *
    * @apiSuccess (200) {Object}
    */
-  userInterestStore = (req, res) => {
+  userInterestStore = async (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, errors.array());
     }
 
-    UserInterest.create({
-      user_id: req.id,
-      value: req.body.interest
-    })
-    .then(response => {
-      return ResponseHandler.success(res, responseLanguage.user_interest_save);
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
+    let userInterest = await UserInterest.findOne({
+      where: { user_id: req.id}
     });
+
+    if(!userInterest) {
+      UserInterest.create({
+        user_id: req.id,
+        value: req.body.interest
+      })
+      .then(response => {
+        return ResponseHandler.success(res, responseLanguage.user_interest_save);
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+    } else {
+      UserInterest.update({
+        value: req.body.interest
+      },
+      {
+        where: { user_id: req.id }
+      }
+      )
+      .then(response => {
+        return ResponseHandler.success(res, responseLanguage.user_interest_save);
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+    }
   }
 
 
@@ -412,8 +432,7 @@ class UserProfileController {
         model: UserMetadata,
         include: [
           { model: Gender, attributes: ['name'] },
-          { model: SexualOrientation, attributes: ['name'] },
-          { model: FamilyDynamic, attributes: ['name'] }],
+          { model: SexualOrientation, attributes: ['name'] }],
         as: 'user_meta_data'
       },
       {

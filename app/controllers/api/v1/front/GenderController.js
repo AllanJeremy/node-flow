@@ -71,24 +71,52 @@ class GenderController {
    *
    * @apiSuccess (200) {Object}
    */
-  store = (req, res) => {
+  store = async(req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
+
+    let isUserGenderExist = await UserMetadata.findOne({
+      where: {
+        user_id: req.id,
+        gender_status: StatusHandler.pending
+      }
+    });
     if (req.body.other) {
-      Gender.create({
-        name: req.body.other,
-        status: StatusHandler.pending
-      })
-      .then(response => {
-        this.update(res, req.id, response.id, StatusHandler.pending);
-      })
-      .catch(err => {
-        return ResponseHandler.error(res, 500, err.message);
-      })
+      if(isUserGenderExist){
+        Gender.update({
+          name: req.body.other
+        },
+        {
+          where: {
+            id: isUserGenderExist.gender_id
+          }
+        });
+        return ResponseHandler.success(res, responseLanguage.gender_save);
+      } else {
+        Gender.create({
+          name: req.body.other,
+          status: StatusHandler.pending
+        })
+        .then(response => {
+          this.update(res, req.id, response.id, StatusHandler.pending);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
     } else {
+
+      if(isUserGenderExist){
+        Gender.destroy({
+          where: {
+            id: isUserGenderExist.gender_id
+          }
+        });
+      }
+
       Gender.findOne({
         where: {
           id: req.body.gender
@@ -112,16 +140,9 @@ class GenderController {
           gender_status: status
         })
         .then(response => {
-
-          if (name) {
-            let data = {
-              id: userId,
-              name: name
-            }
-
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderUpdate, data);
+          if(status == StatusHandler.active) {
+            this.updateElaticsearch(userId, name);
           }
-
           return ResponseHandler.success(res, responseLanguage.gender_save);
         })
         .catch(err => {
@@ -137,13 +158,8 @@ class GenderController {
         })
         .then(response => {
 
-          if (name) {
-            let data = {
-              id: userId,
-              name: name
-            }
-
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderUpdate, data);
+          if(status == StatusHandler.active) {
+            this.updateElaticsearch(userId, name);
           }
 
           return ResponseHandler.success(res, responseLanguage.gender_save);
@@ -156,6 +172,17 @@ class GenderController {
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
+  }
+
+  updateElaticsearch = (userId, name) => {
+    if (name) {
+      let data = {
+        id: userId,
+        name: name
+      }
+
+      ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderUpdate, data);
+    }
   }
 
 }

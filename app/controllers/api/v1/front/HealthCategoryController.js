@@ -81,20 +81,72 @@ class HealthCategoryController {
     let healthCategories = req.body.health_categories;
 
     healthCategories && healthCategories.length > 0 && healthCategories.length > 0 && healthCategories.map(async(item, index) => {
-      this.update(req.id, item);
+      this.update(req.id, item, req.body.status);
     });
+
+    let isUserHealthCategoryExist = await UserHealthCategory.findOne({
+      where: {
+        user_id: req.id
+      },
+      include: [{
+        model: HealthCategory,
+        attributes: ['id', 'name'],
+        as: 'health_category',
+        where: { status: StatusHandler.pending }
+      }],
+      returning: true,
+      raw: true
+    });
+
     if (req.body.other) {
-      let healthCategory = await HealthCategory.create({
-        name: req.body.other,
-        status: StatusHandler.pending
-      });
-      this.update(req.id, healthCategory.id);
+      if(isUserHealthCategoryExist){
+        HealthCategory.update({
+          name: req.body.other
+        },
+        {
+          where: {
+            id: isUserHealthCategoryExist['health_category.id']
+          }
+        });
+      } else {
+        HealthCategory.create({
+          name: req.body.other,
+          status: StatusHandler.pending
+        },
+        {
+          returning: true,
+          raw:true
+        })
+        .then(response => {
+          this.update(req.id, response.id, StatusHandler.pending);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
+    } else {
+      if(isUserHealthCategoryExist){
+        HealthCategory.destroy({
+          where: {
+            id: isUserHealthCategoryExist['health_category.id']
+          }
+        }).then(response => {
+          UserHealthCategory.destroy({
+            where: {
+              health_category_id: isUserHealthCategoryExist['health_category.id']
+            }
+          });
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
     }
 
     return ResponseHandler.success(res, responseLanguage.health_category_save);
   }
 
-  update = async(userId, healthCategoryId) => {
+  update = async(userId, healthCategoryId, status) => {
     let isUserHealthCategoryExist = await UserHealthCategory.findOne({
       where: {
         user_id: userId,
@@ -104,31 +156,55 @@ class HealthCategoryController {
     if (!isUserHealthCategoryExist) {
       UserHealthCategory.create({
         user_id: userId,
-        health_category_id: healthCategoryId
+        health_category_id: healthCategoryId,
+        status: status
       }).then(response => {
-        UserHealthCategory.findAll({
-          where: {
-            user_id: userId
-          },
-          include: [{
-            model: HealthCategory,
-            attributes: ['name'],
-            as: 'health_category',
-            where: { status: StatusHandler.active }
-          }],
-          raw: true
-        }).then(response => {
-          if (response && response.length > 0) {
-            let healthCategories = response.map(item => item['health_category.name']);
-            let data = {
-              id: userId,
-              name: healthCategories
-            }
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.healthCategoryUpdate, data);
-          }
-        });
+        this.updateElaticsearch(userId);
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+    } else {
+      UserHealthCategory.update({
+        status: status
+      }, {
+        where: {
+          user_id: userId,
+          health_category_id: healthCategoryId,
+        }
+      }).then(response => {
+        if(status == StatusHandler.active) {
+          this.updateElaticsearch(userId);
+        }
       });
     }
+  }
+
+  updateElaticsearch = (userId) => {
+    UserHealthCategory.findAll({
+      where: {
+        user_id: userId
+      },
+      include: [{
+        model: HealthCategory,
+        attributes: ['name'],
+        as: 'health_category',
+        where: { status: StatusHandler.active }
+      }],
+      raw: true
+    }).then(response => {
+      if (response && response.length > 0) {
+        let healthCategories = response.map(item => item['health_category.name']);
+        let data = {
+          id: userId,
+          name: healthCategories
+        }
+        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.healthCategoryUpdate, data);
+      }
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
   }
 
 }

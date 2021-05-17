@@ -80,30 +80,72 @@ class RaceController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    if (req.body.other) {
-      Race.create({
-        name: req.body.other,
-        status: StatusHandler.pending
+    let isUserRaceExist = await UserRace.findOne({
+      where: {
+        user_id: req.id
       },
-      {
-        returning: true,
-        raw:true
-      })
-      .then(response => {
-        this.update(req.id, response.id, StatusHandler.pending);
-      })
-      .catch(err => {
-        return ResponseHandler.error(res, 500, err.message);
-      })
+      include: [{
+        model: Race,
+        attributes: ['id', 'name'],
+        as: 'race',
+        where: { status: StatusHandler.pending }
+      }],
+      returning: true,
+      raw: true
+    });
+    if (req.body.other) {
+      if(isUserRaceExist){
+        Race.update({
+          name: req.body.other
+        },
+        {
+          where: {
+            id: isUserRaceExist['race.id']
+          }
+        });
+      } else {
+        Race.create({
+          name: req.body.other,
+          status: StatusHandler.pending
+        },
+        {
+          returning: true,
+          raw:true
+        })
+        .then(response => {
+          this.update(req.id, response.id, StatusHandler.pending);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
+    } else {
+      if(isUserRaceExist){
+        Race.destroy({
+          where: {
+            id: isUserRaceExist['race.id']
+          }
+        }).then(response => {
+          UserRace.destroy({
+            where: {
+              race_id: isUserRaceExist['race.id']
+            }
+          });
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
     }
 
-    if(req.body.races.length > 0 ) {
+    if(req.body.races && req.body.races.length > 0 ) {
       var races = req.body.races;
       var status = req.body.status;
       races.map(async(item, index) => {
         this.update(req.id, item, status);
       });
     }
+
     return ResponseHandler.success(res, responseLanguage.race_save);
   }
 
@@ -120,31 +162,50 @@ class RaceController {
         race_id: raceId,
         status: status
       }).then(response => {
-        UserRace.findAll({
-          where: {
-            user_id: userId
-          },
-          include: [{
-            model: Race,
-            attributes: ['name'],
-            as: 'race',
-            where: { status: StatusHandler.active }
-          }],
-          raw: true
-        }).then(response => {
-          if (response && response.length > 0) {
-            let race = response.map(item => item['race.name']);
-            let data = {
-              id: userId,
-              name: race
-            }
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
-          }
-        }).catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
+        if(status == StatusHandler.active) {
+          this.updateElaticsearch(userId);
+        }
+      });
+    } else {
+      UserRace.update({
+        status: status
+      }, {
+        where: {
+          user_id: userId,
+          race_id: raceId,
+        }
+      }).then(response => {
+        if(status == StatusHandler.active) {
+          this.updateElaticsearch(userId);
+        }
       });
     }
+  }
+
+  updateElaticsearch = (userId) => {
+    UserRace.findAll({
+      where: {
+        user_id: userId
+      },
+      include: [{
+        model: Race,
+        attributes: ['name'],
+        as: 'race',
+        where: { status: StatusHandler.active }
+      }],
+      raw: true
+    }).then(response => {
+      if (response && response.length > 0) {
+        let race = response.map(item => item['race.name']);
+        let data = {
+          id: userId,
+          name: race
+        }
+        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
+      }
+    }).catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
   }
 
 }
