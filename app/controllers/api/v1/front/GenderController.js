@@ -79,10 +79,17 @@ class GenderController {
     }
 
     let isUserGenderExist = await UserMetadata.findOne({
-      where: {
-        user_id: req.id,
-        gender_status: StatusHandler.pending
-      }
+        where: {
+          user_id: req.id
+        },
+        include: [{
+          model: Gender,
+          attributes: ['id', 'name'],
+          as: 'gender',
+          where: { status: StatusHandler.pending }
+        }],
+        returning: true,
+        raw: true
     });
     if (req.body.other) {
       if (isUserGenderExist) {
@@ -158,7 +165,6 @@ class GenderController {
           where: {user_id: userId}
         })
         .then(response => {
-
           if (status == StatusHandler.active) {
             this.updateElaticsearch(userId, name);
           }

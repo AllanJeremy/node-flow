@@ -57,8 +57,8 @@ db.UserFamilyDynamic = require('../models/UserFamilyDynamic.js')(sequelize, Sequ
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
-db.UserMetadata.belongsTo(db.Gender, {foreignKey: 'gender_id', onDelete: 'cascade', hooks: true});
-db.UserMetadata.belongsTo(db.SexualOrientation, {foreignKey: 'sexual_orientation_id', onDelete: 'cascade', hooks: true});
+db.UserMetadata.belongsTo(db.Gender, {foreignKey: 'gender_id', as: 'gender', onDelete: 'cascade', hooks: true});
+db.UserMetadata.belongsTo(db.SexualOrientation, {foreignKey: 'sexual_orientation_id', as: 'sexual_orientation', onDelete: 'cascade', hooks: true});
 db.User.hasMany(db.UserHealthCategory, {foreignKey: 'user_id', as: 'health_categories', onDelete: 'cascade', hooks: true});
 db.UserHealthCategory.belongsTo(db.HealthCategory, {foreignKey: 'health_category_id', as: 'health_category', onDelete: 'cascade', hooks: true});
 db.User.hasMany(db.UserWorkout, {foreignKey: 'user_id', as: 'workouts', onDelete: 'cascade', hooks: true});

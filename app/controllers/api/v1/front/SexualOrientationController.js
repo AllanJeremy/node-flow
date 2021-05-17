@@ -78,36 +78,23 @@ class SexualOrientationController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    if (req.body.other) {
-      SexualOrientation.create({
-        name: req.body.other,
-        status: StatusHandler.pending
-      })
-      .then(response => {
-        this.update(res, req.id, response.id, StatusHandler.pending);
-      })
-      .catch(err => {
-        return ResponseHandler.error(res, 500, err.message);
-      })
-    } else {
-      SexualOrientation.findOne({
-        where: {
-          id: req.body.sexual_orientation
-        }
-      }).then(response => {
-        this.update(res, req.id, req.body.sexual_orientation, req.body.status, response.name);
-      });
-    }
-
 
     let isUserSexualOrientationExist = await UserMetadata.findOne({
-      where: {
-        user_id: req.id,
-        sexual_orientation_status: StatusHandler.pending
-      }
+        where: {
+          user_id: req.id
+        },
+        include: [{
+          model: SexualOrientation,
+          attributes: ['id', 'name'],
+          as: 'sexual_orientation',
+          where: { status: StatusHandler.pending }
+        }],
+        returning: true,
+        raw: true
     });
 
     if (req.body.other) {
+
       if (isUserSexualOrientationExist) {
         SexualOrientation.update({
           name: req.body.other
@@ -142,7 +129,7 @@ class SexualOrientationController {
 
       SexualOrientation.findOne({
         where: {
-          id: req.body.SexualOrientation
+          id: req.body.sexual_orientation
         }
       }).then(response => {
         this.update(res, req.id, req.body.sexual_orientation, req.body.status, response.name);

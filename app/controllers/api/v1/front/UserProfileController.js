@@ -8,6 +8,8 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
+const StatusHandler = require('../../../../helpers/StatusHandler');
+
 const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
 
 var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
@@ -30,6 +32,10 @@ const Workout = Models.Workout;
 const UserWorkout = Models.UserWorkout;
 const UserRace = Models.UserRace;
 const UserFamilyDynamic = Models.UserFamilyDynamic;
+const PersonalityQuestion = Models.PersonalityQuestion;
+const UserPersonalityQuestion = Models.UserPersonalityQuestion;
+const ConversationStarter = Models.ConversationStarter;
+const UserConversationStarter = Models.UserConversationStarter;
 
 
 /**
@@ -431,8 +437,8 @@ class UserProfileController {
       {
         model: UserMetadata,
         include: [
-          { model: Gender, attributes: ['name'] },
-          { model: SexualOrientation, attributes: ['name'] }],
+          { model: Gender, as:'gender', attributes: ['id', 'name'] },
+          { model: SexualOrientation, as: 'sexual_orientation',  attributes: ['id', 'name'] }],
         as: 'user_meta_data'
       },
       {
@@ -440,8 +446,9 @@ class UserProfileController {
         attributes: ['id', 'status'],
         include: [{
             model: HealthCategory,
-            attributes: ['name'],
-            as: 'health_category'
+            attributes: ['id', 'name'],
+            as: 'health_category',
+            where: { status: StatusHandler.active }
           }],
         as: 'health_categories'
       },
@@ -450,8 +457,9 @@ class UserProfileController {
         attributes: ['id', 'status'],
         include: [{
           model: Workout,
-          attributes: ['name'],
-          as: 'workout'
+          attributes: ['id', 'name'],
+          as: 'workout',
+          where: { status: StatusHandler.active }
         }],
         as: 'workouts'
       },
@@ -460,8 +468,9 @@ class UserProfileController {
         attributes: ['id', 'status'],
         include: [{
           model: Race,
-          attributes: ['name'],
-          as: 'race'
+          attributes: ['id', 'name'],
+          as: 'race',
+          where: { status: StatusHandler.active }
         }],
         as: 'races'
       },
@@ -470,11 +479,33 @@ class UserProfileController {
         attributes: ['id', 'status'],
         include: [{
           model: FamilyDynamic,
-          attributes: ['name'],
-          as: 'family_dynamic'
+          attributes: ['id', 'name'],
+          as: 'family_dynamic',
+          where: { status: StatusHandler.active }
         }],
         as: 'family_dynamics'
-      }]
+      },
+      {
+        model: UserPersonalityQuestion,
+        attributes: ['id', 'user_id', 'question_id', 'answer'],
+        include: [{
+          model: PersonalityQuestion,
+          attributes: ['id', 'question', 'options'],
+          as: 'personality_question'
+        }],
+        as: 'personality_questions'
+      },
+      {
+      model: UserConversationStarter,
+        attributes: ['id', 'user_id', 'conversation_starter_id', 'answer'],
+        include: [{
+          model: ConversationStarter,
+          attributes: ['question'],
+          as: 'conversation_starter'
+        }],
+        as: 'conversation_starters'
+      }
+      ]
     })
     .then(response => {
       return ResponseHandler.success(res, '', UserTransformer.UserDetail(response));

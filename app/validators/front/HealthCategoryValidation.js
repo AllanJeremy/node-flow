@@ -16,12 +16,5 @@ exports.Validation = [
     .not()
     .isEmpty()
     .withMessage(validationLanguage.other_required)
-    .bail(),
-  check('status')
-      .trim()
-      .escape()
-      .not()
-      .isEmpty()
-      .withMessage(validationLanguage.health_category_status_required)
-      .bail(),
+    .bail()
   ];
