@@ -61,8 +61,7 @@ exports.verify = (req, res, next) => {
 
     jwt.verify(token, config.secret, (err, decoded) => {
       if (err) {
-        if(err.name == 'TokenExpiredError') {
-
+        if (err.name == 'TokenExpiredError') {
           return ResponseHandler.error(res, 410, responseLanguage.unauthorized);
         }
 

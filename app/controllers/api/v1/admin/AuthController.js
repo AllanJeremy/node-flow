@@ -146,7 +146,7 @@ class AuthController {
         { access_token: token },
         { where: { id: response.id }
       }).then(result => {
-        if(result) {
+        if (result) {
           var data = {
             token: {
               token: token,

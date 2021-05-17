@@ -95,7 +95,7 @@ class FamilyDynamicController {
     });
 
     if (req.body.other) {
-      if(isUserFamilyDynamicExist) {
+      if (isUserFamilyDynamicExist) {
         FamilyDynamic.update({
           name: req.body.other
         },
@@ -121,7 +121,7 @@ class FamilyDynamicController {
         });
       }
     } else {
-      if(isUserFamilyDynamicExist) {
+      if (isUserFamilyDynamicExist) {
         FamilyDynamic.destroy({
           where: {
             id: isUserFamilyDynamicExist['family_dynamic.id']
@@ -140,7 +140,7 @@ class FamilyDynamicController {
     }
 
 
-    if(req.body.family_dynamics && req.body.family_dynamics.length > 0 ) {
+    if (req.body.family_dynamics && req.body.family_dynamics.length > 0 ) {
       var familyDynamics = req.body.family_dynamics;
       var status = req.body.status;
       familyDynamics.map(async(item, index) => {
@@ -163,7 +163,7 @@ class FamilyDynamicController {
         family_dynamic_id: familyDynamicId,
         status: status
       }).then(response => {
-        if(status == StatusHandler.active) {
+        if (status == StatusHandler.active) {
           this.updateElaticsearch(userId);
         }
       });
@@ -176,7 +176,7 @@ class FamilyDynamicController {
           family_dynamic_id: familyDynamicId,
         }
       }).then(response => {
-        if(status == StatusHandler.active) {
+        if (status == StatusHandler.active) {
           this.updateElaticsearch(userId);
         }
       });

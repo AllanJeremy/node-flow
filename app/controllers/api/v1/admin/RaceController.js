@@ -129,7 +129,7 @@ class RaceController {
         })
         .then(result => {
 
-          if(response.name != req.body.name) {
+          if (response.name != req.body.name) {
             let data = {
               old_name: response.name,
               name: req.body.name
@@ -216,7 +216,7 @@ class RaceController {
     .then(response => {
       UserRace.findAll({where: { race_id: req.body.id }})
       .then(response => {
-        if(response.length > 0) {
+        if (response.length > 0) {
           UserRace.update({
               race_id: req.body.merged_id,
             },

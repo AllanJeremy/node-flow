@@ -99,7 +99,7 @@ class WorkoutController {
     });
 
     if (req.body.other) {
-      if(isUserWorkoutExist) {
+      if (isUserWorkoutExist) {
         Workout.update({
           name: req.body.other
         },
@@ -125,7 +125,7 @@ class WorkoutController {
         });
       }
     } else {
-      if(isUserWorkoutExist) {
+      if (isUserWorkoutExist) {
         Workout.destroy({
           where: {
             id: isUserWorkoutExist['workout.id']
@@ -159,7 +159,7 @@ class WorkoutController {
         workout_id: workoutId,
         status: status
       }).then(response => {
-        if(status == StatusHandler.active) {
+        if (status == StatusHandler.active) {
           this.updateElaticsearch(userId);
         }
       });
@@ -172,7 +172,7 @@ class WorkoutController {
           workout_id: workoutId,
         }
       }).then(response => {
-        if(status == StatusHandler.active) {
+        if (status == StatusHandler.active) {
           this.updateElaticsearch(userId);
         }
       });

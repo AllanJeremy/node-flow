@@ -130,7 +130,7 @@ class HealthCategoryController {
         })
         .then(result => {
 
-          if(response.name != req.body.name) {
+          if (response.name != req.body.name) {
             let data = {
               old_name: response.name,
               name: req.body.name
@@ -215,7 +215,7 @@ class HealthCategoryController {
     .then(response => {
       UserHealthCategory.findAll({where: { health_category_id: req.body.id }})
       .then(response => {
-        if(response.length > 0) {
+        if (response.length > 0) {
           UserHealthCategory.update({
               health_category_id: req.body.merged_id,
             },

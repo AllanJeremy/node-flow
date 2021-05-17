@@ -7,7 +7,7 @@ var path = require('path');
  */
  var ResponseHandler = require('../../../../helpers/ResponseHandler');
  ResponseHandler = new ResponseHandler();
- 
+
  /**
   * Models
   */
@@ -25,9 +25,9 @@ AvatarTransformer = new AvatarTransformer();
  */
  const language = require('../../../../language/en_default');
  const responseLanguage = language.en.admin.response;
- 
+
  class AvatarController {
- 
+
   /**
    * @api {get} /api/avatar/list Show avatar list
    * @apiName Front avatar list
@@ -50,7 +50,7 @@ AvatarTransformer = new AvatarTransformer();
    * @api {post} /api/avatar/store Handle avatar store operation
    * @apiName Admin avatar store
    * @apiGroup Admin
-   * 
+   *
    * @apiParam {String} [name] name
    * @apiParam {String} [status] status
    *
@@ -62,7 +62,7 @@ AvatarTransformer = new AvatarTransformer();
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
-    
+
     Avatar.create({
       name: req.name,
       status: req.body.status
@@ -146,7 +146,7 @@ AvatarTransformer = new AvatarTransformer();
 
         Avatar.destroy({ where: { id: req.params.id } })
         .then(response => {
-          fs.unlink(path.join('images/avatar/' + name), function(){});
+          fs.unlink(path.join('images/avatar/' + name), function() {});
           return ResponseHandler.success(res, responseLanguage.avatar_delete_success);
         })
         .catch(err => {
@@ -160,8 +160,7 @@ AvatarTransformer = new AvatarTransformer();
       return ResponseHandler.error(res, 500, err.message);
     });
   }
- 
+
  }
- 
+
  module.exports = AvatarController;
- 

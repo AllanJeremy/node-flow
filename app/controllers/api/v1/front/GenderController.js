@@ -85,7 +85,7 @@ class GenderController {
       }
     });
     if (req.body.other) {
-      if(isUserGenderExist) {
+      if (isUserGenderExist) {
         Gender.update({
           name: req.body.other
         },
@@ -109,7 +109,7 @@ class GenderController {
       }
     } else {
 
-      if(isUserGenderExist) {
+      if (isUserGenderExist) {
         Gender.destroy({
           where: {
             id: isUserGenderExist.gender_id
@@ -140,9 +140,10 @@ class GenderController {
           gender_status: status
         })
         .then(response => {
-          if(status == StatusHandler.active) {
+          if (status == StatusHandler.active) {
             this.updateElaticsearch(userId, name);
           }
+
           return ResponseHandler.success(res, responseLanguage.gender_save);
         })
         .catch(err => {
@@ -158,7 +159,7 @@ class GenderController {
         })
         .then(response => {
 
-          if(status == StatusHandler.active) {
+          if (status == StatusHandler.active) {
             this.updateElaticsearch(userId, name);
           }
 

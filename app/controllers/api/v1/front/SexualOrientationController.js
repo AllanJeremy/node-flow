@@ -108,7 +108,7 @@ class SexualOrientationController {
     });
 
     if (req.body.other) {
-      if(isUserSexualOrientationExist) {
+      if (isUserSexualOrientationExist) {
         SexualOrientation.update({
           name: req.body.other
         },
@@ -132,7 +132,7 @@ class SexualOrientationController {
       }
     } else {
 
-      if(isUserSexualOrientationExist) {
+      if (isUserSexualOrientationExist) {
         SexualOrientation.destroy({
           where: {
             id: isUserSexualOrientationExist.sexual_orientation_id
@@ -164,7 +164,7 @@ class SexualOrientationController {
           sexual_orientation_status: status
         })
         .then(response => {
-          if(status == StatusHandler.active) {
+          if (status == StatusHandler.active) {
             this.updateElaticsearch(userId, name);
           }
 
@@ -182,7 +182,7 @@ class SexualOrientationController {
           where: {user_id: userId}
         })
         .then(response => {
-          if(status == StatusHandler.active) {
+          if (status == StatusHandler.active) {
             this.updateElaticsearch(userId, name);
           }
 

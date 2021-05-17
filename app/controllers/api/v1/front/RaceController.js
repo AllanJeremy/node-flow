@@ -94,7 +94,7 @@ class RaceController {
       raw: true
     });
     if (req.body.other) {
-      if(isUserRaceExist) {
+      if (isUserRaceExist) {
         Race.update({
           name: req.body.other
         },
@@ -120,7 +120,7 @@ class RaceController {
         });
       }
     } else {
-      if(isUserRaceExist) {
+      if (isUserRaceExist) {
         Race.destroy({
           where: {
             id: isUserRaceExist['race.id']
@@ -138,7 +138,7 @@ class RaceController {
       }
     }
 
-    if(req.body.races && req.body.races.length > 0 ) {
+    if (req.body.races && req.body.races.length > 0) {
       var races = req.body.races;
       var status = req.body.status;
       races.map(async(item, index) => {
@@ -162,7 +162,7 @@ class RaceController {
         race_id: raceId,
         status: status
       }).then(response => {
-        if(status == StatusHandler.active) {
+        if (status == StatusHandler.active) {
           this.updateElaticsearch(userId);
         }
       });
@@ -175,7 +175,7 @@ class RaceController {
           race_id: raceId,
         }
       }).then(response => {
-        if(status == StatusHandler.active) {
+        if (status == StatusHandler.active) {
           this.updateElaticsearch(userId);
         }
       });

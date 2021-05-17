@@ -24,44 +24,44 @@ ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
  */
 class job {
 
-	/**
-	* Create or update document in elastic search for given user id
-	*
-	* Param [Object] user detail
-	* Response [Object] return elastic search object
-	*/
-	elasticSearch = async(data) => {
-		switch(data.action){
-			case ElasticsearchEventsAction.createUser:
-				return await ElasticSearchHandler.addDocument(data.metadata.id, data.metadata);
-				break;
-			case ElasticsearchEventsAction.raceUpdate:
-				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
-					race: data.metadata.name
-				});
-			case ElasticsearchEventsAction.genderUpdate:
-				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
-					gender: data.metadata.name
-				});
-			case ElasticsearchEventsAction.familyDynamicUpdate:
-				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
-					family_dynamic: data.metadata.name
-				});
-			case ElasticsearchEventsAction.sexualOrientationUpdate:
-				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
-					sexual_orientation: data.metadata.name
-				});
-				break;
-			case ElasticsearchEventsAction.healthCategoryUpdate:
-				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
-					health_categories: data.metadata.name
-				});
-				break;
-			case ElasticsearchEventsAction.workoutUpdate:
-				return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
-					workouts: data.metadata.name
-				});
-				break;
+  /**
+  * Create or update document in elastic search for given user id
+  *
+  * Param [Object] user detail
+  * Response [Object] return elastic search object
+  */
+  elasticSearch = async(data) => {
+    switch(data.action) {
+      case ElasticsearchEventsAction.createUser:
+        return await ElasticSearchHandler.addDocument(data.metadata.id, data.metadata);
+        break;
+      case ElasticsearchEventsAction.raceUpdate:
+        return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
+          race: data.metadata.name
+        });
+      case ElasticsearchEventsAction.genderUpdate:
+        return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
+          gender: data.metadata.name
+        });
+      case ElasticsearchEventsAction.familyDynamicUpdate:
+        return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
+          family_dynamic: data.metadata.name
+        });
+      case ElasticsearchEventsAction.sexualOrientationUpdate:
+        return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
+          sexual_orientation: data.metadata.name
+        });
+        break;
+      case ElasticsearchEventsAction.healthCategoryUpdate:
+        return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
+          health_categories: data.metadata.name
+        });
+        break;
+      case ElasticsearchEventsAction.workoutUpdate:
+        return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
+          workouts: data.metadata.name
+        });
+        break;
       case ElasticsearchEventsAction.listedPeerUpdate:
         return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
           listed_peers: data.metadata.listed_peers
@@ -101,43 +101,43 @@ class job {
         return await ElasticSearchHandler.deleteItemFromDocumentList('workouts', data.metadata.name);
       case ElasticsearchEventsAction.userVisibility:
         return await ElasticSearchHandler.addDocument(data.metadata.id, data.metadata);
-		}
-	}
+    }
+  }
 
-	/**
-	* Cron job entry point
-	*/
-	start = async() => {
-		if (ElasticSearchHandler.indexExists()) {
-			ElasticsearchEventsHandler.list()
-	    .then(response => {
-	    	response.map(async(item, index) => {
-	    		if(item.attempted < 3) {
-		    		this.elasticSearch(item.dataValues).then(res => {
-		    			if(res.statusCode == 200 || res.statusCode == 201) {
-		    				ElasticsearchEventsHandler.destroy(item.id);
-		    			} else {
-		    				ElasticsearchEventsHandler.update(item.id, res, item.attempted);
-		    			}
-		    		}).catch(err => {
-              if(err.body) {
-		    			  ElasticsearchEventsHandler.update(item.id, err.body.error, item.attempted);
+  /**
+  * Cron job entry point
+  */
+  start = async() => {
+    if (ElasticSearchHandler.indexExists()) {
+      ElasticsearchEventsHandler.list()
+      .then(response => {
+        response.map(async(item, index) => {
+          if (item.attempted < 3) {
+            this.elasticSearch(item.dataValues).then(res => {
+              if(res.statusCode == 200 || res.statusCode == 201) {
+                ElasticsearchEventsHandler.destroy(item.id);
+              } else {
+                ElasticsearchEventsHandler.update(item.id, res, item.attempted);
               }
-		    		});
-		    	}
-	    	});
-	    })
-	    .catch(err => {
-	      // error
-	    });
-	  } else {
-	  	ElasticSearchHandler.initIndex();
-	  }
+            }).catch(err => {
+              if (err.body) {
+                ElasticsearchEventsHandler.update(item.id, err.body.error, item.attempted);
+              }
+            });
+          }
+        });
+      })
+      .catch(err => {
+        // error
+      });
+    } else {
+      ElasticSearchHandler.initIndex();
+    }
 
-		/*cron.schedule("* * * * *", function() {
-		  console.log("running a task every minute");
-		});*/
-	}
+    /*cron.schedule("* * * * *", function() {
+      console.log("running a task every minute");
+    });*/
+  }
 
 }
 

@@ -130,7 +130,7 @@ class WorkoutController {
         })
         .then(result => {
 
-          if(response.name != req.body.name) {
+          if (response.name != req.body.name) {
             let data = {
               old_name: response.name,
               name: req.body.name
@@ -215,7 +215,7 @@ class WorkoutController {
     .then(response => {
       UserWorkout.findAll({where: { workout_id: req.body.id }})
       .then(response => {
-        if(response.length > 0) {
+        if (response.length > 0) {
           UserWorkout.update({
               workout_id: req.body.merged_id,
             },
@@ -225,7 +225,7 @@ class WorkoutController {
             plain: true
           })
           .then(response => {
-            if(response) {
+            if (response) {
               UserWorkout.findAll({
                 where: {
                   user_id: response[1].dataValues.user_id

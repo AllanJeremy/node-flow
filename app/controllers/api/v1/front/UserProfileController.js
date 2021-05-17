@@ -175,7 +175,7 @@ class UserProfileController {
       where: { user_id: req.id}
     });
 
-    if(!userInterest) {
+    if (!userInterest) {
       UserInterest.create({
         user_id: req.id,
         value: req.body.interest
@@ -352,7 +352,7 @@ class UserProfileController {
         let workouts = [];
         response.workouts.map((item, index) => {
           let isActive = workoutStatus.filter(workoutItem => (workoutItem.id == item.workout_id))[0].status;
-          if(item.workout && item.workout.name && isActive == 1) {
+          if (item.workout && item.workout.name && isActive == 1) {
             workouts.push(item.workout.name);
           }
         });
@@ -360,7 +360,7 @@ class UserProfileController {
         let healthCategories = [];
         response.health_categories.map((item, index) => {
           let isActive = healthCategoryStatus.filter(healthCategoryItem => (healthCategoryItem.id == item.health_category_id))[0].status;
-          if(item.health_category && item.health_category.name && isActive == 1) {
+          if (item.health_category && item.health_category.name && isActive == 1) {
             healthCategories.push(item.health_category.name);
           }
         });
@@ -368,7 +368,7 @@ class UserProfileController {
         let races = [];
         response.races.map((item, index) => {
           let isActive = raceStatus.filter(raceItem => (raceItem.id == item.race_id))[0].status;
-          if(item.race && item.race.name && isActive == 1) {
+          if (item.race && item.race.name && isActive == 1) {
             races.push(item.race.name);
           }
         });
@@ -376,28 +376,28 @@ class UserProfileController {
         let familyDynamics = [];
         response.family_dynamics.map((item, index) => {
           let isActive = familyDynamicStatus.filter(familyDynamicItem => (familyDynamicItem.id == item.family_dynamic_id))[0].status;
-          if(item.family_dynamic && item.family_dynamic.name && isActive == 1) {
+          if (item.family_dynamic && item.family_dynamic.name && isActive == 1) {
             familyDynamics.push(item.family_dynamic.name);
           }
         });
 
         let userData = {id: req.id};
-        if(races.length > 0) {
+        if (races.length > 0) {
           userData.races = races;
         }
-        if(req.body.gender_status == 1 && response.user_meta_data.Gender) {
+        if (req.body.gender_status == 1 && response.user_meta_data.Gender) {
           userData.gender = response.user_meta_data.Gender.name;
         }
-        if(familyDynamics.length > 0) {
+        if (familyDynamics.length > 0) {
           userData.family_dynamic = familyDynamics;
         }
-        if(req.body.sexual_orientation_status == 1 && response.user_meta_data.SexualOrientation) {
+        if (req.body.sexual_orientation_status == 1 && response.user_meta_data.SexualOrientation) {
           userData.sexual_orientation = response.user_meta_data.SexualOrientation.name;
         }
-        if(workouts.length > 0) {
+        if (workouts.length > 0) {
           userData.workouts = workouts;
         }
-        if(healthCategories.length > 0) {
+        if (healthCategories.length > 0) {
           userData.health_categories = healthCategories;
         }
 

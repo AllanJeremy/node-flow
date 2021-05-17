@@ -126,7 +126,7 @@ class GenderController {
           returning: true
         }).then(result => {
 
-          if(response.name != req.body.name) {
+          if (response.name != req.body.name) {
             let data = {
               old_name: response.name,
               name: req.body.name
@@ -213,7 +213,7 @@ class GenderController {
     .then(response => {
       UserMetadata.findAll({where: { gender_id: req.body.id }})
       .then(response => {
-        if(response.length > 0) {
+        if (response.length > 0) {
           UserMetadata.update({
               gender_id: req.body.merged_id,
             },

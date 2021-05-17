@@ -81,7 +81,7 @@ class ElasticSearchHandler {
   */
   renameDocumentField = async(renameField, matchParam) => {
     let scriptQuery = ''
-    if(renameField == 'race') {
+    if (renameField == 'race') {
       scriptQuery = 'ctx._source.race = params.name';
     }
 
@@ -109,13 +109,13 @@ class ElasticSearchHandler {
   */
   renameDocumentListItem = async(updateField, matchParam) => {
     let scriptQuery = ''
-    if(updateField == 'health_categories') {
-      scriptQuery = "if(ctx._source.containsKey('health_categories') && ctx._source.health_categories.size() > 0){for(int i=0;i<ctx._source.health_categories.size();i++){if(ctx._source.health_categories[i]==params.searchName){ctx._source.health_categories[i] = params.name}}}";
-    } else if(updateField == 'workouts') {
-      scriptQuery = "if(ctx._source.containsKey('workouts') && ctx._source.workouts.size() > 0){for(int i=0;i<ctx._source.workouts.size();i++){if(ctx._source.workouts[i]==params.searchName){ctx._source.workouts[i] = params.name}}}";
+    if (updateField == 'health_categories') {
+      scriptQuery = "if (ctx._source.containsKey('health_categories') && ctx._source.health_categories.size() > 0){for(int i=0;i<ctx._source.health_categories.size();i++){if(ctx._source.health_categories[i]==params.searchName){ctx._source.health_categories[i] = params.name}}}";
+    } else if (updateField == 'workouts') {
+      scriptQuery = "if (ctx._source.containsKey('workouts') && ctx._source.workouts.size() > 0){for(int i=0;i<ctx._source.workouts.size();i++){if(ctx._source.workouts[i]==params.searchName){ctx._source.workouts[i] = params.name}}}";
     }
 
-    if(scriptQuery) {
+    if (scriptQuery) {
       let res = await client.updateByQuery({
         index: indexName,
         body: {
@@ -159,13 +159,13 @@ class ElasticSearchHandler {
   */
   deleteItemFromDocumentList = async(deleteField, matchParam) => {
     let scriptQuery = ''
-    if(deleteField == 'health_categories') {
+    if (deleteField == 'health_categories') {
       scriptQuery = "if(ctx._source.containsKey('health_categories') && ctx._source.health_categories.size() > 0){for(int i=0;i<ctx._source.health_categories.size();i++){if(ctx._source.health_categories[i]==params.name){ctx._source.health_categories.remove(i)}}}";
-    } else if(deleteField == 'workouts') {
+    } else if (deleteField == 'workouts') {
       scriptQuery = "if(ctx._source.containsKey('workouts') && ctx._source.workouts.size() > 0){for(int i=0;i<ctx._source.workouts.size();i++){if(ctx._source.workouts[i]==params.name){ctx._source.workouts.remove(i)}}}";
     }
 
-    if(scriptQuery) {
+    if (scriptQuery) {
       let res = await client.updateByQuery({
         index: indexName,
         body: {
