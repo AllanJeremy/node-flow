@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { validationResult } = require('express-validator');
+const Sequelize = require('sequelize');
 
 
 /**
@@ -51,7 +52,7 @@ class WorkoutController {
       where: {
         status: StatusHandler.active
       }
-    , order: [['id', 'DESC']]})
+    , order: [['name', 'ASC']]})
     .then(response => {
       return ResponseHandler.success(res, '', CommonTransformer.transform(response));
     })
@@ -77,7 +78,16 @@ class WorkoutController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    let workouts= req.body.workouts
+    let workouts = req.body.workouts;
+
+    const Op = Sequelize.Op;
+
+    UserWorkout.destroy({
+      where: {
+        workout_id: {[Op.notIn]: workouts},
+        user_id: req.id
+      }
+    });
 
     workouts && workouts.length > 0 && workouts.map(async(item, index) => {
       this.update(req.id, item, req.body.status);

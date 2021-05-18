@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { validationResult } = require('express-validator');
+const Sequelize = require('sequelize');
 
 
 /**
@@ -52,7 +53,7 @@ class FamilyDynamicController {
       where: {
         status: StatusHandler.active
       }
-    , order: [['id', 'DESC']]})
+    , order: [['name', 'ASC']]})
     .then(response => {
       return ResponseHandler.success(res, '', CommonTransformer.transform(response));
     })
@@ -139,6 +140,14 @@ class FamilyDynamicController {
       }
     }
 
+    const Op = Sequelize.Op;
+
+    UserFamilyDynamic.destroy({
+      where: {
+        family_dynamic_id: {[Op.notIn]: req.body.family_dynamics},
+        user_id: req.id
+      }
+    });
 
     if (req.body.family_dynamics && req.body.family_dynamics.length > 0 ) {
       var familyDynamics = req.body.family_dynamics;

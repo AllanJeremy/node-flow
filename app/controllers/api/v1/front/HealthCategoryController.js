@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { validationResult } = require('express-validator');
+const Sequelize = require('sequelize');
 
 
 /**
@@ -52,7 +53,7 @@ class HealthCategoryController {
       where: {
         status: StatusHandler.active
       }
-    , order: [['id', 'DESC']]})
+    , order: [['name', 'ASC']]})
     .then(response => {
       return ResponseHandler.success(res, '', CommonTransformer.transform(response));
     })
@@ -78,7 +79,16 @@ class HealthCategoryController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
+    const Op = Sequelize.Op;
+
     let healthCategories = req.body.health_categories;
+
+    UserHealthCategory.destroy({
+      where: {
+        health_category_id: {[Op.notIn]: healthCategories},
+        user_id: req.id
+      }
+    });
 
     healthCategories && healthCategories.length > 0 && healthCategories.length > 0 && healthCategories.map(async(item, index) => {
       this.update(req.id, item, req.body.status);
