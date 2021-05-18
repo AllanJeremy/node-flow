@@ -52,7 +52,7 @@ class SexualOrientationController {
       where: {
         status: StatusHandler.active
       }
-    , order: [['id', 'DESC']]})
+    , order: [['name', 'ASC']]})
     .then(response => {
       return ResponseHandler.success(res, '', CommonTransformer.transform(response));
     })
@@ -77,7 +77,6 @@ class SexualOrientationController {
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
-
 
     let isUserSexualOrientationExist = await UserMetadata.findOne({
         where: {

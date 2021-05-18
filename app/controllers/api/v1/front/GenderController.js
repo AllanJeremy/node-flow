@@ -52,7 +52,7 @@ class GenderController {
       where: {
         status: StatusHandler.active
       }
-    , order: [['id', 'DESC']]})
+    , order: [['name', 'ASC']]})
     .then(response => {
       return ResponseHandler.success(res, '', CommonTransformer.transform(response));
     })

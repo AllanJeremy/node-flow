@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { validationResult } = require('express-validator');
+const Sequelize = require('sequelize');
 
 
 /**
@@ -53,7 +54,7 @@ class RaceController {
       where: {
         status: StatusHandler.active
       }
-    , order: [['id', 'DESC']]})
+    , order: [['name', 'ASC']]})
     .then(response => {
       return ResponseHandler.success(res, '', CommonTransformer.transform(response));
     })
@@ -79,6 +80,8 @@ class RaceController {
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
+
+    const Op = Sequelize.Op;
 
     let isUserRaceExist = await UserRace.findOne({
       where: {
@@ -137,6 +140,13 @@ class RaceController {
         });
       }
     }
+
+    UserRace.destroy({
+      where: {
+        race_id: {[Op.notIn]: req.body.races},
+        user_id: req.id
+      }
+    });
 
     if (req.body.races && req.body.races.length > 0) {
       var races = req.body.races;
