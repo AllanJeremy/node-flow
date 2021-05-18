@@ -16,8 +16,8 @@ const Avatar = Models.Avatar;
 /**
  * Transformers
  */
- var CommonTransformer = require('../../../../transformers/core/CommonTransformer');
- CommonTransformer = new CommonTransformer();
+ var AvatarTransformer = require('../../../../transformers/front/AvatarTransformer');
+ AvatarTransformer = new AvatarTransformer();
 
 class CommonController {
 
@@ -50,7 +50,7 @@ class CommonController {
       }
     , order: [['id', 'DESC']]})
     .then(response => {
-      return ResponseHandler.success(res, '', CommonTransformer.transform(response));
+      return ResponseHandler.success(res, '', AvatarTransformer.transform(response));
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
