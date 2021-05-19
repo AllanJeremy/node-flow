@@ -28,13 +28,15 @@ class UserTransformer {
       return data.get('status');
     },
     'user_detail': {
-      'races': data.races.length > 0 ? fractal(data.races, {
-        'id': 'race.id',
-        'name': 'race.name',
+      'user_races': {
+        'races' : data.races.length > 0 ? fractal(data.races, {
+          'id': 'race.id',
+          'name': 'race.name',
+        }) : [],
         'status': function (data) {
-          return data.get('status');
+          return data.get('user_meta_data.race_status');
         }
-      }) : [],
+      },
       'gender': {
         'id': 'user_meta_data.gender.id',
         'name': 'user_meta_data.gender.name',
@@ -49,13 +51,15 @@ class UserTransformer {
           return data.get('user_meta_data.sexual_orientation_status');
         }
       },
-      'family_dynamic': data.family_dynamics.length > 0 ? fractal(data.family_dynamics, {
-        'id': 'family_dynamic.id',
-        'name': 'family_dynamic.name',
+      'user_family_dynamics': {
+        'family_dynamics': data.family_dynamics.length > 0 ? fractal(data.family_dynamics, {
+          'id': 'family_dynamic.id',
+          'name': 'family_dynamic.name',
+        }) : [],
         'status': function (data) {
-          return data.get('status');
+          return data.get('user_meta_data.family_dynamic_status');
         }
-      }) : [],
+      },
       'health_categories': data.health_categories.length > 0 ? fractal(data.health_categories, {
         'id': 'health_category.id',
         'name': 'health_category.name',

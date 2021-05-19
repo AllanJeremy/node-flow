@@ -156,6 +156,26 @@ class RaceController {
       });
     }
 
+    UserMetadata.findOne({
+      where: {
+        user_id: req.id
+      }
+    }).then(response => {
+      if (!response) {
+        UserMetadata.create({
+          user_id: req.id,
+          race_status: req.body.status
+        });
+      } else {
+        UserMetadata.update({
+          race_status: req.body.status
+        },
+        {
+          where: {user_id: req.id}
+        });
+      }
+    });
+
     return ResponseHandler.success(res, responseLanguage.race_save);
   }
 
