@@ -11,12 +11,6 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER
       },
-      race_id: {
-        type: Sequelize.INTEGER
-      },
-      race_status: {
-        type: Sequelize.INTEGER
-      },
       gender_id: {
         type: Sequelize.INTEGER
       },
@@ -29,10 +23,10 @@ module.exports = {
       sexual_orientation_status: {
         type: Sequelize.INTEGER
       },
-      family_detail_id: {
+      race_status: {
         type: Sequelize.INTEGER
       },
-      family_detail_status: {
+      family_dynamic_status: {
         type: Sequelize.INTEGER
       },
       summary: {

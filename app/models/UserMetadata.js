@@ -19,6 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     gender_status: DataTypes.INTEGER,
     sexual_orientation_id: DataTypes.INTEGER,
     sexual_orientation_status: DataTypes.INTEGER,
+    race_status: DataTypes.INTEGER,
+    family_dynamic_status: DataTypes.INTEGER,
     summary: DataTypes.STRING,
     deleted_at: DataTypes.DATE
   }, {

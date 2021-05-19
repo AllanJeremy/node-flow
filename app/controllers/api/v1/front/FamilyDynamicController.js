@@ -21,6 +21,7 @@ ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
  * Models
  */
 const Models = require('../../../../models');
+const UserMetadata = Models.UserMetadata;
 const FamilyDynamic = Models.FamilyDynamic;
 const UserFamilyDynamic = Models.UserFamilyDynamic;
 
@@ -156,6 +157,27 @@ class FamilyDynamicController {
         this.update(req.id, item, status);
       });
     }
+
+    UserMetadata.findOne({
+      where: {
+        user_id: req.id
+      }
+    }).then(response => {
+      if (!response) {
+        UserMetadata.create({
+          user_id: req.id,
+          family_dynamic_status: req.body.status
+        });
+      } else {
+        UserMetadata.update({
+          family_dynamic_status: req.body.status
+        },
+        {
+          where: {user_id: req.id}
+        });
+      }
+    });
+
     return ResponseHandler.success(res, responseLanguage.family_dynamic_save);
   }
 
