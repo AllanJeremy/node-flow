@@ -26,15 +26,15 @@ class LanguageController {
   list = (req, res) => {
     if (req.params.code) {
       switch (req.params.code) {
-        case en: 
-          return ResponseHandler.success(res, en);
+        case en:
+          return ResponseHandler.success(res, '', en);
           break;
         default:
-          return ResponseHandler.success(res, en);
+          return ResponseHandler.success(res, '', en);
           break;
       }
     } else {
-      return ResponseHandler.success(res, en);
+      return ResponseHandler.success(res, '', en);
     }
   }
 

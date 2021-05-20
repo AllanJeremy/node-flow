@@ -1,7 +1,7 @@
 exports.language = {
   'welcome': {
     'title': 'Welcome to Joyn',
-    'description': 'A place to find daily joy in community. We are so happy to have you.',
+    'description': 'A safe place to find and build a community as unique as you are.',
     'button': 'Get Started'
   },
   'login': {
@@ -86,13 +86,7 @@ exports.language = {
         'description': 'Let\'s get started! We\'ll walk you through your profile creation and then ask you a few questions about your matching preferences.'
       },
       'terms': {
-        'description': {
-          'text1': 'In these next steps, we\'ll ask you about your',
-          'text2': 'identities',
-          'text3': 'and',
-          'text4': 'experiences.',
-          'text5': 'You\'re always in control of what can be seen by others and we only use this information to:'
-        },
+        'description': 'In the next steps we\'ll ask you a few questions about your identities and experiences. This allows us to:',
         'information': {
           'line1': {
             'text1': 'Find you a',
@@ -127,6 +121,10 @@ exports.language = {
       }
     }
   },
+  'try_again': {
+    'title': 'Something went wrong, please try again.',
+    'button': 'Try Again',
+  },
   'footer_tab': {
     'tab1': 'Support',
     'tab2': 'Peers',
@@ -152,7 +150,7 @@ exports.language = {
     'family': 'Family',
     'sexual_orientation': 'SexualOrientation',
     'search': 'Search',
-    'no_search_found': 'We did not find any matches for your request. You can choose "Other" and write your request in the input field.'
+    'no_search_found': 'We did not find any matches for your request. You can choose "Other" and write your request in the input field.',
   },
   'validation': {
     'required_fields': 'All the fields are required.',
