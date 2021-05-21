@@ -125,6 +125,24 @@ exports.language = {
     'title': 'Something went wrong, please try again.',
     'button': 'Try Again',
   },
+  'matching_preference': {
+    'title': 'Matching Preference',
+    'description': 'In the next few steps, we’ll ask you about your match preferences. We know identity and experiences play a big role in our mental health, let us know which ones matter to you when it comes to connecting with a peer.'
+  },
+  'user_identity': {
+    'title': 'What experiences/identities are important for us to account for?',
+    'sub_title': 'I want to connect with people that can relate to my experiences tied to ...',
+    'gender_identify_text': 'My identified gender is ...',
+    'sexual_orientation_identify_text': 'My sexual orientation is ...',
+    'family_identify_text': 'My family dynamics as a...',
+    'popup_title': 'Why are my options limited?',
+    'popup_description': 'For any majority groups, across both race and sexuality, we limit the ability to set a match preference. This allows us to match you across all races and sexualities, both majorities and underrepresented minorities. Any questions?'
+  },
+  'summary': {
+    'title': 'Tell us more about why you joined.',
+    'input_max_length': 'Max. 150 symbols',
+    'popup_text': 'In the past year, stress and anxiety have been a big challenge for me. I realized that there were a lot of stressors in my life related to my experience as a single father.  I`m here to connect with others like me to learn about what they do to find balance.'
+  },
   'footer_tab': {
     'tab1': 'Support',
     'tab2': 'Peers',
@@ -151,6 +169,7 @@ exports.language = {
     'sexual_orientation': 'SexualOrientation',
     'search': 'Search',
     'no_search_found': 'We did not find any matches for your request. You can choose "Other" and write your request in the input field.',
+    'contact_us': 'Contact us'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
