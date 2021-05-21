@@ -436,7 +436,7 @@ class UserProfileController {
       include: [
       {
         model: UserMetadata,
-        attributes: ['gender_status', 'sexual_orientation_status', 'race_status', 'family_dynamic_status'],
+        attributes: ['gender_status', 'sexual_orientation_status', 'race_status', 'family_dynamic_status', 'summary'],
         include: [
           { model: Gender, as:'gender', attributes: ['id', 'name'] },
           { model: SexualOrientation, as: 'sexual_orientation',  attributes: ['id', 'name'] }],

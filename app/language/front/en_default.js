@@ -1,6 +1,6 @@
 exports.language = {
   'welcome': {
-    'title': 'Welcome to Joyn',
+    'title': 'Welcome to Joyn!',
     'description': 'A safe place to find and build a community as unique as you are.',
     'button': 'Get Started'
   },
@@ -141,7 +141,8 @@ exports.language = {
   'summary': {
     'title': 'Tell us more about why you joined.',
     'input_max_length': 'Max. 150 symbols',
-    'popup_text': 'In the past year, stress and anxiety have been a big challenge for me. I realized that there were a lot of stressors in my life related to my experience as a single father.  I`m here to connect with others like me to learn about what they do to find balance.'
+    'popup_title': 'Summary Story:',
+    'popup_description': 'Stress and anxiety have been a big challenge for me as a single father. I\'m here to connect with others to learn about what they do to find balance.'
   },
   'footer_tab': {
     'tab1': 'Support',
