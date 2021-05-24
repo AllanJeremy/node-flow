@@ -170,7 +170,8 @@ exports.language = {
     'sexual_orientation': 'SexualOrientation',
     'search': 'Search',
     'no_search_found': 'We did not find any matches for your request. You can choose "Other" and write your request in the input field.',
-    'contact_us': 'Contact us'
+    'contact_us': 'Contact us',
+    'welcome': 'Welcome'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
