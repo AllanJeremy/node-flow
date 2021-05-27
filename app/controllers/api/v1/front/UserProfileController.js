@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { validationResult } = require('express-validator');
+const Sequelize = require('sequelize');
 
 
 /**
@@ -219,7 +220,7 @@ class UserProfileController {
    * @apiParam {Integer} [gender_status] gender_status
    * @apiParam {Integer} [family_dynamic_status] family_dynamic_status
    * @apiParam {Integer} [sexual_orientation_status] sexual_orientation_status
-   * @apiParam {Integer} [workouts_status] workouts_status
+   * @apiParam {Integer} [workouts_status] workouts_status array
    * @apiParam {Integer} [health_categories_status] health_categories_status
    *
    * @apiSuccess (200) {Object}
@@ -237,178 +238,39 @@ class UserProfileController {
       }
     }).then(async response => {
       await UserMetadata.update({
+        race_status: req.body.race_status,
         gender_status: req.body.gender_status,
+        family_dynamic_status: req.body.family_dynamic_status,
         sexual_orientation_status: req.body.sexual_orientation_status,
+        workout_status: req.body.workout_status
       },
       {
         where: { id: response.id }
       });
 
-
-      let workoutStatus = req.body.workouts_status;
-
-      workoutStatus.map(async (item, index) => {
-        await UserWorkout.update({
-          status: item.status
-        },
-        {
-          where: {
-            user_id: req.id,
-            workout_id: item.id
-          }
+      const Op = Sequelize.Op;
+      let healthCategoriesStatus = req.body.health_categories_status ? req.body.health_categories_status : [];
+      if(healthCategoriesStatus && healthCategoriesStatus.length > 0) {
+        healthCategoriesStatus.map(async (item, index) => {
+          await UserHealthCategory.update({
+            status: StatusHandler.active
+          },
+          {
+            where: {
+              user_id: req.id,
+              health_category_id: item
+            }
+          });
         });
-      });
-
-      let healthCategoryStatus = req.body.health_categories_status;
-
-      healthCategoryStatus.map(async (item, index) => {
-        await UserHealthCategory.update({
-          status: item.status
-        },
-        {
-          where: {
-            user_id: req.id,
-            health_category_id: item.id
-          }
-        });
-      });
-
-      let raceStatus = req.body.races_status;
-
-      raceStatus.map(async (item, index) => {
-        await UserRace.update({
-          status: item.status
-        },
-        {
-          where: {
-            user_id: req.id,
-            race_id: item.id
-          }
-        });
-      });
-
-      let familyDynamicStatus = req.body.family_dynamics_status;
-
-      familyDynamicStatus.map(async (item, index) => {
-        await UserFamilyDynamic.update({
-          status: item.status
-        },
-        {
-          where: {
-            user_id: req.id,
-            family_dynamic_id: item.id
-          }
-        });
-      });
-
-      // store user settings in active search table
-      User.findOne({
-        where: { id: req.id },
-        include: [
-        {
-          model: UserMetadata,
-          include: [
-            { model: Gender, attributes: ['name'] },
-            { model: SexualOrientation, attributes: ['name'] }],
-          as: 'user_meta_data'
-        },
-        {
-          model: UserHealthCategory,
-          attributes: ['id', 'health_category_id', 'status'],
-          include: [{
-              model: HealthCategory,
-              attributes: ['name'],
-              as: 'health_category'
-            }],
-          as: 'health_categories'
-        },
-        {
-          model: UserWorkout,
-          attributes: ['id', 'workout_id', 'status'],
-          include: [{
-            model: Workout,
-            attributes: ['name'],
-            as: 'workout'
-          }],
-          as: 'workouts'
-        },
-        {
-          model: UserRace,
-          attributes: ['id', 'race_id', 'status'],
-          include: [{
-            model: Race,
-            attributes: ['name'],
-            as: 'race'
-          }],
-          as: 'races'
-        },
-        {
-          model: UserFamilyDynamic,
-          attributes: ['id', 'family_dynamic_id', 'status'],
-          include: [{
-            model: FamilyDynamic,
-            attributes: ['name'],
-            as: 'family_dynamic'
-          }],
-          as: 'family_dynamics'
-        }]
-      })
-      .then(response => {
-
-        let workouts = [];
-        response.workouts.map((item, index) => {
-          let isActive = workoutStatus.filter(workoutItem => (workoutItem.id == item.workout_id))[0].status;
-          if (item.workout && item.workout.name && isActive == 1) {
-            workouts.push(item.workout.name);
-          }
-        });
-
-        let healthCategories = [];
-        response.health_categories.map((item, index) => {
-          let isActive = healthCategoryStatus.filter(healthCategoryItem => (healthCategoryItem.id == item.health_category_id))[0].status;
-          if (item.health_category && item.health_category.name && isActive == 1) {
-            healthCategories.push(item.health_category.name);
-          }
-        });
-
-        let races = [];
-        response.races.map((item, index) => {
-          let isActive = raceStatus.filter(raceItem => (raceItem.id == item.race_id))[0].status;
-          if (item.race && item.race.name && isActive == 1) {
-            races.push(item.race.name);
-          }
-        });
-
-        let familyDynamics = [];
-        response.family_dynamics.map((item, index) => {
-          let isActive = familyDynamicStatus.filter(familyDynamicItem => (familyDynamicItem.id == item.family_dynamic_id))[0].status;
-          if (item.family_dynamic && item.family_dynamic.name && isActive == 1) {
-            familyDynamics.push(item.family_dynamic.name);
-          }
-        });
-
-        let userData = {id: req.id};
-        if (races.length > 0) {
-          userData.races = races;
+      }
+      UserHealthCategory.update({
+        status: StatusHandler.pending
+      },
+      {
+        where: {
+          health_category_id: {[Op.notIn]: healthCategoriesStatus},
+          user_id: req.id
         }
-        if (req.body.gender_status == 1 && response.user_meta_data.Gender) {
-          userData.gender = response.user_meta_data.Gender.name;
-        }
-        if (familyDynamics.length > 0) {
-          userData.family_dynamic = familyDynamics;
-        }
-        if (req.body.sexual_orientation_status == 1 && response.user_meta_data.SexualOrientation) {
-          userData.sexual_orientation = response.user_meta_data.SexualOrientation.name;
-        }
-        if (workouts.length > 0) {
-          userData.workouts = workouts;
-        }
-        if (healthCategories.length > 0) {
-          userData.health_categories = healthCategories;
-        }
-
-        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.userVisibility, userData);
-
       });
 
       return ResponseHandler.success(res, responseLanguage.visibility);
@@ -436,7 +298,7 @@ class UserProfileController {
       include: [
       {
         model: UserMetadata,
-        attributes: ['gender_status', 'sexual_orientation_status', 'race_status', 'family_dynamic_status', 'summary'],
+        attributes: ['gender_status', 'sexual_orientation_status', 'race_status', 'family_dynamic_status','summary'],
         include: [
           { model: Gender, as:'gender', attributes: ['id', 'name'] },
           { model: SexualOrientation, as: 'sexual_orientation',  attributes: ['id', 'name'] }],

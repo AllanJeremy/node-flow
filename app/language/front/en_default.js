@@ -118,8 +118,20 @@ exports.language = {
       },
       'health_tools': {
         'title': 'I am currently using these tools to help me with my mental well-being ...'
+      },
+      'detail': {
+        'profile_information': {
+          'title': 'Select the information you want to show to others.',
+          'avatar_label': 'Profile Avatar',
+          'first_name_label': 'First Name',
+          'pronouns_label': 'Pronouns',
+          'gender_label': 'Identified Gender',
+          'mental_health_experiences_label': 'Mental Health Experiences',
+          'hide_list': 'Hide the list',
+          'mental_health_tools_label': 'Mental Health Tools',
+        }
       }
-    }
+    },
   },
   'try_again': {
     'title': 'Something went wrong, please try again.',
@@ -167,11 +179,16 @@ exports.language = {
     'describe': 'Describe',
     'gender': 'Gender',
     'family': 'Family',
+    'family_dynamic': 'Family Dynamics',
     'sexual_orientation': 'SexualOrientation',
+    'sexual_orientation_text': 'Sexual Orientation',
     'search': 'Search',
     'no_search_found': 'We did not find any matches for your request. You can choose "Other" and write your request in the input field.',
     'contact_us': 'Contact us',
-    'welcome': 'Welcome'
+    'welcome': 'Welcome',
+    'not_applicable': 'N/A',
+    'more': 'More',
+    'preview': 'Preview'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
@@ -181,5 +198,6 @@ exports.language = {
     'confirm_password': 'Confirm password does not match password.',
     'code_required': 'Code field is required.',
     'email_required': 'Email field is required.',
+    'selection_required': 'The maximum possible number of selections is 5'
   }
 }

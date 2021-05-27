@@ -1,4 +1,5 @@
 var fractal = require('fractal-transformer')();
+const Pronouns = require('../../models/Pronouns');
 
 class UserTransformer {
 
@@ -18,6 +19,18 @@ class UserTransformer {
   UserDetail = (data) => fractal(data, {
     'id': 'id',
     'email': 'email',
+    'name_prefix_text': function (data) {
+      var prefix = data.get('name_prefix');
+      var PronounsModel = new Pronouns();
+      var pronouns = PronounsModel.pronouns;
+      var prefixText;
+      pronouns.map((item, index) => {
+        if(item[prefix]) {
+          prefixText = item[prefix];
+        }
+      })
+      return prefixText;
+    },
     'name_prefix': 'name_prefix',
     'first_name': 'first_name',
     'birth_date': 'birth_date',
