@@ -80,15 +80,13 @@ class UserTransformer {
           return data.get('status');
         }
       }) : [],
-      'user_workout': {
-        'workouts': data.workouts.length > 0 ? fractal(data.workouts, {
-          'id': 'workout.id',
-          'name': 'workout.name',
-        }) : [],
+      'workouts': data.workouts.length > 0 ? fractal(data.workouts, {
+        'id': 'workout.id',
+        'name': 'workout.name',
         'status': function (data) {
-          return data.get('user_meta_data.workout_status');
+          return data.get('status');
         }
-      },
+      }) : [],
       'personality_questions': data.personality_questions.length > 0 ? fractal(data.personality_questions, {
         'id': 'personality_question.id',
         'question': 'personality_question.question',

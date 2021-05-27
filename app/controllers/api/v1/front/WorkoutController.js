@@ -153,26 +153,6 @@ class WorkoutController {
       }
     }
 
-    UserMetadata.findOne({
-      where: {
-        user_id: req.id
-      }
-    }).then(response => {
-      if (!response) {
-        UserMetadata.create({
-          user_id: req.id,
-          workout_status: req.body.status
-        });
-      } else {
-        UserMetadata.update({
-          workout_status: req.body.status
-        },
-        {
-          where: {user_id: req.id}
-        });
-      }
-    });
-
     return ResponseHandler.success(res, responseLanguage.workout_save);
   }
 
