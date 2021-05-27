@@ -29,6 +29,9 @@ module.exports = {
       family_dynamic_status: {
         type: Sequelize.INTEGER
       },
+      workout_status: {
+        type: Sequelize.INTEGER
+      },
       summary: {
         type: Sequelize.STRING
       },

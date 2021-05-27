@@ -57,8 +57,11 @@ exports.UserInterest = [
 
 
 exports.visibility = [
-  check('races_status')
-    .isArray({min: 1})
+  check('race_status')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
     .withMessage(validation.race_status_required)
     .bail(),
   check('gender_status')
@@ -82,11 +85,15 @@ exports.visibility = [
     .isEmpty()
     .withMessage(validation.sexual_orientation_status_required)
     .bail(),
-  check('workouts_status')
-    .isArray({min: 1})
+  check('workout_status')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
     .withMessage(validation.workouts_status_required)
     .bail(),
   check('health_categories_status')
+    .optional({checkFalsy: true})
     .isArray({min: 1})
     .withMessage(validation.health_categories_status_required)
     .bail(),

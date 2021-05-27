@@ -1,4 +1,5 @@
 var fractal = require('fractal-transformer')();
+const Pronouns = require('../../models/Pronouns');
 
 class UserTransformer {
 
@@ -18,6 +19,18 @@ class UserTransformer {
   UserDetail = (data) => fractal(data, {
     'id': 'id',
     'email': 'email',
+    'name_prefix_text': function (data) {
+      var prefix = data.get('name_prefix');
+      var PronounsModel = new Pronouns();
+      var pronouns = PronounsModel.pronouns;
+      var prefixText;
+      pronouns.map((item, index) => {
+        if(item[prefix]) {
+          prefixText = item[prefix];
+        }
+      })
+      return prefixText;
+    },
     'name_prefix': 'name_prefix',
     'first_name': 'first_name',
     'birth_date': 'birth_date',
@@ -67,13 +80,15 @@ class UserTransformer {
           return data.get('status');
         }
       }) : [],
-      'workouts': data.workouts.length > 0 ? fractal(data.workouts, {
-        'id': 'workout.id',
-        'name': 'workout.name',
+      'user_workout': {
+        'workouts': data.workouts.length > 0 ? fractal(data.workouts, {
+          'id': 'workout.id',
+          'name': 'workout.name',
+        }) : [],
         'status': function (data) {
-          return data.get('status');
+          return data.get('user_meta_data.workout_status');
         }
-      }) : [],
+      },
       'personality_questions': data.personality_questions.length > 0 ? fractal(data.personality_questions, {
         'id': 'personality_question.id',
         'question': 'personality_question.question',
