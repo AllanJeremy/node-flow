@@ -241,8 +241,7 @@ class UserProfileController {
         race_status: req.body.race_status,
         gender_status: req.body.gender_status,
         family_dynamic_status: req.body.family_dynamic_status,
-        sexual_orientation_status: req.body.sexual_orientation_status,
-        workout_status: req.body.workout_status
+        sexual_orientation_status: req.body.sexual_orientation_status
       },
       {
         where: { id: response.id }
@@ -269,6 +268,30 @@ class UserProfileController {
       {
         where: {
           health_category_id: {[Op.notIn]: healthCategoriesStatus},
+          user_id: req.id
+        }
+      });
+
+      let workoutsStatus = req.body.workouts_status ? req.body.workouts_status : [];
+      if(workoutsStatus && workoutsStatus.length > 0) {
+        workoutsStatus.map(async (item, index) => {
+          await UserWorkout.update({
+            status: StatusHandler.active
+          },
+          {
+            where: {
+              user_id: req.id,
+              workout_id: item
+            }
+          });
+        });
+      }
+      UserWorkout.update({
+        status: StatusHandler.pending
+      },
+      {
+        where: {
+          health_category_id: {[Op.notIn]: workoutsStatus},
           user_id: req.id
         }
       });
