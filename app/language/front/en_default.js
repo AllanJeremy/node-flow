@@ -119,6 +119,10 @@ exports.language = {
       'health_tools': {
         'title': 'I am currently using these tools to help me with my mental well-being ...'
       },
+      'celebration': {
+        'title': 'Great work,',
+        'description': 'The next two questions will ask you about your mental health experiences. Select all that apply or feel free to add in any experiences you don’t see listed by selecting \'Other\''
+      },
       'detail': {
         'profile_information': {
           'title': 'Select the information you want to show to others.',
