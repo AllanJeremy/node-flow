@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
   ConversationStarter.init({
     question: DataTypes.STRING,
     sequence: DataTypes.INTEGER,
+    number_of_answer: DataTypes.STRING,
+    answer_label: DataTypes.JSON,
+    question_icon: DataTypes.STRING,
     status: DataTypes.INTEGER,
     deleted_at: DataTypes.DATE
   }, {

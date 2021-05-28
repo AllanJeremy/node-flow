@@ -14,6 +14,15 @@ module.exports = {
       sequence: {
         type: Sequelize.INTEGER
       },
+      number_of_answer: {
+        type: Sequelize.INTEGER
+      },
+      answer_label: {
+        type: Sequelize.JSON
+      },
+      question_icon: {
+        type: Sequelize.STRING
+      },
       status: {
         type: Sequelize.INTEGER
       },
