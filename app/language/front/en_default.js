@@ -15,7 +15,7 @@ exports.language = {
     },
     'forgot_password_link': 'Forgot password?',
     'sign_up_link': {
-      'text1': 'Don’t have an account?',
+      'text1': 'Don\'t have an account?',
       'text2': 'Sign Up'
     }
   },
@@ -39,7 +39,7 @@ exports.language = {
     },
     'confirm_email': {
       'title': 'Please confrim your email',
-      'sub_title': 'Enter the confirmation code we sent to your email:',
+      'sub_title': 'Enter the confirmation code we sent to your email: ',
       'code': 'Code',
       'send_again_button': 'Send code again',
       'button': 'Continue',
