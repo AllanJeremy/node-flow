@@ -52,7 +52,7 @@ exports.language = {
     'email_label': 'Email',
     'email_placeholder': 'Enter your email',
     'email_verification_title': 'Verify your email',
-    'email_verification_sub_title': 'Enter the confirmation code we sent to your email:',
+    'email_verification_sub_title': 'Enter the confirmation code we sent to your email: ',
     'code_label': 'Code',
     'send_again_button': 'Send code again',
     'resend_success': 'Code is re-sent to your email address',
@@ -143,7 +143,7 @@ exports.language = {
   },
   'matching_preference': {
     'title': 'Matching Preference',
-    'description': 'In the next few steps, we’ll ask you about your match preferences. We know identity and experiences play a big role in our mental health, let us know which ones matter to you when it comes to connecting with a peer.'
+    'description': 'In the next few steps, we\'ll ask you about your match preferences. We know identity and experiences play a big role in our mental health, let us know which ones matter to you when it comes to connecting with a peer.'
   },
   'user_identity': {
     'title': 'What experiences/identities are important for us to account for?',
@@ -156,7 +156,7 @@ exports.language = {
   },
   'summary': {
     'title': 'Tell us more about why you joined.',
-    'input_max_length': 'Max. 150 symbols',
+    'input_max_length': 'Max. 150 characters',
     'popup_title': 'Summary Story:',
     'popup_description': 'Stress and anxiety have been a big challenge for me as a single father. I\'m here to connect with others to learn about what they do to find balance.'
   },
