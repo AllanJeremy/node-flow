@@ -38,7 +38,7 @@ exports.language = {
       'text2': 'Log In'
     },
     'confirm_email': {
-      'title': 'Please confrim your email',
+      'title': 'Please confirm your email',
       'sub_title': 'Enter the confirmation code we sent to your email: ',
       'code': 'Code',
       'send_again_button': 'Send code again',
