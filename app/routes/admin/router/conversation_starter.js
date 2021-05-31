@@ -33,12 +33,12 @@ router.get(apiRoute.CONVERSATION_STARTER.LIST, ConversationStarterController.lis
 router.post(apiRoute.CONVERSATION_STARTER.STORE, [multer({
     storage: imageMiddleware.image.storage(),
     allowedImage:imageMiddleware.image.allowedImage
-    }).single('name'), ConversationStarterValidation.Validation], ConversationStarterController.store);
+    }).single('question_icon'), ConversationStarterValidation.Validation], ConversationStarterController.store);
 
 router.patch(apiRoute.CONVERSATION_STARTER.UPDATE, [multer({
     storage: imageMiddleware.image.storage(),
     allowedImage:imageMiddleware.image.allowedImage
-    }).single('name'), ConversationStarterValidation.Validation], ConversationStarterController.update);
+    }).single('question_icon'), ConversationStarterValidation.Validation], ConversationStarterController.update);
 
 router.delete(apiRoute.CONVERSATION_STARTER.DELETE, ConversationStarterController.destroy);
 

@@ -76,8 +76,8 @@ class ConversationStarterController {
           question: req.body.question,
           sequence: req.body.sequence,
           number_of_answer: req.body.number_of_answer,
-          answer_label: req.body.answer_label,
-          question_icon: req.body.name,
+          answer_label:req.body.answer_label,
+          question_icon: req.name,
           status: req.body.status
         })
         .then(response => {
