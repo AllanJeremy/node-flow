@@ -83,6 +83,8 @@ class RaceController {
 
     const Op = Sequelize.Op;
 
+    let userSelectedRace = req.body.races;
+
     let isUserRaceExist = await UserRace.findOne({
       where: {
         user_id: req.id
@@ -106,6 +108,7 @@ class RaceController {
             id: isUserRaceExist['race.id']
           }
         });
+        userSelectedRace.push(isUserRaceExist['race.id']);
       } else {
         Race.create({
           name: req.body.other,
@@ -116,6 +119,7 @@ class RaceController {
           raw:true
         })
         .then(response => {
+          userSelectedRace.push(response.id);
           this.update(req.id, response.id, StatusHandler.pending);
         })
         .catch(err => {
@@ -143,7 +147,7 @@ class RaceController {
 
     UserRace.destroy({
       where: {
-        race_id: {[Op.notIn]: req.body.races},
+        race_id: {[Op.notIn]: userSelectedRace},
         user_id: req.id
       }
     });

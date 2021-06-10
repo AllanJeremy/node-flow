@@ -45,6 +45,9 @@ class UserTransformer {
         'races' : data.races.length > 0 ? fractal(data.races, {
           'id': 'race.id',
           'name': 'race.name',
+          'is_other': function (data) {
+            return data.get('race.status');
+          },
         }) : [],
         'status': function (data) {
           return data.get('user_meta_data.race_status');
@@ -53,6 +56,9 @@ class UserTransformer {
       'gender': {
         'id': 'user_meta_data.gender.id',
         'name': 'user_meta_data.gender.name',
+        'is_other': function (data) {
+          return data.get('user_meta_data.gender.status');
+        },
         'status': function (data) {
           return data.get('user_meta_data.gender_status');
         }
@@ -60,6 +66,9 @@ class UserTransformer {
       'sexual_orientation': {
         'id': 'user_meta_data.sexual_orientation.id',
         'name': 'user_meta_data.sexual_orientation.name',
+        'is_other': function (data) {
+          return data.get('user_meta_data.sexual_orientation.status');
+        },
         'status': function (data) {
           return data.get('user_meta_data.sexual_orientation_status');
         }
@@ -68,6 +77,9 @@ class UserTransformer {
         'family_dynamics': data.family_dynamics.length > 0 ? fractal(data.family_dynamics, {
           'id': 'family_dynamic.id',
           'name': 'family_dynamic.name',
+          'is_other': function (data) {
+            return data.get('family_dynamic.status');
+          },
         }) : [],
         'status': function (data) {
           return data.get('user_meta_data.family_dynamic_status');
