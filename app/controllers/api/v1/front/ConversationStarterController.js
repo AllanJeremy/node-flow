@@ -28,7 +28,7 @@ const validationLanguage = language.en.front.validation;
 /**
  * Transformers
  */
-var ConversationStarterTransformer = require('../../../../transformers/core/ConversationStarterTransformer');
+var ConversationStarterTransformer = require('../../../../transformers/front/ConversationStarterTransformer');
 ConversationStarterTransformer = new ConversationStarterTransformer();
 
 

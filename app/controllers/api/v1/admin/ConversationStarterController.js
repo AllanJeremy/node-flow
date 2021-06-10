@@ -22,7 +22,7 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Transformers
  */
-var ConversationStarterTransformer = require('../../../../transformers/core/ConversationStarterTransformer');
+var ConversationStarterTransformer = require('../../../../transformers/admin/ConversationStarterTransformer');
 ConversationStarterTransformer = new ConversationStarterTransformer();
 
 
@@ -124,6 +124,9 @@ class ConversationStarterController {
         ConversationStarter.update({
           question: req.body.question,
           sequence: req.body.sequence,
+          number_of_answer: req.body.number_of_answer,
+          answer_label:req.body.answer_label,
+          question_icon: req.name,
           status: req.body.status
         },
         {
@@ -165,6 +168,7 @@ class ConversationStarterController {
       if (response) {
         ConversationStarter.destroy({ where: { id: req.params.id } })
         .then(response => {
+          fs.unlink(path.join('images/icon/' + name), function() {});
           return ResponseHandler.success(res, responseLanguage.conversation_starter_delete_success);
         })
         .catch(err => {
