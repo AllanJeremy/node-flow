@@ -72,7 +72,6 @@ class GenderController {
    * @apiSuccess (200) {Object}
    */
   store = async(req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
@@ -115,7 +114,6 @@ class GenderController {
         });
       }
     } else {
-
       if (isUserGenderExist) {
         Gender.destroy({
           where: {
@@ -124,13 +122,17 @@ class GenderController {
         });
       }
 
-      Gender.findOne({
-        where: {
-          id: req.body.gender
-        }
-      }).then(response => {
-        this.update(res, req.id, req.body.gender, req.body.status, response.name);
-      });
+      if(req.body.gender) {
+        Gender.findOne({
+          where: {
+            id: req.body.gender
+          }
+        }).then(response => {
+          this.update(res, req.id, req.body.gender, req.body.status, response.name);
+        });
+      } else {
+        return ResponseHandler.success(res, responseLanguage.gender_save);
+      }
     }
   }
 

@@ -323,8 +323,8 @@ class UserProfileController {
         model: UserMetadata,
         attributes: ['gender_status', 'sexual_orientation_status', 'race_status', 'family_dynamic_status','summary'],
         include: [
-          { model: Gender, as:'gender', attributes: ['id', 'name'] },
-          { model: SexualOrientation, as: 'sexual_orientation',  attributes: ['id', 'name'] }],
+          { model: Gender, as:'gender', attributes: ['id', 'name', 'status'] },
+          { model: SexualOrientation, as: 'sexual_orientation',  attributes: ['id', 'name', 'status'] }],
         as: 'user_meta_data'
       },
       {
@@ -354,9 +354,8 @@ class UserProfileController {
         attributes: ['id', 'status'],
         include: [{
           model: Race,
-          attributes: ['id', 'name'],
-          as: 'race',
-          where: { status: StatusHandler.active }
+          attributes: ['id', 'name', 'status'],
+          as: 'race'
         }],
         as: 'races'
       },
@@ -365,9 +364,9 @@ class UserProfileController {
         attributes: ['id', 'status'],
         include: [{
           model: FamilyDynamic,
-          attributes: ['id', 'name'],
+          attributes: ['id', 'name', 'status'],
           as: 'family_dynamic',
-          where: { status: StatusHandler.active }
+          //where: { status: StatusHandler.active }
         }],
         as: 'family_dynamics'
       },

@@ -82,6 +82,8 @@ class FamilyDynamicController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
+    let userSelectedFamilyDynamic = req.body.family_dynamics;
+
     let isUserFamilyDynamicExist = await UserFamilyDynamic.findOne({
       where: {
         user_id: req.id
@@ -106,6 +108,7 @@ class FamilyDynamicController {
             id: isUserFamilyDynamicExist['family_dynamic.id']
           }
         });
+        userSelectedFamilyDynamic.push(isUserFamilyDynamicExist['family_dynamic.id']);
       } else {
         FamilyDynamic.create({
           name: req.body.other,
@@ -116,6 +119,7 @@ class FamilyDynamicController {
           raw:true
         })
         .then(response => {
+          userSelectedFamilyDynamic.push(response.id);
           this.update(req.id, response.id, StatusHandler.pending);
         })
         .catch(err => {
