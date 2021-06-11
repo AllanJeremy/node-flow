@@ -137,6 +137,10 @@ exports.language = {
       }
     },
   },
+  'conversation_starter': {
+    'title': 'What is a good conversation starter to make it easier for your peers to connect?',
+    'sub_title': 'Fill in and select one to be shown on your public Profile'
+  },
   'try_again': {
     'title': 'Something went wrong, please try again.',
     'button': 'Try Again',

@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       answer: {
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       createdAt: {
         allowNull: false,

@@ -28,7 +28,7 @@ const validationLanguage = language.en.front.validation;
 /**
  * Transformers
  */
-var ConversationStarterTransformer = require('../../../../transformers/core/ConversationStarterTransformer');
+var ConversationStarterTransformer = require('../../../../transformers/front/ConversationStarterTransformer');
 ConversationStarterTransformer = new ConversationStarterTransformer();
 
 
@@ -73,6 +73,7 @@ class ConversationStarterController {
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
+    console.log("test", req.body.answer)
 
     let isConversationStarterExist = await UserConversationStarter.findOne({
       where: {

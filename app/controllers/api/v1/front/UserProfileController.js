@@ -385,7 +385,7 @@ class UserProfileController {
         attributes: ['id', 'user_id', 'conversation_starter_id', 'answer'],
         include: [{
           model: ConversationStarter,
-          attributes: ['question'],
+          attributes: ['id', 'question'],
           as: 'conversation_starter'
         }],
         as: 'conversation_starters'

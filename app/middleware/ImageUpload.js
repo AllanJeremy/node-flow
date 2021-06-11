@@ -7,7 +7,11 @@ module.exports.image = {
   storage:function(){
     var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'images/avatar')
+      if(req.url.includes('avatar')) {
+        cb(null, 'images/avatar');
+      } else {
+        cb(null, 'images/icon');
+      }
     },
     filename: function (req, file, cb) {
       let extArray = file.mimetype.split('/');
