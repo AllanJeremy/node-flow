@@ -73,6 +73,7 @@ class ConversationStarterController {
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
+    console.log("test", req.body.answer)
 
     let isConversationStarterExist = await UserConversationStarter.findOne({
       where: {
