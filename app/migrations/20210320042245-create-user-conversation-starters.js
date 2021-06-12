@@ -17,6 +17,9 @@ module.exports = {
       answer: {
         type: Sequelize.JSON
       },
+      status: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         field: "created_at",

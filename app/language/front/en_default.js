@@ -206,6 +206,7 @@ exports.language = {
     'confirm_password': 'Confirm password does not match password.',
     'code_required': 'Code field is required.',
     'email_required': 'Email field is required.',
-    'selection_required': 'The maximum possible number of selections is 5'
+    'selection_required': 'The maximum possible number of selections is 5',
+    'conversation_starter_required': 'Please select Atleast one conversation starter.',
   }
 }
