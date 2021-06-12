@@ -140,7 +140,8 @@ exports.en = {
       'mute_peer_store': 'Peer has been muted successfully.',
       'unmute_peer_store': 'Peer has been unmuted successfully.',
       'visibility': 'Profile visibility saved successfully.',
-      'reported_successfully': 'User has been reported successfully.'
+      'reported_successfully': 'User has been reported successfully.',
+      'conversation_starter_status_store': 'Conversation starter status saved successfully.',
     },
   },
   'email': {

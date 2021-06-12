@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   UserConversationStarter.init({
     user_id: DataTypes.INTEGER,
     conversation_starter_id: DataTypes.INTEGER,
-    answer: DataTypes.JSON
+    answer: DataTypes.JSON,
+    status: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'UserConversationStarter',
