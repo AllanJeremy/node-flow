@@ -97,5 +97,22 @@ exports.visibility = [
     .bail(),
 ];
 
+exports.ChangePassword = [
+  check('old_password')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.old_password_required)
+    .bail(),
+  check('new_password')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.new_password_required)
+    .bail(),
+];
+
 
 

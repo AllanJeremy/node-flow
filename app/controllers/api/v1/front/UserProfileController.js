@@ -400,6 +400,51 @@ class UserProfileController {
     });
   }
 
+  /**
+   * @api {post} /user Handles change password operation
+   * @apiName Change password
+   * @apiGroup Front
+   *
+   * @apiParam {String} [old_password] old_password
+   * @apiParam {String} [new_password] new_password
+   *
+   * @apiSuccess (200) {Object}
+   */
+  changePassword = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, errors.array());
+    }
+
+    User.findOne({
+      where: {
+        id: req.id
+      }
+    }).then(response => {
+      var isPasswordValid = bcrypt.compareSync(
+        req.body.password,
+        response.password
+      );
+
+      if (!isPasswordValid) {
+        return ResponseHandler.error(res, 422, validationLanguage.incorrect_old_password);
+      }
+
+      User.update({
+          password: bcrypt.hashSync(req.body.password),
+        }, {
+          where: {
+            id: req.id
+          }
+        })
+        .then(response => {
+          return ResponseHandler.success(res, 200, validationLanguage.password_changed_success);
+        }).catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+    });
+  }
+
 }
 
 module.exports = UserProfileController;
