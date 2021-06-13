@@ -54,6 +54,7 @@ db.ElasticsearchEvents = require('../models/ElasticsearchEvents.js')(sequelize, 
 db.Avatar = require('../models/Avatar.js')(sequelize, Sequelize);
 db.UserRace = require('../models/UserRace.js')(sequelize, Sequelize);
 db.UserFamilyDynamic = require('../models/UserFamilyDynamic.js')(sequelize, Sequelize);
+db.UserMatchingPreference = require('../models/UserMatchingPreference.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
@@ -75,5 +76,6 @@ db.User.hasMany(db.UserRace, {foreignKey: 'user_id', as: 'races', onDelete: 'cas
 db.UserRace.belongsTo(db.Race, {foreignKey: 'race_id', as: 'race', onDelete: 'cascade', hooks: true});
 db.User.hasMany(db.UserFamilyDynamic, {foreignKey: 'user_id', as: 'family_dynamics', onDelete: 'cascade', hooks: true});
 db.UserFamilyDynamic.belongsTo(db.FamilyDynamic, {foreignKey: 'family_dynamic_id', as: 'family_dynamic', onDelete: 'cascade', hooks: true});
+db.User.hasMany(db.UserMatchingPreference, {foreignKey: 'user_id', as: 'user_matching_preferences'});
 
 module.exports = db;

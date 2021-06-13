@@ -97,5 +97,12 @@ exports.visibility = [
     .bail(),
 ];
 
+exports.MatchingPreference = [
+  check('module')
+    .isArray({min: 1})
+    .withMessage(validation.matching_preference_module_required)
+    .bail(),
+];
+
 
 
