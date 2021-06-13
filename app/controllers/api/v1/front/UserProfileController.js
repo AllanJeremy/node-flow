@@ -2,6 +2,7 @@ require('dotenv').config();
 const { validationResult } = require('express-validator');
 const Sequelize = require('sequelize');
 
+const Op = Sequelize.Op;
 
 /**
  * Helpers
@@ -37,7 +38,7 @@ const PersonalityQuestion = Models.PersonalityQuestion;
 const UserPersonalityQuestion = Models.UserPersonalityQuestion;
 const ConversationStarter = Models.ConversationStarter;
 const UserConversationStarter = Models.UserConversationStarter;
-
+const UserMatchingPreference = Models.UserMatchingPreference;
 
 /**
  * Languages
@@ -247,7 +248,7 @@ class UserProfileController {
         where: { id: response.id }
       });
 
-      const Op = Sequelize.Op;
+
       let healthCategoriesStatus = req.body.health_categories_status ? req.body.health_categories_status : [];
       if(healthCategoriesStatus && healthCategoriesStatus.length > 0) {
         healthCategoriesStatus.map(async (item, index) => {
@@ -381,14 +382,19 @@ class UserProfileController {
         as: 'personality_questions'
       },
       {
-      model: UserConversationStarter,
-        attributes: ['id', 'user_id', 'conversation_starter_id', 'answer', 'status'],
-        include: [{
-          model: ConversationStarter,
-          attributes: ['id', 'question'],
-          as: 'conversation_starter'
-        }],
-        as: 'conversation_starters'
+        model: UserConversationStarter,
+          attributes: ['id', 'user_id', 'conversation_starter_id', 'answer', 'status'],
+          include: [{
+            model: ConversationStarter,
+            attributes: ['id', 'question'],
+            as: 'conversation_starter'
+          }],
+          as: 'conversation_starters'
+      },
+      {
+        model: UserMatchingPreference,
+          attributes: ['id', 'user_id', 'module'],
+          as: 'user_matching_preferences'
       }
       ]
     })
@@ -398,6 +404,37 @@ class UserProfileController {
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
+  }
+
+  StoreMatchingPreference = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+    }
+
+    req.body.module.map(async (item) => {
+      var isModuleExist = await UserMatchingPreference.findOne({
+        where: {
+          user_id: req.id,
+          module: item
+        }
+      });
+      if(!isModuleExist) {
+        await UserMatchingPreference.create({
+          user_id: req.id,
+          module: item
+        });
+      }
+    });
+
+    UserMatchingPreference.destroy({
+      where: {
+        module: {[Op.notIn]: req.body.module},
+        user_id: req.id
+      }
+    });
+
+    return ResponseHandler.success(res, '', responseLanguage.matching_preference_store);
   }
 
 }

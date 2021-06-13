@@ -48,6 +48,8 @@ const apiRoute = {
 
   AVATAR: '/api/avatar/list',
 
+  MATCHING_PREFERENCE_STORE: '/user/matching_preference/store',
+
 }
 
 module.exports = {

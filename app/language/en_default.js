@@ -111,6 +111,7 @@ exports.en = {
       'health_categories_status_required': 'Health category status is a required field.',
       'user_id_required': 'User id is a required field.',
       'reason_required': 'Reason is a required field.',
+      'matching_preference_module_required': 'Matching preference module is a required field.'
     },
     'response': {
       'login_success': 'Logged in successfully.',
@@ -142,6 +143,7 @@ exports.en = {
       'visibility': 'Profile visibility saved successfully.',
       'reported_successfully': 'User has been reported successfully.',
       'conversation_starter_status_store': 'Conversation starter status saved successfully.',
+      'matching_preference_store': 'Matching Preference saved successfully.'
     },
   },
   'email': {

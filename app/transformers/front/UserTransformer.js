@@ -111,6 +111,10 @@ class UserTransformer {
         'answer': 'answer',
         'status': 'status'
       }) : [],
+      'matching_preference': data.user_matching_preferences.length > 0 ? fractal(data.user_matching_preferences, {
+        'id': 'id',
+        'module': 'module'
+      }) : [],
       'summary': 'user_meta_data.summary',
     }
   });
