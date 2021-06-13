@@ -422,7 +422,7 @@ class UserProfileController {
       }
     }).then(response => {
       var isPasswordValid = bcrypt.compareSync(
-        req.body.password,
+        req.body.old_password,
         response.password
       );
 
@@ -431,7 +431,7 @@ class UserProfileController {
       }
 
       User.update({
-          password: bcrypt.hashSync(req.body.password),
+          password: bcrypt.hashSync(req.body.new_password),
         }, {
           where: {
             id: req.id
