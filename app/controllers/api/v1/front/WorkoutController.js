@@ -72,14 +72,12 @@ class WorkoutController {
    * @apiSuccess (200) {Object}
    */
   store = async (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
     let workouts = req.body.workouts;
-
     const Op = Sequelize.Op;
 
     UserWorkout.destroy({
@@ -92,7 +90,6 @@ class WorkoutController {
     workouts && workouts.length > 0 && workouts.map(async(item, index) => {
       this.update(req.id, item, req.body.status);
     });
-
 
     if (req.body.other && req.body.other.length > 0) {
       var otherWorkouts = [];
@@ -110,6 +107,7 @@ class WorkoutController {
           returning: true,
           raw: true
         });
+
         if(!isUserOtherWorkoutExist) {
           Workout.create({
             name: item,
@@ -124,7 +122,7 @@ class WorkoutController {
             this.update(req.id, response.id, StatusHandler.pending);
           });
         } else {
-          otherWorkouts.push(isUserWorkoutExist.id);
+          otherWorkouts.push(isUserOtherWorkoutExist.workout_id);
         }
       });
     }
@@ -133,35 +131,38 @@ class WorkoutController {
   }
 
   update = async(userId, workoutId, status) => {
-    let isUserWorkoutExist = await UserWorkout.findOne({
-      where: {
-        user_id: userId,
-        workout_id: workoutId
-      }
-    });
-    if (!isUserWorkoutExist) {
-      UserWorkout.create({
-        user_id: userId,
-        workout_id: workoutId,
-        status: status
-      }).then(response => {
-        if (status == StatusHandler.active) {
-          this.updateElaticsearch(userId);
-        }
-      });
-    } else {
-      UserWorkout.update({
-        status: status
-      }, {
+    if(workoutId) {
+      let isUserWorkoutExist = await UserWorkout.findOne({
         where: {
           user_id: userId,
-          workout_id: workoutId,
-        }
-      }).then(response => {
-        if (status == StatusHandler.active) {
-          this.updateElaticsearch(userId);
+          workout_id: workoutId
         }
       });
+
+      if (!isUserWorkoutExist) {
+        UserWorkout.create({
+          user_id: userId,
+          workout_id: workoutId,
+          status: status
+        }).then(response => {
+          if (status == StatusHandler.active) {
+            this.updateElaticsearch(userId);
+          }
+        });
+      } else {
+        UserWorkout.update({
+          status: status
+        }, {
+          where: {
+            user_id: userId,
+            workout_id: workoutId,
+          }
+        }).then(response => {
+          if (status == StatusHandler.active) {
+            this.updateElaticsearch(userId);
+          }
+        });
+      }
     }
   }
 

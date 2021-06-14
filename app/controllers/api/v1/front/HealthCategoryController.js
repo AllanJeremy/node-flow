@@ -96,8 +96,8 @@ class HealthCategoryController {
 
     if (req.body.other && req.body.other.length > 0) {
       var otherHealthCategories = [];
-      req.body.other.map(async (item) => {
-        let isUserOtherHealthCategoryExist = await UserHealthCategory.findOne({
+       req.body.other.map(async (item) => {
+        UserHealthCategory.findOne({
           where: {
             user_id: req.id
           },
@@ -106,12 +106,10 @@ class HealthCategoryController {
             attributes: ['id', 'name'],
             as: 'health_category',
             where: { name: item }
-          }],
-          returning: true,
-          raw: true
-        });
-        if(!isUserOtherHealthCategoryExist) {
-          HealthCategory.create({
+          }]
+        }).then(res => {
+          if(!res) {
+            HealthCategory.create({
             name: item,
             status: StatusHandler.pending
           },
@@ -123,9 +121,10 @@ class HealthCategoryController {
             otherHealthCategories.push(response.id);
             this.update(req.id, response.id, StatusHandler.pending);
           });
-        } else {
-          otherHealthCategories.push(isUserOtherHealthCategoryExist.id);
-        }
+          } else {
+            otherHealthCategories.push(res.id);
+          }
+        });
       });
     }
 
@@ -133,36 +132,38 @@ class HealthCategoryController {
   }
 
   update = async(userId, healthCategoryId, status) => {
-    let isUserHealthCategoryExist = await UserHealthCategory.findOne({
-      where: {
-        user_id: userId,
-        health_category_id: healthCategoryId
-      }
-    });
-    if (!isUserHealthCategoryExist) {
-      UserHealthCategory.create({
-        user_id: userId,
-        health_category_id: healthCategoryId,
-        status: status
-      }).then(response => {
-        this.updateElaticsearch(userId);
-      })
-      .catch(err => {
-        return ResponseHandler.error(res, 500, err.message);
-      });
-    } else {
-      UserHealthCategory.update({
-        status: status
-      }, {
+    if(healthCategoryId) {
+      let isUserHealthCategoryExist = await UserHealthCategory.findOne({
         where: {
           user_id: userId,
-          health_category_id: healthCategoryId,
-        }
-      }).then(response => {
-        if (status == StatusHandler.active) {
-          this.updateElaticsearch(userId);
+          health_category_id: healthCategoryId
         }
       });
+      if (!isUserHealthCategoryExist) {
+        UserHealthCategory.create({
+          user_id: userId,
+          health_category_id: healthCategoryId,
+          status: status
+        }).then(response => {
+          this.updateElaticsearch(userId);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      } else {
+        UserHealthCategory.update({
+          status: status
+        }, {
+          where: {
+            user_id: userId,
+            health_category_id: healthCategoryId,
+          }
+        }).then(response => {
+          if (status == StatusHandler.active) {
+            this.updateElaticsearch(userId);
+          }
+        });
+      }
     }
   }
 
