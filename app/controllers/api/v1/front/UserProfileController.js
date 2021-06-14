@@ -242,7 +242,8 @@ class UserProfileController {
         race_status: req.body.race_status,
         gender_status: req.body.gender_status,
         family_dynamic_status: req.body.family_dynamic_status,
-        sexual_orientation_status: req.body.sexual_orientation_status
+        sexual_orientation_status: req.body.sexual_orientation_status,
+        workout_status: req.body.workouts_status,
       },
       {
         where: { id: response.id }
