@@ -273,30 +273,6 @@ class UserProfileController {
         }
       });
 
-      let workoutsStatus = req.body.workouts_status ? req.body.workouts_status : [];
-      if(workoutsStatus && workoutsStatus.length > 0) {
-        workoutsStatus.map(async (item, index) => {
-          await UserWorkout.update({
-            status: StatusHandler.active
-          },
-          {
-            where: {
-              user_id: req.id,
-              workout_id: item
-            }
-          });
-        });
-      }
-      UserWorkout.update({
-        status: StatusHandler.pending
-      },
-      {
-        where: {
-          health_category_id: {[Op.notIn]: workoutsStatus},
-          user_id: req.id
-        }
-      });
-
       return ResponseHandler.success(res, responseLanguage.visibility);
     })
     .catch(err => {
@@ -322,7 +298,7 @@ class UserProfileController {
       include: [
       {
         model: UserMetadata,
-        attributes: ['gender_status', 'sexual_orientation_status', 'race_status', 'family_dynamic_status','summary'],
+        attributes: ['gender_status', 'sexual_orientation_status', 'race_status', 'family_dynamic_status', 'workout_status', 'summary'],
         include: [
           { model: Gender, as:'gender', attributes: ['id', 'name', 'status'] },
           { model: SexualOrientation, as: 'sexual_orientation',  attributes: ['id', 'name', 'status'] }],
@@ -333,9 +309,8 @@ class UserProfileController {
         attributes: ['id', 'status'],
         include: [{
             model: HealthCategory,
-            attributes: ['id', 'name'],
-            as: 'health_category',
-            where: { status: StatusHandler.active }
+            attributes: ['id', 'name', 'status'],
+            as: 'health_category'
           }],
         as: 'health_categories'
       },
@@ -344,9 +319,8 @@ class UserProfileController {
         attributes: ['id', 'status'],
         include: [{
           model: Workout,
-          attributes: ['id', 'name'],
-          as: 'workout',
-          where: { status: StatusHandler.active }
+          attributes: ['id', 'name', 'status'],
+          as: 'workout'
         }],
         as: 'workouts'
       },
@@ -367,7 +341,6 @@ class UserProfileController {
           model: FamilyDynamic,
           attributes: ['id', 'name', 'status'],
           as: 'family_dynamic',
-          //where: { status: StatusHandler.active }
         }],
         as: 'family_dynamics'
       },
