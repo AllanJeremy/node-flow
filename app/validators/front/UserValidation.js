@@ -86,8 +86,10 @@ exports.visibility = [
     .withMessage(validation.sexual_orientation_status_required)
     .bail(),
   check('workouts_status')
-    .optional({checkFalsy: true})
-    .isArray({min: 1})
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
     .withMessage(validation.workouts_status_required)
     .bail(),
   check('health_categories_status')

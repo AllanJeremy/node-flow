@@ -88,17 +88,25 @@ class UserTransformer {
       'health_categories': data.health_categories.length > 0 ? fractal(data.health_categories, {
         'id': 'health_category.id',
         'name': 'health_category.name',
+        'is_other': function (data) {
+          return data.get('health_category.status');
+        },
         'status': function (data) {
           return data.get('status');
-        }
+        },
       }) : [],
-      'workouts': data.workouts.length > 0 ? fractal(data.workouts, {
-        'id': 'workout.id',
-        'name': 'workout.name',
+      'user_workouts': {
+        'workouts' : data.workouts.length > 0 ? fractal(data.workouts, {
+          'id': 'workout.id',
+          'name': 'workout.name',
+          'is_other': function (data) {
+            return data.get('workout.status');
+          },
+        }) : [],
         'status': function (data) {
-          return data.get('status');
+          return data.get('user_meta_data.workout_status');
         }
-      }) : [],
+      },
       'personality_questions': data.personality_questions.length > 0 ? fractal(data.personality_questions, {
         'id': 'personality_question.id',
         'question': 'personality_question.question',

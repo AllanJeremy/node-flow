@@ -11,10 +11,7 @@ exports.Validation = [
     .bail(),
   check('other')
     .optional({checkFalsy: true})
-    .trim()
-    .escape()
-    .not()
-    .isEmpty()
+    .isArray({min: 1})
     .withMessage(validationLanguage.other_required)
     .bail()
   ];

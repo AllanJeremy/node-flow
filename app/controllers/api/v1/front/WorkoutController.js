@@ -91,66 +91,42 @@ class WorkoutController {
 
     workouts && workouts.length > 0 && workouts.map(async(item, index) => {
       this.update(req.id, item, req.body.status);
-
     });
 
-    let isUserWorkoutExist = await UserWorkout.findOne({
-      where: {
-        user_id: req.id
-      },
-      include: [{
-        model: Workout,
-        attributes: ['id', 'name'],
-        as: 'workout',
-        where: { status: StatusHandler.pending }
-      }],
-      returning: true,
-      raw: true
-    });
 
-    if (req.body.other) {
-      if (isUserWorkoutExist) {
-        Workout.update({
-          name: req.body.other
-        },
-        {
+    if (req.body.other && req.body.other.length > 0) {
+      var otherWorkouts = [];
+      req.body.other.map(async (item) => {
+        let isUserOtherWorkoutExist = await UserWorkout.findOne({
           where: {
-            id: isUserWorkoutExist['workout.id']
-          }
-        });
-      } else {
-        Workout.create({
-          name: req.body.other,
-          status: StatusHandler.pending
-        },
-        {
+            user_id: req.id
+          },
+          include: [{
+            model: Workout,
+            attributes: ['id', 'name'],
+            as: 'workout',
+            where: { name: item }
+          }],
           returning: true,
-          raw:true
-        })
-        .then(response => {
-          this.update(req.id, response.id, StatusHandler.pending);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
+          raw: true
         });
-      }
-    } else {
-      if (isUserWorkoutExist) {
-        Workout.destroy({
-          where: {
-            id: isUserWorkoutExist['workout.id']
-          }
-        }).then(response => {
-          UserWorkout.destroy({
-            where: {
-              workout_id: isUserWorkoutExist['workout.id']
-            }
+        if(!isUserOtherWorkoutExist) {
+          Workout.create({
+            name: item,
+            status: StatusHandler.pending
+          },
+          {
+            returning: true,
+            raw:true
+          })
+          .then(response => {
+            otherWorkouts.push(response.id);
+            this.update(req.id, response.id, StatusHandler.pending);
           });
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      }
+        } else {
+          otherWorkouts.push(isUserWorkoutExist.id);
+        }
+      });
     }
 
     return ResponseHandler.success(res, responseLanguage.workout_save);
