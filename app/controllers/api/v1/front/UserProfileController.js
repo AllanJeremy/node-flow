@@ -2,6 +2,7 @@ require('dotenv').config();
 const { validationResult } = require('express-validator');
 const Sequelize = require('sequelize');
 var bcrypt = require('bcryptjs');
+const Op = Sequelize.Op;
 
 /**
  * Helpers
@@ -37,7 +38,7 @@ const PersonalityQuestion = Models.PersonalityQuestion;
 const UserPersonalityQuestion = Models.UserPersonalityQuestion;
 const ConversationStarter = Models.ConversationStarter;
 const UserConversationStarter = Models.UserConversationStarter;
-
+const UserMatchingPreference = Models.UserMatchingPreference;
 
 /**
  * Languages
@@ -241,13 +242,14 @@ class UserProfileController {
         race_status: req.body.race_status,
         gender_status: req.body.gender_status,
         family_dynamic_status: req.body.family_dynamic_status,
-        sexual_orientation_status: req.body.sexual_orientation_status
+        sexual_orientation_status: req.body.sexual_orientation_status,
+        workout_status: req.body.workouts_status,
       },
       {
         where: { id: response.id }
       });
 
-      const Op = Sequelize.Op;
+
       let healthCategoriesStatus = req.body.health_categories_status ? req.body.health_categories_status : [];
       if(healthCategoriesStatus && healthCategoriesStatus.length > 0) {
         healthCategoriesStatus.map(async (item, index) => {
@@ -268,30 +270,6 @@ class UserProfileController {
       {
         where: {
           health_category_id: {[Op.notIn]: healthCategoriesStatus},
-          user_id: req.id
-        }
-      });
-
-      let workoutsStatus = req.body.workouts_status ? req.body.workouts_status : [];
-      if(workoutsStatus && workoutsStatus.length > 0) {
-        workoutsStatus.map(async (item, index) => {
-          await UserWorkout.update({
-            status: StatusHandler.active
-          },
-          {
-            where: {
-              user_id: req.id,
-              workout_id: item
-            }
-          });
-        });
-      }
-      UserWorkout.update({
-        status: StatusHandler.pending
-      },
-      {
-        where: {
-          health_category_id: {[Op.notIn]: workoutsStatus},
           user_id: req.id
         }
       });
@@ -321,7 +299,7 @@ class UserProfileController {
       include: [
       {
         model: UserMetadata,
-        attributes: ['gender_status', 'sexual_orientation_status', 'race_status', 'family_dynamic_status','summary'],
+        attributes: ['gender_status', 'sexual_orientation_status', 'race_status', 'family_dynamic_status', 'workout_status', 'summary'],
         include: [
           { model: Gender, as:'gender', attributes: ['id', 'name', 'status'] },
           { model: SexualOrientation, as: 'sexual_orientation',  attributes: ['id', 'name', 'status'] }],
@@ -332,9 +310,8 @@ class UserProfileController {
         attributes: ['id', 'status'],
         include: [{
             model: HealthCategory,
-            attributes: ['id', 'name'],
-            as: 'health_category',
-            where: { status: StatusHandler.active }
+            attributes: ['id', 'name', 'status'],
+            as: 'health_category'
           }],
         as: 'health_categories'
       },
@@ -343,9 +320,8 @@ class UserProfileController {
         attributes: ['id', 'status'],
         include: [{
           model: Workout,
-          attributes: ['id', 'name'],
-          as: 'workout',
-          where: { status: StatusHandler.active }
+          attributes: ['id', 'name', 'status'],
+          as: 'workout'
         }],
         as: 'workouts'
       },
@@ -366,7 +342,6 @@ class UserProfileController {
           model: FamilyDynamic,
           attributes: ['id', 'name', 'status'],
           as: 'family_dynamic',
-          //where: { status: StatusHandler.active }
         }],
         as: 'family_dynamics'
       },
@@ -381,14 +356,19 @@ class UserProfileController {
         as: 'personality_questions'
       },
       {
-      model: UserConversationStarter,
-        attributes: ['id', 'user_id', 'conversation_starter_id', 'answer'],
-        include: [{
-          model: ConversationStarter,
-          attributes: ['id', 'question'],
-          as: 'conversation_starter'
-        }],
-        as: 'conversation_starters'
+        model: UserConversationStarter,
+          attributes: ['id', 'user_id', 'conversation_starter_id', 'answer', 'status'],
+          include: [{
+            model: ConversationStarter,
+            attributes: ['id', 'question'],
+            as: 'conversation_starter'
+          }],
+          as: 'conversation_starters'
+      },
+      {
+        model: UserMatchingPreference,
+          attributes: ['id', 'user_id', 'module'],
+          as: 'user_matching_preferences'
       }
       ]
     })
@@ -443,6 +423,37 @@ class UserProfileController {
           return ResponseHandler.error(res, 500, err.message);
         });
     });
+  }
+  
+  StoreMatchingPreference = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+    }
+
+    req.body.module.map(async (item) => {
+      var isModuleExist = await UserMatchingPreference.findOne({
+        where: {
+          user_id: req.id,
+          module: item
+        }
+      });
+      if(!isModuleExist) {
+        await UserMatchingPreference.create({
+          user_id: req.id,
+          module: item
+        });
+      }
+    });
+
+    UserMatchingPreference.destroy({
+      where: {
+        module: {[Op.notIn]: req.body.module},
+        user_id: req.id
+      }
+    });
+
+    return ResponseHandler.success(res, '', responseLanguage.matching_preference_store);
   }
 
 }

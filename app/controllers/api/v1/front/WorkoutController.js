@@ -72,15 +72,97 @@ class WorkoutController {
    * @apiSuccess (200) {Object}
    */
   store = async (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    let workouts = req.body.workouts;
-
     const Op = Sequelize.Op;
+
+    let workouts = req.body.workouts;
+    let removedOtherWorkouts = [];
+
+    workouts && workouts.length > 0 && workouts.length > 0 && workouts.map(async(item, index) => {
+      this.update(req.id, item, req.body.status);
+    });
+
+    if (req.body.other && req.body.other.length > 0) {
+      var userWorkout = await UserWorkout.findAll({
+        attributes: ['workout_id'],
+        where: {
+          user_id: req.id
+        },
+        include: [{
+          model: Workout,
+          attributes: ['id', 'name'],
+          as: 'workout',
+          where: { name:  req.body.other, status: StatusHandler.pending }
+        }]
+      });
+      await userWorkout.map((item) => {
+        workouts.push(item.workout_id);
+      });
+
+      var userRemovedWorkout = await UserWorkout.findAll({
+        attributes: ['workout_id'],
+        where: {
+          user_id: req.id
+        },
+        include: [{
+          model: Workout,
+          attributes: ['id', 'name'],
+          as: 'workout',
+          where: { name:  {[Op.notIn]: req.body.other}, status: StatusHandler.pending }
+        }]
+      });
+      await userRemovedWorkout.map((item) => {
+        removedOtherWorkouts.push(item.workout_id);
+      });
+
+      req.body.other.map(async (item) => {
+        UserWorkout.findOne({
+          where: {
+            user_id: req.id
+          },
+          include: [{
+            model: Workout,
+            attributes: ['id', 'name'],
+            as: 'workout',
+            where: { name: item }
+          }]
+        }).then(res => {
+          if(!res) {
+            Workout.create({
+              name: item,
+              status: StatusHandler.pending
+            },
+            {
+              returning: true,
+              raw:true
+            })
+            .then(response => {
+              this.update(req.id, response.id, StatusHandler.pending);
+            });
+          }
+        });
+      });
+    } else {
+      var userRemovedWorkout = await UserWorkout.findAll({
+        attributes: ['workout_id'],
+        where: {
+          user_id: req.id
+        },
+        include: [{
+          model: Workout,
+          attributes: ['id', 'name'],
+          as: 'workout',
+          where: { status: StatusHandler.pending }
+        }]
+      });
+      await userRemovedWorkout.map((item) => {
+        removedOtherWorkouts.push(item.workout_id);
+      });
+    }
 
     UserWorkout.destroy({
       where: {
@@ -89,103 +171,48 @@ class WorkoutController {
       }
     });
 
-    workouts && workouts.length > 0 && workouts.map(async(item, index) => {
-      this.update(req.id, item, req.body.status);
-
-    });
-
-    let isUserWorkoutExist = await UserWorkout.findOne({
+    Workout.destroy({
       where: {
-        user_id: req.id
-      },
-      include: [{
-        model: Workout,
-        attributes: ['id', 'name'],
-        as: 'workout',
-        where: { status: StatusHandler.pending }
-      }],
-      returning: true,
-      raw: true
+        id: {[Op.in]: removedOtherWorkouts}
+      }
     });
-
-    if (req.body.other) {
-      if (isUserWorkoutExist) {
-        Workout.update({
-          name: req.body.other
-        },
-        {
-          where: {
-            id: isUserWorkoutExist['workout.id']
-          }
-        });
-      } else {
-        Workout.create({
-          name: req.body.other,
-          status: StatusHandler.pending
-        },
-        {
-          returning: true,
-          raw:true
-        })
-        .then(response => {
-          this.update(req.id, response.id, StatusHandler.pending);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      }
-    } else {
-      if (isUserWorkoutExist) {
-        Workout.destroy({
-          where: {
-            id: isUserWorkoutExist['workout.id']
-          }
-        }).then(response => {
-          UserWorkout.destroy({
-            where: {
-              workout_id: isUserWorkoutExist['workout.id']
-            }
-          });
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      }
-    }
 
     return ResponseHandler.success(res, responseLanguage.workout_save);
   }
 
   update = async(userId, workoutId, status) => {
-    let isUserWorkoutExist = await UserWorkout.findOne({
-      where: {
-        user_id: userId,
-        workout_id: workoutId
-      }
-    });
-    if (!isUserWorkoutExist) {
-      UserWorkout.create({
-        user_id: userId,
-        workout_id: workoutId,
-        status: status
-      }).then(response => {
-        if (status == StatusHandler.active) {
-          this.updateElaticsearch(userId);
-        }
-      });
-    } else {
-      UserWorkout.update({
-        status: status
-      }, {
+    if(workoutId) {
+      let isUserWorkoutExist = await UserWorkout.findOne({
         where: {
           user_id: userId,
-          workout_id: workoutId,
-        }
-      }).then(response => {
-        if (status == StatusHandler.active) {
-          this.updateElaticsearch(userId);
+          workout_id: workoutId
         }
       });
+
+      if (!isUserWorkoutExist) {
+        UserWorkout.create({
+          user_id: userId,
+          workout_id: workoutId,
+          status: status
+        }).then(response => {
+          if (status == StatusHandler.active) {
+            this.updateElaticsearch(userId);
+          }
+        });
+      } else {
+        UserWorkout.update({
+          status: status
+        }, {
+          where: {
+            user_id: userId,
+            workout_id: workoutId,
+          }
+        }).then(response => {
+          if (status == StatusHandler.active) {
+            this.updateElaticsearch(userId);
+          }
+        });
+      }
     }
   }
 

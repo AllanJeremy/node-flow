@@ -31,6 +31,7 @@ const apiRoute = {
 
   COVERSATION_STARTER__LIST: '/user/conversation_starter/list',
   COVERSATION_STARTER_STORE: '/user/conversation_starter/store',
+  COVERSATION_STARTER_STATUS_STORE: '/user/conversation_starter/status/store',
 
   USER_PEER_MATCH: '/user/peer/match',
   USER_PEER_UNMATCH: '/user/peer/unmatch',
@@ -47,6 +48,8 @@ const apiRoute = {
   PRONOUNS: '/api/pronouns/list',
 
   AVATAR: '/api/avatar/list',
+
+  MATCHING_PREFERENCE_STORE: '/user/matching_preference/store',
 
 }
 

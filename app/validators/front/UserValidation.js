@@ -86,8 +86,10 @@ exports.visibility = [
     .withMessage(validation.sexual_orientation_status_required)
     .bail(),
   check('workouts_status')
-    .optional({checkFalsy: true})
-    .isArray({min: 1})
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
     .withMessage(validation.workouts_status_required)
     .bail(),
   check('health_categories_status')
@@ -111,6 +113,13 @@ exports.ChangePassword = [
     .not()
     .isEmpty()
     .withMessage(validation.new_password_required)
+    .bail(),
+];
+
+exports.MatchingPreference = [
+  check('module')
+    .isArray({min: 1})
+    .withMessage(validation.matching_preference_module_required)
     .bail(),
 ];
 

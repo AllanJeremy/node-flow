@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('user_conversation_starters', {
+    await queryInterface.createTable('user_matching_preferences', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,14 +11,8 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER
       },
-      conversation_starter_id: {
-        type: Sequelize.INTEGER
-      },
-      answer: {
-        type: Sequelize.JSON
-      },
-      status: {
-        type: Sequelize.INTEGER
+      module: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -35,6 +29,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('user_conversation_starters');
+    await queryInterface.dropTable('user_matching_preferences');
   }
 };

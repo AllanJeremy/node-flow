@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { validationResult } = require('express-validator');
-
+const Sequelize = require('sequelize');
 
 /**
  * Helpers
@@ -97,6 +97,44 @@ class ConversationStarterController {
       });
     }
     return ResponseHandler.success(res, responseLanguage.conversation_starter_store_success);
+  }
+
+  /**
+   * @api {post} /user/conversation_starter/status/store Handles user conversation starter status store operation
+   * @apiName Front user Conversation starter status store operation
+   * @apiGroup Front
+   *
+   * @apiParam {Integer} [conversation_starter_id] conversation_starter_id
+   *
+   * @apiSuccess (200) {Object}
+   */
+  status = async(req, res) => {
+    let isConversationStarterExist = await UserConversationStarter.findOne({
+      where: {
+        user_id: req.id,
+        conversation_starter_id: req.body.conversation_starter_id,
+      }
+    });
+    if (isConversationStarterExist) {
+      await UserConversationStarter.update({
+        status: StatusHandler.active
+      },{
+        where: {
+          user_id: req.id,
+          conversation_starter_id: req.body.conversation_starter_id,
+        }
+      });
+      const Op = Sequelize.Op;
+      UserConversationStarter.update({
+        status: StatusHandler.pending
+      }, {
+        where: {
+          conversation_starter_id: {[Op.notIn]: [req.body.conversation_starter_id]},
+          user_id: req.id
+        }
+      });
+    }
+    return ResponseHandler.success(res, '', responseLanguage.conversation_starter_status_store);
   }
 
 }

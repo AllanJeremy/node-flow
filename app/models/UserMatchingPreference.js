@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class UserConversationStarter extends Model {
+  class UserMatchingPreference extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,17 +13,15 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  UserConversationStarter.init({
+  UserMatchingPreference.init({
     user_id: DataTypes.INTEGER,
-    conversation_starter_id: DataTypes.INTEGER,
-    answer: DataTypes.JSON,
-    status: DataTypes.INTEGER,
+    module: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'UserConversationStarter',
-    tableName: 'user_conversation_starters',
+    modelName: 'UserMatchingPreference',
+    tableName: 'user_matching_preferences',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   });
-  return UserConversationStarter;
+  return UserMatchingPreference;
 };
