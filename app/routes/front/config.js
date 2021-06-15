@@ -50,6 +50,9 @@ const apiRoute = {
 
   MATCHING_PREFERENCE_STORE: '/user/matching_preference/store',
 
+  USER_ACCOUNT_DEACTIVATE: '/user/account/deactivate',
+  USER_ACCOUNT_DELETE: '/user/account/delete',
+
 }
 
 module.exports = {

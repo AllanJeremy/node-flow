@@ -143,7 +143,9 @@ exports.en = {
       'visibility': 'Profile visibility saved successfully.',
       'reported_successfully': 'User has been reported successfully.',
       'conversation_starter_status_store': 'Conversation starter status saved successfully.',
-      'matching_preference_store': 'Matching Preference saved successfully.'
+      'matching_preference_store': 'Matching Preference saved successfully.',
+      'account_deactivate_success': 'Your account deactivated successfully.',
+      'account_delete_success': 'Your account deleted successfully.'
     },
   },
   'email': {
