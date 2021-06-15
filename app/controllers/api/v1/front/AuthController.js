@@ -91,11 +91,15 @@ class AuthController {
       }
 
       if (response.status == StatusHandler.pending) {
-        return ResponseHandler.error(res, 401, responseLanguage.not_verified_account);
+        return ResponseHandler.error(res, 422, responseLanguage.not_verified_account);
       }
 
       if (response.status == StatusHandler.blocked) {
-        return ResponseHandler.error(res, 401, responseLanguage.blocked_account);
+        return ResponseHandler.error(res, 422, responseLanguage.blocked_account);
+      }
+
+      if (response.status == StatusHandler.deactivate) {
+        return ResponseHandler.error(res, 422, responseLanguage.deactivate_account);
       }
 
       var token = jwt.sign({ id: response.id }, authConfig.secret, {

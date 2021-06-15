@@ -35,4 +35,8 @@ router.post(apiRoute.MATCHING_PREFERENCE_STORE, UserValidation.MatchingPreferenc
 
 router.get(apiRoute.USER, UserProfileController.show);
 
+router.get(apiRoute.USER_ACCOUNT_DEACTIVATE, UserProfileController.AccountDeactivate);
+
+router.get(apiRoute.USER_ACCOUNT_DELETE, UserProfileController.AccountDelete);
+
 module.exports = router;

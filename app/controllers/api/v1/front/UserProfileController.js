@@ -381,7 +381,7 @@ class UserProfileController {
   }
 
   /**
-   * @api {post} /user Handles change password operation
+   * @api {post} /user/change_password Handles change password operation
    * @apiName Change password
    * @apiGroup Front
    *
@@ -424,7 +424,16 @@ class UserProfileController {
         });
     });
   }
-  
+
+  /**
+   * @api {post} /user/matching_preference/store Handles user matching preference module store operation
+   * @apiName Front user matching preference module store operation
+   * @apiGroup Front
+   *
+   * @apiParam {String} [module] module
+   *
+   * @apiSuccess (200) {Object}
+   */
   StoreMatchingPreference = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -453,7 +462,62 @@ class UserProfileController {
       }
     });
 
-    return ResponseHandler.success(res, '', responseLanguage.matching_preference_store);
+    return ResponseHandler.success(res, responseLanguage.matching_preference_store);
+  }
+
+  /**
+   * @api {get} /user/account/deactivate Handles user account deactivate operation
+   * @apiName Front user account deactivate operation
+   * @apiGroup Front
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  AccountDeactivate = (req, res) => {
+    User.findOne({
+      where: {
+        id: req.id
+      }
+    }).then(response => {
+      User.update({
+        status: StatusHandler.deactivate,
+      },
+      {
+        where: { id: req.id }
+      }).then(response => {
+        return ResponseHandler.success(res, responseLanguage.account_deactivate_success);
+      }).catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+    }).catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {get} /user/account/delete Handles user account delete operation
+   * @apiName Front user account delete operation
+   * @apiGroup Front
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  AccountDelete = (req, res) => {
+    User.findOne({
+      where: {
+        id: req.id
+      }
+    }).then(response => {
+      User.destroy({
+        where: { id: req.id }
+      }).then(response => {
+        return ResponseHandler.success(res, responseLanguage.account_delete_success);
+      }).catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+    }).catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
   }
 
 }
