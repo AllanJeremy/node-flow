@@ -149,7 +149,8 @@ exports.en = {
       'conversation_starter_status_store': 'Conversation starter status saved successfully.',
       'matching_preference_store': 'Matching Preference saved successfully.',
       'account_deactivate_success': 'Your account deactivated successfully.',
-      'account_delete_success': 'Your account deleted successfully.'
+      'account_delete_success': 'Your account deleted successfully.',
+      'deactivate_account': 'You have deactivated your account. Please contact support team for more details.'
     },
   },
   'email': {

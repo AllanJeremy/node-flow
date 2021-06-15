@@ -462,7 +462,7 @@ class UserProfileController {
       }
     });
 
-    return ResponseHandler.success(res, '', responseLanguage.matching_preference_store);
+    return ResponseHandler.success(res, responseLanguage.matching_preference_store);
   }
 
   /**
@@ -480,12 +480,12 @@ class UserProfileController {
       }
     }).then(response => {
       User.update({
-        status: StatusHandler.blocked,
+        status: StatusHandler.deactivate,
       },
       {
         where: { id: req.id }
       }).then(response => {
-        return ResponseHandler.success(res, '', responseLanguage.account_deactivate_success);
+        return ResponseHandler.success(res, responseLanguage.account_deactivate_success);
       }).catch(err => {
         return ResponseHandler.error(res, 500, err.message);
       });
@@ -511,7 +511,7 @@ class UserProfileController {
       User.destroy({
         where: { id: req.id }
       }).then(response => {
-        return ResponseHandler.success(res, '', responseLanguage.account_delete_success);
+        return ResponseHandler.success(res, responseLanguage.account_delete_success);
       }).catch(err => {
         return ResponseHandler.error(res, 500, err.message);
       });
