@@ -73,7 +73,6 @@ class HealthCategoryController {
    * @apiSuccess (200) {Object}
    */
   store = async (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
@@ -82,21 +81,45 @@ class HealthCategoryController {
     const Op = Sequelize.Op;
 
     let healthCategories = req.body.health_categories;
-
-    UserHealthCategory.destroy({
-      where: {
-        health_category_id: {[Op.notIn]: healthCategories},
-        user_id: req.id
-      }
-    });
+    let removedOtherhealthCategories = [];
 
     healthCategories && healthCategories.length > 0 && healthCategories.length > 0 && healthCategories.map(async(item, index) => {
       this.update(req.id, item, req.body.status);
     });
 
     if (req.body.other && req.body.other.length > 0) {
-      var otherHealthCategories = [];
-       req.body.other.map(async (item) => {
+      var userHealthCategory = await UserHealthCategory.findAll({
+        attributes: ['health_category_id'],
+        where: {
+          user_id: req.id
+        },
+        include: [{
+          model: HealthCategory,
+          attributes: ['id', 'name'],
+          as: 'health_category',
+          where: { name:  req.body.other, status: StatusHandler.pending }
+        }]
+      });
+      await userHealthCategory.map((item) => {
+        healthCategories.push(item.health_category_id);
+      });
+
+      var userRemovedHealthCategory = await UserHealthCategory.findAll({
+        attributes: ['health_category_id'],
+        where: {
+          user_id: req.id
+        },
+        include: [{
+          model: HealthCategory,
+          attributes: ['id', 'name'],
+          as: 'health_category',
+          where: { name:  {[Op.notIn]: req.body.other}, status: StatusHandler.pending }
+        }]
+      });
+      await userRemovedHealthCategory.map((item) => {
+        removedOtherhealthCategories.push(item.health_category_id);
+      });
+      req.body.other.map(async (item) => {
         UserHealthCategory.findOne({
           where: {
             user_id: req.id
@@ -110,23 +133,49 @@ class HealthCategoryController {
         }).then(res => {
           if(!res) {
             HealthCategory.create({
-            name: item,
-            status: StatusHandler.pending
-          },
-          {
-            returning: true,
-            raw:true
-          })
-          .then(response => {
-            otherHealthCategories.push(response.id);
-            this.update(req.id, response.id, StatusHandler.pending);
-          });
-          } else {
-            otherHealthCategories.push(res.id);
+              name: item,
+              status: StatusHandler.pending
+            },
+            {
+              returning: true,
+              raw:true
+            })
+            .then(response => {
+              this.update(req.id, response.id, StatusHandler.pending);
+            });
           }
         });
       });
+    } else {
+      var userRemovedHealthCategory = await UserHealthCategory.findAll({
+        attributes: ['health_category_id'],
+        where: {
+          user_id: req.id
+        },
+        include: [{
+          model: HealthCategory,
+          attributes: ['id', 'name'],
+          as: 'health_category',
+          where: { status: StatusHandler.pending }
+        }]
+      });
+      await userRemovedHealthCategory.map((item) => {
+        removedOtherhealthCategories.push(item.health_category_id);
+      });
     }
+
+    UserHealthCategory.destroy({
+      where: {
+        health_category_id: {[Op.notIn]: healthCategories},
+        user_id: req.id
+      }
+    });
+
+    HealthCategory.destroy({
+      where: {
+        id: {[Op.in]: removedOtherhealthCategories}
+      }
+    });
 
     return ResponseHandler.success(res, responseLanguage.health_category_save);
   }

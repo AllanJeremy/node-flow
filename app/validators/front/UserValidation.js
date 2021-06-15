@@ -99,6 +99,23 @@ exports.visibility = [
     .bail(),
 ];
 
+exports.ChangePassword = [
+  check('current_password')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.current_password_required)
+    .bail(),
+  check('new_password')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.new_password_required)
+    .bail(),
+];
+
 exports.MatchingPreference = [
   check('module')
     .isArray({min: 1})

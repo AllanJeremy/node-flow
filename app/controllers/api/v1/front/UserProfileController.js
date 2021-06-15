@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { validationResult } = require('express-validator');
 const Sequelize = require('sequelize');
-
+var bcrypt = require('bcryptjs');
 const Op = Sequelize.Op;
 
 /**
@@ -377,6 +377,51 @@ class UserProfileController {
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /user/change_password Handles change password operation
+   * @apiName Change password
+   * @apiGroup Front
+   *
+   * @apiParam {String} [current_password] current_password
+   * @apiParam {String} [new_password] new_password
+   *
+   * @apiSuccess (200) {Object}
+   */
+  changePassword = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, errors.array());
+    }
+
+    User.findOne({
+      where: {
+        id: req.id
+      }
+    }).then(response => {
+      var isPasswordValid = bcrypt.compareSync(
+        req.body.current_password,
+        response.password
+      );
+
+      if (!isPasswordValid) {
+        return ResponseHandler.error(res, 422, responseLanguage.incorrect_current_password);
+      }
+
+      User.update({
+          password: bcrypt.hashSync(req.body.new_password),
+        }, {
+          where: {
+            id: req.id
+          }
+        })
+        .then(response => {
+          return ResponseHandler.success(res, 200, responseLanguage.password_changed_success);
+        }).catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
     });
   }
 

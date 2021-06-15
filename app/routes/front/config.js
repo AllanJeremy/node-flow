@@ -27,6 +27,7 @@ const apiRoute = {
   USER_PROFILE_WORKOUT_STORE: '/user/profile/workout/store',
   USER_PERSONALITY_QUESTION_LIST: '/user/profile/personality_question/list',
   USER_PERSONALITY_QUESTION_STORE: '/user/profile/personality_question/store',
+  USER_CHANGE_PASSWORD: '/user/change_password',
 
   COVERSATION_STARTER__LIST: '/user/conversation_starter/list',
   COVERSATION_STARTER_STORE: '/user/conversation_starter/store',

@@ -111,6 +111,8 @@ exports.en = {
       'health_categories_status_required': 'Health category status is a required field.',
       'user_id_required': 'User id is a required field.',
       'reason_required': 'Reason is a required field.',
+      'current_password_required': 'Current password is required field.',
+      'new_password_required': 'New password is required field.',
       'matching_preference_module_required': 'Matching preference module is a required field.'
     },
     'response': {
@@ -142,6 +144,8 @@ exports.en = {
       'unmute_peer_store': 'Peer has been unmuted successfully.',
       'visibility': 'Profile visibility saved successfully.',
       'reported_successfully': 'User has been reported successfully.',
+      'incorrect_current_password': 'Please enter correct current password.',
+      'password_changed_success': 'Password changed successfully.',
       'conversation_starter_status_store': 'Conversation starter status saved successfully.',
       'matching_preference_store': 'Matching Preference saved successfully.',
       'account_deactivate_success': 'Your account deactivated successfully.',

@@ -164,6 +164,41 @@ exports.language = {
     'popup_title': 'Summary Story:',
     'popup_description': 'Stress and anxiety have been a big challenge for me as a single father. I\'m here to connect with others to learn about what they do to find balance.'
   },
+  'app_settings': {
+    'match_settings': 'Match Settings',
+    'account_settings': 'Account Settings',
+    'help_support': 'Help Support',
+    'language_settings': 'Language Settings',
+    'profile_color': 'Profile Color'
+  },
+  'account_settings': {
+    'change_password': {
+      'title': 'Change Password',
+      'current_password_label': 'Current Password',
+      'new_password_label': 'New Password',
+      'confirm_password_label': 'Confirn Password'
+    },
+    'deactivate_account': {
+      'title': 'Deactivate Account',
+      'alert_message': {
+        'text1': 'Are you sure you want to',
+        'text2': 'deactivate',
+        'text3': 'your account?'
+      }
+    },
+    'log_out': 'Log Out',
+    'delete_account': {
+      'title': 'Delete Account',
+      'alert_message': {
+        'text1': 'Are you sure you want to',
+        'text2': 'delete',
+        'text3': 'your account?'
+      }
+    }
+  },
+  'language': {
+    'english': 'English'
+  },
   'footer_tab': {
     'tab1': 'Support',
     'tab2': 'Peers',
@@ -196,7 +231,11 @@ exports.language = {
     'welcome': 'Welcome',
     'not_applicable': 'N/A',
     'more': 'More',
-    'preview': 'Preview'
+    'preview': 'Preview',
+    'accessibility': 'Accessibility',
+    'coming_soon': 'Coming Soon',
+    'yes': 'Yes',
+    'no': 'No'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
