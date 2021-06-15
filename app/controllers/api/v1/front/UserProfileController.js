@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { validationResult } = require('express-validator');
 const Sequelize = require('sequelize');
-
+var bcrypt = require('bcryptjs');
 
 /**
  * Helpers
@@ -405,7 +405,7 @@ class UserProfileController {
    * @apiName Change password
    * @apiGroup Front
    *
-   * @apiParam {String} [old_password] old_password
+   * @apiParam {String} [current_password] current_password
    * @apiParam {String} [new_password] new_password
    *
    * @apiSuccess (200) {Object}
@@ -422,12 +422,12 @@ class UserProfileController {
       }
     }).then(response => {
       var isPasswordValid = bcrypt.compareSync(
-        req.body.old_password,
+        req.body.current_password,
         response.password
       );
 
       if (!isPasswordValid) {
-        return ResponseHandler.error(res, 422, validationLanguage.incorrect_old_password);
+        return ResponseHandler.error(res, 422, responseLanguage.incorrect_current_password);
       }
 
       User.update({
@@ -438,7 +438,7 @@ class UserProfileController {
           }
         })
         .then(response => {
-          return ResponseHandler.success(res, 200, validationLanguage.password_changed_success);
+          return ResponseHandler.success(res, 200, responseLanguage.password_changed_success);
         }).catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         });

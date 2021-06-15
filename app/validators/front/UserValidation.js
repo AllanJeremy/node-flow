@@ -98,12 +98,12 @@ exports.visibility = [
 ];
 
 exports.ChangePassword = [
-  check('old_password')
+  check('current_password')
     .trim()
     .escape()
     .not()
     .isEmpty()
-    .withMessage(validation.old_password_required)
+    .withMessage(validation.current_password_required)
     .bail(),
   check('new_password')
     .trim()

@@ -111,7 +111,7 @@ exports.en = {
       'health_categories_status_required': 'Health category status is a required field.',
       'user_id_required': 'User id is a required field.',
       'reason_required': 'Reason is a required field.',
-      'old_password_required': 'Old password is required field.',
+      'current_password_required': 'Current password is required field.',
       'new_password_required': 'New password is required field.'
     },
     'response': {
@@ -143,7 +143,7 @@ exports.en = {
       'unmute_peer_store': 'Peer has been unmuted successfully.',
       'visibility': 'Profile visibility saved successfully.',
       'reported_successfully': 'User has been reported successfully.',
-      'incorrect_old_password': 'Please enter correct old password.',
+      'incorrect_current_password': 'Please enter correct current password.',
       'password_changed_success': 'Password changed successfully.'
     },
   },

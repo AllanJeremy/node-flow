@@ -93,7 +93,6 @@ class SexualOrientationController {
     });
 
     if (req.body.other) {
-      console.log("otheer", req.body.other)
       if (isUserSexualOrientationExist) {
         SexualOrientation.update({
           name: req.body.other
@@ -125,9 +124,7 @@ class SexualOrientationController {
           }
         });
       }
-      console.log(req.body.sexual_orientation);
       if(req.body.sexual_orientation) {
-        console.log("teeerrerwe");
         SexualOrientation.findOne({
           where: {
             id: req.body.sexual_orientation
