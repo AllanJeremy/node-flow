@@ -77,24 +77,50 @@ class WorkoutController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
-    let workouts = req.body.workouts;
     const Op = Sequelize.Op;
 
-    UserWorkout.destroy({
-      where: {
-        workout_id: {[Op.notIn]: workouts},
-        user_id: req.id
-      }
-    });
+    let workouts = req.body.workouts;
+    let removedOtherWorkouts = [];
 
-    workouts && workouts.length > 0 && workouts.map(async(item, index) => {
+    workouts && workouts.length > 0 && workouts.length > 0 && workouts.map(async(item, index) => {
       this.update(req.id, item, req.body.status);
     });
 
     if (req.body.other && req.body.other.length > 0) {
-      var otherWorkouts = [];
+      var userWorkout = await UserWorkout.findAll({
+        attributes: ['workout_id'],
+        where: {
+          user_id: req.id
+        },
+        include: [{
+          model: Workout,
+          attributes: ['id', 'name'],
+          as: 'workout',
+          where: { name:  req.body.other, status: StatusHandler.pending }
+        }]
+      });
+      await userWorkout.map((item) => {
+        workouts.push(item.workout_id);
+      });
+
+      var userRemovedWorkout = await UserWorkout.findAll({
+        attributes: ['workout_id'],
+        where: {
+          user_id: req.id
+        },
+        include: [{
+          model: Workout,
+          attributes: ['id', 'name'],
+          as: 'workout',
+          where: { name:  {[Op.notIn]: req.body.other}, status: StatusHandler.pending }
+        }]
+      });
+      await userRemovedWorkout.map((item) => {
+        removedOtherWorkouts.push(item.workout_id);
+      });
+
       req.body.other.map(async (item) => {
-        let isUserOtherWorkoutExist = await UserWorkout.findOne({
+        UserWorkout.findOne({
           where: {
             user_id: req.id
           },
@@ -103,29 +129,53 @@ class WorkoutController {
             attributes: ['id', 'name'],
             as: 'workout',
             where: { name: item }
-          }],
-          returning: true,
-          raw: true
+          }]
+        }).then(res => {
+          if(!res) {
+            Workout.create({
+              name: item,
+              status: StatusHandler.pending
+            },
+            {
+              returning: true,
+              raw:true
+            })
+            .then(response => {
+              this.update(req.id, response.id, StatusHandler.pending);
+            });
+          }
         });
-
-        if(!isUserOtherWorkoutExist) {
-          Workout.create({
-            name: item,
-            status: StatusHandler.pending
-          },
-          {
-            returning: true,
-            raw:true
-          })
-          .then(response => {
-            otherWorkouts.push(response.id);
-            this.update(req.id, response.id, StatusHandler.pending);
-          });
-        } else {
-          otherWorkouts.push(isUserOtherWorkoutExist.workout_id);
-        }
+      });
+    } else {
+      var userRemovedWorkout = await UserWorkout.findAll({
+        attributes: ['workout_id'],
+        where: {
+          user_id: req.id
+        },
+        include: [{
+          model: Workout,
+          attributes: ['id', 'name'],
+          as: 'workout',
+          where: { status: StatusHandler.pending }
+        }]
+      });
+      await userRemovedWorkout.map((item) => {
+        removedOtherWorkouts.push(item.workout_id);
       });
     }
+
+    UserWorkout.destroy({
+      where: {
+        workout_id: {[Op.notIn]: workouts},
+        user_id: req.id
+      }
+    });
+
+    Workout.destroy({
+      where: {
+        id: {[Op.in]: removedOtherWorkouts}
+      }
+    });
 
     return ResponseHandler.success(res, responseLanguage.workout_save);
   }
