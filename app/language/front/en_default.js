@@ -164,35 +164,52 @@ exports.language = {
     'popup_title': 'Summary Story:',
     'popup_description': 'Stress and anxiety have been a big challenge for me as a single father. I\'m here to connect with others to learn about what they do to find balance.'
   },
-  'app_settings': {
-    'match_settings': 'Match Settings',
-    'account_settings': 'Account Settings',
-    'help_support': 'Help Support',
-    'language_settings': 'Language Settings',
-    'profile_color': 'Profile Color'
-  },
-  'account_settings': {
-    'change_password': {
-      'title': 'Change Password',
-      'current_password_label': 'Current Password',
-      'new_password_label': 'New Password',
-      'confirm_password_label': 'Confirn Password'
+  'settings': {
+    'app': {
+      'match_settings': 'Match Settings',
+      'account_settings': 'Account Settings',
+      'help_support': 'Help Support',
+      'language_settings': 'Language Settings',
+      'profile_color': 'Profile Color'
     },
-    'deactivate_account': {
-      'title': 'Deactivate Account',
-      'alert_message': {
-        'text1': 'Are you sure you want to',
-        'text2': 'deactivate',
-        'text3': 'your account?'
+    'account': {
+      'change_password': {
+        'title': 'Change Password',
+        'current_password_label': 'Current Password',
+        'new_password_label': 'New Password',
+        'confirm_password_label': 'Confirn Password'
+      },
+      'deactivate_account': {
+        'title': 'Deactivate Account',
+        'alert_message': {
+          'text1': 'Are you sure you want to',
+          'text2': 'deactivate',
+          'text3': 'your account?'
+        }
+      },
+      'log_out': 'Log Out',
+      'delete_account': {
+        'title': 'Delete Account',
+        'alert_message': {
+          'text1': 'Are you sure you want to',
+          'text2': 'delete',
+          'text3': 'your account?'
+        }
       }
     },
-    'log_out': 'Log Out',
-    'delete_account': {
-      'title': 'Delete Account',
-      'alert_message': {
-        'text1': 'Are you sure you want to',
-        'text2': 'delete',
-        'text3': 'your account?'
+    'support': {
+      'contact': {
+        'title': 'Contact Support',
+        'email': 'Email',
+        'describe': 'Describe'
+      },
+      'feedback': {
+        'title': 'Share Feedback',
+        'question1': 'How likely are you to recommend this app to a friend?',
+        'question2': 'What can we do better?'
+      },
+      'suicide_prevention': {
+        'title': 'Suicide Prevention'
       }
     }
   },
@@ -235,7 +252,9 @@ exports.language = {
     'accessibility': 'Accessibility',
     'coming_soon': 'Coming Soon',
     'yes': 'Yes',
-    'no': 'No'
+    'no': 'No',
+    'text': 'Text',
+    'send': 'Send'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
@@ -251,5 +270,6 @@ exports.language = {
     'max_profile_visibility_selection': 'The maximum possible number of selections is 5',
     'mental_health_experiences_required': 'Please select mental health experience.',
     'mental_health_tool_required': 'Please select mental health tool.',
+    'suggestion_required': 'Suggestion field is required.'
   }
 }
