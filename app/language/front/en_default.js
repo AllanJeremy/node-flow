@@ -65,9 +65,14 @@ exports.language = {
     'success_sub_title': 'Your Password has been changed'
   },
   'home': {
-    'sub_title': 'You haven\'t set-up your Joyn profile yet, to get started, click',
-    'here_text': 'here',
-    'profile_button': 'Create My Profile'
+    'explore': {
+      'sub_title': 'You haven\'t set-up your Joyn profile yet, to get started, click',
+      'here_text': 'here',
+      'profile_button': 'Create My Profile'
+    },
+    'empty': {
+      'sub_title': 'We\'re still finding the right matches for you, once ready, you\'ll see them here and on your "Peers Tab"',
+    }
   },
   'user': {
     'profile': {
@@ -120,8 +125,16 @@ exports.language = {
         'title': 'I am currently using these tools to help me with my mental well-being ...'
       },
       'celebration': {
-        'title': 'Great work,',
-        'description': 'The next two questions will ask you about your mental health experiences. Select all that apply or feel free to add in any experiences you don’t see listed by selecting \'Other\''
+        'great': {
+          'title': 'Great work,',
+          'description': 'The next two questions will ask you about your mental health experiences. Select all that apply or feel free to add in any experiences you don’t see listed by selecting \'Other\''
+        },
+        'congratulations': {
+          'text1': 'Congratulations!',
+          'text2': 'Your profile and match preferences are complete.',
+          'text3': 'You can now start to explore your recommended peers and start conversations!',
+          'button': 'View Matches'
+        }
       },
       'detail': {
         'profile_information': {
