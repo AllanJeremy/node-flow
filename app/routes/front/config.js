@@ -53,7 +53,8 @@ const apiRoute = {
 
   USER_ACCOUNT_DEACTIVATE: '/user/account/deactivate',
   USER_ACCOUNT_DELETE: '/user/account/delete',
-
+  CONTACT_SUPPORT: '/api/contact_support',
+  FEEDBACK: '/api/feedback',
 }
 
 module.exports = {

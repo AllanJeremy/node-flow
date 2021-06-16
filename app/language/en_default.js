@@ -113,7 +113,10 @@ exports.en = {
       'reason_required': 'Reason is a required field.',
       'current_password_required': 'Current password is required field.',
       'new_password_required': 'New password is required field.',
-      'matching_preference_module_required': 'Matching preference module is a required field.'
+      'matching_preference_module_required': 'Matching preference module is a required field.',
+      'description_required': 'Description is a required field.',
+      'rating_required': 'Rating is required.',
+      'suggestion_required': 'Suggestion is a required field.'
     },
     'response': {
       'login_success': 'Logged in successfully.',
@@ -150,7 +153,9 @@ exports.en = {
       'matching_preference_store': 'Matching Preference saved successfully.',
       'account_deactivate_success': 'Your account deactivated successfully.',
       'account_delete_success': 'Your account deleted successfully.',
-      'deactivate_account': 'You have deactivated your account. Please contact support team for more details.'
+      'deactivate_account': 'You have deactivated your account. Please contact support team for more details.',
+      'contact_support_store_success': 'Our contact support team will contact you shortly.',
+      'feedback_store_success': 'Thank you for your feedback.'
     },
   },
   'email': {

@@ -13,6 +13,12 @@ const apiRoute = routeConfig.apiRoute;
 var CommonController = require('../../../controllers/api/v1/front/CommonController');
 CommonController = new CommonController();
 
+/**
+ * Validators
+ */
+const CommonValidation = require('../../../validators/front/CommonValidation');
+
+
 
 /**
  * Common Routes
@@ -20,5 +26,9 @@ CommonController = new CommonController();
 router.get(apiRoute.PRONOUNS, CommonController.pronouns);
 
 router.get(apiRoute.AVATAR, CommonController.avatar);
+
+router.post(apiRoute.CONTACT_SUPPORT, CommonValidation.ContactSupport, CommonController.ContactSupport);
+
+router.post(apiRoute.FEEDBACK, CommonValidation.Feedback, CommonController.Feedback);
 
 module.exports = router;

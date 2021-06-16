@@ -55,6 +55,8 @@ db.Avatar = require('../models/Avatar.js')(sequelize, Sequelize);
 db.UserRace = require('../models/UserRace.js')(sequelize, Sequelize);
 db.UserFamilyDynamic = require('../models/UserFamilyDynamic.js')(sequelize, Sequelize);
 db.UserMatchingPreference = require('../models/UserMatchingPreference.js')(sequelize, Sequelize);
+db.ContactSupport = require('../models/ContactSupport.js')(sequelize, Sequelize);
+db.Feedback = require('../models/Feedback.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
