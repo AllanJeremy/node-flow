@@ -146,8 +146,10 @@ exports.language = {
           'mental_health_experiences_label': 'Mental Health Experiences',
           'hide_list': 'Hide the list',
           'mental_health_tools_label': 'Mental Health Tools',
+          'conversation_starters_label': 'Conversation Starters',
+          'my_story': 'My story'
         }
-      }
+      },
     },
   },
   'conversation_starter': {
@@ -281,8 +283,10 @@ exports.language = {
     'conversation_starter_required': 'Please select Atleast one conversation starter.',
     'profile_visibility': 'Use the show/hide icons to decide what you share on your public profile',
     'max_profile_visibility_selection': 'The maximum possible number of selections is 5',
-    'mental_health_experiences_required': 'Please select mental health experience.',
-    'mental_health_tool_required': 'Please select mental health tool.',
-    'suggestion_required': 'Suggestion field is required.'
+    'suggestion_required': 'Suggestion field is required.',
+    'edit_profile': {
+      'text1': 'Oops! We couldn’t save your changes.' ,
+      'text2':'Remember to show at least one input from each required (*) category'
+    }
   }
 }
