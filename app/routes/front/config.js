@@ -55,6 +55,7 @@ const apiRoute = {
   USER_ACCOUNT_DELETE: '/user/account/delete',
   CONTACT_SUPPORT: '/api/contact_support',
   FEEDBACK: '/api/feedback',
+  USER_SETTINGS_STORE: '/user/settings/store',
 }
 
 module.exports = {

@@ -155,7 +155,9 @@ exports.en = {
       'account_delete_success': 'Your account deleted successfully.',
       'deactivate_account': 'You have deactivated your account. Please contact support team for more details.',
       'contact_support_store_success': 'Our contact support team will contact you shortly.',
-      'feedback_store_success': 'Thank you for your feedback.'
+      'feedback_store_success': 'Thank you for your feedback.',
+      'setting_store_success': 'User settings stored success.',
+      'setting_update_success': 'User settings updated success.',
     },
   },
   'email': {

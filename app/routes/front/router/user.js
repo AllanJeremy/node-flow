@@ -39,4 +39,6 @@ router.get(apiRoute.USER_ACCOUNT_DEACTIVATE, UserProfileController.AccountDeacti
 
 router.get(apiRoute.USER_ACCOUNT_DELETE, UserProfileController.AccountDelete);
 
+router.post(apiRoute.USER_SETTINGS_STORE, [], UserProfileController.settingStore);
+
 module.exports = router;
