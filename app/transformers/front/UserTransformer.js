@@ -41,6 +41,7 @@ class UserTransformer {
       return data.get('status');
     },
     'user_detail': {
+      'profile_color': 'user_setting.theme_color',
       'user_races': {
         'races' : data.races.length > 0 ? fractal(data.races, {
           'id': 'race.id',
@@ -124,6 +125,7 @@ class UserTransformer {
         'module': 'module'
       }) : [],
       'summary': 'user_meta_data.summary',
+
     }
   });
 }

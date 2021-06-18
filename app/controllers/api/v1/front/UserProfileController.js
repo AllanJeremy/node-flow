@@ -39,6 +39,7 @@ const UserPersonalityQuestion = Models.UserPersonalityQuestion;
 const ConversationStarter = Models.ConversationStarter;
 const UserConversationStarter = Models.UserConversationStarter;
 const UserMatchingPreference = Models.UserMatchingPreference;
+const UserSetting = Models.UserSetting;
 
 /**
  * Languages
@@ -369,7 +370,12 @@ class UserProfileController {
         model: UserMatchingPreference,
           attributes: ['id', 'user_id', 'module'],
           as: 'user_matching_preferences'
-      }
+      },
+      {
+        model: UserSetting,
+        attributes: ['theme_color'],
+        as: 'user_setting'
+      },
       ]
     })
     .then(response => {
@@ -515,6 +521,46 @@ class UserProfileController {
       }).catch(err => {
         return ResponseHandler.error(res, 500, err.message);
       });
+    }).catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /user/settings/store Handles user settings store operation
+   * @apiName Front user settings store operation
+   * @apiGroup Front
+   *
+   * @apiParam {String} [theme_color] theme_color
+   *
+   * @apiSuccess (200) {Object}
+   */
+  settingStore = (req, res) => {
+    UserSetting.findOne({
+      where: {
+        user_id: req.id
+      }
+    }).then(response => {
+      if(!response) {
+        UserSetting.create({
+          user_id: req.id,
+          theme_color: req.body.profile_color
+        }).then(response => {
+          return ResponseHandler.success(res, responseLanguage.setting_store_success);
+        }).catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      } else {
+        UserSetting.update({
+          theme_color: req.body.profile_color
+        }, {
+          where: { user_id: req.id }
+        }).then(response => {
+          return ResponseHandler.success(res, responseLanguage.setting_update_success);
+        }).catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
     }).catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });

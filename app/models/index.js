@@ -57,6 +57,7 @@ db.UserFamilyDynamic = require('../models/UserFamilyDynamic.js')(sequelize, Sequ
 db.UserMatchingPreference = require('../models/UserMatchingPreference.js')(sequelize, Sequelize);
 db.ContactSupport = require('../models/ContactSupport.js')(sequelize, Sequelize);
 db.Feedback = require('../models/Feedback.js')(sequelize, Sequelize);
+db.UserSetting = require('../models/UserSetting.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
@@ -79,5 +80,6 @@ db.UserRace.belongsTo(db.Race, {foreignKey: 'race_id', as: 'race', onDelete: 'ca
 db.User.hasMany(db.UserFamilyDynamic, {foreignKey: 'user_id', as: 'family_dynamics', onDelete: 'cascade', hooks: true});
 db.UserFamilyDynamic.belongsTo(db.FamilyDynamic, {foreignKey: 'family_dynamic_id', as: 'family_dynamic', onDelete: 'cascade', hooks: true});
 db.User.hasMany(db.UserMatchingPreference, {foreignKey: 'user_id', as: 'user_matching_preferences'});
+db.User.hasOne(db.UserSetting, {foreignKey: 'user_id', as: 'user_setting'});
 
 module.exports = db;

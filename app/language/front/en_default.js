@@ -284,6 +284,8 @@ exports.language = {
     'profile_visibility': 'Use the show/hide icons to decide what you share on your public profile',
     'max_profile_visibility_selection': 'The maximum possible number of selections is 5',
     'suggestion_required': 'Suggestion field is required.',
+    'mental_health_experiences_required': 'Please select at least one health experience.',
+    'mental_health_tool_required': 'Please select at least one health tool.',
     'edit_profile': {
       'text1': 'Oops! We couldn’t save your changes.' ,
       'text2':'Remember to show at least one input from each required (*) category'
