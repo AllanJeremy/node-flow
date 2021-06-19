@@ -146,7 +146,6 @@ class UserController {
       }]
     })
     .then(response => {
-      console.log(response);
       return ResponseHandler.success(res, '', UserTransformer.UserDetail(response));
     })
     .catch(err => {
