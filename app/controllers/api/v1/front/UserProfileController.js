@@ -364,7 +364,10 @@ class UserProfileController {
             attributes: ['id', 'question'],
             as: 'conversation_starter'
           }],
-          as: 'conversation_starters'
+          as: 'conversation_starters',
+          where: {
+            'status': StatusHandler.active
+          }
       },
       {
         model: UserMatchingPreference,

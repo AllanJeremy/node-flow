@@ -115,6 +115,7 @@ class ConversationStarterController {
         conversation_starter_id: req.body.conversation_starter_id,
       }
     });
+
     if (isConversationStarterExist) {
       await UserConversationStarter.update({
         status: StatusHandler.active
@@ -124,6 +125,7 @@ class ConversationStarterController {
           conversation_starter_id: req.body.conversation_starter_id,
         }
       });
+
       const Op = Sequelize.Op;
       UserConversationStarter.update({
         status: StatusHandler.pending
@@ -134,6 +136,7 @@ class ConversationStarterController {
         }
       });
     }
+
     return ResponseHandler.success(res, '', responseLanguage.conversation_starter_status_store);
   }
 
