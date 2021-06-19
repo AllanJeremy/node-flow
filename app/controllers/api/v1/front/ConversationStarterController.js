@@ -109,14 +109,13 @@ class ConversationStarterController {
    * @apiSuccess (200) {Object}
    */
   status = async(req, res) => {
-    console.log("testinnnhn");
     let isConversationStarterExist = await UserConversationStarter.findOne({
       where: {
         user_id: req.id,
         conversation_starter_id: req.body.conversation_starter_id,
       }
     });
-    console.log("isConversationStarterExist", isConversationStarterExist)
+
     if (isConversationStarterExist) {
       await UserConversationStarter.update({
         status: StatusHandler.active
@@ -126,6 +125,7 @@ class ConversationStarterController {
           conversation_starter_id: req.body.conversation_starter_id,
         }
       });
+
       const Op = Sequelize.Op;
       UserConversationStarter.update({
         status: StatusHandler.pending
@@ -136,6 +136,7 @@ class ConversationStarterController {
         }
       });
     }
+
     return ResponseHandler.success(res, '', responseLanguage.conversation_starter_status_store);
   }
 
