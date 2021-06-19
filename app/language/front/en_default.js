@@ -147,7 +147,6 @@ exports.language = {
           'hide_list': 'Hide the list',
           'mental_health_tools_label': 'Mental Health Tools',
           'conversation_starters_label': 'Conversation Starters',
-          'my_story': 'My story'
         }
       },
     },
@@ -269,7 +268,12 @@ exports.language = {
     'yes': 'Yes',
     'no': 'No',
     'text': 'Text',
-    'send': 'Send'
+    'send': 'Send',
+    'mental_health': 'Mental Health',
+    'tools': 'Tools',
+    'sexuality': 'Sexuality',
+    'edit': 'Edit',
+    'my_story': 'My story'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
