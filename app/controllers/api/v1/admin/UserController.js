@@ -78,9 +78,10 @@ class UserController {
       include: [
       {
         model: UserMetadata,
+        attributes: ['gender_status', 'sexual_orientation_status', 'race_status', 'family_dynamic_status', 'workout_status', 'summary'],
         include: [
-          { model: Gender, attributes: ['name'] },
-          { model: SexualOrientation, attributes: ['name'] }],
+          { model: Gender, as:'gender', attributes: ['id', 'name', 'status'] },
+          { model: SexualOrientation, as: 'sexual_orientation',  attributes: ['id', 'name', 'status'] }],
         as: 'user_meta_data'
       },
       {
@@ -145,6 +146,7 @@ class UserController {
       }]
     })
     .then(response => {
+      console.log(response);
       return ResponseHandler.success(res, '', UserTransformer.UserDetail(response));
     })
     .catch(err => {
