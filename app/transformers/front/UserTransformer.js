@@ -117,6 +117,7 @@ class UserTransformer {
       'conversation_starters': data.conversation_starters.length > 0 ? fractal(data.conversation_starters, {
         'id': 'conversation_starter.id',
         'question': 'conversation_starter.question',
+        'question_icon': 'conversation_starter.question_icon',
         'answer': 'answer',
         'status': 'status'
       }) : [],
