@@ -43,7 +43,7 @@ class UserTransformer {
     'user_detail': {
       'profile_color': 'user_setting.theme_color',
       'user_races': {
-        'races' : data.races.length > 0 ? fractal(data.races, {
+        'races' : data.races && data.races.length > 0 ? fractal(data.races, {
           'id': 'race.id',
           'name': 'race.name',
           'is_other': function (data) {
@@ -117,6 +117,7 @@ class UserTransformer {
       'conversation_starters': data.conversation_starters.length > 0 ? fractal(data.conversation_starters, {
         'id': 'conversation_starter.id',
         'question': 'conversation_starter.question',
+        'question_icon': 'conversation_starter.question_icon',
         'answer': 'answer',
         'status': 'status'
       }) : [],

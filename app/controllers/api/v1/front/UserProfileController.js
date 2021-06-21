@@ -312,9 +312,9 @@ class UserProfileController {
         include: [{
             model: HealthCategory,
             attributes: ['id', 'name', 'status'],
-            as: 'health_category'
+            as: 'health_category',
           }],
-        as: 'health_categories'
+        as: 'health_categories',
       },
       {
         model: UserWorkout,
@@ -361,13 +361,10 @@ class UserProfileController {
           attributes: ['id', 'user_id', 'conversation_starter_id', 'answer', 'status'],
           include: [{
             model: ConversationStarter,
-            attributes: ['id', 'question'],
+            attributes: ['id', 'question', 'question_icon'],
             as: 'conversation_starter'
           }],
-          as: 'conversation_starters',
-          where: {
-            'status': StatusHandler.active
-          }
+          as: 'conversation_starters'
       },
       {
         model: UserMatchingPreference,
@@ -380,7 +377,16 @@ class UserProfileController {
         as: 'user_setting'
       },
       ]
-    })
+    ,  order: [
+        [
+          {
+            model: UserHealthCategory, as: 'health_categories'
+          },
+          'status',
+          'DESC'
+        ]
+      ]
+     })
     .then(response => {
       return ResponseHandler.success(res, '', UserTransformer.UserDetail(response));
     })
