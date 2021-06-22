@@ -25,6 +25,9 @@ const Models = require('../../../../models');
 const ListedPeer = Models.ListedPeer;
 const DelistedPeer = Models.DelistedPeer;
 const User = Models.User;
+const HealthCategory = Models.HealthCategory;
+const UserHealthCategory = Models.UserHealthCategory;
+const DeclinedPeer = Models.DeclinedPeer;
 
 
 /**
@@ -167,11 +170,11 @@ class PeerController {
 
     let limit = 10;
     let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
-
+    console.log("reqqqq", req.query.type);
     ListedPeer.findAll({
       where: {
         user_id: req.id,
-        status: req.query.type ? PeerStatusHandler.mute : PeerStatusHandler.active
+        status: req.query.type == 0 ? PeerStatusHandler.mute : PeerStatusHandler.active
       },
       include: [{
         model: User,
@@ -181,8 +184,10 @@ class PeerController {
       }],
       offset: page * limit,
       limit: limit,
+      logging: console.log
     })
     .then(response => {
+      console.log("0000", response);
       return ResponseHandler.success(res, '', PeerTransformer.peer(response));
     })
     .catch(err => {
@@ -285,6 +290,99 @@ class PeerController {
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
+  }
+
+  /**
+   * @api {get} /user/peer/new_match/list Handles show list of new matched peers
+   * @apiName Front show new matched peer list
+   * @apiGroup Front
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  newMatch = (req, res) => {
+
+    let limit = 10;
+    let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
+
+    User.findAll({
+      attributes: ['id', 'first_name', 'profile_picture'],
+      include: [{ model: UserHealthCategory,
+        attributes: ['id', 'status'],
+        include: [{
+            model: HealthCategory,
+            attributes: ['id', 'name', 'status'],
+            as: 'health_category',
+          }],
+        as: 'health_categories'
+      }],
+      offset: page * limit,
+      limit: limit,
+    })
+    .then(response => {
+      return ResponseHandler.success(res, '', PeerTransformer.newMatch(response));
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /user/peer/search Handles show list of new matched peers
+   * @apiName Front show new matched peer list
+   * @apiGroup Front
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  search = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+    }
+
+    User.findAll({
+      where: {[Op.iLike]: `%${req.body.search_text}%`}
+    })
+    .then(response => {
+      return ResponseHandler.success(res, '', PeerTransformer.peer(response));
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /user/peer/declined Handles show list of new matched peers
+   * @apiName Front show new matched peer list
+   * @apiGroup Front
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  declined = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+    }
+
+    DeclinedPeer.findOrCreate({
+      where: {
+        user_id: req.id,
+        peer_id: req.body.peer_id
+      },
+      defaults: {
+        user_id: req.id,
+        peer_id: req.body.peer_id
+      }
+    })
+    .then(response => {
+      return ResponseHandler.success(res, responseLanguage.peer_declined_store);
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+
   }
 
 }
