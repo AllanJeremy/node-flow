@@ -58,6 +58,7 @@ db.UserMatchingPreference = require('../models/UserMatchingPreference.js')(seque
 db.ContactSupport = require('../models/ContactSupport.js')(sequelize, Sequelize);
 db.Feedback = require('../models/Feedback.js')(sequelize, Sequelize);
 db.UserSetting = require('../models/UserSetting.js')(sequelize, Sequelize);
+db.DeclinedPeer = require('../models/DeclinedPeer.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});

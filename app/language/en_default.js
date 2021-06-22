@@ -116,7 +116,8 @@ exports.en = {
       'matching_preference_module_required': 'Matching preference module is a required field.',
       'description_required': 'Description is a required field.',
       'rating_required': 'Rating is required.',
-      'suggestion_required': 'Suggestion is a required field.'
+      'suggestion_required': 'Suggestion is a required field.',
+      'search_input_required': 'Search is a required field.'
     },
     'response': {
       'login_success': 'Logged in successfully.',
@@ -158,6 +159,7 @@ exports.en = {
       'feedback_store_success': 'Thank you for your feedback.',
       'setting_store_success': 'User settings stored success.',
       'setting_update_success': 'User settings updated success.',
+      'peer_declined_store': 'Declined peer saved successfully.'
     },
   },
   'email': {
