@@ -74,6 +74,7 @@ db.User.hasMany(db.UserConversationStarter, {foreignKey: 'user_id', as: 'convers
 db.UserConversationStarter.belongsTo(db.ConversationStarter, {foreignKey: 'conversation_starter_id', as: 'conversation_starter'});
 db.User.hasOne(db.UserInterest, {foreignKey: 'user_id', as: 'user_interest'});
 db.ListedPeer.belongsTo(db.User, {foreignKey: 'peer_id', as: 'peer'});
+db.DelistedPeer.belongsTo(db.User, {foreignKey: 'peer_id', as: 'peer'});
 db.ReportedUser.belongsTo(db.User, {foreignKey: 'user_id', as: 'reported_user'});
 db.ReportedUser.belongsTo(db.User, {foreignKey: 'reported_by', as: 'reported_by_user'});
 db.User.hasMany(db.UserRace, {foreignKey: 'user_id', as: 'races', onDelete: 'cascade', hooks: true});
@@ -82,5 +83,7 @@ db.User.hasMany(db.UserFamilyDynamic, {foreignKey: 'user_id', as: 'family_dynami
 db.UserFamilyDynamic.belongsTo(db.FamilyDynamic, {foreignKey: 'family_dynamic_id', as: 'family_dynamic', onDelete: 'cascade', hooks: true});
 db.User.hasMany(db.UserMatchingPreference, {foreignKey: 'user_id', as: 'user_matching_preferences'});
 db.User.hasOne(db.UserSetting, {foreignKey: 'user_id', as: 'user_setting'});
+db.User.hasMany(db.ListedPeer, {foreignKey: 'user_id', as: 'listed_peers'});
+//db.User.hasMany(db.DelistedPeer, {foreignKey: 'user_id', as: 'user'});
 
 module.exports = db;

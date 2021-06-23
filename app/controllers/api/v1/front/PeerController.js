@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { validationResult } = require('express-validator');
-
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 /**
  * Helpers
@@ -167,10 +168,8 @@ class PeerController {
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
-
     let limit = 10;
     let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
-    console.log("reqqqq", req.query.type);
     ListedPeer.findAll({
       where: {
         user_id: req.id,
@@ -183,11 +182,9 @@ class PeerController {
         as: 'peer'
       }],
       offset: page * limit,
-      limit: limit,
-      logging: console.log
+      limit: limit
     })
     .then(response => {
-      console.log("0000", response);
       return ResponseHandler.success(res, '', PeerTransformer.peer(response));
     })
     .catch(err => {
@@ -300,7 +297,29 @@ class PeerController {
    *
    * @apiSuccess (200) {Object}
    */
-  newMatch = (req, res) => {
+  newMatch = async(req, res) => {
+
+    var listedPeers = await ListedPeer.findAll({
+      where: {
+        user_id: req.id
+      },
+      attributes: ['peer_id'],
+    });
+
+    listedPeers = listedPeers.map((item) => {
+      return item.peer_id;
+    });
+
+    var delistedPeers = await DelistedPeer.findAll({
+      where: {
+        user_id: req.id
+      },
+      attributes: ['peer_id'],
+    });
+
+    delistedPeers = delistedPeers.map((item) => {
+      return item.peer_id;
+    });
 
     let limit = 10;
     let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
@@ -316,8 +335,19 @@ class PeerController {
           }],
         as: 'health_categories'
       }],
+      where: {
+        [Op.and]: [
+          {
+            'id': {[Op.notIn]: listedPeers}
+          },
+          {
+            'id': {[Op.notIn]: delistedPeers}
+          }
+        ]
+      },
       offset: page * limit,
       limit: limit,
+      logging: console.log
     })
     .then(response => {
       return ResponseHandler.success(res, '', PeerTransformer.newMatch(response));
