@@ -343,8 +343,7 @@ class PeerController {
         ]
       },
       offset: page * limit,
-      limit: limit,
-      logging: console.log
+      limit: limit
     })
     .then(response => {
       return ResponseHandler.success(res, '', PeerTransformer.newMatch(response));
