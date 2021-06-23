@@ -168,7 +168,6 @@ class PeerController {
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
-    let limit = 10;
     let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
     ListedPeer.findAll({
       where: {
@@ -180,9 +179,7 @@ class PeerController {
         attributes: ['id', 'first_name', 'profile_picture'],
         where: { status: StatusHandler.active },
         as: 'peer'
-      }],
-      offset: page * limit,
-      limit: limit
+      }]
     })
     .then(response => {
       return ResponseHandler.success(res, '', PeerTransformer.peer(response));
@@ -321,7 +318,7 @@ class PeerController {
       return item.peer_id;
     });
 
-    let limit = 10;
+    let limit = 40;
     let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
 
     User.findAll({
