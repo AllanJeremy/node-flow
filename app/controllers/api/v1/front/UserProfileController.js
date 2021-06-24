@@ -292,9 +292,7 @@ class UserProfileController {
    * @apiSuccess (200) {Object}
    */
   show = (req, res) => {
-
-    let userId = req.params.id ? req.params.id : req.id
-
+    let userId = req.params.id && req.params.id != 'null' ? req.params.id : req.id
     User.findOne({
       where: { id: userId },
       include: [

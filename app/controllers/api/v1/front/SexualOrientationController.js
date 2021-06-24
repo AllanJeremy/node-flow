@@ -101,8 +101,12 @@ class SexualOrientationController {
           where: {
             id: isUserSexualOrientationExist.sexual_orientation_id
           }
+        }).then(response => {
+          this.update(res, req.id, response.id, req.body.status);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
         });
-        return ResponseHandler.success(res, responseLanguage.sexual_orientation_save);
       } else {
         SexualOrientation.create({
           name: req.body.other,
@@ -120,10 +124,24 @@ class SexualOrientationController {
       if (isUserSexualOrientationExist) {
         SexualOrientation.destroy({
           where: {
-            id: isUserSexualOrientationExist.sexual_orientation_id
+            id: isUserSexualOrientationExist.sexual_orientation_id,
           }
         });
       }
+
+      if(!req.body.other && req.body.sexual_orientation == '') {
+        UserMetadata.update({
+            sexual_orientation_id: 0,
+            sexual_orientation_status: 0
+          },
+          {
+            where: {
+              user_id: req.id
+            }
+          }
+        );
+      }
+
       if(req.body.sexual_orientation) {
         SexualOrientation.findOne({
           where: {
