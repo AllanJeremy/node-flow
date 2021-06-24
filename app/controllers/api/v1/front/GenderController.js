@@ -99,8 +99,12 @@ class GenderController {
           where: {
             id: isUserGenderExist.gender_id
           }
+        }).then(response => {
+          this.update(res, req.id, response.id, req.body.status);
+        })
+        .catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
         });
-        return ResponseHandler.success(res, responseLanguage.gender_save);
       } else {
         Gender.create({
           name: req.body.other,
@@ -120,6 +124,19 @@ class GenderController {
             id: isUserGenderExist.gender_id
           }
         });
+      }
+
+      if(!req.body.other && req.body.gender == '') {
+        UserMetadata.update({
+            gender_id: 0,
+            gender_status: 0
+          },
+          {
+            where: {
+              user_id: req.id
+            }
+          }
+        );
       }
 
       if(req.body.gender) {
