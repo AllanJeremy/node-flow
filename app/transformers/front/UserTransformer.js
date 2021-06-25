@@ -41,6 +41,9 @@ class UserTransformer {
       return data.get('status');
     },
     'user_detail': {
+      'listed_peers': data.listed_peers.length > 0 ? fractal(data.listed_peers, {
+        'peer_id': 'peer_id'
+      }) : [],
       'profile_color': 'user_setting.theme_color',
       'user_races': {
         'races' : data.races && data.races.length > 0 ? fractal(data.races, {
@@ -125,6 +128,7 @@ class UserTransformer {
         'id': 'id',
         'module': 'module'
       }) : [],
+
       'summary': 'user_meta_data.summary',
 
     }
