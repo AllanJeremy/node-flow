@@ -329,7 +329,7 @@ class PeerController {
       return item.peer_id;
     });
 
-    let limit = 40;
+    let limit = 10;
     let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
 
     User.findAll({
