@@ -40,6 +40,7 @@ const ConversationStarter = Models.ConversationStarter;
 const UserConversationStarter = Models.UserConversationStarter;
 const UserMatchingPreference = Models.UserMatchingPreference;
 const UserSetting = Models.UserSetting;
+const ListedPeer = Models.ListedPeer;
 
 /**
  * Languages
@@ -303,6 +304,11 @@ class UserProfileController {
           { model: Gender, as:'gender', attributes: ['id', 'name', 'status'] },
           { model: SexualOrientation, as: 'sexual_orientation',  attributes: ['id', 'name', 'status'] }],
         as: 'user_meta_data'
+      },
+      {
+        model: ListedPeer,
+        attributes: ['peer_id'],
+        as: 'listed_peers'
       },
       {
         model: UserHealthCategory,

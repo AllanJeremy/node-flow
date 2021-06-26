@@ -4,6 +4,7 @@ class PeerTransformer {
 
   peer = (data) => fractal(data, {
     'id': 'id',
+    'peer_id': 'peer_id',
     'first_name': 'peer.first_name',
     'profile_picture': function (data) {
       return process.env.API_IMAGE_URL + '/avatar/' + data.get('peer.profile_picture');
