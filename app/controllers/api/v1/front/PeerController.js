@@ -318,6 +318,17 @@ class PeerController {
       return item.peer_id;
     });
 
+    var declinedPeers = await DeclinedPeer.findAll({
+      where: {
+        user_id: req.id
+      },
+      attributes: ['peer_id'],
+    });
+
+    declinedPeers = declinedPeers.map((item) => {
+      return item.peer_id;
+    });
+
     let limit = 40;
     let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
 
@@ -339,6 +350,9 @@ class PeerController {
           },
           {
             'id': {[Op.notIn]: delistedPeers}
+          },
+          {
+            'id': {[Op.notIn]: declinedPeers}
           }
         ]
       },
