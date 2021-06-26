@@ -227,6 +227,30 @@ exports.language = {
       }
     }
   },
+  'peer': {
+    'new_matches': 'New Matches',
+    'your_peers': 'Your Peers',
+    'hidden_peers': 'Hidden Peers',
+    'alert': {
+      'unmatch': 'Are you sure you want to unmatch',
+      'mute': 'Are you sure you want to mute',
+      'mute_or_unmatch': 'Would you like to mute or unmatch with'
+    },
+    'reasons': 'Reasons',
+    'report_share': 'Your report has been shared with Joyn. We will take it from here.',
+    'mute': 'Mute',
+    'unmute': 'Unmute',
+    'unmatch':'Unmatch',
+    'user_profile': 's Profile',
+    'go_to_chat': 'Go to Chat',
+    'report': 'Report',
+    'flag': 'Flag',
+    'risk': 'as at risk',
+    'message': 'Set message retention',
+    'message': 'Message',
+    'match': 'Match',
+    'decline': 'Decline'
+  },
   'language': {
     'english': 'English'
   },
@@ -273,7 +297,9 @@ exports.language = {
     'tools': 'Tools',
     'sexuality': 'Sexuality',
     'edit': 'Edit',
-    'my_story': 'My story'
+    'my_story': 'My story',
+    'view_all': 'View All',
+    'view': 'View',
   },
   'validation': {
     'required_fields': 'All the fields are required.',
@@ -292,7 +318,9 @@ exports.language = {
     'mental_health_tool_required': 'Please select at least one health tool.',
     'edit_profile': {
       'text1': 'Oops! We couldn’t save your changes.' ,
-      'text2':'Remember to show at least one input from each required (*) category'
-    }
+      'text2':'Remember to show at least one input from each required (*) category',
+    },
+    'mute_success': 'Mute successfully.',
+    'unmatch_success': 'Unmatched successfully.'
   }
 }
