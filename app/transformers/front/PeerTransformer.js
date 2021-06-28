@@ -11,16 +11,23 @@ class PeerTransformer {
     },
   });
 
-  newMatch = (data) => fractal(data, {
-    'id': 'id',
+  newMatch = (count, data) => { console.log(count); return {
+    res: fractal(data, {
+    'id': 'res.id',
     'first_name': function (data) {
-      return data.get('first_name')  ;
+      //console.log("testttt", data.get('res'), data.get('res').User);
+      var data1 = data.get('res');
+      return function (data1) {
+        console.log("daaaaa", data1.get('first_name'));
+        return data1.get('first_name')  ;
+      }
     },
     'profile_picture': function (data) {
       return process.env.API_IMAGE_URL + '/avatar/' + data.get('profile_picture');
     },
-    'health_categories': 'health_categories',
-  });
+    'health_categories': 'health_categories'}),
+    'count': count
+  }};
 }
 
 module.exports = PeerTransformer;
