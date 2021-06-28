@@ -329,41 +329,47 @@ class PeerController {
       return item.peer_id;
     });
 
-    let limit = 10;
+    let limit = 2;
     let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
 
-    User.findAll({
-      attributes: ['id', 'first_name', 'profile_picture'],
-      include: [{ model: UserHealthCategory,
-        attributes: ['id', 'status'],
-        include: [{
-            model: HealthCategory,
-            attributes: ['id', 'name', 'status'],
-            as: 'health_category',
-          }],
-        as: 'health_categories'
-      }],
-      where: {
-        [Op.and]: [
-          {
-            'id': {[Op.notIn]: listedPeers}
-          },
-          {
-            'id': {[Op.notIn]: delistedPeers}
-          },
-          {
-            'id': {[Op.notIn]: declinedPeers}
-          }
-        ]
-      },
-      offset: page * limit,
-      limit: limit
-    })
-    .then(response => {
-      return ResponseHandler.success(res, '', PeerTransformer.newMatch(response));
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
+    User.count().then(count => {
+      User.findAll({
+        attributes: ['id', 'first_name', 'profile_picture'],
+        include: [{ model: UserHealthCategory,
+          attributes: ['id', 'status'],
+          include: [{
+              model: HealthCategory,
+              attributes: ['id', 'name', 'status'],
+              as: 'health_category',
+            }],
+          as: 'health_categories'
+        }],
+        where: {
+          [Op.and]: [
+            {
+              'id': {[Op.notIn]: listedPeers}
+            },
+            {
+              'id': {[Op.notIn]: delistedPeers}
+            },
+            {
+              'id': {[Op.notIn]: declinedPeers}
+            }
+          ]
+        },
+        offset: page * limit,
+        limit: limit
+      })
+      .then(response => {
+        var data = {
+          res: response,
+          count: count
+        }
+        return ResponseHandler.success(res, '', PeerTransformer.newMatch(count, response));
+      })
+      .catch(err => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
     });
   }
 
