@@ -35,7 +35,7 @@ router.post(apiRoute.USER_PEER_UNMUTE, [PeerValidation.Validation], PeerControll
 
 router.get(apiRoute.USER_PEER_NEW_MATCH_LIST, PeerController.newMatch);
 
-router.post(apiRoute.USER_PEER_SEARCH, [PeerValidation.Search], PeerController.search);
+router.get(apiRoute.USER_PEER_SEARCH, PeerController.search);
 
 router.post(apiRoute.USER_PEER_DECLINED, [PeerValidation.Validation], PeerController.declined);
 

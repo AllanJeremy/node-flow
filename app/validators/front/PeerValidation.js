@@ -12,13 +12,3 @@ exports.Validation = [
     .withMessage(validationLanguage.peer_id_required)
     .bail()
 ];
-
-exports.Search = [
-  check('search_text')
-    .trim()
-    .escape()
-    .not()
-    .isEmpty()
-    .withMessage(validationLanguage.search_input_required)
-    .bail()
-];
