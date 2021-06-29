@@ -329,10 +329,24 @@ class PeerController {
       return item.peer_id;
     });
 
-    let limit = 2;
+    let limit = 10;
     let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
 
-    User.count().then(count => {
+    User.count({
+      where: {
+          [Op.and]: [
+            {
+              'id': {[Op.notIn]: listedPeers}
+            },
+            {
+              'id': {[Op.notIn]: delistedPeers}
+            },
+            {
+              'id': {[Op.notIn]: declinedPeers}
+            }
+          ]
+        },
+    }).then(count => {
       User.findAll({
         attributes: ['id', 'first_name', 'profile_picture'],
         include: [{ model: UserHealthCategory,
@@ -354,6 +368,9 @@ class PeerController {
             },
             {
               'id': {[Op.notIn]: declinedPeers}
+            },
+            {
+              'id': {[Op.not]: req.id}
             }
           ]
         },
@@ -374,24 +391,28 @@ class PeerController {
   }
 
   /**
-   * @api {post} /user/peer/search Handles show list of new matched peers
-   * @apiName Front show new matched peer list
+   * @api {get} /user/peer/search Handles peer search operation
+   * @apiName Front peer search
    * @apiGroup Front
    *
    *
    * @apiSuccess (200) {Object}
    */
   search = (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
-    }
-
     User.findAll({
-      where: {[Op.iLike]: `%${req.body.search_text}%`}
+      where: {
+        [Op.and]: [
+          {
+            first_name: { [Op.iLike]: '%' + req.query.search_text.toString() + '%'}
+          },
+          {
+            'id': {[Op.not]: req.id}
+          }
+        ]
+      }
     })
     .then(response => {
-      return ResponseHandler.success(res, '', PeerTransformer.peer(response));
+      return ResponseHandler.success(res, '', PeerTransformer.search(response));
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
@@ -428,7 +449,6 @@ class PeerController {
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
-
   }
 
 }

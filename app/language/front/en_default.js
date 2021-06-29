@@ -321,6 +321,7 @@ exports.language = {
       'text2':'Remember to show at least one input from each required (*) category',
     },
     'mute_success': 'Mute successfully.',
-    'unmatch_success': 'Unmatched successfully.'
+    'unmatch_success': 'Unmatched successfully.',
+    'module_required': 'Please select at least one experience.'
   }
 }
