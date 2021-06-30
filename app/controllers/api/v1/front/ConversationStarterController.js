@@ -140,9 +140,8 @@ class ConversationStarterController {
     }
 
     var isPublished = await User.findOne({where: { id: req.id }});
-    console.log("isPublished", isPublished.published);
+
     if(!isPublished.published) {
-      console.log("tttttt");
       User.update({
         published: StatusHandler.active
       }, {
