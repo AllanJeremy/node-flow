@@ -37,6 +37,9 @@ module.exports = {
       access_token: {
         type: Sequelize.STRING
       },
+      published: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         field: "created_at",

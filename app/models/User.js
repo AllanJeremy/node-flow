@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     profile_picture: DataTypes.STRING,
     status: DataTypes.INTEGER,
     access_token: DataTypes.STRING,
+    published: DataTypes.INTEGER,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,
