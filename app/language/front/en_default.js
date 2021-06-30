@@ -300,6 +300,7 @@ exports.language = {
     'my_story': 'My story',
     'view_all': 'View All',
     'view': 'View',
+    'click_here': 'Click here'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
@@ -322,6 +323,7 @@ exports.language = {
     },
     'mute_success': 'Mute successfully.',
     'unmatch_success': 'Unmatched successfully.',
-    'module_required': 'Please select at least one experience.'
+    'module_required': 'Please select at least one experience.',
+    'unverified_user': 'Your email address is not verified. Please verify your email to continue.'
   }
 }

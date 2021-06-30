@@ -91,7 +91,7 @@ class AuthController {
       }
 
       if (response.status == StatusHandler.pending) {
-        return ResponseHandler.error(res, 422, responseLanguage.not_verified_account);
+        return ResponseHandler.error(res, 423, responseLanguage.not_verified_account);
       }
 
       if (response.status == StatusHandler.blocked) {
