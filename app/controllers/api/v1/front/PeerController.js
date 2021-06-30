@@ -371,6 +371,9 @@ class PeerController {
             },
             {
               'id': {[Op.not]: req.id}
+            },
+            {
+              'published': StatusHandler.active
             }
           ]
         },
@@ -378,10 +381,6 @@ class PeerController {
         limit: limit
       })
       .then(response => {
-        var data = {
-          res: response,
-          count: count
-        }
         return ResponseHandler.success(res, '', PeerTransformer.newMatch(count, response));
       })
       .catch(err => {
