@@ -130,7 +130,7 @@ class UserTransformer {
       'summary': 'user_meta_data.summary',
       'listed_peers': data.listed_peers && data.listed_peers.length > 0 ? fractal(data.listed_peers, {
         'peer_id': 'peer_id'
-      }) : [],
+      }) : []
     }
   });
 }
