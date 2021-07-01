@@ -17,6 +17,7 @@ const StatusHandler = require('../../../../helpers/StatusHandler');
 const Models = require('../../../../models');
 const ConversationStarter = Models.ConversationStarter;
 const UserConversationStarter = Models.UserConversationStarter;
+const User = Models.User;
 
 /**
  * Languages
@@ -96,6 +97,7 @@ class ConversationStarterController {
         }
       });
     }
+
     return ResponseHandler.success(res, responseLanguage.conversation_starter_store_success);
   }
 
@@ -133,6 +135,18 @@ class ConversationStarterController {
         where: {
           conversation_starter_id: {[Op.notIn]: [req.body.conversation_starter_id]},
           user_id: req.id
+        }
+      });
+    }
+
+    var isPublished = await User.findOne({where: { id: req.id }});
+
+    if(!isPublished.published) {
+      User.update({
+        published: StatusHandler.active
+      }, {
+        where: {
+          id: req.id
         }
       });
     }
