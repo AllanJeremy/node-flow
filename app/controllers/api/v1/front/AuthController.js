@@ -17,6 +17,9 @@ const RandomStringGenerator = require('../../../../helpers/RandomStringGenerator
 var MailHandler = require('../../../../helpers/MailHandler');
 MailHandler = new MailHandler();
 
+var Chat = require('../../../../helpers/Chat');
+Chat = new Chat();
+
 /**
  * Configs
  */
@@ -106,9 +109,11 @@ class AuthController {
         expiresIn: authConfig.tokenExpiryTime
       });
 
+      var chatToken = Chat.token(response.first_name);
       var data = {
         token: token,
-        user: UserTransformer.user(response)
+        user: UserTransformer.user(response),
+        chat_token: chatToken
       };
 
       return ResponseHandler.success(res, responseLanguage.login_success, data);

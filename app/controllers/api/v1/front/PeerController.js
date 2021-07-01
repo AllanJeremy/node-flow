@@ -168,7 +168,6 @@ class PeerController {
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
-    let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
     ListedPeer.findAll({
       where: {
         user_id: req.id,
@@ -177,7 +176,6 @@ class PeerController {
       include: [{
         model: User,
         attributes: ['id', 'first_name', 'profile_picture'],
-        where: { status: StatusHandler.active },
         as: 'peer'
       }]
     })
