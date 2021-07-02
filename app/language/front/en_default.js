@@ -175,7 +175,7 @@ exports.language = {
   'summary': {
     'title': 'Tell us more about why you joined.',
     'input_max_length': 'Max. 150 characters',
-    'popup_title': 'Summary Story:',
+    'popup_title': 'My Story Example',
     'popup_description': 'Stress and anxiety have been a big challenge for me as a single father. I\'m here to connect with others to learn about what they do to find balance.'
   },
   'settings': {
