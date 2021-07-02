@@ -180,7 +180,7 @@ exports.language = {
   },
   'settings': {
     'app': {
-      'match_settings': 'Match Settings',
+      'match_settings': 'Match Preferences',
       'account_settings': 'Account Settings',
       'help_support': 'Help Support',
       'language_settings': 'Language Settings',
