@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.INTEGER,
     access_token: DataTypes.STRING,
     published: DataTypes.INTEGER,
+    chat_token: DataTypes.STRING,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,

@@ -10,6 +10,9 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
+var Chat = require('../../../../helpers/Chat');
+Chat = new Chat();
+
 
 /**
  * Models
@@ -139,17 +142,19 @@ class ConversationStarterController {
       });
     }
 
-    var isPublished = await User.findOne({where: { id: req.id }});
-
-    if(!isPublished.published) {
+    var user = await User.findOne({where: { id: req.id }});
+    var chatToken = Chat.token(user.first_name.replace(/\s+/g, '_'));
+    if(!user.published) {
       User.update({
-        published: StatusHandler.active
+        published: StatusHandler.active,
+        chat_token: chatToken
       }, {
         where: {
           id: req.id
         }
       });
     }
+
 
     return ResponseHandler.success(res, '', responseLanguage.conversation_starter_status_store);
   }

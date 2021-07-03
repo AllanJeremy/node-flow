@@ -193,7 +193,7 @@ class WorkoutController {
         UserWorkout.create({
           user_id: userId,
           workout_id: workoutId,
-          status: status
+          status: StatusHandler.active
         }).then(response => {
           if (status == StatusHandler.active) {
             this.updateElaticsearch(userId);
