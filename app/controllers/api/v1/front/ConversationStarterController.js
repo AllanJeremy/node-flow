@@ -14,6 +14,9 @@ var Chat = require('../../../../helpers/Chat');
 Chat = new Chat();
 
 
+const chatTokenPostfix = require('../../../../config/constants.js');
+
+
 /**
  * Models
  */
@@ -143,7 +146,7 @@ class ConversationStarterController {
     }
 
     var user = await User.findOne({where: { id: req.id }});
-    var chatToken = Chat.token(user.first_name.replace(/\s+/g, '_'));
+    var chatToken = Chat.token(req.id + chatTokenPostfix.CHAT_TOKEN_POSTFIX);
     if(!user.published) {
       User.update({
         published: StatusHandler.active,
