@@ -192,7 +192,7 @@ class HealthCategoryController {
         UserHealthCategory.create({
           user_id: userId,
           health_category_id: healthCategoryId,
-          status: status
+          status: StatusHandler.active
         }).then(response => {
           this.updateElaticsearch(userId);
         })

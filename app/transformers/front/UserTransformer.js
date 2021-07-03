@@ -12,6 +12,7 @@ class UserTransformer {
     'birth_date': 'birth_date',
     'profile_picture': 'profile_picture',
     'published': 'published',
+    'chat_token': 'chat_token',
     'status': function (data) {
       return data.get('status');
     }
@@ -36,6 +37,7 @@ class UserTransformer {
     'first_name': 'first_name',
     'birth_date': 'birth_date',
     'published': 'published',
+    'chat_token': 'chat_token',
     'profile_picture': function (data) {
       return process.env.API_IMAGE_URL + '/avatar/' + data.get('profile_picture');
     },
