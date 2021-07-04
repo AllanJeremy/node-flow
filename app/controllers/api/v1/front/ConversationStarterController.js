@@ -13,9 +13,7 @@ const StatusHandler = require('../../../../helpers/StatusHandler');
 var Chat = require('../../../../helpers/Chat');
 Chat = new Chat();
 
-
 const chatTokenPostfix = require('../../../../config/constants.js');
-
 
 /**
  * Models
