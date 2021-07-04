@@ -145,7 +145,7 @@ class ConversationStarterController {
 
     var user = await User.findOne({where: { id: req.id }});
     var chatToken = Chat.token(req.id + chatTokenPostfix.CHAT_TOKEN_POSTFIX);
-    if(!user.published) {
+    if (!user.published) {
       User.update({
         published: StatusHandler.active,
         chat_token: chatToken
@@ -156,10 +156,8 @@ class ConversationStarterController {
       });
     }
 
-
     return ResponseHandler.success(res, '', responseLanguage.conversation_starter_status_store);
   }
-
 }
 
 module.exports = ConversationStarterController;
