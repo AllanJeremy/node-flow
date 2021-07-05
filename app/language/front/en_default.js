@@ -215,15 +215,27 @@ exports.language = {
       'contact': {
         'title': 'Contact Support',
         'email': 'Email',
-        'describe': 'Describe'
+        'describe': 'Describe',
+        'email_placeholder': 'Enter your email'
       },
       'feedback': {
         'title': 'Share Feedback',
         'question1': 'How likely are you to recommend this app to a friend?',
-        'question2': 'What can we do better?'
+        'question2': 'What can we do better?',
+        'feedback_text': [
+          'Never',
+          'Not Likely',
+          'Maybe',
+          'Likely',
+          'Very Likely'
+        ]
       },
       'suicide_prevention': {
-        'title': 'Suicide Prevention'
+        'title': 'Suicide Prevention',
+        'sub_title': 'If you`re in crisis, or someone you know is, please contact the numbers listed below for 24/7 support.',
+        'link_text1': 'National Suicide Prevention Hotline',
+        'link_text2': 'LGBTQ+ - Trevor Project.',
+        'link_text3': 'National Domestic Violence Hotline.'
       }
     }
   },
