@@ -232,7 +232,7 @@ exports.language = {
       },
       'suicide_prevention': {
         'title': 'Suicide Prevention',
-        'sub_title': 'If you`re in crisis, or someone you know is, please contact the numbers listed below for 24/7 support.',
+        'sub_title': 'If you\'re in crisis, or someone you know is, please contact the numbers listed below for 24/7 support.',
         'link_text1': 'National Suicide Prevention Hotline',
         'link_text2': 'LGBTQ+ - Trevor Project.',
         'link_text3': 'National Domestic Violence Hotline.'
