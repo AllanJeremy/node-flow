@@ -175,12 +175,12 @@ exports.language = {
   'summary': {
     'title': 'Tell us more about why you joined.',
     'input_max_length': 'Max. 150 characters',
-    'popup_title': 'Summary Story:',
+    'popup_title': 'My Story Example',
     'popup_description': 'Stress and anxiety have been a big challenge for me as a single father. I\'m here to connect with others to learn about what they do to find balance.'
   },
   'settings': {
     'app': {
-      'match_settings': 'Match Settings',
+      'match_settings': 'Match Preferences',
       'account_settings': 'Account Settings',
       'help_support': 'Help Support',
       'language_settings': 'Language Settings',
@@ -336,7 +336,7 @@ exports.language = {
     'code_required': 'Code field is required.',
     'email_required': 'Email field is required.',
     'selection_required': 'The maximum possible number of selections is 5',
-    'conversation_starter_required': 'Please select Atleast one conversation starter.',
+    'conversation_starter_required': 'Please select at least one conversation starter.',
     'profile_visibility': 'Use the show/hide icons to decide what you share on your public profile',
     'max_profile_visibility_selection': 'The maximum possible number of selections is 5',
     'suggestion_required': 'Suggestion field is required.',

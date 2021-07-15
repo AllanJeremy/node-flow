@@ -254,9 +254,8 @@ class UserProfileController {
         where: { id: response.id }
       });
 
-
       let healthCategoriesStatus = req.body.health_categories_status ? req.body.health_categories_status : [];
-      if(healthCategoriesStatus && healthCategoriesStatus.length > 0) {
+      if (healthCategoriesStatus && healthCategoriesStatus.length > 0) {
         healthCategoriesStatus.map(async (item, index) => {
           await UserHealthCategory.update({
             status: StatusHandler.active
@@ -384,8 +383,8 @@ class UserProfileController {
         attributes: ['theme_color'],
         as: 'user_setting'
       },
-      ]
-    ,  order: [
+      ],
+      order: [
         [
           {
             model: UserHealthCategory, as: 'health_categories'
@@ -470,7 +469,7 @@ class UserProfileController {
           module: item
         }
       });
-      if(!isModuleExist) {
+      if (!isModuleExist) {
         await UserMatchingPreference.create({
           user_id: req.id,
           module: item
@@ -558,7 +557,7 @@ class UserProfileController {
         user_id: req.id
       }
     }).then(response => {
-      if(!response) {
+      if (!response) {
         UserSetting.create({
           user_id: req.id,
           theme_color: req.body.profile_color
