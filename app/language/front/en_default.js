@@ -263,6 +263,17 @@ exports.language = {
     'match': 'Match',
     'decline': 'Decline'
   },
+  'chat': {
+    'list_no_chat': 'You have no chat with anyone.',
+    'start_chat': 'Start chatting now!',
+    'hidden_chat': 'Hidden Chats',
+    'privacy_warning': 'For your safety and privacy, we automatically flag and remove identifiable information within the app',
+    'match_feedback': 'What could be better?',
+    'message_retention_title': 'Message retention for chats with',
+    'message_retention_help_text': 'Your selected retention period determines how long your messages are saved. A 30-day retention period means messages from less than 30 days ago will be saved, but messages sent 31+ days ago are deleted.',
+    'message_retention_confirmation_text': 'Shortening your message retention window will delete all messages prior to the selected period. Would you like to confirm your new setting? '
+
+  },
   'language': {
     'english': 'English'
   },
@@ -312,7 +323,9 @@ exports.language = {
     'my_story': 'My story',
     'view_all': 'View All',
     'view': 'View',
-    'click_here': 'Click here'
+    'click_here': 'Click here',
+    'submit': 'Submit',
+    'day': 'day'
   },
   'validation': {
     'required_fields': 'All the fields are required.',

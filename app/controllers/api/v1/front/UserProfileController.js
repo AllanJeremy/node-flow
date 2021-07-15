@@ -298,9 +298,6 @@ class UserProfileController {
   show = (req, res) => {
     let userId = req.params.id && req.params.id != 'null' ? req.params.id : req.id;
 
-    var chatToken = Chat.token('joyn5');
-    console.log("chatTokenchatToken", chatToken);
-
     User.findOne({
       where: { id: userId },
       include: [

@@ -59,6 +59,8 @@ const apiRoute = {
   CONTACT_SUPPORT: '/api/contact_support',
   FEEDBACK: '/api/feedback',
   USER_SETTINGS_STORE: '/user/settings/store',
+  CHAT_FEEDBACK: '/chat/match_feedback/store',
+  CHAT_MESSAGE: '/chat/message/store',
 }
 
 module.exports = {

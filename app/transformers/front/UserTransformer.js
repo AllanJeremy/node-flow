@@ -10,7 +10,9 @@ class UserTransformer {
     'last_name': 'last_name',
     'email': 'email',
     'birth_date': 'birth_date',
-    'profile_picture': 'profile_picture',
+    'profile_picture': function (data) {
+      return process.env.API_IMAGE_URL + '/avatar/' + data.get('profile_picture');
+    },
     'published': 'published',
     'chat_token': 'chat_token',
     'status': function (data) {

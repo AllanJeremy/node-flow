@@ -146,7 +146,7 @@ class ConversationStarterController {
     }
 
     var user = await User.findOne({where: { id: req.id }});
-    var chatToken = Chat.token(req.id + chatTokenPostfix.CHAT_TOKEN_POSTFIX);
+    var chatToken = await Chat.token(req.id + chatTokenPostfix.CHAT_TOKEN_POSTFIX);
     if(!user.published) {
       User.update({
         published: StatusHandler.active,

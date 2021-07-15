@@ -117,7 +117,11 @@ exports.en = {
       'description_required': 'Description is a required field.',
       'rating_required': 'Rating is required.',
       'suggestion_required': 'Suggestion is a required field.',
-      'search_input_required': 'Search is a required field.'
+      'search_input_required': 'Search is a required field.',
+      'feedback_question': 'Feedback question is a required field.',
+      'feedback_rating': 'Feedback rating is a required field.',
+      'feedback_answer': 'Feedback answer is a required field.',
+      'chat_message_id': 'Message id is a required field.'
     },
     'response': {
       'login_success': 'Logged in successfully.',
