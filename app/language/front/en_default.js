@@ -264,15 +264,23 @@ exports.language = {
     'decline': 'Decline'
   },
   'chat': {
-    'list_no_chat': 'You have no chat with anyone.',
+    'empty_chat_list': 'You have no chat with anyone.',
     'start_chat': 'Start chatting now!',
     'hidden_chat': 'Hidden Chats',
     'privacy_warning': 'For your safety and privacy, we automatically flag and remove identifiable information within the app',
     'match_feedback': 'What could be better?',
     'message_retention_title': 'Message retention for chats with',
     'message_retention_help_text': 'Your selected retention period determines how long your messages are saved. A 30-day retention period means messages from less than 30 days ago will be saved, but messages sent 31+ days ago are deleted.',
-    'message_retention_confirmation_text': 'Shortening your message retention window will delete all messages prior to the selected period. Would you like to confirm your new setting? '
-
+    'message_retention_confirmation_text': 'Shortening your message retention window will delete all messages prior to the selected period. Would you like to confirm your new setting?',
+    'empty_chat': 'Please start chatting now!',
+    'wait_message': {
+      'text1': 'Please wait while',
+      'text2': 'to join your chat.'
+    },
+    'first_message_warning': {
+      'text1': 'Please note that you can send only one message until',
+      'text2': 'responds to you back.'
+    }
   },
   'language': {
     'english': 'English'
