@@ -261,7 +261,14 @@ exports.language = {
     'message': 'Set message retention',
     'message': 'Message',
     'match': 'Match',
-    'decline': 'Decline'
+    'decline': 'Decline',
+    'last_card': {
+      'text': {
+        'text1': 'Wow!',
+        'text2': 'You\'ve seen all current peers'
+      },
+      'button': 'Edit Preferences'
+    }
   },
   'chat': {
     'empty_chat_list': 'You have no chat with anyone.',
@@ -280,7 +287,17 @@ exports.language = {
     'first_message_warning': {
       'text1': 'Please note that you can send only one message until',
       'text2': 'responds to you back.'
+    },
+    'activity': {
+      'text1': 'replied to',
+      'text2': 'Your message'
     }
+  },
+  'published_home_page': {
+    'title': 'Welcome back,',
+    'sub_title': 'Find relevant matches and jump right into your most recent activity.',
+    'new_match_title': 'You have something in common with:',
+    'activity_title': 'Activity in your community:'
   },
   'language': {
     'english': 'English'
@@ -329,11 +346,12 @@ exports.language = {
     'sexuality': 'Sexuality',
     'edit': 'Edit',
     'my_story': 'My story',
-    'view_all': 'View All',
+    'view_all': 'View all',
     'view': 'View',
     'click_here': 'Click here',
     'submit': 'Submit',
-    'day': 'day'
+    'day': 'day',
+    'review_profile': 'Review Profile'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
