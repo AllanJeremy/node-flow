@@ -14,6 +14,7 @@ class PeerTransformer {
   newMatch = (count, data) => { return {
     res: fractal(data, {
     'id': 'id',
+    'peer_id': 'id',
     'first_name': 'first_name',
     'profile_picture': function (data) {
       return process.env.API_IMAGE_URL + '/avatar/' + data.get('profile_picture');
