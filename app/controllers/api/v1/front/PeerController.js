@@ -168,10 +168,21 @@ class PeerController {
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
+    var status;
+
+    if(req.query.type != null && req.query.type == 1) {
+      status = PeerStatusHandler.active;
+    } else if( req.query.type != null && req.query.type == 0) {
+      status = PeerStatusHandler.mute;
+    }
+
     ListedPeer.findAll({
-      where: {
+      where: status != null ? {
         user_id: req.id,
-        status: req.query.type == 0 ? PeerStatusHandler.mute : PeerStatusHandler.active
+        status: status
+      } : {
+        user_id: req.id,
+
       },
       include: [{
         model: User,

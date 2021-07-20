@@ -9,6 +9,9 @@ class PeerTransformer {
     'profile_picture': function (data) {
       return process.env.API_IMAGE_URL + '/avatar/' + data.get('peer.profile_picture');
     },
+    'status': function (data) {
+      return data.get('status');
+    }
   });
 
   newMatch = (count, data) => { return {
