@@ -294,10 +294,10 @@ exports.language = {
     }
   },
   'published_home_page': {
-    'title': 'Welcome back,',
+    'title': 'Welcome,',
     'sub_title': 'Find relevant matches and jump right into your most recent activity.',
     'new_match_title': 'You have something in common with:',
-    'activity_title': 'Activity in your community:'
+    'activity_title': 'Recent activity:'
   },
   'language': {
     'english': 'English'

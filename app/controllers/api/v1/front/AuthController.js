@@ -107,7 +107,6 @@ class AuthController {
         expiresIn: authConfig.tokenExpiryTime
       });
 
-
       var data = {
         token: token,
         user: UserTransformer.user(response)
@@ -425,6 +424,22 @@ class AuthController {
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
+  }
+
+  /**
+   * @api {get} /api/get_token Handles refresh token operation
+   * @apiName Front refresh token operation
+   * @apiGroup Front
+   *
+   * @apiParam {Integer} [user_id] user_id
+   *
+   * @apiSuccess (200) {Object}
+   */
+  GetToken = (req, res) => {
+    var token = jwt.sign({ id: req.body.user_id }, authConfig.secret, {
+      expiresIn: authConfig.tokenExpiryTime
+    });
+    return ResponseHandler.success(res, '', token);
   }
 
 }

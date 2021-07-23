@@ -34,4 +34,6 @@ router.post(authRoute.FORGOT_PASSWORD_REQUEST, AuthValidation.EmailValidation, A
 
 router.post(authRoute.FORGOT_PASSWORD, AuthValidation.ForgotPassword, AuthController.ForgotPassword);
 
+router.post(authRoute.REFRESH_TOKEN, AuthController.GetToken);
+
 module.exports = router;
