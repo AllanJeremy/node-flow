@@ -7,6 +7,7 @@ const authRoute = {
   FORGOT_PASSWORD: '/auth/reset_password/verify',
   REPORTED_REASON: '/reported_reasons',
   APP_LANGUAGE: '/api/lang/:code?',
+  REFRESH_TOKEN: '/api/get_token'
 }
 
 const apiRoute = {
