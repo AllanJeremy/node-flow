@@ -28,4 +28,6 @@ router.post(apiRoute.CHAT_FEEDBACK, ChatValidation.Feedback, ChatController.Feed
 
 router.post(apiRoute.CHAT_MESSAGE, ChatValidation.Moderation, ChatController.Moderation);
 
+router.post(apiRoute.CHAT_MESSAGE_RETENSION, ChatValidation.Retension, ChatController.Retension);
+
 module.exports = router;

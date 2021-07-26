@@ -37,3 +37,20 @@ exports.Moderation = [
     .withMessage(validation.chat_message_id)
     .bail(),
 ];
+
+exports.Retension = [
+  check('channel_id')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.chat_channel_id)
+    .bail(),
+  check('message_retention')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.chat_message_retention)
+    .bail(),
+];

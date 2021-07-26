@@ -14,6 +14,7 @@ const StatusHandler = require('../../../../helpers/StatusHandler');
 const Models = require('../../../../models');
 const MatchFeedback = Models.MatchFeedback;
 const ChatModeration = Models.ChatModeration;
+const Channel = Models.Channel;
 
 /**
  * Languages
@@ -82,6 +83,45 @@ class ChatController {
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
+  }
+
+  Retension = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+    }
+
+    Channel.findOne({
+      where: {
+        channel_id: req.body.channel_id
+      }
+    }).then(response => {
+      if(!response) {
+        Channel.create({
+          channel_id: req.body.channel_id,
+          message_retention: req.body.message_retention
+        }).then(response => {
+          return ResponseHandler.success(res, responseLanguage.message_retension_store);
+        }).catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      } else {
+        Channel.update({
+          message_retention: req.body.message_retention,
+        }, {
+          where: {
+            channel_id: req.body.channel_id
+          }
+        }).then(response => {
+          return ResponseHandler.success(res, responseLanguage.message_retension_update);
+        }).catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
+    }).catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+
   }
 
 
