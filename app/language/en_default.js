@@ -123,7 +123,7 @@ exports.en = {
       'feedback_answer': 'Feedback answer is a required field.',
       'chat_message_id': 'Message id is a required field.',
       'chat_channel_id': 'Chat channel id is a required field.',
-      'chat_message_retention': 'Chat message retension is a required field.',
+      'chat_message_retention': 'Chat message retention is a required field.',
     },
     'response': {
       'login_success': 'Logged in successfully.',
@@ -166,8 +166,8 @@ exports.en = {
       'setting_store_success': 'User settings stored success.',
       'setting_update_success': 'User settings updated success.',
       'peer_declined_store': 'Declined peer saved successfully.',
-      'message_retension_store': 'Message retension saved successfully.',
-      'message_retension_update': 'Message retension updated successfully.'
+      'message_retention_store': 'Message retention saved successfully.',
+      'message_retention_update': 'Message retention updated successfully.'
     },
   },
   'email': {

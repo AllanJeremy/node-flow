@@ -63,7 +63,7 @@ const apiRoute = {
 
   CHAT_FEEDBACK: '/chat/match_feedback/store',
   CHAT_MESSAGE: '/chat/message/store',
-  CHAT_MESSAGE_RETENSION: '/chat/message/retension',
+  CHAT_MESSAGE_RETENTION: '/chat/message/retention',
 }
 
 module.exports = {

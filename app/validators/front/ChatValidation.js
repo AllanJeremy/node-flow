@@ -38,7 +38,7 @@ exports.Moderation = [
     .bail(),
 ];
 
-exports.Retension = [
+exports.Retention = [
   check('channel_id')
     .trim()
     .escape()

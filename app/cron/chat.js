@@ -1,11 +1,11 @@
 /**
- * Manages cron job task for message retension
+ * Manages cron job task for message retention
  *
- * @class MessageRetension
+ * @class MessageRetention
  * @package app
  * @subpackage helpers
  */
-class MessageRetension {
+class MessageRetention {
   DeleteMessages = () => {
 
   }

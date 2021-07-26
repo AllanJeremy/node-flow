@@ -85,7 +85,7 @@ class ChatController {
     });
   }
 
-  Retension = (req, res) => {
+  Retention = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
@@ -101,7 +101,7 @@ class ChatController {
           channel_id: req.body.channel_id,
           message_retention: req.body.message_retention
         }).then(response => {
-          return ResponseHandler.success(res, responseLanguage.message_retension_store);
+          return ResponseHandler.success(res, responseLanguage.message_retention_store);
         }).catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         });
@@ -113,7 +113,7 @@ class ChatController {
             channel_id: req.body.channel_id
           }
         }).then(response => {
-          return ResponseHandler.success(res, responseLanguage.message_retension_update);
+          return ResponseHandler.success(res, responseLanguage.message_retention_update);
         }).catch(err => {
           return ResponseHandler.error(res, 500, err.message);
         });
