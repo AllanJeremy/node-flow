@@ -7,7 +7,7 @@ const authRoute = {
   FORGOT_PASSWORD: '/auth/reset_password/verify',
   REPORTED_REASON: '/reported_reasons',
   APP_LANGUAGE: '/api/lang/:code?',
-  REFRESH_TOKEN: '/api/get_token'
+  REFRESH_TOKEN: '/api/token/refresh'
 }
 
 const apiRoute = {
@@ -60,8 +60,10 @@ const apiRoute = {
   CONTACT_SUPPORT: '/api/contact_support',
   FEEDBACK: '/api/feedback',
   USER_SETTINGS_STORE: '/user/settings/store',
+
   CHAT_FEEDBACK: '/chat/match_feedback/store',
   CHAT_MESSAGE: '/chat/message/store',
+  CHAT_MESSAGE_RETENTION: '/chat/message/retention',
 }
 
 module.exports = {

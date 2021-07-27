@@ -61,6 +61,10 @@ db.UserSetting = require('../models/UserSetting.js')(sequelize, Sequelize);
 db.DeclinedPeer = require('../models/DeclinedPeer.js')(sequelize, Sequelize);
 db.MatchFeedback = require('../models/MatchFeedback.js')(sequelize, Sequelize);
 db.ChatModeration = require('../models/ChatModeration.js')(sequelize, Sequelize);
+db.Channel = require('../models/Channel.js')(sequelize, Sequelize);
+db.ChannelUser = require('../models/ChannelUser.js')(sequelize, Sequelize);
+db.ChatModeration = require('../models/ChatModeration.js')(sequelize, Sequelize);
+db.DeleteChannelMessage = require('../models/DeleteChannelMessage.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
