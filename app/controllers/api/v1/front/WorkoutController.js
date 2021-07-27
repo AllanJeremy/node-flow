@@ -22,6 +22,7 @@ ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 const Models = require('../../../../models');
 const Workout = Models.Workout;
 const UserWorkout = Models.UserWorkout;
+const UserMetadata = Models.UserMetadata;
 
 /**
  * Languages
@@ -174,6 +175,26 @@ class WorkoutController {
     Workout.destroy({
       where: {
         id: {[Op.in]: removedOtherWorkouts}
+      }
+    });
+
+    UserMetadata.findOne({
+      where: {
+        user_id: req.id
+      }
+    }).then(response => {
+      if (!response) {
+        UserMetadata.create({
+          user_id: req.id,
+          workout_status: StatusHandler.active
+        });
+      } else {
+        UserMetadata.update({
+          workout_status: StatusHandler.active
+        },
+        {
+          where: {user_id: req.id}
+        });
       }
     });
 
