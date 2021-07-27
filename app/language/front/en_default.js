@@ -258,7 +258,8 @@ exports.language = {
     'report': 'Report',
     'flag': 'Flag',
     'risk': 'as at risk',
-    'message': 'Message retention',
+    'message_retention': 'Message retention',
+    'message': 'Message',
     'match': 'Match',
     'decline': 'Decline',
     'last_card': {
