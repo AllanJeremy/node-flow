@@ -47,6 +47,9 @@ require('./app/routes/admin')(Joyn);
 var cronJob = require('./app/cron');
 cronJob = new cronJob();
 
+var chatCronJob = require('./app/cron/chat.js');
+chatCronJob = new chatCronJob();
+
 // set port, listen for requests
 const PORT = process.env.PORT || 3001;
 
