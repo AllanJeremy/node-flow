@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 var dotenv = require('dotenv');
 const multer = require('multer');
+const cron = require("node-cron");
 const Joyn = express();
 
 dotenv.config();
@@ -49,6 +50,20 @@ cronJob = new cronJob();
 
 var chatCronJob = require('./app/cron/chat.js');
 chatCronJob = new chatCronJob();
+
+
+// Schedule tasks to be run on the server.
+cron.schedule('* * * * *', function() {
+  chatCronJob.ExportChannel();
+});
+
+cron.schedule('* * * * *', function() {
+  chatCronJob.GetMessages();
+});
+
+cron.schedule('* * * * *', function() {
+  chatCronJob.DeleteMessages();
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3001;

@@ -1,4 +1,5 @@
 const cron = require("node-cron");
+const https = require("https");
 
 var { StreamChat } = require('stream-chat');
 
@@ -7,6 +8,8 @@ var { StreamChat } = require('stream-chat');
  */
 const Models = require('../models');
 const Channel = Models.Channel;
+const ExportChannel = Models.ExportChannel;
+const DeleteChannelMessage = Models.DeleteChannelMessage;
 
 const serverClient = StreamChat.getInstance(process.env.GET_STREAM_API_KEY, process.env.GET_STREAM_API_SECRET, { timeout: 6000 });
 
@@ -19,41 +22,112 @@ const serverClient = StreamChat.getInstance(process.env.GET_STREAM_API_KEY, proc
  */
 class MessageRetention {
 
-  start = async () => {
+  DeleteMessages = async () => {
 
-    var currentDate = new Date();
-
-    Channel.findAll().then(response => {
+    DeleteChannelMessage.findAll({
+      where: {
+        status: 0
+      }
+    }).then(response => {
       response.map(async (item) => {
+        DeleteChannelMessage.update({
+          status: 1
+        }, {
+          where: {
+            id: item['id']
+          }
+        });
         try {
-          const filter = { type: 'messaging', cid: { $in: [item['channel_id']] } };
-          const sort = [{ last_message_at: -1 }];
-          const channels = await serverClient.queryChannels(filter, sort);
-          channels[0].state.messages.map(async(message) => {
-            await serverClient.deleteMessage(message.id, true);
-          });
+          const isDeleted = await serverClient.deleteMessage(item['message_id'], true);
+          if(isDeleted) {
+            DeleteChannelMessage.destroy({
+              where: {
+                message_id: item['message_id']
+              }
+            });
+          }
         }
         catch (err) {
-          //
+          // error
         }
-      })
+      });
     }).catch(err => {
-      //
+      // error
     });
   }
 
-  // ExportChannel = async() => {
-  //   const response = await serverClient.exportChannel({
-  //     id: "!members-iyc_0Ld_mmrXJ_Mlw9DhN5QXxMGJ_i8xFUBE3eIMgvU",
-  //     messages_since: "2020-05-20T09:30:00.000Z",
-  //     messages_until: "2021-06-20T11:30:00.000Z",
-  //   });
+  ExportChannel = async () => {
+    Channel.findAll().then(response => {
+      response.map(async (item) => {
+        var date = new Date();
+        date.setDate(date.getDate() - item['message_retention']);
+        const response = await serverClient.exportChannel({
+          type: "messaging",
+          id: item['channel_id'],
+          messages_until: date
+        });
+        const taskID = response.task_id;
+        ExportChannel.findOne({
+          where: {
+            channel_id: item['id']
+          }
+        }).then(response => {
+          if (!response) {
+            ExportChannel.create({
+              channel_id: item['id'],
+              task_id: taskID
+            });
+          }
+        }).catch(err => {
+          // error
+        });
+      });
+    });
+  }
 
-  //   console.log("responseresponseresponse", response);
+  GetMessages = async () => {
+    ExportChannel.findAll().then(response => {
+      response.map(async (item) => {
+        const taskID = item.task_id;
+        const channelResponse = await serverClient.getExportChannelStatus(item.task_id);
+        https.get(channelResponse.result.url, function (res) {
+          let data = '',
+            json_data = '';
 
-  //   const taskID = response.task_id;
+          res.on('data', function (channel) {
+            data += channel;
+          });
+          res.on('end', function () {
+            json_data = JSON.parse(data);
+            if(json_data.length > 0) {
+              json_data[0].messages.map((item) => {
+                DeleteChannelMessage.findOne({
+                  where: {
+                    message_id: item.id
+                  }
+                }).then(response => {
+                  if(!response) {
+                    DeleteChannelMessage.create({
+                      message_id: item.id,
+                      status: 0
+                    });
+                  }
+                });
+              });
+              ExportChannel.destroy({
+                where: {
+                  task_id: item['task_id']
+                }
+              });
+            }
+          });
+        }).on('error', function (e) {
+          // error
+        });
 
-  // }
+      });
+    });
+  }
 }
 
 module.exports = MessageRetention;

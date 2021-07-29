@@ -65,6 +65,7 @@ db.Channel = require('../models/Channel.js')(sequelize, Sequelize);
 db.ChannelUser = require('../models/ChannelUser.js')(sequelize, Sequelize);
 db.ChatModeration = require('../models/ChatModeration.js')(sequelize, Sequelize);
 db.DeleteChannelMessage = require('../models/DeleteChannelMessage.js')(sequelize, Sequelize);
+db.ExportChannel = require('../models/ExportChannel.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});

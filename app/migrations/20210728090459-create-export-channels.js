@@ -1,18 +1,18 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('delete_channel_messages', {
+    await queryInterface.createTable('export_channels', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      message_id: {
-        type: Sequelize.STRING
-      },
-      status: {
+      channel_id: {
         type: Sequelize.INTEGER
+      },
+      task_id: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -29,6 +29,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('delete_channel_messages');
+    await queryInterface.dropTable('export_channels');
   }
 };

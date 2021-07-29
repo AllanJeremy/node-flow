@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class DeleteChannelMessage extends Model {
+  class ExportChannel extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,15 +13,15 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  DeleteChannelMessage.init({
-    message_id: DataTypes.STRING,
-    status: DataTypes.INTEGER
+  ExportChannel.init({
+    channel_id: DataTypes.INTEGER,
+    task_id: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'DeleteChannelMessage',
-    tableName: 'delete_channel_messages',
+    modelName: 'ExportChannel',
+    tableName: 'export_channels',
     createdAt: 'created_at',
     updatedAt: 'updated_at'
   });
-  return DeleteChannelMessage;
+  return ExportChannel;
 };
