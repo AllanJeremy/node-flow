@@ -66,6 +66,7 @@ db.ChannelUser = require('../models/ChannelUser.js')(sequelize, Sequelize);
 db.ChatModeration = require('../models/ChatModeration.js')(sequelize, Sequelize);
 db.DeleteChannelMessage = require('../models/DeleteChannelMessage.js')(sequelize, Sequelize);
 db.ExportChannel = require('../models/ExportChannel.js')(sequelize, Sequelize);
+db.UserHealthJourney = require('../models/UserHealthJourney.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
@@ -92,5 +93,6 @@ db.User.hasMany(db.UserMatchingPreference, {foreignKey: 'user_id', as: 'user_mat
 db.User.hasOne(db.UserSetting, {foreignKey: 'user_id', as: 'user_setting'});
 db.User.hasMany(db.ListedPeer, {foreignKey: 'user_id', as: 'listed_peers'});
 //db.User.hasMany(db.DelistedPeer, {foreignKey: 'user_id', as: 'user'});
+db.User.hasOne(db.UserHealthJourney, {foreignKey: 'user_id', as: 'user_health_journey'});
 
 module.exports = db;

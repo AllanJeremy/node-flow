@@ -44,6 +44,7 @@ const UserConversationStarter = Models.UserConversationStarter;
 const UserMatchingPreference = Models.UserMatchingPreference;
 const UserSetting = Models.UserSetting;
 const ListedPeer = Models.ListedPeer;
+const UserHealthJourney = Models.UserHealthJourney;
 
 /**
  * Languages
@@ -129,7 +130,7 @@ class UserProfileController {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, errors.array());
+      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
     UserMetadata.findOne({
@@ -142,7 +143,8 @@ class UserProfileController {
           user_id: req.id,
           summary: req.body.summary
         })
-        .then(response => {
+        .then(async response => {
+          await this.storeJourneyHealth(req);
           return ResponseHandler.success(res, responseLanguage.profile_update);
         })
         .catch(err => {
@@ -154,7 +156,8 @@ class UserProfileController {
         },{
           where: {user_id: req.id}
         })
-        .then(response => {
+        .then(async response => {
+          await this.storeJourneyHealth(req);
           return ResponseHandler.success(res, responseLanguage.profile_update);
         })
         .catch(err => {
@@ -164,6 +167,30 @@ class UserProfileController {
     })
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  storeJourneyHealth = (req) => {
+
+    UserHealthJourney.findOne({
+      where: {
+        user_id: req.id
+      }
+    }).then(response => {
+      if(!response) {
+        UserHealthJourney.create({
+          user_id: req.id,
+          health_journey_id: req.body.health_journey_id,
+        });
+      } else {
+        UserHealthJourney.update({
+          health_journey_id: req.body.health_journey_id
+        }, {
+          where: {
+            user_id: req.id
+          }
+        });
+      }
     });
   }
 
@@ -382,6 +409,11 @@ class UserProfileController {
         model: UserSetting,
         attributes: ['theme_color'],
         as: 'user_setting'
+      },
+      {
+        model: UserHealthJourney,
+        attributes: ['health_journey_id'],
+        as: 'user_health_journey'
       },
       ],
       order: [

@@ -124,6 +124,7 @@ exports.en = {
       'chat_message_id': 'Message id is a required field.',
       'chat_channel_id': 'Chat channel id is a required field.',
       'chat_message_retention': 'Chat message retention is a required field.',
+      'health_journey_id_required': 'Health journey id is a required field.'
     },
     'response': {
       'login_success': 'Logged in successfully.',
@@ -167,7 +168,9 @@ exports.en = {
       'setting_update_success': 'User settings updated success.',
       'peer_declined_store': 'Declined peer saved successfully.',
       'message_retention_store': 'Message retention saved successfully.',
-      'message_retention_update': 'Message retention updated successfully.'
+      'message_retention_update': 'Message retention updated successfully.',
+      'health_journey_store': 'Health journey stored successfully.',
+      'health_journey_update': 'Health journey updated successfully.'
     },
   },
   'email': {

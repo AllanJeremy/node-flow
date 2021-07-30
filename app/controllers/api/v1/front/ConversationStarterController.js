@@ -1,4 +1,5 @@
 require('dotenv').config();
+var {StreamChat} = require('stream-chat');
 const { validationResult } = require('express-validator');
 const Sequelize = require('sequelize');
 
@@ -9,6 +10,8 @@ var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
+
+const PeerStatusHandler = require('../../../../helpers/PeerStatusHandler');
 
 var Chat = require('../../../../helpers/Chat');
 Chat = new Chat();
@@ -22,6 +25,7 @@ const Models = require('../../../../models');
 const ConversationStarter = Models.ConversationStarter;
 const UserConversationStarter = Models.UserConversationStarter;
 const User = Models.User;
+const ListedPeer = Models.ListedPeer;
 
 /**
  * Languages
@@ -153,6 +157,11 @@ class ConversationStarterController {
         where: {
           id: req.id
         }
+      });
+      ListedPeer.create({
+        user_id: req.id,
+        peer_id: 1,
+        status: PeerStatusHandler.active
       });
     }
 
