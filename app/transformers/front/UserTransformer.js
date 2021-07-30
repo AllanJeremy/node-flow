@@ -48,6 +48,7 @@ class UserTransformer {
     },
     'user_detail': {
       'profile_color': 'user_setting.theme_color',
+      'health_journey_id': 'user_health_journey.health_journey_id',
       'user_races': {
         'races' : data.races && data.races.length > 0 ? fractal(data.races, {
           'id': 'race.id',

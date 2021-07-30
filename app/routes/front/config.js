@@ -64,6 +64,8 @@ const apiRoute = {
   CHAT_FEEDBACK: '/chat/match_feedback/store',
   CHAT_MESSAGE: '/chat/message/store',
   CHAT_MESSAGE_RETENTION: '/chat/message/retention',
+
+  HEALTH_JOURNEY_LIST: '/user/profile/health_journey/list',
 }
 
 module.exports = {

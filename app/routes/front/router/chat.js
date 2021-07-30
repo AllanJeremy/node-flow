@@ -19,7 +19,6 @@ ChatController = new ChatController();
 const ChatValidation = require('../../../validators/front/ChatValidation');
 
 
-
 /**
  * Chat Routes
  */

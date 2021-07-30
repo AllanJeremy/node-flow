@@ -36,6 +36,13 @@ exports.Profile = [
 ];
 
 exports.ProfileSummary = [
+  check('health_journey_id')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.health_journey_id_required)
+    .bail(),
   check('summary')
     .trim()
     .escape()

@@ -7,6 +7,8 @@ ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
 
+const HealthJourney = require('../../../../helpers/HealthJourney');
+
 /**
  * Models
  */
@@ -15,6 +17,7 @@ const Models = require('../../../../models');
 const Avatar = Models.Avatar;
 const ContactSupport = Models.ContactSupport;
 const Feedback = Models.Feedback;
+const UserHealthJourney = Models.UserHealthJourney;
 
 /**
  * Languages
@@ -123,6 +126,22 @@ class CommonController {
     .catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });
+  }
+
+  /**
+   * @api {get} /api/health_journey/list Show Health journey question list
+   * @apiName Front journey question list
+   * @apiGroup Front
+   *
+   *
+   * @apiSuccess (200) {Object}
+   */
+  HealthJourney = (req, res) => {
+    var healthJourney = {
+      question: HealthJourney.HealthJourneyQuestion,
+      options: HealthJourney.HealthJourneyOption
+    };
+    return ResponseHandler.success(res, '', healthJourney);
   }
 
 

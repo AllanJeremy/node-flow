@@ -19,7 +19,6 @@ CommonController = new CommonController();
 const CommonValidation = require('../../../validators/front/CommonValidation');
 
 
-
 /**
  * Common Routes
  */
@@ -30,5 +29,7 @@ router.get(apiRoute.AVATAR, CommonController.avatar);
 router.post(apiRoute.CONTACT_SUPPORT, CommonValidation.ContactSupport, CommonController.ContactSupport);
 
 router.post(apiRoute.FEEDBACK, CommonValidation.Feedback, CommonController.Feedback);
+
+router.get(apiRoute.HEALTH_JOURNEY_LIST, CommonController.HealthJourney);
 
 module.exports = router;
