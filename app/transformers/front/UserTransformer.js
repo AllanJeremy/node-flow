@@ -56,10 +56,11 @@ class UserTransformer {
         var healthJourneyId = data.get('user_health_journey.health_journey_id');
         var selectedJourney;
         healthJourney.map((item) => {
-          if(item.key == healthJourneyId) {
+          if (item.key == healthJourneyId) {
             selectedJourney = item;
           }
         });
+
         return selectedJourney;
       },
       'user_races': {
