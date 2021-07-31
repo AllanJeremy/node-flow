@@ -180,7 +180,6 @@ class ConversationStarterController {
             user_id: defaultUserId + chatTokenPostfix.CHAT_TOKEN_POSTFIX,
             text: 'Hi ' + user.first_name  + '! Welcome! We are Larissa and Kendra, the founders of Joyn. We are so excited to be your first peer match as you connect with the community. Is there anything we can help you with?',
           });
-          console.log("sucesssss");
       } catch(e) {
         // error in chat
       }
