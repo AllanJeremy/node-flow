@@ -2,6 +2,7 @@ require('dotenv').config();
 var {StreamChat} = require('stream-chat');
 const { validationResult } = require('express-validator');
 const Sequelize = require('sequelize');
+var {StreamChat} = require('stream-chat');
 
 /**
  * Helpers
@@ -163,6 +164,25 @@ class ConversationStarterController {
         peer_id: 1,
         status: PeerStatusHandler.active
       });
+
+      try {
+          const serverClient = StreamChat.getInstance( process.env.GET_STREAM_API_KEY, process.env.GET_STREAM_API_SECRET);
+
+          defaultUserId = 1;
+
+          const channel = serverClient.channel('messaging', {
+              members: [defaultUserId + chatTokenPostfix.CHAT_TOKEN_POSTFIX, req.id + chatTokenPostfix.CHAT_TOKEN_POSTFIX],
+              created_by_id: defaultUserId + chatTokenPostfix.CHAT_TOKEN_POSTFIX
+          });
+
+          await channel.create();
+          const message = await channel.sendMessage({
+            user_id: defaultUserId + chatTokenPostfix.CHAT_TOKEN_POSTFIX,
+            text: 'Hi ' + user.first_name  + '! Welcome! We are Larissa and Kendra, the founders of Joyn. We are so excited to be your first peer match as you connect with the community. Is there anything we can help you with?',
+          });
+      } catch(e) {
+        // error in chat
+      }
     }
 
     return ResponseHandler.success(res, '', responseLanguage.conversation_starter_status_store);

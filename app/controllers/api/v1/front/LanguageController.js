@@ -26,13 +26,6 @@ class LanguageController {
    */
   list = (req, res) => {
 
-    const serverClient = StreamChat.getInstance( process.env.GET_STREAM_API_KEY, process.env.GET_STREAM_API_SECRET);
-
-    serverClient.channel('messaging', 'awesome-chat', {
-      name: 'Founder Chat',
-      members: ['123joynapp', '124joynapp', 'nick'],
-      invites: ['123joynapp'],
-  });
     if (req.params.code) {
       switch (req.params.code) {
         case en:

@@ -351,7 +351,8 @@ exports.language = {
     'click_here': 'Click here',
     'submit': 'Submit',
     'day': 'day',
-    'review_profile': 'Review Profile'
+    'review_profile': 'Review Profile',
+    'health_journey': 'Health Journey',
   },
   'validation': {
     'required_fields': 'All the fields are required.',
