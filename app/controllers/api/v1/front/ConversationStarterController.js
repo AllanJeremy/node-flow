@@ -168,7 +168,7 @@ class ConversationStarterController {
       try {
           const serverClient = StreamChat.getInstance( process.env.GET_STREAM_API_KEY, process.env.GET_STREAM_API_SECRET);
 
-          defaultUserId = 1;
+          var defaultUserId = 1;
 
           const channel = serverClient.channel('messaging', {
               members: [defaultUserId + chatTokenPostfix.CHAT_TOKEN_POSTFIX, req.id + chatTokenPostfix.CHAT_TOKEN_POSTFIX],
@@ -180,6 +180,7 @@ class ConversationStarterController {
             user_id: defaultUserId + chatTokenPostfix.CHAT_TOKEN_POSTFIX,
             text: 'Hi ' + user.first_name  + '! Welcome! We are Larissa and Kendra, the founders of Joyn. We are so excited to be your first peer match as you connect with the community. Is there anything we can help you with?',
           });
+          console.log("sucesssss");
       } catch(e) {
         // error in chat
       }
