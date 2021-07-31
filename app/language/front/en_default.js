@@ -291,7 +291,8 @@ exports.language = {
     'activity': {
       'text1': 'replied to',
       'text2': 'Your message'
-    }
+    },
+    'no_search': 'No peer found.'
   },
   'published_home_page': {
     'title': 'Welcome,',

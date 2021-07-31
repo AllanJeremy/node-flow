@@ -15,10 +15,10 @@ module.exports = {
     */
     return queryInterface.bulkInsert('users', [{
       id: 1,
-      name_prefix: 'mr',
+      name_prefix: 'miss',
       first_name: 'L&K',
-      email: 'L&K@joyn.one',
-      password: bcrypt.hashSync('L&K@joyn', 8),
+      email: 'lk@joyn.one',
+      password: bcrypt.hashSync('Teamjoyn2021', 8),
       profile_picture: process.env.API_IMAGE_URL + '/avatar/default_peer.png',
       status: 1,
       created_at: new Date(),
