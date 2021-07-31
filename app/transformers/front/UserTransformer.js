@@ -1,6 +1,8 @@
 var fractal = require('fractal-transformer')();
 const Pronouns = require('../../models/Pronouns');
 
+const HealthJourney = require('../../helpers/HealthJourney');
+
 class UserTransformer {
 
   user = (data) => fractal(data, {
@@ -22,6 +24,7 @@ class UserTransformer {
 
   UserDetail = (data) => fractal(data, {
     'id': 'id',
+    'peer_id': 'id',
     'email': 'email',
     'name_prefix_text': function (data) {
       var prefix = data.get('name_prefix');
@@ -48,7 +51,18 @@ class UserTransformer {
     },
     'user_detail': {
       'profile_color': 'user_setting.theme_color',
-      'health_journey_id': 'user_health_journey.health_journey_id',
+      'health_journey': function (data) {
+        var healthJourney = HealthJourney.HealthJourneyOption;
+        var healthJourneyId = data.get('user_health_journey.health_journey_id');
+        var selectedJourney;
+        healthJourney.map((item) => {
+          if (item.key == healthJourneyId) {
+            selectedJourney = item;
+          }
+        });
+
+        return selectedJourney;
+      },
       'user_races': {
         'races' : data.races && data.races.length > 0 ? fractal(data.races, {
           'id': 'race.id',
