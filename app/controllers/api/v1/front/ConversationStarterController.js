@@ -17,7 +17,11 @@ const PeerStatusHandler = require('../../../../helpers/PeerStatusHandler');
 var Chat = require('../../../../helpers/Chat');
 Chat = new Chat();
 
-const chatTokenPostfix = require('../../../../config/constants.js');
+
+/**
+ * Constants
+ */
+const defaultUserEmailId = require('../../../../config/constants.js');
 
 /**
  * Models
@@ -149,8 +153,13 @@ class ConversationStarterController {
     }
 
     var user = await User.findOne({where: { id: req.id }});
-    var chatToken = await Chat.token(req.id + chatTokenPostfix.CHAT_TOKEN_POSTFIX);
-    if(!user.published) {
+    //if(!user.published) {
+      var chatToken = await Chat.token(user.unique_id);
+
+      var defaultUser = await User.findOne({where: {
+        email: defaultUserEmailId.DEFAULT_USER_EMAIL_ID
+      }});
+
       User.update({
         published: StatusHandler.active,
         chat_token: chatToken
@@ -161,30 +170,39 @@ class ConversationStarterController {
       });
       ListedPeer.create({
         user_id: req.id,
-        peer_id: 1,
+        peer_id: defaultUser.id,
         status: PeerStatusHandler.active
       });
 
       try {
           const serverClient = StreamChat.getInstance( process.env.GET_STREAM_API_KEY, process.env.GET_STREAM_API_SECRET);
 
-          var defaultUserId = 1;
+          // var chatUser = await serverClient.connectUser(
+          //   {
+          //       id: user.unique_id,
+          //       user_id: user.id,
+          //       name: user.first_name,
+          //       image: user.profile_picture,
+          //   },
+          //   user.chat_token,
+          // );
 
-          const channel = serverClient.channel('messaging', {
-              members: [defaultUserId + chatTokenPostfix.CHAT_TOKEN_POSTFIX, req.id + chatTokenPostfix.CHAT_TOKEN_POSTFIX],
-              created_by_id: defaultUserId + chatTokenPostfix.CHAT_TOKEN_POSTFIX
-          });
 
-          await channel.create();
-          const message = await channel.sendMessage({
-            user_id: defaultUserId + chatTokenPostfix.CHAT_TOKEN_POSTFIX,
-            text: 'Hi ' + user.first_name  + '! Welcome! We are Larissa and Kendra, the founders of Joyn. We are so excited to be your first peer match as you connect with the community. Is there anything we can help you with?',
-          });
+          // const channel = serverClient.channel('messaging', {
+          //   members: [defaultUser.unique_id, user.unique_id],
+          //   created_by_id: defaultUser.unique_id
+          // });
+
+          // await channel.create();
+          // const message = await channel.sendMessage({
+          //   user_id: defaultUser.unique_id,
+          //   text: 'Hi ' + user.first_name  + '! Welcome! We are Larissa and Kendra, the founders of Joyn. We are so excited to be your first peer match as you connect with the community. Is there anything we can help you with?',
+          // });
           console.log("sucesssss");
       } catch(e) {
-        // error in chat
+        console.log("errorrrr", e);
       }
-    }
+    //}
 
     return ResponseHandler.success(res, '', responseLanguage.conversation_starter_status_store);
   }

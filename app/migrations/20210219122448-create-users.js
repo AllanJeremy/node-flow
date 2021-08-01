@@ -40,6 +40,15 @@ module.exports = {
       published: {
         type: Sequelize.INTEGER
       },
+      chat_token: {
+        type: Sequelize.STRING
+      },
+      unique_id: {
+        type: Sequelize.STRING
+      },
+      type: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         field: "created_at",

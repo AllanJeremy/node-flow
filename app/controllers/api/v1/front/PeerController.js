@@ -186,7 +186,7 @@ class PeerController {
       },
       include: [{
         model: User,
-        attributes: ['id', 'first_name', 'profile_picture'],
+        attributes: ['id', 'first_name', 'profile_picture', 'unique_id'],
         as: 'peer'
       }]
     })
@@ -363,7 +363,7 @@ class PeerController {
         },
     }).then(count => {
       User.findAll({
-        attributes: ['id', 'first_name', 'profile_picture'],
+        attributes: ['id', 'first_name', 'profile_picture', 'unique_id'],
         include: [{ model: UserHealthCategory,
           attributes: ['id', 'status'],
           include: [{

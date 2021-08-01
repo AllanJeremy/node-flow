@@ -6,6 +6,7 @@ class PeerTransformer {
     'id': 'id',
     'peer_id': 'peer_id',
     'first_name': 'peer.first_name',
+    'unique_id': 'peer.unique_id',
     'profile_picture': function (data) {
       return process.env.API_IMAGE_URL + '/avatar/' + data.get('peer.profile_picture');
     },
@@ -19,6 +20,7 @@ class PeerTransformer {
     'id': 'id',
     'peer_id': 'id',
     'first_name': 'first_name',
+    'unique_id': 'unique_id',
     'profile_picture': function (data) {
       return process.env.API_IMAGE_URL + '/avatar/' + data.get('profile_picture');
     },
@@ -30,6 +32,7 @@ class PeerTransformer {
     'id': 'id',
     'peer_id': 'id',
     'first_name': 'first_name',
+    'unique_id': 'unique_id',
     'profile_picture': function (data) {
       return process.env.API_IMAGE_URL + '/avatar/' + data.get('profile_picture');
     },
