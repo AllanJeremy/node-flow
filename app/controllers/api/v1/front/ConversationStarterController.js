@@ -180,7 +180,7 @@ class ConversationStarterController {
       var chatUser = await client.connectUser({
         id: user.unique_id,
         user_id: user.id,
-        name: user.first_name,
+        first_name: user.first_name,
         image: user.profile_picture
       });
 

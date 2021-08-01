@@ -43,7 +43,7 @@ module.exports = {
     var streamUser = await Chat.createUser({
       id: uniqueId,
       user_id: userId,
-      name: 'L&K',
+      first_name: 'L&K',
       image: process.env.API_IMAGE_URL + '/avatar/default_peer.png',
       role: 'admin'
     });
