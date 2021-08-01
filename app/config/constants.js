@@ -1,5 +1,5 @@
-const DEFAULT_USER_EMAIL_ID = 'lk@joyn.one';
+const SYSTEM_BOT_EMAIL = 'lk@joyn.one';
 
 module.exports = {
-  DEFAULT_USER_EMAIL_ID
+  SYSTEM_BOT_EMAIL
 }

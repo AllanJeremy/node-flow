@@ -1,4 +1,4 @@
-var {StreamChat} = require('stream-chat');
+var { StreamChat } = require('stream-chat');
 
 /**
  * Used for mobile app chat functionality
@@ -10,18 +10,33 @@ var {StreamChat} = require('stream-chat');
 class Chat {
 
   /**
+   * Generate stream instance
+   *
+   */
+  getInstance = () => {
+    // Initialize a Server Client
+    let client = StreamChat.getInstance(process.env.GET_STREAM_API_KEY, process.env.GET_STREAM_API_SECRET);
+
+    return client;
+  }
+
+  /**
    * Used for generating user chat token
    *
    * @param {Integer} user_id
    */
   token = (user_id) => {
-    // Initialize a Server Client
-    const serverClient = StreamChat.getInstance( process.env.GET_STREAM_API_KEY, process.env.GET_STREAM_API_SECRET);
-
-    // Create User Token
-    const token = serverClient.createToken(user_id);
+    let client = this.getInstance();
+    let token = client.createToken(user_id);
 
     return token;
+  }
+
+  createUser = async (data) => {
+    let client = this.getInstance();
+    let response = await client.upsertUser(data);
+
+    return response;
   }
 }
 

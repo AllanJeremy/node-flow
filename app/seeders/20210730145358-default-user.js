@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 var Chat = require('../helpers/Chat');
 Chat = new Chat();
 
-const defaultUserEmailId = require('../config/constants.js');
+const SystemConstants = require('../config/constants.js');
 const userTypes = require('../helpers/UserTypes.js');
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
     var result = await queryInterface.bulkInsert('users', [{
       name_prefix: 'miss',
       first_name: 'L&K',
-      email: defaultUserEmailId.DEFAULT_USER_EMAIL_ID,
+      email: SystemConstants.SYSTEM_BOT_EMAIL,
       password: bcrypt.hashSync('Teamjoyn2021', 8),
       profile_picture: process.env.API_IMAGE_URL + '/avatar/default_peer.png',
       status: 1,
@@ -38,7 +38,15 @@ module.exports = {
       updated_at: new Date()
     }], {returning: true});
 
-    var userId = result[0].id;
+    var userId = Array.isArray(result) ? result[0].id : result;
+
+    var streamUser = await Chat.createUser({
+      id: uniqueId,
+      user_id: userId,
+      name: 'L&K',
+      image: process.env.API_IMAGE_URL + '/avatar/default_peer.png',
+      role: 'admin'
+    });
 
     queryInterface.bulkInsert('user_metadata', [{
       user_id: userId,

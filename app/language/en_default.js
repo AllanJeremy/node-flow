@@ -173,6 +173,9 @@ exports.en = {
       'health_journey_update': 'Health journey updated successfully.'
     },
   },
+  'chat': {
+    'default_message': 'Welcome! We are Larissa and Kendra, the founders of Joyn. We are so excited to be your first peer match as you connect with the community. Is there anything we can help you with?'
+  },
   'email': {
     'register': {
       'line1': 'Hello',

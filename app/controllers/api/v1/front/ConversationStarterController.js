@@ -1,8 +1,8 @@
 require('dotenv').config();
-var {StreamChat} = require('stream-chat');
+
 const { validationResult } = require('express-validator');
 const Sequelize = require('sequelize');
-var {StreamChat} = require('stream-chat');
+var { StreamChat } = require('stream-chat');
 
 /**
  * Helpers
@@ -17,11 +17,10 @@ const PeerStatusHandler = require('../../../../helpers/PeerStatusHandler');
 var Chat = require('../../../../helpers/Chat');
 Chat = new Chat();
 
-
 /**
  * Constants
  */
-const defaultUserEmailId = require('../../../../config/constants.js');
+const SystemConstants = require('../../../../config/constants.js');
 
 /**
  * Models
@@ -38,6 +37,7 @@ const ListedPeer = Models.ListedPeer;
 const language = require('../../../../language/en_default');
 const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
+const chatLanguage = language.en.front.chat;
 
 /**
  * Transformers
@@ -153,55 +153,50 @@ class ConversationStarterController {
     }
 
     var user = await User.findOne({where: { id: req.id }});
-    //if(!user.published) {
-      var chatToken = await Chat.token(user.unique_id);
+    var chatToken = await Chat.token(user.unique_id);
 
-      var defaultUser = await User.findOne({where: {
-        email: defaultUserEmailId.DEFAULT_USER_EMAIL_ID
-      }});
+    var botUser = await User.findOne({where: {
+      email: SystemConstants.SYSTEM_BOT_EMAIL
+    }});
 
-      User.update({
-        published: StatusHandler.active,
-        chat_token: chatToken
-      }, {
-        where: {
-          id: req.id
-        }
-      });
-      ListedPeer.create({
-        user_id: req.id,
-        peer_id: defaultUser.id,
-        status: PeerStatusHandler.active
-      });
-
-      try {
-          const serverClient = StreamChat.getInstance( process.env.GET_STREAM_API_KEY, process.env.GET_STREAM_API_SECRET);
-
-          // var chatUser = await serverClient.connectUser(
-          //   {
-          //       id: user.unique_id,
-          //       user_id: user.id,
-          //       name: user.first_name,
-          //       image: user.profile_picture,
-          //   },
-          //   user.chat_token,
-          // );
-
-
-          // const channel = serverClient.channel('messaging', {
-          //   members: [defaultUser.unique_id, user.unique_id],
-          //   created_by_id: defaultUser.unique_id
-          // });
-
-          // await channel.create();
-          // const message = await channel.sendMessage({
-          //   user_id: defaultUser.unique_id,
-          //   text: 'Hi ' + user.first_name  + '! Welcome! We are Larissa and Kendra, the founders of Joyn. We are so excited to be your first peer match as you connect with the community. Is there anything we can help you with?',
-          // });
-      } catch(e) {
-        console.log("errorrrr", e);
+    User.update({
+      published: StatusHandler.active,
+      chat_token: chatToken
+    }, {
+      where: {
+        id: req.id
       }
-    //}
+    });
+
+    ListedPeer.create({
+      user_id: req.id,
+      peer_id: botUser.id,
+      status: PeerStatusHandler.active
+    });
+
+    try {
+      const client = Chat.getInstance();
+
+      var chatUser = await client.connectUser({
+        id: user.unique_id,
+        user_id: user.id,
+        name: user.first_name,
+        image: user.profile_picture
+      });
+
+      const channel = client.channel('messaging', {
+        members: [botUser.unique_id, user.unique_id]
+      });
+
+      await channel.create();
+
+      const message = await channel.sendMessage({
+        user_id: botUser.unique_id,
+        text: 'Hi ' + user.first_name  + '! ' + chatLanguage.default_message
+      });
+
+      await channel.disconnectUser();
+    } catch(e) {}
 
     return ResponseHandler.success(res, '', responseLanguage.conversation_starter_status_store);
   }
