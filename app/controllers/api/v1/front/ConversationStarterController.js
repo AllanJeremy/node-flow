@@ -181,7 +181,7 @@ class ConversationStarterController {
         id: user.unique_id,
         user_id: user.id,
         first_name: user.first_name,
-        image: user.profile_picture
+        image: process.env.API_IMAGE_URL + '/avatar/' + user.profile_picture
       });
 
       const channel = client.channel('messaging', {
