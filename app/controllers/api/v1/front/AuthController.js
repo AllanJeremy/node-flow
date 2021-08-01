@@ -17,6 +17,7 @@ const RandomStringGenerator = require('../../../../helpers/RandomStringGenerator
 var MailHandler = require('../../../../helpers/MailHandler');
 MailHandler = new MailHandler();
 
+const UserTypes = require('../../../../helpers/UserTypes.js');
 
 /**
  * Configs
@@ -135,6 +136,8 @@ class AuthController {
       return ResponseHandler.error(res, 422, errors.array());
     }
 
+    var uniqueId=(new Date().getTime()).toString(36);
+
     User.findOne({
       where: {
         email: req.body.email
@@ -144,7 +147,9 @@ class AuthController {
         User.create({
           email: req.body.email,
           password: bcrypt.hashSync(req.body.password),
-          status: StatusHandler.pending
+          status: StatusHandler.pending,
+          unique_id: uniqueId,
+          type: UserTypes.noraml,
         })
         .then(response => {
 

@@ -1,5 +1,5 @@
-const CHAT_TOKEN_POSTFIX = 'joynapp';
+const DEFAULT_USER_EMAIL_ID = 'lk@joyn.one';
 
 module.exports = {
-  CHAT_TOKEN_POSTFIX
+  DEFAULT_USER_EMAIL_ID
 }

@@ -26,6 +26,7 @@ class UserTransformer {
     'id': 'id',
     'peer_id': 'id',
     'email': 'email',
+    'unique_id': 'unique_id',
     'name_prefix_text': function (data) {
       var prefix = data.get('name_prefix');
       var PronounsModel = new Pronouns();
