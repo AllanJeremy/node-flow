@@ -20,8 +20,7 @@ module.exports = {
      * }], {});
     */
 
-    var uniqueId=(new Date().getTime()).toString(36);
-
+    var uniqueId = (new Date().getTime()).toString(36);
     var chatToken = await Chat.token(uniqueId);
 
     var result = await queryInterface.bulkInsert('users', [{
