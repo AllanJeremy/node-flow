@@ -191,7 +191,7 @@ class ConversationStarterController {
       await channel.create();
 
       const message = await channel.sendMessage({
-        user_id: botUser.unique_id,
+        user_id: user.unique_id,
         text: 'Hi ' + user.first_name  + '! ' + chatLanguage.default_message
       });
 
