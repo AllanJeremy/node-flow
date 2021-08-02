@@ -37,7 +37,7 @@ const ListedPeer = Models.ListedPeer;
 const language = require('../../../../language/en_default');
 const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
-const chatLanguage = language.en.front.chat;
+const chatLanguage = language.en.chat;
 
 /**
  * Transformers
@@ -182,7 +182,16 @@ class ConversationStarterController {
         user_id: user.id,
         first_name: user.first_name,
         image: process.env.API_IMAGE_URL + '/avatar/' + user.profile_picture
-      });
+      }, user.chat_token);
+
+      await client.disconnectUser();
+
+      var chatUser = await client.connectUser({
+        id: botUser.unique_id,
+        user_id: botUser.id,
+        first_name: botUser.first_name,
+        image: process.env.API_IMAGE_URL + '/avatar/' + botUser.profile_picture
+      }, botUser.chat_token);
 
       const channel = client.channel('messaging', {
         members: [botUser.unique_id, user.unique_id]
@@ -191,11 +200,10 @@ class ConversationStarterController {
       await channel.create();
 
       const message = await channel.sendMessage({
-        user_id: user.unique_id,
+        user_id: botUser.unique_id,
         text: 'Hi ' + user.first_name  + '! ' + chatLanguage.default_message
       });
-
-      await channel.disconnectUser();
+      await client.disconnectUser();
     } catch(e) {}
 
     return ResponseHandler.success(res, '', responseLanguage.conversation_starter_status_store);

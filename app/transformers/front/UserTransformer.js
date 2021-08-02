@@ -12,6 +12,7 @@ class UserTransformer {
     'last_name': 'last_name',
     'email': 'email',
     'birth_date': 'birth_date',
+    'unique_id': 'unique_id',
     'profile_picture': function (data) {
       return process.env.API_IMAGE_URL + '/avatar/' + data.get('profile_picture');
     },
