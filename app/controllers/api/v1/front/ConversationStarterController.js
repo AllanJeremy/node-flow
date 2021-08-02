@@ -201,8 +201,7 @@ class ConversationStarterController {
 
       const message = await channel.sendMessage({
         user_id: botUser.unique_id,
-        text: 'Hi ' + user.first_name  + '! ' + chatLanguage.default_message,
-        anotherCustomField: 'bot_user'
+        text: 'Hi ' + user.first_name  + '! ' + chatLanguage.default_message
       });
       await client.disconnectUser();
     } catch(e) {}
