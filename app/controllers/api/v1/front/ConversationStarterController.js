@@ -203,7 +203,8 @@ class ConversationStarterController {
         user_id: botUser.unique_id,
         text: 'Hi ' + user.first_name  + '! ' + chatLanguage.default_message
       });
-      await client.disconnectUser();
+
+      await channel.disconnectUser();
     } catch(e) {}
 
     return ResponseHandler.success(res, '', responseLanguage.conversation_starter_status_store);
