@@ -289,8 +289,8 @@ exports.language = {
       'text2': 'responds to you back.'
     },
     'activity': {
-      'text1': 'replied to',
-      'text2': 'Your message'
+      'text1': 'You messaged',
+      'text2': 'sent you message '
     },
     'no_search': 'No peer found.'
   },
