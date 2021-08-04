@@ -28,7 +28,7 @@ module.exports = {
       first_name: 'L&K',
       email: SystemConstants.SYSTEM_BOT_EMAIL,
       password: bcrypt.hashSync('Teamjoyn2021', 8),
-      profile_picture: process.env.API_IMAGE_URL + '/avatar/default_peer.png',
+      profile_picture: 'default_peer.png',
       status: 1,
       published: 1,
       unique_id: uniqueId,

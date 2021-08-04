@@ -53,17 +53,17 @@ chatCronJob = new chatCronJob();
 
 
 // Schedule tasks to be run on the server.
-cron.schedule('* * * * *', function() {
-  chatCronJob.ExportChannel();
-});
+// cron.schedule('* * * * *', function() {
+//   chatCronJob.ExportChannel();
+// });
 
-cron.schedule('* * * * *', function() {
-  chatCronJob.GetMessages();
-});
+// cron.schedule('* * * * *', function() {
+//   chatCronJob.GetMessages();
+// });
 
-cron.schedule('* * * * *', function() {
-  chatCronJob.DeleteMessages();
-});
+// cron.schedule('* * * * *', function() {
+//   chatCronJob.DeleteMessages();
+// });
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3001;

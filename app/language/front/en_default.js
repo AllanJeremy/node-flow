@@ -282,15 +282,15 @@ exports.language = {
     'empty_chat': 'Please start chatting now!',
     'wait_message': {
       'text1': 'Please wait while',
-      'text2': 'to join your chat.'
+      'text2': 'joins your chat.'
     },
     'first_message_warning': {
       'text1': 'Please note that you can send only one message until',
       'text2': 'responds to you back.'
     },
     'activity': {
-      'text1': 'replied to',
-      'text2': 'Your message'
+      'text1': 'You messaged',
+      'text2': 'sent you message '
     },
     'no_search': 'No peer found.'
   },
