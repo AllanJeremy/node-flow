@@ -282,7 +282,7 @@ exports.language = {
     'empty_chat': 'Please start chatting now!',
     'wait_message': {
       'text1': 'Please wait while',
-      'text2': 'to join your chat.'
+      'text2': 'joins your chat.'
     },
     'first_message_warning': {
       'text1': 'Please note that you can send only one message until',
