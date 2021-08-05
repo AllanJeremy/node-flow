@@ -90,7 +90,8 @@ class ConversationStarterController {
 
     let isConversationStarterExist = await UserConversationStarter.findOne({
       where: {
-        user_id: req.id
+        user_id: req.id,
+        conversation_starter_id: req.body.conversation_starter_id,
       }
     });
     if (!isConversationStarterExist) {
@@ -102,7 +103,6 @@ class ConversationStarterController {
     } else {
       await UserConversationStarter.update({
         answer: req.body.answer,
-        conversation_starter_id: req.body.conversation_starter_id,
       },{
         where: {
           user_id: req.id,
