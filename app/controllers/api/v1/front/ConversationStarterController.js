@@ -152,51 +152,55 @@ class ConversationStarterController {
       });
     }
 
+
     var user = await User.findOne({where: { id: req.id }});
-    var chatToken = await Chat.token(user.unique_id);
 
-    var botUser = await User.findOne({where: {
-      email: SystemConstants.SYSTEM_BOT_EMAIL
-    }});
+    if(!user.published) {
+      var chatToken = await Chat.token(user.unique_id);
 
-    User.update({
-      published: StatusHandler.active,
-      chat_token: chatToken
-    }, {
-      where: {
-        id: req.id
+      var botUser = await User.findOne({where: {
+        email: SystemConstants.SYSTEM_BOT_EMAIL
+      }});
+
+      User.update({
+        published: StatusHandler.active,
+        chat_token: chatToken
+      }, {
+        where: {
+          id: req.id
+        }
+      });
+
+      ListedPeer.create({
+        user_id: req.id,
+        peer_id: botUser.id,
+        status: PeerStatusHandler.active
+      });
+
+      try {
+        await Chat.createUser({
+          id: user.unique_id,
+          user_id: user.id,
+          first_name: user.first_name,
+          image: process.env.API_IMAGE_URL + '/avatar/' + user.profile_picture
+        });
+
+        const client = Chat.getInstance();
+
+        const channel = client.channel('messaging', {
+          members: [botUser.unique_id, user.unique_id],
+          created_by_id: botUser.unique_id
+        });
+
+        await channel.create();
+
+        const message = await channel.sendMessage({
+          user_id: botUser.unique_id,
+          text: 'Hi ' + user.first_name  + '! ' + chatLanguage.default_message
+        });
+      } catch(e) {
+        console.log(e);
       }
-    });
-
-    ListedPeer.create({
-      user_id: req.id,
-      peer_id: botUser.id,
-      status: PeerStatusHandler.active
-    });
-
-    try {
-      await Chat.createUser({
-        id: user.unique_id,
-        user_id: user.id,
-        first_name: user.first_name,
-        image: process.env.API_IMAGE_URL + '/avatar/' + user.profile_picture
-      });
-
-      const client = Chat.getInstance();
-
-      const channel = client.channel('messaging', {
-        members: [botUser.unique_id, user.unique_id],
-        created_by_id: botUser.unique_id
-      });
-
-      await channel.create();
-
-      const message = await channel.sendMessage({
-        user_id: botUser.unique_id,
-        text: 'Hi ' + user.first_name  + '! ' + chatLanguage.default_message
-      });
-    } catch(e) {
-      console.log(e);
     }
 
     return ResponseHandler.success(res, '', responseLanguage.conversation_starter_status_store);
