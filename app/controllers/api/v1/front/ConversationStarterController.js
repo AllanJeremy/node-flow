@@ -154,8 +154,7 @@ class ConversationStarterController {
 
 
     var user = await User.findOne({where: { id: req.id }});
-
-    if(!user.published) {
+    if (!user.published) {
       var chatToken = await Chat.token(user.unique_id);
 
       var botUser = await User.findOne({where: {
