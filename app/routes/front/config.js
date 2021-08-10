@@ -64,6 +64,7 @@ const apiRoute = {
   CHAT_FEEDBACK: '/chat/match_feedback/store',
   CHAT_MESSAGE: '/chat/message/store',
   CHAT_MESSAGE_RETENTION: '/chat/message/retention',
+  CHAT_GET_MESSAGE_RETENTION: '/chat/message/retention/:channel_id',
 
   HEALTH_JOURNEY_LIST: '/user/profile/health_journey/list',
 }
