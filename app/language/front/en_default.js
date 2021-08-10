@@ -268,7 +268,8 @@ exports.language = {
         'text2': 'You\'ve seen all current peers'
       },
       'button': 'Edit Preferences'
-    }
+    },
+    'flag_at_risk_text': 'Are you sure you want flagged this user at risk?'
   },
   'chat': {
     'empty_chat_list': 'You have no chat with anyone.',
@@ -292,7 +293,9 @@ exports.language = {
       'text1': 'You messaged',
       'text2': 'sent you message '
     },
-    'no_search': 'No peer found.'
+    'no_search': 'No peer found.',
+    'retention_days_text': 'Selected days for retention:',
+    'unmatch_chat': 'You cannot send any messages until peer matches you once again.'
   },
   'published_home_page': {
     'title': 'Welcome,',
@@ -354,6 +357,8 @@ exports.language = {
     'day': 'day',
     'review_profile': 'Review Profile',
     'health_journey': 'Health Journey',
+    'save_continue_button': 'Save & Continue',
+    'back_edit_button': 'Back To Edit'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
@@ -377,6 +382,7 @@ exports.language = {
     'mute_success': 'Mute successfully.',
     'unmatch_success': 'Unmatched successfully.',
     'module_required': 'Please select at least one experience.',
-    'unverified_user': 'Your email address is not verified. Please verify your email to continue.'
+    'unverified_user': 'Your email address is not verified. Please verify your email to continue.',
+    'verification_code_length': 'Verification code must be of 5 characters length.'
   }
 }

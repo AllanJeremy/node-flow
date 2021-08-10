@@ -23,6 +23,12 @@ const language = require('../../../../language/en_default');
 const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
 
+/**
+ * Transformers
+ */
+ var ChatTransformer = require('../../../../transformers/front/ChatTransformer');
+ ChatTransformer = new ChatTransformer();
+
 
 class ChatController {
 
@@ -124,6 +130,24 @@ class ChatController {
 
   }
 
+  /**
+   * @api {get} /chat/message/retention/:channel_id Handle get chat retention message operation
+   * @apiName Front get chat message retention
+   * @apiGroup Front
+   *
+   * @apiSuccess (200) {Object}
+   */
+  GetRetention = (req, res) => {
+    Channel.findOne({
+      where: {
+        channel_id: req.params.channel_id
+      }
+    }).then(response => {
+      return ResponseHandler.success(res, '', ChatTransformer.transform(response));
+    }).catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
 
 }
 
