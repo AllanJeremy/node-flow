@@ -358,7 +358,10 @@ exports.language = {
     'review_profile': 'Review Profile',
     'health_journey': 'Health Journey',
     'save_continue_button': 'Save & Continue',
-    'back_edit_button': 'Back To Edit'
+    'back_edit_button': 'Back To Edit',
+    'skip_to_view_matches': 'Skip to view matches',
+    'preview_profile': 'Preview Profile',
+    'next_question': 'Next Question'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
