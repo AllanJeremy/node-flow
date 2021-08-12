@@ -361,7 +361,8 @@ exports.language = {
     'back_edit_button': 'Back To Edit',
     'skip_to_view_matches': 'Skip to view matches',
     'preview_profile': 'Preview Profile',
-    'next_question': 'Next Question'
+    'next_question': 'Next Question',
+    'account_setting_button': 'Account Settings'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
