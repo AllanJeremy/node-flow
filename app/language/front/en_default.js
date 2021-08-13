@@ -269,7 +269,8 @@ exports.language = {
       },
       'button': 'Edit Preferences'
     },
-    'flag_at_risk_text': 'Are you sure you want flagged this user at risk?'
+    'flag_at_risk_text': 'Are you sure you want to flag this user at risk?',
+    'empty_peer': 'You don\'t have any peers in the list'
   },
   'chat': {
     'empty_chat_list': 'You have no chat with anyone.',
