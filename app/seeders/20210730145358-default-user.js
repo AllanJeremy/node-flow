@@ -24,15 +24,25 @@ module.exports = {
     */
 
     var uniqueId = (new Date().getTime()).toString(36);
-    var chatToken = await Chat.token(uniqueId);
+    //var chatToken = await Chat.token(uniqueId);
 
-    var healthCategory = [
+    var chatToken = (new Date().getTime()).toString(36);
+
+    var healthCategories = [
       'Anxiety',
       'Depression',
       'Panic Attacks',
       'Grief or Bereavement',
       'Stress or Burnout'
     ];
+
+    var workouts = [
+      'Meditation',
+      'Exercise',
+      'Yoga',
+      'Talk Therapy',
+      'Arts and Crafts'
+    ]
 
     var result = await queryInterface.bulkInsert('users', [{
       name_prefix: 'they_them',
@@ -63,28 +73,50 @@ module.exports = {
       user_id: userId,
       gender_id: 1,
       gender_status: 1,
-      sexual_orientation_id: 1,
+      sexual_orientation_id: 6,
       sexual_orientation_status:1,
-      summary:'',
+      summary: "Hi! We are Larissa and Kendra, the Founders of Joyn. We are so happy you're here and can't wait to build this community with you. We're here to be a resource to you in navigating the Joyn app or simply connect! Let's chat!",
       created_at: new Date(),
       updated_at: new Date()
     }]);
 
-    const userHealthCategory = await queryInterface.rawSelect('health_categories', {
+    const healthCategoryIds = await queryInterface.rawSelect('health_categories', {
       where: {
-         name: {[Op.in]: [
-      healthCategory
-    ] }
+        name: {[Op.in]: [healthCategories]}
       },
     }, ['id', 'name']);
 
-    queryInterface.bulkInsert('user_health_categories', [{
-      user_id: userId,
-      health_category_id: 1,
-      status: 1,
-      created_at: new Date(),
-      updated_at: new Date()
-    }]);
+    let userHealthCategories = [];
+    healthCategoryIds.forEach(healthCategoryId => {
+      userHealthCategories.push({
+        user_id: userId,
+        health_category_id: healthCategoryId.id,
+        status: 1,
+        created_at: new Date(),
+        updated_at: new Date()
+      });
+    });
+
+    queryInterface.bulkInsert('user_health_categories', userHealthCategories);
+
+    const workoutIds = await queryInterface.rawSelect('workouts', {
+      where: {
+        name: {[Op.in]: [workouts]}
+      },
+    }, ['id', 'name']);
+
+    let userWorkouts = [];
+    workoutIds.forEach(workoutId => {
+      userWorkouts.push({
+        user_id: userId,
+        workout_id: workoutId.id,
+        status: 1,
+        created_at: new Date(),
+        updated_at: new Date()
+      });
+    });
+
+    queryInterface.bulkInsert('user_workouts', userWorkouts);
 
     queryInterface.bulkInsert('user_health_journeys', [{
       user_id: userId,
@@ -96,7 +128,7 @@ module.exports = {
     queryInterface.bulkInsert('user_conversation_starters', [{
       user_id: userId,
       conversation_starter_id: 4,
-      answer: JSON.stringify('Cat'),
+      answer: JSON.stringify('Cute'),
       created_at: new Date(),
       updated_at: new Date()
     }]);
