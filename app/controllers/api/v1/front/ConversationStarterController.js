@@ -45,6 +45,12 @@ const chatLanguage = language.en.chat;
 var ConversationStarterTransformer = require('../../../../transformers/front/ConversationStarterTransformer');
 ConversationStarterTransformer = new ConversationStarterTransformer();
 
+/**
+ * Transformers
+ */
+var UserTransformer = require('../../../../transformers/front/UserTransformer');
+UserTransformer = new UserTransformer();
+
 
 class ConversationStarterController {
 
@@ -202,7 +208,9 @@ class ConversationStarterController {
       }
     }
 
-    return ResponseHandler.success(res, '', responseLanguage.conversation_starter_status_store);
+    var userData = await User.findOne({where: { id: req.id }});
+
+    return ResponseHandler.success(res, responseLanguage.conversation_starter_status_store, UserTransformer.user(userData));
   }
 }
 
