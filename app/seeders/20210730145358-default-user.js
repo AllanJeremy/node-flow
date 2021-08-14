@@ -80,7 +80,7 @@ module.exports = {
 
     const healthCategoryIds = await queryInterface.rawSelect('health_categories', {
       where: {
-        name: {[Op.in]: [healthCategories]}
+        name: {[Op.in]: healthCategories}
       },
     }, ['id', 'name']);
 
@@ -99,7 +99,7 @@ module.exports = {
 
     const workoutIds = await queryInterface.rawSelect('workouts', {
       where: {
-        name: {[Op.in]: [workouts]}
+        name: {[Op.in]: workouts}
       },
     }, ['id', 'name']);
 
