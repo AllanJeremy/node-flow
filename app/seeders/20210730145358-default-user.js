@@ -78,11 +78,13 @@ module.exports = {
       updated_at: new Date()
     }]);
 
-    const healthCategoryIds = await queryInterface.rawSelect('health_categories', {
-      where: {
-        name: {[Op.in]: healthCategories}
-      },
-    }, ['id', 'name']);
+    const healthCategoryIds = await queryInterface.sequelize.query(
+      'SELECT id, name FROM health_categories WHERE name IN(:name)',
+      {
+        replacements: {name: healthCategories},
+        type: Sequelize.SELECT
+      }
+    );
 
     let userHealthCategories = [];
     healthCategoryIds.forEach(healthCategoryId => {
@@ -97,11 +99,13 @@ module.exports = {
 
     queryInterface.bulkInsert('user_health_categories', userHealthCategories);
 
-    const workoutIds = await queryInterface.rawSelect('workouts', {
-      where: {
-        name: {[Op.in]: workouts}
-      },
-    }, ['id', 'name']);
+    const workoutIds = await queryInterface.sequelize.query(
+      'SELECT id, name FROM workouts WHERE name IN(:name)',
+      {
+        replacements: {name: workouts},
+        type: Sequelize.SELECT
+      }
+    );
 
     let userWorkouts = [];
     workoutIds.forEach(workoutId => {
