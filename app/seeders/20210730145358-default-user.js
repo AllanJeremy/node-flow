@@ -78,16 +78,19 @@ module.exports = {
       updated_at: new Date()
     }]);
 
-    const healthCategoryIds = await queryInterface.sequelize.query(
+    let healthCategoryIds = await queryInterface.sequelize.query(
       'SELECT id, name FROM health_categories WHERE name IN(:name)',
       {
+        raw: true,
         replacements: {name: healthCategories},
         type: Sequelize.SELECT
       }
     );
 
+    healthCategoryIds = healthCategoryIds.length ? healthCategoryIds[0] : [];
+
     let userHealthCategories = [];
-    healthCategoryIds.forEach(healthCategoryId => {
+    healthCategoryIds.forEach((healthCategoryId) => {
       userHealthCategories.push({
         user_id: userId,
         health_category_id: healthCategoryId.id,
@@ -99,13 +102,16 @@ module.exports = {
 
     queryInterface.bulkInsert('user_health_categories', userHealthCategories);
 
-    const workoutIds = await queryInterface.sequelize.query(
+    let workoutIds = await queryInterface.sequelize.query(
       'SELECT id, name FROM workouts WHERE name IN(:name)',
       {
+        raw: true,
         replacements: {name: workouts},
         type: Sequelize.SELECT
       }
     );
+
+    workoutIds = workoutIds.length ? workoutIds[0] : [];
 
     let userWorkouts = [];
     workoutIds.forEach(workoutId => {
