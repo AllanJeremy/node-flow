@@ -97,11 +97,20 @@ class UserProfileController {
         returning: true,
         raw: true
       })
-      .then(response => {
+      .then(async response => {
         let res_data = response[1][0];
         let data = {
           id: req.id
         }
+
+        const client = Chat.getInstance();
+        const updateResponse = await client.upsertUser({
+          id: response[1][0]['unique_id'],
+          first_name: response[1][0]['first_name'],
+          name: response[1][0]['name'],
+          image: response[1][0]['profile_picture'],
+        });
+
 
         ElasticsearchEventsHandler.store(ElasticsearchEventsAction.createUser, data);
 
