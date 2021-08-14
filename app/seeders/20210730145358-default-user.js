@@ -2,6 +2,9 @@
 
 const bcrypt = require('bcryptjs');
 
+var Sequelize = require('sequelize');
+var Op = Sequelize.Op;
+
 var Chat = require('../helpers/Chat');
 Chat = new Chat();
 
@@ -23,8 +26,16 @@ module.exports = {
     var uniqueId = (new Date().getTime()).toString(36);
     var chatToken = await Chat.token(uniqueId);
 
+    var healthCategory = [
+      'Anxiety',
+      'Depression',
+      'Panic Attacks',
+      'Grief or Bereavement',
+      'Stress or Burnout'
+    ];
+
     var result = await queryInterface.bulkInsert('users', [{
-      name_prefix: 'miss',
+      name_prefix: 'they_them',
       first_name: 'L&K',
       email: SystemConstants.SYSTEM_BOT_EMAIL,
       password: bcrypt.hashSync('Teamjoyn2021', 8),
@@ -55,6 +66,22 @@ module.exports = {
       sexual_orientation_id: 1,
       sexual_orientation_status:1,
       summary:'',
+      created_at: new Date(),
+      updated_at: new Date()
+    }]);
+
+    const userHealthCategory = await queryInterface.rawSelect('health_categories', {
+      where: {
+         name: {[Op.in]: [
+      healthCategory
+    ] }
+      },
+    }, ['id', 'name']);
+
+    queryInterface.bulkInsert('user_health_categories', [{
+      user_id: userId,
+      health_category_id: 1,
+      status: 1,
       created_at: new Date(),
       updated_at: new Date()
     }]);
