@@ -24,9 +24,7 @@ module.exports = {
     */
 
     var uniqueId = (new Date().getTime()).toString(36);
-    //var chatToken = await Chat.token(uniqueId);
-
-    var chatToken = (new Date().getTime()).toString(36);
+    var chatToken = await Chat.token(uniqueId);
 
     var healthCategories = [
       'Anxiety',
