@@ -38,6 +38,18 @@ class Chat {
 
     return response;
   }
+
+  updateUser = async(data) => {
+    let client = this.getInstance();
+    let response = await client.upsertUser({
+      id: data.id,
+      first_name: data.first_name,
+      name: data.name,
+      image: data.image
+    });
+
+    return response;
+  }
 }
 
 module.exports = Chat;

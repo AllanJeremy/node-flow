@@ -97,11 +97,17 @@ class UserProfileController {
         returning: true,
         raw: true
       })
-      .then(response => {
-        let res_data = response[1][0];
+      .then(async response => {
         let data = {
           id: req.id
         }
+
+        await Chat.updateUser({
+          id: response[1][0]['unique_id'],
+          first_name: req.body.first_name,
+          name: req.body.first_name,
+          image: process.env.API_IMAGE_URL + '/avatar/' + req.body.profile_picture
+        });
 
         ElasticsearchEventsHandler.store(ElasticsearchEventsAction.createUser, data);
 
