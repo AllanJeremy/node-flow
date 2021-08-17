@@ -288,15 +288,15 @@ exports.language = {
       'text2': 'joins your chat.'
     },
     'first_message_warning': {
-      'text1': 'Please note that you can send only one message until',
-      'text2': 'responds to you back.'
+      'text1': 'Please note that you can only send one message while we wait for',
+      'text2': 'to join the chat.'
     },
     'activity': {
       'text1': 'You messaged',
       'text2': 'sent you message '
     },
     'no_search': 'No peer found.',
-    'retention_days_text': 'Selected days for retention:',
+    'retention_days_text': 'Retain messages for:',
     'unmatch_chat': 'You cannot send any messages until peer matches you once again.'
   },
   'published_home_page': {
