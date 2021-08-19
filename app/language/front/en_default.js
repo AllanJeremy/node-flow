@@ -397,6 +397,6 @@ exports.language = {
     'module_required': 'Please select at least one experience.',
     'unverified_user': 'Your email address is not verified. Please verify your email to continue.',
     'verification_code_length': 'Verification code must be of 5 characters length.',
-    'name_invalid': 'First name should not contain characters'
+    'name_invalid': 'First name should not contain special characters.'
   }
 }
