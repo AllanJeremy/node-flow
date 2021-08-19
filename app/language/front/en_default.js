@@ -312,7 +312,14 @@ exports.language = {
     'tab1': 'Support',
     'tab2': 'Peers',
     'tab3': 'Chat',
-    'tab4': 'Profile',
+    'tab4': 'More',
+    'popup': {
+      'view_profile': 'View Profile',
+      'account_settings': 'Account Settings',
+      'matching_preference': 'Matching Preferences',
+      'help_support': 'Help Support',
+      'log_out': 'Log Out'
+    }
   },
   'common': {
     'continue_button': 'Continue',
