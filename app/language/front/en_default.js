@@ -254,7 +254,7 @@ exports.language = {
     'mute': 'Mute',
     'unmute': 'Unmute',
     'unmatch':'Unmatch',
-    'user_profile': 's Profile',
+    'user_profile': 'Profile',
     'go_to_chat': 'Go to Chat',
     'report': 'Report',
     'flag': 'Flag',
