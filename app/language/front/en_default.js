@@ -298,7 +298,8 @@ exports.language = {
     'no_search': 'No peer found.',
     'retention_days_text': 'Retain messages for:',
     'unmatch_chat': 'You cannot send any messages until peer matches you once again.',
-    'chat_error': 'Something went wrong! Please try again.'
+    'chat_error': 'Something went wrong! Please try again.',
+    'deleted_channel': 'has left the chat.'
   },
   'published_home_page': {
     'title': 'Welcome,',
