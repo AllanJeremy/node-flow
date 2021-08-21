@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   ErrorLog.init({
     user_id: DataTypes.INTEGER,
-    error: DataTypes.STRING
+    error: DataTypes.JSON
   }, {
     sequelize,
     modelName: 'ErrorLog',
