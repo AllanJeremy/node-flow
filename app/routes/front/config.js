@@ -67,6 +67,8 @@ const apiRoute = {
   CHAT_GET_MESSAGE_RETENTION: '/chat/message/retention/:channel_id',
 
   HEALTH_JOURNEY_LIST: '/user/profile/health_journey/list',
+
+  ERROR_LOG: '/api/error/log'
 }
 
 module.exports = {
