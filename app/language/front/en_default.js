@@ -296,9 +296,10 @@ exports.language = {
       'text2': 'sent you message '
     },
     'no_search': 'No peer found.',
-    'retention_days_text': 'Retain messages for:',
+    'retention_days_text': 'Retain messages for',
     'unmatch_chat': 'You cannot send any messages until peer matches you once again.',
     'chat_error': 'Something went wrong! Please try again.',
+    'retention_message': 'Frederik changed your message retention to',
     'deleted_channel': 'has left the chat.'
   },
   'published_home_page': {
@@ -373,7 +374,10 @@ exports.language = {
     'skip_to_view_matches': 'Skip to view matches',
     'preview_profile': 'Preview Profile',
     'next_question': 'Next Question',
-    'account_setting_button': 'Account Settings'
+    'account_setting_button': 'Account Settings',
+    'back_to_home':'Back to home',
+    'days': 'days',
+    'learn_more': 'Learn More'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
@@ -399,6 +403,7 @@ exports.language = {
     'module_required': 'Please select at least one experience.',
     'unverified_user': 'Your email address is not verified. Please verify your email to continue.',
     'verification_code_length': 'Verification code must be of 5 characters length.',
-    'name_invalid': 'First name should not contain special characters.'
+    'name_invalid': 'First name should not contain special characters.',
+    'retention_success': 'Message retention updated successfully.'
   }
 }
