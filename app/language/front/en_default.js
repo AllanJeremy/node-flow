@@ -293,7 +293,7 @@ exports.language = {
     },
     'activity': {
       'text1': 'You messaged',
-      'text2': 'sent you message '
+      'text2': 'sent you a message '
     },
     'no_search': 'No peer found.',
     'retention_days_text': 'Retain messages for',
@@ -376,7 +376,8 @@ exports.language = {
     'account_setting_button': 'Account Settings',
     'back_to_home':'Back to home',
     'days': 'days',
-    'learn_more': 'Learn More'
+    'learn_more': 'Learn More',
+    'go_back_to_chat': 'Go back to chat'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
