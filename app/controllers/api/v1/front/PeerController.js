@@ -350,9 +350,9 @@ class PeerController {
             {
               'id': {[Op.notIn]: delistedPeers}
             },
-            // {
-            //   'id': {[Op.notIn]: declinedPeers}
-            // },
+            {
+              'id': {[Op.notIn]: declinedPeers}
+            },
             {
               'id': {[Op.not]: req.id}
             },
@@ -381,9 +381,9 @@ class PeerController {
             {
               'id': {[Op.notIn]: delistedPeers}
             },
-            // {
-            //   'id': {[Op.notIn]: declinedPeers}
-            // },
+            {
+              'id': {[Op.notIn]: declinedPeers}
+            },
             {
               'id': {[Op.not]: req.id}
             },
