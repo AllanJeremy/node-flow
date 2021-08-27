@@ -174,7 +174,7 @@ exports.language = {
   },
   'summary': {
     'title': 'Tell us more about why you joined.',
-    'input_max_length': 'Max. 150 characters',
+    'input_max_length': 'Max. 200 characters',
     'popup_title': 'My Story Example',
     'popup_description': 'Stress and anxiety have been a big challenge for me as a single father. I\'m here to connect with others to learn about what they do to find balance.',
     'health_journey_question': 'Where are you on your mental health journey?'
@@ -299,7 +299,7 @@ exports.language = {
     'retention_days_text': 'Retain messages for',
     'unmatch_chat': 'You cannot send any messages until peer matches you once again.',
     'chat_error': 'Something went wrong! Please try again.',
-    'retention_message': 'Frederik changed your message retention to',
+    'retention_message': 'changed your message retention to',
     'deleted_channel': 'has left the chat.'
   },
   'published_home_page': {
@@ -378,7 +378,8 @@ exports.language = {
     'back_to_home':'Back to home',
     'days': 'days',
     'learn_more': 'Learn More',
-    'go_back_to_chat': 'Go back to chat'
+    'go_back_to_chat': 'Go back to chat',
+    'go_back_to_home': 'Go back to home'
   },
   'validation': {
     'required_fields': 'All the fields are required.',
