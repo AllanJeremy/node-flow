@@ -301,7 +301,8 @@ exports.language = {
     'chat_error': 'Something went wrong! Please try again.',
     'retention_message': 'changed your message retention to',
     'deleted_channel': 'has left the chat',
-    'view_more_peers': 'View More Peers'
+    'view_more_peers': 'View More Peers',
+    'deleted_channel': 'has left the chat.'
   },
   'published_home_page': {
     'title': 'Welcome,',
