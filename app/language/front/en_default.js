@@ -300,6 +300,8 @@ exports.language = {
     'unmatch_chat': 'You cannot send any messages until peer matches you once again.',
     'chat_error': 'Something went wrong! Please try again.',
     'retention_message': 'changed your message retention to',
+    'deleted_channel': 'has left the chat',
+    'view_more_peers': 'View More Peers',
     'deleted_channel': 'has left the chat.'
   },
   'published_home_page': {
