@@ -281,7 +281,7 @@ exports.language = {
     'match_feedback': 'What could be better?',
     'message_retention_title': 'Message retention for chats with',
     'message_retention_help_text': 'Your selected retention period determines how long your messages are saved. A 30-day retention period means messages from less than 30 days ago will be saved, but messages sent 31+ days ago are deleted.',
-    'message_retention_confirmation_text': 'Shortening your message retention window will delete all messages prior to the selected period. Would you like to confirm your new setting?',
+    'message_retention_confirmation_text': 'Shortening your message retention window will delete all messages prior to the selected period.',
     'empty_chat': 'Please start chatting now!',
     'wait_message': {
       'text1': 'Please wait while',
