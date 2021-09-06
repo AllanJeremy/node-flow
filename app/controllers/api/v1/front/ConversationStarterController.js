@@ -202,7 +202,7 @@ class ConversationStarterController {
           is_deleted: false,
           is_deleted_by: '',
           sender_id: botUser.unique_id,
-          receiver_id: ''
+          receiver_id: user.unique_id
         });
 
         await channel.create();
