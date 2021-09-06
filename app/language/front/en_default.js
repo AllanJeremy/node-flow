@@ -170,7 +170,8 @@ exports.language = {
     'sexual_orientation_identify_text': 'My sexual orientation is ...',
     'family_identify_text': 'My family dynamics as a...',
     'popup_title': 'Why are my options limited?',
-    'popup_description': 'For any majority groups, across both race and sexuality, we limit the ability to set a match preference. This allows us to match you across all races and sexualities, both majorities and underrepresented minorities. Any questions?'
+    'popup_description': 'For any majority groups, across both race and sexuality, we limit the ability to set a match preference. This allows us to match you across all races and sexualities, both majorities and underrepresented minorities. Any questions?',
+    'select_all': 'Select All'
   },
   'summary': {
     'title': 'Tell us more about why you joined.',
