@@ -409,6 +409,7 @@ exports.language = {
     'unverified_user': 'Your email address is not verified. Please verify your email to continue.',
     'verification_code_length': 'Verification code must be of 5 characters length.',
     'name_invalid': 'First name should not contain special characters.',
-    'retention_success': 'Message retention updated successfully.'
+    'retention_success': 'Message retention updated successfully.',
+    'email_public_domain':'Please use business email address for registration.'
   }
 }
