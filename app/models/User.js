@@ -13,6 +13,16 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    getExceptionalEmail() {
+      var exceptionalEmails = [
+        'kotadiachintan@gmail.com',
+        'joyn@one.com'
+      ];
+
+      return exceptionalEmails;
+    }
+
   };
   User.init({
     email: DataTypes.STRING,

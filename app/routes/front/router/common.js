@@ -6,6 +6,7 @@ var router = express.Router();
  */
 const routeConfig = require('../config');
 const apiRoute = routeConfig.apiRoute;
+const authRoute = routeConfig.authRoute;
 
 /**
  * Common Controller
@@ -31,5 +32,7 @@ router.post(apiRoute.CONTACT_SUPPORT, CommonValidation.ContactSupport, CommonCon
 router.post(apiRoute.FEEDBACK, CommonValidation.Feedback, CommonController.Feedback);
 
 router.get(apiRoute.HEALTH_JOURNEY_LIST, CommonController.HealthJourney);
+
+router.get(authRoute.PUBLIC_DOMAIN_LIST, CommonController.GetPublicDomain);
 
 module.exports = router;

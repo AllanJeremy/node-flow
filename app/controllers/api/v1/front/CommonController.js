@@ -9,6 +9,9 @@ const StatusHandler = require('../../../../helpers/StatusHandler');
 
 const HealthJourney = require('../../../../helpers/HealthJourney');
 
+var PublicDomain = require('../../../../helpers/PublicDomain');
+PublicDomain = new PublicDomain();
+
 /**
  * Models
  */
@@ -18,7 +21,8 @@ const Avatar = Models.Avatar;
 const ContactSupport = Models.ContactSupport;
 const Feedback = Models.Feedback;
 const UserHealthJourney = Models.UserHealthJourney;
-
+var User = Models.User;
+User = new User();
 /**
  * Languages
  */
@@ -142,6 +146,17 @@ class CommonController {
       options: HealthJourney.HealthJourneyOption
     };
     return ResponseHandler.success(res, '', healthJourney);
+  }
+
+  GetPublicDomain = (req, res) => {
+    var publicDomains = PublicDomain.get();
+    var exceptionalEmail = User.getExceptionalEmail();
+    var data = {
+      'public_domain': publicDomains,
+      'exceptional_email': exceptionalEmail,
+      'api_key': process.env.ANTIDEO_API_KEY
+    }
+    return ResponseHandler.success(res, '', data);
   }
 
 
