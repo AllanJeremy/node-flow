@@ -41,11 +41,12 @@ exports.verify = (req, res, next) => {
     authAdminRoute.AUTH_TOKEN
   ]
   let langRoute = authFrontRoute.APP_LANGUAGE;
+  let configRoute = authFrontRoute.CONFIG;
 
   if (isAdmin) {
     isPublicRoute = adminPublicRoute.indexOf(currentURL.replace(routePrefix, '')) > -1 ? true : false;
   } else {
-    isPublicRoute = Object.values(authFrontRoute).indexOf(currentURL) > -1 || currentURL.slice(0, currentURL.lastIndexOf('/')) == langRoute.slice(0, langRoute.lastIndexOf('/')) ? true : false;
+    isPublicRoute = Object.values(authFrontRoute).indexOf(currentURL) > -1 || currentURL.slice(0, currentURL.lastIndexOf('/')) == langRoute.slice(0, langRoute.lastIndexOf('/')) || currentURL.slice(0, currentURL.lastIndexOf('/')) == configRoute.slice(0, configRoute.lastIndexOf('/')) ? true : false;
   }
 
   if (isPublicRoute) {
