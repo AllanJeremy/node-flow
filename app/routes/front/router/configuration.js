@@ -18,7 +18,6 @@ ConfigurationController = new ConfigurationController();
 /**
  * Configuration Routes
  */
- console.log("tttt", authRoute.CONFIG);
 router.get(authRoute.CONFIG, ConfigurationController.list);
 
 module.exports = router;
