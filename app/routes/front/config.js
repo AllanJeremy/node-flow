@@ -9,6 +9,7 @@ const authRoute = {
   APP_LANGUAGE: '/api/lang/:code?',
   REFRESH_TOKEN: '/api/token/refresh',
   PUBLIC_DOMAIN_LIST: '/api/public_domain',
+  CONFIG: '/api/config/:name?',
 }
 
 const apiRoute = {

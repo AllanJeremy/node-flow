@@ -1,7 +1,7 @@
 exports.language = {
   'welcome': {
     'title': 'Welcome to Joyn!',
-    'description': 'A safe place to find and build a community as unique as you are.',
+    'description': 'Expand your mental health toolkit with the power of peer connection',
     'button': 'Get Started'
   },
   'login': {
@@ -178,7 +178,8 @@ exports.language = {
     'input_max_length': 'Max. 200 characters',
     'popup_title': 'My Story Example',
     'popup_description': 'Stress and anxiety have been a big challenge for me as a single father. I\'m here to connect with others to learn about what they do to find balance.',
-    'health_journey_question': 'Where are you on your mental health journey?'
+    'health_journey_question': 'What would you like your peers to know about you?',
+    'health_journey_title':'My mental health journey is...'
   },
   'settings': {
     'app': {
@@ -303,7 +304,8 @@ exports.language = {
     'retention_message': 'changed your message retention to',
     'deleted_channel': 'has left the chat',
     'view_more_peers': 'View More Peers',
-    'deleted_channel': 'has left the chat.'
+    'deleted_channel': 'has left the chat.',
+    'delete_channel_button': 'Delete Chat'
   },
   'published_home_page': {
     'title': 'Welcome,',

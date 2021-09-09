@@ -68,6 +68,7 @@ db.DeleteChannelMessage = require('../models/DeleteChannelMessage.js')(sequelize
 db.ExportChannel = require('../models/ExportChannel.js')(sequelize, Sequelize);
 db.UserHealthJourney = require('../models/UserHealthJourney.js')(sequelize, Sequelize);
 db.ErrorLog = require('../models/ErrorLog.js')(sequelize, Sequelize);
+db.Configuration = require('../models/Configuration.js')(sequelize, Sequelize);
 
 // relationships
 db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
