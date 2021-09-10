@@ -70,31 +70,35 @@ db.UserHealthJourney = require('../models/UserHealthJourney.js')(sequelize, Sequ
 db.ErrorLog = require('../models/ErrorLog.js')(sequelize, Sequelize);
 db.Configuration = require('../models/Configuration.js')(sequelize, Sequelize);
 
-// relationships
-db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data'});
-db.UserMetadata.belongsTo(db.Gender, {foreignKey: 'gender_id', as: 'gender', onDelete: 'cascade', hooks: true});
-db.UserMetadata.belongsTo(db.SexualOrientation, {foreignKey: 'sexual_orientation_id', as: 'sexual_orientation', onDelete: 'cascade', hooks: true});
-db.User.hasMany(db.UserHealthCategory, {foreignKey: 'user_id', as: 'health_categories', onDelete: 'cascade', hooks: true});
-db.UserHealthCategory.belongsTo(db.HealthCategory, {foreignKey: 'health_category_id', as: 'health_category', onDelete: 'cascade', hooks: true});
-db.User.hasMany(db.UserWorkout, {foreignKey: 'user_id', as: 'workouts', onDelete: 'cascade', hooks: true});
-db.UserWorkout.belongsTo(db.Workout, {foreignKey: 'workout_id', as: 'workout', onDelete: 'cascade', hooks: true});
-db.User.hasMany(db.UserPersonalityQuestion, {foreignKey: 'user_id', as: 'personality_questions'});
-db.UserPersonalityQuestion.belongsTo(db.PersonalityQuestion, {foreignKey: 'question_id', as: 'personality_question'});
-db.User.hasMany(db.UserConversationStarter, {foreignKey: 'user_id', as: 'conversation_starters'});
-db.UserConversationStarter.belongsTo(db.ConversationStarter, {foreignKey: 'conversation_starter_id', as: 'conversation_starter'});
-db.User.hasOne(db.UserInterest, {foreignKey: 'user_id', as: 'user_interest'});
-db.ListedPeer.belongsTo(db.User, {foreignKey: 'peer_id', as: 'peer'});
-db.DelistedPeer.belongsTo(db.User, {foreignKey: 'peer_id', as: 'peer'});
-db.ReportedUser.belongsTo(db.User, {foreignKey: 'user_id', as: 'reported_user'});
-db.ReportedUser.belongsTo(db.User, {foreignKey: 'reported_by', as: 'reported_by_user'});
-db.User.hasMany(db.UserRace, {foreignKey: 'user_id', as: 'races', onDelete: 'cascade', hooks: true});
-db.UserRace.belongsTo(db.Race, {foreignKey: 'race_id', as: 'race', onDelete: 'cascade', hooks: true});
-db.User.hasMany(db.UserFamilyDynamic, {foreignKey: 'user_id', as: 'family_dynamics', onDelete: 'cascade', hooks: true});
-db.UserFamilyDynamic.belongsTo(db.FamilyDynamic, {foreignKey: 'family_dynamic_id', as: 'family_dynamic', onDelete: 'cascade', hooks: true});
-db.User.hasMany(db.UserMatchingPreference, {foreignKey: 'user_id', as: 'user_matching_preferences'});
+
 db.User.hasOne(db.UserSetting, {foreignKey: 'user_id', as: 'user_setting'});
-db.User.hasMany(db.ListedPeer, {foreignKey: 'user_id', as: 'listed_peers'});
+
+// relationships
+db.User.hasOne(db.UserMetadata, {foreignKey: 'user_id', as: 'user_meta_data', onDelete: 'cascade', hooks: true, allowNull: false});
+db.UserMetadata.belongsTo(db.Gender, {foreignKey: 'gender_id', as: 'gender', onDelete: 'cascade', hooks: true, allowNull: false});
+db.UserMetadata.belongsTo(db.SexualOrientation, {foreignKey: 'sexual_orientation_id', as: 'sexual_orientation', onDelete: 'cascade', hooks: true, allowNull: false});
+db.User.hasMany(db.UserHealthCategory, {foreignKey: 'user_id', as: 'health_categories', onDelete: 'cascade', hooks: true, allowNull: false});
+db.UserHealthCategory.belongsTo(db.HealthCategory, {foreignKey: 'health_category_id', as: 'health_category', onDelete: 'cascade', hooks: true, allowNull: false});
+db.User.hasMany(db.UserWorkout, {foreignKey: 'user_id', as: 'workouts', onDelete: 'cascade', hooks: true, allowNull: false});
+db.UserWorkout.belongsTo(db.Workout, {foreignKey: 'workout_id', as: 'workout', onDelete: 'cascade', hooks: true, allowNull: false});
+db.User.hasMany(db.UserPersonalityQuestion, {foreignKey: 'user_id', as: 'personality_questions'});
+db.UserPersonalityQuestion.belongsTo(db.PersonalityQuestion, {foreignKey: 'question_id', as: 'personality_question', onDelete: 'cascade', hooks: true, allowNull: false});
+db.User.hasMany(db.UserConversationStarter, {foreignKey: 'user_id', as: 'conversation_starters'});
+db.UserConversationStarter.belongsTo(db.ConversationStarter, {foreignKey: 'conversation_starter_id', as: 'conversation_starter', onDelete: 'cascade', hooks: true, allowNull: false});
+db.User.hasOne(db.UserInterest, {foreignKey: 'user_id', as: 'user_interest', onDelete: 'cascade', hooks: true, allowNull: false});
+db.ListedPeer.belongsTo(db.User, {foreignKey: 'peer_id', as: 'peer', onDelete: 'cascade', hooks: true, allowNull: false});
+db.DelistedPeer.belongsTo(db.User, {foreignKey: 'peer_id', as: 'peer', onDelete: 'cascade', hooks: true, allowNull: false});
+db.ReportedUser.belongsTo(db.User, {foreignKey: 'user_id', as: 'reported_user'});
+db.ReportedUser.belongsTo(db.User, {foreignKey: 'reported_by', as: 'reported_by_user', allowNull: false});
+db.User.hasMany(db.UserRace, {foreignKey: 'user_id', as: 'races', onDelete: 'cascade', hooks: true, allowNull: false});
+db.UserRace.belongsTo(db.Race, {foreignKey: 'race_id', as: 'race', onDelete: 'cascade', hooks: true, allowNull: false});
+db.User.hasMany(db.UserFamilyDynamic, {foreignKey: 'user_id', as: 'family_dynamics', onDelete: 'cascade', hooks: true, allowNull: false});
+db.UserFamilyDynamic.belongsTo(db.FamilyDynamic, {foreignKey: 'family_dynamic_id', as: 'family_dynamic', onDelete: 'cascade', hooks: true, allowNull: false});
+db.User.hasMany(db.UserMatchingPreference, {foreignKey: 'user_id', as: 'user_matching_preferences', onDelete: 'cascade', hooks: true, allowNull: false});
+db.Feedback.belongsTo(db.User, {foreignKey: 'user_id', as: 'feedback', onDelete: 'cascade', hooks: true, allowNull: false});
+db.User.hasMany(db.ContactSupport, {foreignKey: 'user_id', as: 'contact_support', onDelete: 'cascade', hooks: true, allowNull: false});
+db.User.hasMany(db.ListedPeer, {foreignKey: 'user_id', as: 'listed_peers', onDelete: 'cascade', hooks: true, allowNull: false});
 //db.User.hasMany(db.DelistedPeer, {foreignKey: 'user_id', as: 'user'});
-db.User.hasOne(db.UserHealthJourney, {foreignKey: 'user_id', as: 'user_health_journey'});
+db.User.hasOne(db.UserHealthJourney, {foreignKey: 'user_id', as: 'user_health_journey', onDelete: 'cascade', hooks: true, allowNull: false});
 
 module.exports = db;

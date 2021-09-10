@@ -133,6 +133,7 @@ class AuthController {
   SignUp = async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log("errorserrors", errors);
       return ResponseHandler.error(res, 422, errors.array());
     }
 

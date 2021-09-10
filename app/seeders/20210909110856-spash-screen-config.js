@@ -14,6 +14,8 @@ module.exports = {
     return queryInterface.bulkInsert('configurations', [{
       name: 'splash_screen_text',
       value: 'You are not alone on your mental health journey.',
+      created_at: new Date(),
+      updated_at: new Date()
     }]);
   },
 

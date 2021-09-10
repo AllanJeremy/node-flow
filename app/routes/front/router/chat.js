@@ -31,4 +31,8 @@ router.post(apiRoute.CHAT_MESSAGE_RETENTION, ChatValidation.Retention, ChatContr
 
 router.get(apiRoute.CHAT_GET_MESSAGE_RETENTION, ChatController.GetRetention);
 
+router.post(apiRoute.STORE_CHAT_USER, ChatValidation.Retention, ChatController.storeUser);
+
+router.post(apiRoute.UPDATE_CHAT_USER, ChatValidation.Retention, ChatController.updateUser);
+
 module.exports = router;
