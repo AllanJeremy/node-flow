@@ -7,8 +7,8 @@ exports.language = {
   'login': {
     'title': 'Log In',
     'form': {
-      'email_label': 'Email',
-      'email_placeholder': 'Enter your email',
+      'email_label': 'Work Email',
+      'email_placeholder': 'Enter your work email',
       'password_label': 'Password',
       'password_placeholder': 'Enter your password',
       'button': 'Log In'
@@ -22,8 +22,8 @@ exports.language = {
   'signup': {
     'title': 'Sign Up',
     'form': {
-      'email_label': 'Email',
-      'email_placeholder': 'Enter your email',
+      'email_label': 'Work Email',
+      'email_placeholder': 'Enter your work email',
       'password_label': 'Password',
       'password_placeholder': 'Create your password',
       'confirm_password_label': 'Confirm password',

@@ -17,7 +17,7 @@ module.exports = {
      * Add seed commands here.
      *
      * Example:
-     * await queryInterface.bulkInsert('People', [{
+     * await queryInterface.bulkInsert('', [{
      *   name: 'John Doe',
      *   isBetaMember: false
      * }], {});

@@ -171,7 +171,8 @@ exports.en = {
       'message_retention_update': 'Message retention updated successfully.',
       'health_journey_store': 'Health journey stored successfully.',
       'health_journey_update': 'Health journey updated successfully.',
-      'error_log_store_success': 'Error log store successfully.'
+      'error_log_store_success': 'Error log store successfully.',
+      'chat_user_store': 'Chat user stored successfully.'
     },
   },
   'chat': {

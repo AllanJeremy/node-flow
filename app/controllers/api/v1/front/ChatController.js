@@ -15,6 +15,7 @@ const Models = require('../../../../models');
 const MatchFeedback = Models.MatchFeedback;
 const ChatModeration = Models.ChatModeration;
 const Channel = Models.Channel;
+const ChannelUser = Models.ChannelUser;
 
 /**
  * Languages
@@ -144,6 +145,75 @@ class ChatController {
       }
     }).then(response => {
       return ResponseHandler.success(res, '', ChatTransformer.transform(response));
+    }).catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+
+  /**
+   * @api {post} /chat/user/store/ Handle store chat sender user operation
+   * @apiName Front store chat sender user
+   * @apiGroup Front
+   *
+   * @apiParam {String} [channel] channel
+   *
+   * @apiSuccess (200) {Object}
+   */
+  storeUser = (req, res) => {
+    Channel.findOne({
+      where: {
+        channel_id: req.body.channel_id
+      }
+    }).then(response => {
+      if(!response) {
+        Channel.create({
+          channel_id: req.body.channel_id,
+          message_retention: 30
+        }).then(response => {
+          ChannelUser.create({
+            channel_id: response.id,
+            user_id: req.id
+          }).then(response => {
+            return ResponseHandler.success(res, responseLanguage.chat_user_store);
+          }).catch(err => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
+        }).catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
+    }).catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /chat/user/update/ Handle store chat receiver user operation
+   * @apiName Front store chat receiver user
+   * @apiGroup Front
+   *
+   * @apiParam {String} [channel] channel
+   *
+   * @apiSuccess (200) {Object}
+   */
+  updateUser = (req, res) => {
+
+    Channel.findOne({
+      where: {
+        channel_id: req.body.channel_id
+      }
+    }).then(response => {
+      if(response) {
+        ChannelUser.create({
+          user_id: req.id,
+          channel_id: response.id,
+        }).then(response => {
+          return ResponseHandler.success(res, responseLanguage.chat_user_store);
+        }).catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      }
     }).catch(err => {
       return ResponseHandler.error(res, 500, err.message);
     });

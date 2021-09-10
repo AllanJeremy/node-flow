@@ -70,6 +70,10 @@ const apiRoute = {
 
   HEALTH_JOURNEY_LIST: '/user/profile/health_journey/list',
 
+  STORE_CHAT_USER: '/chat/user/store',
+
+  UPDATE_CHAT_USER: '/chat/user/update',
+
   ERROR_LOG: '/api/error/log'
 }
 
