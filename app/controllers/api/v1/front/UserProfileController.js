@@ -101,9 +101,9 @@ class UserProfileController {
         let data = {
           id: req.id
         }
-
         await Chat.updateUser({
           id: response[1][0]['unique_id'],
+          user_id: req.id,
           first_name: req.body.first_name,
           name: req.body.first_name,
           image: process.env.API_IMAGE_URL + '/avatar/' + req.body.profile_picture
