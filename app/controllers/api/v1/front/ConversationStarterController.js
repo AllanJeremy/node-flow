@@ -17,6 +17,7 @@ const PeerStatusHandler = require('../../../../helpers/PeerStatusHandler');
 var Chat = require('../../../../helpers/Chat');
 Chat = new Chat();
 
+
 /**
  * Constants
  */
@@ -190,27 +191,29 @@ class ConversationStarterController {
           image: process.env.API_IMAGE_URL + '/avatar/' + user.profile_picture
         });
 
-        const client = Chat.getInstance();
+        await Chat.createChannel(botUser, user);
 
-        const channel = client.channel('messaging', {
-          members: [botUser.unique_id, user.unique_id],
-          created_by_id: botUser.unique_id,
-          creater_id: botUser.unique_id,
-          is_accepted: true,
-          sender_match_feedback_completed: false,
-          receiver_match_feedback_completed: false,
-          is_deleted: false,
-          is_deleted_by: '',
-          sender_id: botUser.unique_id,
-          receiver_id: user.unique_id
-        });
+        // const client = Chat.getInstance();
 
-        await channel.create();
+        // const channel = client.channel('messaging', {
+        //   members: [botUser.unique_id, user.unique_id],
+        //   created_by_id: botUser.unique_id,
+        //   creater_id: botUser.unique_id,
+        //   is_accepted: true,
+        //   sender_match_feedback_completed: false,
+        //   receiver_match_feedback_completed: false,
+        //   is_deleted: false,
+        //   is_deleted_by: '',
+        //   sender_id: botUser.unique_id,
+        //   receiver_id: user.unique_id
+        // });
 
-        const message = await channel.sendMessage({
-          user_id: botUser.unique_id,
-          text: 'Hi ' + user.first_name  + '! ' + chatLanguage.default_message
-        });
+        // await channel.create();
+
+        // const message = await channel.sendMessage({
+        //   user_id: botUser.unique_id,
+        //   text: 'Hi ' + user.first_name  + '! ' + chatLanguage.default_message
+        // });
       } catch(e) {
         console.log(e);
       }

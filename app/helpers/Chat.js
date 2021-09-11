@@ -1,6 +1,19 @@
 var { StreamChat } = require('stream-chat');
 
 /**
+ * Languages
+ */
+const language = require('../language/en_default');
+const chatLanguage = language.en.chat;
+
+/**
+ * Models
+ */
+const Models = require('../models');
+const Channel = Models.Channel;
+const ChannelUser = Models.ChannelUser;
+
+/**
  * Used for mobile app chat functionality
  *
  * @class Chat
@@ -51,6 +64,48 @@ class Chat {
 
     return response;
   }
+
+
+  createChannel = async(botUser, user) => {
+    const client = this.getInstance();
+
+    const channel = client.channel('messaging', {
+      members: [botUser.unique_id, user.unique_id],
+      created_by_id: botUser.unique_id,
+      creater_id: botUser.unique_id,
+      is_accepted: true,
+      sender_match_feedback_completed: false,
+      receiver_match_feedback_completed: false,
+      is_deleted: false,
+      is_deleted_by: '',
+      sender_id: botUser.unique_id,
+      receiver_id: user.unique_id
+    });
+
+    await channel.create();
+
+    Channel.create({
+      channel_id: channel.id,
+      message_retention: 30
+    }).then(response => {
+
+      ChannelUser.create({
+        channel_id: response.id,
+        user_id: botUser.id
+      });
+
+      ChannelUser.create({
+        channel_id: response.id,
+        user_id: user.id
+      });
+    });
+
+    const message = await channel.sendMessage({
+      user_id: botUser.unique_id,
+      text: 'Hi ' + user.first_name  + '! ' + chatLanguage.default_message
+    });
+  }
+
 }
 
 module.exports = Chat;
