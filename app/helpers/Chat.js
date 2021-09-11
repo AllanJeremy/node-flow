@@ -43,6 +43,7 @@ class Chat {
     let client = this.getInstance();
     let response = await client.upsertUser({
       id: data.id,
+      user_id: data.user_id,
       first_name: data.first_name,
       name: data.name,
       image: data.image
