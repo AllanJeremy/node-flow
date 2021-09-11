@@ -98,6 +98,7 @@ db.User.hasMany(db.UserMatchingPreference, {foreignKey: 'user_id', as: 'user_mat
 db.Feedback.belongsTo(db.User, {foreignKey: 'user_id', as: 'feedback', onDelete: 'cascade', hooks: true, allowNull: false});
 db.User.hasMany(db.ContactSupport, {foreignKey: 'user_id', as: 'contact_support', onDelete: 'cascade', hooks: true, allowNull: false});
 db.User.hasMany(db.ListedPeer, {foreignKey: 'user_id', as: 'listed_peers', onDelete: 'cascade', hooks: true, allowNull: false});
+db.User.hasMany(db.ChannelUser, {foreignKey: 'user_id', as: 'channel_user', onDelete: 'cascade', hooks: true, allowNull: false});
 //db.User.hasMany(db.DelistedPeer, {foreignKey: 'user_id', as: 'user'});
 db.User.hasOne(db.UserHealthJourney, {foreignKey: 'user_id', as: 'user_health_journey', onDelete: 'cascade', hooks: true, allowNull: false});
 
