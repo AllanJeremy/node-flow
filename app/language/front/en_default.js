@@ -305,7 +305,10 @@ exports.language = {
     'deleted_channel': 'has left the chat',
     'view_more_peers': 'View More Peers',
     'deleted_channel': 'has left the chat.',
-    'delete_channel_button': 'Delete Chat'
+    'delete_channel_button': 'Delete Chat',
+    'edit_preferences': 'Edit Match Preferences',
+    'no_peer_title': 'You’ve seen all of our current peer matches',
+    'no_peer_sub_title': 'It’s not you, it’s us. We recommend your top peers based on your matching preferences. Check back in later or edit your current match preferences to view more peers.'
   },
   'published_home_page': {
     'title': 'Welcome,',
