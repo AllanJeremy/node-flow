@@ -319,9 +319,6 @@ class PeerController {
     var listedPeers = [];
     allListedPeers.map((item) => {
       listedPeers.push(item.peer_id);
-    });
-
-    allListedPeers.map((item) => {
       listedPeers.push(item.user_id);
     });
 
