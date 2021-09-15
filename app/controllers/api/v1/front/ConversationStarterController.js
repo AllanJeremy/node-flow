@@ -17,6 +17,9 @@ const PeerStatusHandler = require('../../../../helpers/PeerStatusHandler');
 var Chat = require('../../../../helpers/Chat');
 Chat = new Chat();
 
+var EmailEvents = require('../../../../helpers/EmailEvents');
+EmailEvents = new EmailEvents();
+
 
 /**
  * Constants
@@ -182,6 +185,13 @@ class ConversationStarterController {
         peer_id: botUser.id,
         status: PeerStatusHandler.active
       });
+
+      let userData = {
+        userId: req.id,
+        firstName: user.first_name,
+      }
+
+      EmailEvents.init('profileCompleted', userData);
 
       try {
         await Chat.createUser({

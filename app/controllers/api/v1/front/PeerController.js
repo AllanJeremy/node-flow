@@ -65,6 +65,8 @@ class PeerController {
       return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
     }
 
+
+
     ListedPeer.findOrCreate({
       where: {
         user_id: req.id,
@@ -85,6 +87,13 @@ class PeerController {
         raw: true
       }).then(response => {
         let peers = response.map(item => item.peer_id);
+        if(peers.length == 1) {
+          let userData = {
+            userId: req.id,
+            peerId: req.body.peer_id
+          }
+          EmailEvents.init('firstMatch', userData);
+        }
         let data = {
           id: req.id,
           listed_peers: peers

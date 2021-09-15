@@ -20,6 +20,9 @@ ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 var Chat = require('../../../../helpers/Chat');
 Chat = new Chat();
 
+var EmailEvents = require('../../../../helpers/EmailEvents');
+EmailEvents = new EmailEvents();
+
 /**
  * Models
  */
@@ -545,6 +548,12 @@ class UserProfileController {
       {
         where: { id: req.id }
       }).then(response => {
+
+        let userData = {
+          userId: req.id
+        }
+        EmailEvents.init('accountDeactivate', userData);
+
         return ResponseHandler.success(res, responseLanguage.account_deactivate_success);
       }).catch(err => {
         return ResponseHandler.error(res, 500, err.message);
@@ -571,6 +580,12 @@ class UserProfileController {
       User.destroy({
         where: { id: req.id }
       }).then(response => {
+
+        let userData = {
+          userId: req.id
+        }
+        EmailEvents.init('accountDelete', userData);
+
         return ResponseHandler.success(res, responseLanguage.account_delete_success);
       }).catch(err => {
         return ResponseHandler.error(res, 500, err.message);

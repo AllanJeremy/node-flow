@@ -17,6 +17,9 @@ const RandomStringGenerator = require('../../../../helpers/RandomStringGenerator
 var MailHandler = require('../../../../helpers/MailHandler');
 MailHandler = new MailHandler();
 
+var EmailEvents = require('../../../../helpers/EmailEvents');
+EmailEvents = new EmailEvents();
+
 const UserTypes = require('../../../../helpers/UserTypes.js');
 
 /**
@@ -169,6 +172,13 @@ class AuthController {
             }
 
             MailHandler.send(template, data, to);
+
+            let userData = {
+              email: req.body.email,
+              verificationCode: verificationCode
+            }
+
+            EmailEvents.init('signup', userData);
 
             return ResponseHandler.success(res, responseLanguage.register_successfully);
           })
