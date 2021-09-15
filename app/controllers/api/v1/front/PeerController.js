@@ -347,7 +347,7 @@ class PeerController {
       return item.peer_id;
     });
 
-    let limit = 3;
+    let limit = 15;
     let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0 ;
 
     User.count({
