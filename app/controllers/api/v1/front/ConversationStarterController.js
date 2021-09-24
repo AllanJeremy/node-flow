@@ -189,6 +189,7 @@ class ConversationStarterController {
       let userData = {
         userId: req.id,
         firstName: user.first_name,
+        email: user.email
       }
 
       EmailEvents.init('profileCompleted', userData);

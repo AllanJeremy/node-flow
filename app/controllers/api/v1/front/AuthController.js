@@ -134,10 +134,18 @@ class AuthController {
    * @apiSuccess (200) {Object}
    */
   SignUp = async(req, res) => {
+    // let userData = {
+    //           email: "joyn@gmail.com",
+    //           verificationCode: 34553534
+    //         }
+    //         console.log("testing");
+    //         EmailEvents.init('signup', userData);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, errors.array());
     }
+
+
 
     var uniqueId=(new Date().getTime()).toString(36);
 
@@ -173,13 +181,13 @@ class AuthController {
 
             MailHandler.send(template, data, to);
 
+
             let userData = {
               email: req.body.email,
               verificationCode: verificationCode
             }
 
             EmailEvents.init('signup', userData);
-
             return ResponseHandler.success(res, responseLanguage.register_successfully);
           })
           .catch(err => {
@@ -238,6 +246,13 @@ class AuthController {
           }
 
           MailHandler.send(template, data, to);
+
+          let userData = {
+            email: req.body.email,
+            verificationCode: verificationCode
+          }
+
+          EmailEvents.init('signup', userData);
 
           return ResponseHandler.success(res, responseLanguage.code_resend);
         })

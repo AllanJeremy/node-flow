@@ -541,7 +541,7 @@ class UserProfileController {
       where: {
         id: req.id
       }
-    }).then(response => {
+    }).then(userResponse => {
       User.update({
         status: StatusHandler.deactivate,
       },
@@ -550,7 +550,8 @@ class UserProfileController {
       }).then(response => {
 
         let userData = {
-          userId: req.id
+          userId: req.id,
+          email: userResponse.email
         }
         EmailEvents.init('accountDeactivate', userData);
 
@@ -576,13 +577,14 @@ class UserProfileController {
       where: {
         id: req.id
       }
-    }).then(response => {
+    }).then(userResponse => {
       User.destroy({
         where: { id: req.id }
       }).then(response => {
 
         let userData = {
-          userId: req.id
+          userId: req.id,
+          email: userResponse.email
         }
         EmailEvents.init('accountDelete', userData);
 
