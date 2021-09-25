@@ -103,7 +103,7 @@ class MailHandler {
 
     const mailData = {
       from: config.email.notification.from_name + ' ' + config.email.notification.from_email,
-      to: 'psofttech123@gmail.com',
+      to: to,
       subject: message['subject'],
       template: template,
       context: message['params'],
