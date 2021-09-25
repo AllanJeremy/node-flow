@@ -94,8 +94,6 @@ class EmailEvents {
 
   accountDeactivate = (data) => {
 
-    console.log("accountDeactivate", data)
-
     var json = {"email": data['email']};
     var encoded = encodeURIComponent(JSON.stringify(json)).replace(/%40/g, "@");
 
@@ -113,8 +111,6 @@ class EmailEvents {
   }
 
   accountDelete = (data) => {
-
-    console.log("account deleted", data)
 
     var json = {"email": data['email']};
     var encoded = encodeURIComponent(JSON.stringify(json)).replace(/%40/g, "@");

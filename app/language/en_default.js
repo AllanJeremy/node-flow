@@ -179,9 +179,11 @@ exports.en = {
     'default_message': 'Welcome! We are Larissa and Kendra, the founders of Joyn. We are so excited to be your first peer match as you connect with the community. Is there anything we can help you with?'
   },
   'email': {
+    'header_text': 'Visit website',
+    'footer_text': 'Joyn Connect. All rights reserved.',
     'register': {
-      'line1': 'Hello',
-      'line2': 'You have successfully created a Joyn account. Your verification code is'
+      'line1': 'Verify your email',
+      'line2': 'Your account has been created! Please verify your email using this code:'
     },
     'reset_password': {
       'line1': 'Your reset password verification code'
