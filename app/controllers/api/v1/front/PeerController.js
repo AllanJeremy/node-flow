@@ -353,15 +353,20 @@ class PeerController {
    */
   newMatch = async (req, res) => {
 
-    var listedPeers = await ListedPeer.findAll({
+    var allListedPeers = await ListedPeer.findAll({
       where: {
-        user_id: req.id,
+        [Op.or]: [
+          {user_id: req.id},
+          {peer_id: req.id}
+        ]
       },
-      attributes: ["peer_id"],
+      attributes: ['peer_id', 'user_id'],
     });
 
-    listedPeers = listedPeers.map((item) => {
-      return item.peer_id;
+    var listedPeers = [];
+    allListedPeers.map((item) => {
+      listedPeers.push(item.peer_id);
+      listedPeers.push(item.user_id);
     });
 
     var delistedPeers = await DelistedPeer.findAll({
