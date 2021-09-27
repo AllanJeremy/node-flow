@@ -21,7 +21,6 @@ ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 var EmailEvents = require('../../../../helpers/EmailEvents');
 EmailEvents = new EmailEvents();
 
-var WMA = require("wma-matching-algorithm");
 
 /**
  * Models
