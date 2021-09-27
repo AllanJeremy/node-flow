@@ -60,13 +60,13 @@ class AuthController {
         email: req.body.email,
         status: StatusHandler.active
       }
-    }).then(response => {
+    }).then(async response => {
 
       if (!response) {
         return ResponseHandler.error(res, 422, validationLanguage.invalid_credentials);
       }
 
-      var isPasswordValid = bcrypt.compareSync(
+      var isPasswordValid = await bcrypt.compareSync(
         req.body.password,
         response.password
       );

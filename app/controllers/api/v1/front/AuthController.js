@@ -134,18 +134,10 @@ class AuthController {
    * @apiSuccess (200) {Object}
    */
   SignUp = async(req, res) => {
-    // let userData = {
-    //           email: "joyn@gmail.com",
-    //           verificationCode: 34553534
-    //         }
-    //         console.log("testing");
-    //         EmailEvents.init('signup', userData);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, errors.array());
     }
-
-
 
     var uniqueId=(new Date().getTime()).toString(36);
 
