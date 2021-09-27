@@ -186,7 +186,8 @@ exports.en = {
       'line2': 'Your account has been created! Please verify your email using this code:'
     },
     'reset_password': {
-      'line1': 'Your reset password verification code'
+      'line1': 'Reset password',
+      'line2': 'Your reset password verification code'
     }
   }
 }

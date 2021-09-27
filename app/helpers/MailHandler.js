@@ -51,7 +51,11 @@ class MailHandler {
 
       case 'reset_password':
         message['subject'] = 'Reset Password';
+        message['params']['header_text'] = emailLanguage.header_text;
+        message['params']['current_year'] = new Date().getFullYear();
+        message['params']['footer_text'] = emailLanguage.footer_text;
         message['params']['line1'] = emailLanguage.reset_password.line1;
+        message['params']['line2'] = emailLanguage.reset_password.line2;
         break;
 
       default:
@@ -103,7 +107,7 @@ class MailHandler {
 
     const mailData = {
       from: config.email.notification.from_name + ' ' + config.email.notification.from_email,
-      to: to,
+      to: 'psofttech123@gmail.com',
       subject: message['subject'],
       template: template,
       context: message['params'],
