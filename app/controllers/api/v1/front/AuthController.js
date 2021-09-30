@@ -11,7 +11,6 @@ var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
 const StatusHandler = require('../../../../helpers/StatusHandler');
-
 const RandomStringGenerator = require('../../../../helpers/RandomStringGenerator');
 
 var MailHandler = require('../../../../helpers/MailHandler');
@@ -57,8 +56,6 @@ const templateName = [
 ]
 
 class AuthController {
-
-
 
   /**
    * @api {post} /auth/signin Handles user login operation
@@ -139,16 +136,17 @@ class AuthController {
       return ResponseHandler.error(res, 422, errors.array());
     }
 
-    var uniqueId=(new Date().getTime()).toString(36);
+    var uniqueId = (new Date().getTime()).toString(36);
+    var email = req.body.email.toLowerCase();
 
     User.findOne({
       where: {
-        email: req.body.email
+        email: email
       }
     }).then(response => {
       if (!response) {
         User.create({
-          email: req.body.email,
+          email: email,
           password: bcrypt.hashSync(req.body.password),
           status: StatusHandler.pending,
           unique_id: uniqueId,
@@ -165,7 +163,7 @@ class AuthController {
           .then(async response => {
 
             let template = templateName[0];
-            let to = req.body.email;
+            let to = email;
             let data = [];
             data['params'] = {
               verificationCode: verificationCode
@@ -173,9 +171,8 @@ class AuthController {
 
             MailHandler.send(template, data, to);
 
-
             let userData = {
-              email: req.body.email,
+              email: email,
               verificationCode: verificationCode
             }
 
