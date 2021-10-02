@@ -17,14 +17,14 @@ class PeerTransformer {
 
   newMatch = (count, data) => { return {
     res: fractal(data, {
-    'id': 'id',
-    'peer_id': 'id',
-    'first_name': 'first_name',
-    'unique_id': 'unique_id',
+    'id': 'item.id',
+    'peer_id': 'item.id',
+    'first_name': 'item.name',
+    'unique_id': 'item.unique_id',
     'profile_picture': function (data) {
-      return process.env.API_IMAGE_URL + '/avatar/' + data.get('profile_picture');
+      return process.env.API_IMAGE_URL + '/avatar/' + data.get('item.profile_picture');
     },
-    'health_categories': 'health_categories'}),
+    'health_categories': 'item.health_categories'}),
     'count': count
   }};
 

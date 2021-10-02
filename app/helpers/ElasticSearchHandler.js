@@ -183,6 +183,28 @@ class ElasticSearchHandler {
     }
   }
 
+  getAllUser = async() => {
+    let res = await client.search({
+      index: indexName,
+      filter_path : "hits.hits._source"
+    });
+
+    return res.body.hits.hits;
+  }
+
+
+  getLoginUser = async(userId) => {
+    let res = await client.search({
+      index: indexName,
+      filter_path : "hits.hits._source",
+      body: { query: {
+        match: {"id": userId}
+      }}
+    });
+
+    return res.body.hits.hits;
+  }
+
 }
 
 module.exports = ElasticSearchHandler;

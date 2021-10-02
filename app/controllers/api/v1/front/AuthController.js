@@ -21,6 +21,14 @@ EmailEvents = new EmailEvents();
 
 const UserTypes = require('../../../../helpers/UserTypes.js');
 
+const ElasticsearchEventsAction = require("../../../../helpers/ElasticsearchEventsAction");
+
+var ElasticsearchEventsHandler = require("../../../../helpers/ElasticsearchEventsHandler");
+ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
+
+var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
+ElasticSearchHandler = new ElasticSearchHandler();
+
 /**
  * Configs
  */
@@ -293,6 +301,14 @@ class AuthController {
       .then(result => {
         VerifyUser.destroy({ where: { id: response.id }, force: true })
         .then(response => {
+
+          let user = {
+            id: userId
+          }
+
+          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.createUser, user);
+
+          ElasticSearchHandler.addDocument(userId, user)
 
           var token = jwt.sign({ id: userId }, authConfig.secret, {
             expiresIn: authConfig.tokenExpiryTime
