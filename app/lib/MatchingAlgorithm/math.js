@@ -17,7 +17,7 @@ const roundDecimal = (n, d) => parseFloat(Math.round(n * 100) / 100).toFixed(d);
 
 exports.roundDecimal = roundDecimal;
 
-const mapRange = (n, x1, y1, x2, y2) => { console.log("testimhhmh", (n - x1) * (y2 - x2) / (y1 - x1) + x2); return (n - x1) * (y2 - x2) / (y1 - x1) + x2 };
+const mapRange = (n, x1, y1, x2, y2) => { return (n - x1) * (y2 - x2) / (y1 - x1) + x2 };
 
 exports.mapRange = mapRange;
 var _default = {

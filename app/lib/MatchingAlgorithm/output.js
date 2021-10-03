@@ -31,7 +31,6 @@ const output = ({
 exports.output = output;
 
 const setObject = (obj, keys) => {
-  console.log("keyskeys", keys, obj);
   for (const key in keys) obj[key] = keys[key];
 };
 
