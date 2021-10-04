@@ -186,6 +186,12 @@ class ConversationStarterController {
         status: PeerStatusHandler.active
       });
 
+      ListedPeer.create({
+        user_id: botUser.id,
+        peer_id: req.id,
+        status: PeerStatusHandler.active
+      });
+
       let userData = {
         userId: req.id,
         firstName: user.first_name,
