@@ -1,11 +1,8 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.default = exports.resetOutput = exports.output = void 0;
 
-var _math = require("./math");
+var _math = require("./Math");
 
 let mi = 0;
 

@@ -1,19 +1,13 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.default = exports.calculateResults = exports.calculateItemDistance = exports.resetScore = void 0;
 
-var _math = require("./math");
+var _math = require("./Math");
 
 let dists = {};
 let max;
 
 const resetScore = () => dists = {};
-
-exports.resetScore = resetScore;
-
 const pushScore = (i, v) => { return dists[i].push(v)};
 
 const calculateScore = id => {
@@ -91,6 +85,8 @@ const calculateResults = (d, a) => {
     max
   };
 };
+
+exports.resetScore = resetScore;
 
 exports.calculateResults = calculateResults;
 var _default = {

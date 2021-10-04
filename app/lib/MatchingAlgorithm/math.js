@@ -1,8 +1,5 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.default = exports.mapRange = exports.roundDecimal = exports.calcDist = exports.relu = void 0;
 
 const relu = x => 1 / (1 + Math.pow(Math.E, -x));

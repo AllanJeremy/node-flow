@@ -1,15 +1,12 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.default = void 0;
 
-var _score = require("./score");
+var _score = require("./Score");
 
-var _output = require("./output");
+var _output = require("./Output");
 
-var _helper = require("./helper");
+var _helper = require("./Helper");
 
 class MatchingAlgorithm {
   constructor(obj) {
@@ -19,8 +16,6 @@ class MatchingAlgorithm {
     this.verbose = 0;
 
     for (const key in obj) this[key] = obj[key];
-
-    if (this.verbose) (0, _helper.log)(`[MatchingAlgorithm] - Initialized`, null, true);
   }
 
   match(obj) {
@@ -30,7 +25,7 @@ class MatchingAlgorithm {
       array: this.source,
       showOriginal: this.showOriginal
     });
-    
+
     const {
       results,
       max
@@ -48,7 +43,7 @@ class MatchingAlgorithm {
   }
 
   log() {
-    console.log(`hello world`);
+    console.log(`Log initialize`);
   }
 
   _resetAll() {

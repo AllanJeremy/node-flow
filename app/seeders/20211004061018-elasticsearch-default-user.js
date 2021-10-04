@@ -68,7 +68,7 @@ module.exports = {
 
         queryInterface.sequelize.query(
         'SELECT * FROM "user_workouts" WHERE user_id = :id ', {
-          replacements: {'id': 2},
+          replacements: {'id': userId},
           type: queryInterface.sequelize.QueryTypes.SELECT
         }).then(userWorkouts => {
           userWorkouts.map((item) => {
