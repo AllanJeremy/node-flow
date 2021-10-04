@@ -16,6 +16,9 @@ const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEven
 var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
 ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
+var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
+ElasticSearchHandler = new ElasticSearchHandler();
+
 
 /**
  * Models
@@ -236,6 +239,9 @@ class HealthCategoryController {
           name: healthCategories
         }
         ElasticsearchEventsHandler.store(ElasticsearchEventsAction.healthCategoryUpdate, data);
+       	ElasticSearchHandler.updateDocumentField(userId, {
+        	health_categories: healthCategories
+      	});
       }
     })
     .catch(err => {

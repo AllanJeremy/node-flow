@@ -17,6 +17,9 @@ const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEven
 var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
 ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
+var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
+ElasticSearchHandler = new ElasticSearchHandler();
+
 var Chat = require('../../../../helpers/Chat');
 Chat = new Chat();
 
@@ -102,8 +105,12 @@ class UserProfileController {
       })
       .then(async response => {
         let data = {
-          id: req.id
-        }
+          id: req.id,
+          name: req.body.first_name,
+          profile_picture: req.body.profile_picture,
+          unique_id: response[1][0]['unique_id']
+        };
+
         await Chat.updateUser({
           id: response[1][0]['unique_id'],
           user_id: req.id,
@@ -112,7 +119,9 @@ class UserProfileController {
           image: process.env.API_IMAGE_URL + '/avatar/' + req.body.profile_picture
         });
 
-        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.createUser, data);
+        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.updateUser, data);
+
+        ElasticSearchHandler.updateDocumentField(req.id, data);
 
         return ResponseHandler.success(res, responseLanguage.profile_create);
       })
