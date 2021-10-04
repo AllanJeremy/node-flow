@@ -365,46 +365,14 @@ class PeerController {
    */
   newMatch = async (req, res) => {
 
-    var allListedPeers = await ListedPeer.findAll({
-      where: {
-          user_id: req.id
-      },
-      attributes: ['peer_id', 'user_id'],
-    });
-
-    var listedPeers = [];
-    allListedPeers.map((item) => {
-      listedPeers.push(item.peer_id);
-    });
-
-    var delistedPeers = await DelistedPeer.findAll({
-      where: {
-        user_id: req.id,
-      },
-      attributes: ["peer_id"],
-    });
-
-    delistedPeers = delistedPeers.map((item) => {
-      return item.peer_id;
-    });
-
-    var declinedPeers = await DeclinedPeer.findAll({
-      where: {
-        user_id: req.id,
-      },
-      attributes: ["peer_id"],
-    });
-
-    declinedPeers = declinedPeers.map((item) => {
-      return item.peer_id;
-    });
     var userData = await ElasticSearchHandler.getLoginUser(req.id);
+    let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0;
 
     ElasticSearchHandler.getAllUser().then(response => {
 
       const matchingAlgorithm = new MatchingAlgorithm({
         source: response,
-        matchIndex: 20,
+        matchIndex: 15,
         showOriginal: true,
         decimals: 2,
         verbose: true,
@@ -418,88 +386,20 @@ class PeerController {
       });
 
       var peers = matchingAlgorithm.match(userData[0]._source);
+
+
+      var matchedPeers = peers.filter(function(el) {
+        return el.matchIndex - 1 == page;
+      });
+
       return ResponseHandler.success(
         res,
         "",
-        PeerTransformer.newMatch(peers.length, peers)
+        PeerTransformer.newMatch(peers.length, matchedPeers)
       );
     }).catch((err) => {
       return ResponseHandler.error(res, 500, err.message);
     });
-
-    // let limit = 15;
-    // let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0;
-
-    // User.count({
-    //   where: {
-    //     [Op.and]: [
-    //       {
-    //         id: { [Op.notIn]: listedPeers },
-    //       },
-    //       {
-    //         id: { [Op.notIn]: delistedPeers },
-    //       },
-    //       {
-    //         id: { [Op.notIn]: declinedPeers },
-    //       },
-    //       {
-    //         id: { [Op.not]: req.id },
-    //       },
-    //       {
-    //         published: StatusHandler.active,
-    //       },
-    //     ],
-    //   },
-    // }).then((count) => {
-    //   User.findAll({
-    //     attributes: ["id", "first_name", "profile_picture", "unique_id"],
-    //     include: [
-    //       {
-    //         model: UserHealthCategory,
-    //         attributes: ["id", "status"],
-    //         include: [
-    //           {
-    //             model: HealthCategory,
-    //             attributes: ["id", "name", "status"],
-    //             as: "health_category",
-    //           },
-    //         ],
-    //         as: "health_categories",
-    //       },
-    //     ],
-    //     where: {
-    //       [Op.and]: [
-    //         {
-    //           id: { [Op.notIn]: listedPeers },
-    //         },
-    //         {
-    //           id: { [Op.notIn]: delistedPeers },
-    //         },
-    //         {
-    //           id: { [Op.notIn]: declinedPeers },
-    //         },
-    //         {
-    //           id: { [Op.not]: req.id },
-    //         },
-    //         {
-    //           published: StatusHandler.active,
-    //         },
-    //       ],
-    //     },
-    //     offset: page * limit,
-    //     limit: limit,
-    //   })
-    //     .then((response) => {
-    //       return ResponseHandler.success(
-    //         res,
-    //         "",
-    //         PeerTransformer.newMatch(count, response)
-    //       );
-    //     })
-    //     .catch((err) => {
-    //       return ResponseHandler.error(res, 500, err.message);
-    //     });
-    // });
   };
 
   /**
