@@ -6,8 +6,6 @@ var _score = require("./Score");
 
 var _output = require("./Output");
 
-var _helper = require("./Helper");
-
 class MatchingAlgorithm {
   constructor(obj) {
     this.showOriginal = false;
