@@ -187,7 +187,7 @@ exports.en = {
     },
     'reset_password': {
       'line1': 'Reset password',
-      'line2': 'Your reset password verification code'
+      'line2': 'Reset password verification code for your account is: '
     }
   }
 }

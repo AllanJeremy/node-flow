@@ -3,7 +3,6 @@
 exports.default = exports.calculateResults = exports.calculateItemDistance = exports.resetScore = void 0;
 
 var _math = require("./Math");
-
 let dists = {};
 let max;
 

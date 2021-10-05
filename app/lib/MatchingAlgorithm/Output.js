@@ -1,7 +1,6 @@
 "use strict";
 
 exports.default = exports.resetOutput = exports.output = void 0;
-
 var _math = require("./Math");
 
 let mi = 0;
