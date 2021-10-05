@@ -41,7 +41,7 @@ class MatchingAlgorithm {
   }
 
   log() {
-    console.log(`Log initialize`);
+    console.log('Log initialize');
   }
 
   _resetAll() {
