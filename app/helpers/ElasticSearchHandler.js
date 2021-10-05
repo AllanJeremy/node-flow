@@ -204,7 +204,7 @@ class ElasticSearchHandler {
       index: indexName,
       filter_path : "hits.hits._source",
       body: { query: {
-        match: {"id": 2}
+        match: {"id": userId}
       }}
     });
 
