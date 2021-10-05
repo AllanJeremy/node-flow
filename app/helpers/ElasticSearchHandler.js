@@ -191,6 +191,7 @@ class ElasticSearchHandler {
   getAllUser = async() => {
     let res = await client.search({
       index: indexName,
+      size: 100,
       filter_path : "hits.hits._source"
     });
 
