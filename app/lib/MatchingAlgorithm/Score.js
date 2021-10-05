@@ -19,23 +19,26 @@ const setmax = score => {
 };
 
 const compareKeys = (key, m, i, obj) => {
-    switch (typeof i[key]) {
 
-      case `string`:
-        if (obj[key] !== i[key]) pushScore(i.id, 1 * m);
-        break;
+    if(i[key] != null && i[key].length > 0) {
+      switch (typeof i[key]) {
 
-      case `number`:
-        pushScore(i.id, (0, _math.calcDist)(i[key], obj[key]) * m);
-        break;
+        case `string`:
+          if (obj[key] !== i[key]) pushScore(i.id, 1 * m);
+          break;
 
-      case 'object':
-        var matched = obj[key].filter(function(el) {
-          return i[key].indexOf(el) >= 0;
-        }).length;
+        case `number`:
+          pushScore(i.id, (0, _math.calcDist)(i[key], obj[key]) * m);
+          break;
 
-        pushScore(i.id, (0, _math.calcDist)(matched, obj[key].length) * m);
-        break;
+        case 'object':
+          var matched = obj[key].filter(function(el) {
+            return i[key].indexOf(el) >= 0;
+          }).length;
+
+          pushScore(i.id, (0, _math.calcDist)(matched, obj[key].length) * m);
+          break;
+      }
     }
 };
 
