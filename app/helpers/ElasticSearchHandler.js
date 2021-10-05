@@ -189,15 +189,12 @@ class ElasticSearchHandler {
       filter_path : "hits.hits._source"
     });
 
-    console.log("resres00001111", res);
-
-    if(res.body && res.body.hits) {
+    if (res.body && res.body.hits) {
       return res.body.hits.hits;
     } else {
       return '';
     }
   }
-
 
   getLoginUser = async(userId) => {
     let res = await client.search({
@@ -208,7 +205,7 @@ class ElasticSearchHandler {
       }}
     });
 
-    if(res.body && res.body.hits) {
+    if (res.body && res.body.hits) {
       return res.body.hits.hits;
     } else {
       return '';
