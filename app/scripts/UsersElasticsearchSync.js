@@ -168,7 +168,7 @@ class UsersElasticSearchSync {
     let listedPeersList = [];
     if(listedPeers.length > 0) {
       listedPeersList = listedPeers.map(item => {
-        return item['id'];
+        return item['peer_id'];
       });
     }
 
@@ -182,7 +182,7 @@ class UsersElasticSearchSync {
     let delistedPeersList = [];
     if(delistedPeers.length > 0) {
       delistedPeersList = delistedPeers.map(item => {
-        return item['id'];
+        return item['peer_id'];
       });
     }
 
@@ -196,7 +196,7 @@ class UsersElasticSearchSync {
     let declinedPeersList = [];
     if(declinedPeers.length > 0) {
       declinedPeersList = declinedPeers.map(item => {
-        return item['id'];
+        return item['peer_id'];
       });
     }
 
