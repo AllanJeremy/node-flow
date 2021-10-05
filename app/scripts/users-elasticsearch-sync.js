@@ -14,7 +14,6 @@ ElasticSearchHandler = new ElasticSearchHandler();
 const Models = require('../models');
 const User = Models.User;
 const UserMetadata = Models.UserMetadata;
-const UserInterest = Models.UserInterest;
 const Race = Models.Race;
 const Gender = Models.Gender;
 const SexualOrientation = Models.SexualOrientation;
@@ -25,30 +24,21 @@ const Workout = Models.Workout;
 const UserWorkout = Models.UserWorkout;
 const UserRace = Models.UserRace;
 const UserFamilyDynamic = Models.UserFamilyDynamic;
-const PersonalityQuestion = Models.PersonalityQuestion;
-const UserPersonalityQuestion = Models.UserPersonalityQuestion;
-const ConversationStarter = Models.ConversationStarter;
-const UserConversationStarter = Models.UserConversationStarter;
-const UserMatchingPreference = Models.UserMatchingPreference;
-const UserSetting = Models.UserSetting;
-const ListedPeer = Models.ListedPeer;
-const UserHealthJourney = Models.UserHealthJourney;
+
 
 const StatusHandler = require('../helpers/StatusHandler');
 
 /**
- * Manages Active Campaign hooks
+ * Manages Elastic search sync
  *
- * @class EmailEvents
+ * @class UsersElasticSearchSync
  * @package app
- * @subpackage helpers
+ * @subpackage scripts
  */
 class UsersElasticSearchSync {
 
   index = () => {
-    User.findAll({
-      limit: 5
-    }).then(async users => {
+    User.findAll().then(async users => {
       users.map(async(item) => {
         var userId = item.id;
         let userData = {
@@ -84,12 +74,12 @@ class UsersElasticSearchSync {
           }).then(async userHealthCategories => {
             if(userHealthCategories.length > 0) {
               let healthCategoriesName = userHealthCategories.map(item => {
-              return  item.health_category.name
-            });
+                return  item.health_category.name
+              });
 
-            await ElasticSearchHandler.updateDocumentField(userId, {
-              health_categories: healthCategoriesName
-            });
+              await ElasticSearchHandler.updateDocumentField(userId, {
+                health_categories: healthCategoriesName
+              });
             }
           });
 
@@ -107,9 +97,9 @@ class UsersElasticSearchSync {
           }).then(async workouts => {
             if(workouts.length > 0) {
               let workoutsName = workouts.map(item => item.workout.name);
-              // await ElasticSearchHandler.updateDocumentField(userId, {
-              //   workouts: workoutsName
-              // });
+              await ElasticSearchHandler.updateDocumentField(userId, {
+                workouts: workoutsName
+              });
             }
           });
 
@@ -129,9 +119,11 @@ class UsersElasticSearchSync {
           }).then(async races => {
             if(races.length > 0) {
               let racesName = races.map(item => {return item['race.name']});
+              if(racesName.length > 0){
               await ElasticSearchHandler.updateDocumentField(userId, {
                 race: racesName
               });
+            }
             }
           });
 
@@ -157,7 +149,7 @@ class UsersElasticSearchSync {
                 id: userDetail.sexual_orientation_id
               }
             }).then(async sexualOrientation => {
-              if(sexualOrientation){
+              if(sexualOrientation && sexualOrientation.name){
                 await ElasticSearchHandler.updateDocumentField(userId, {
                   sexual_orientation: sexualOrientation.name
                 });

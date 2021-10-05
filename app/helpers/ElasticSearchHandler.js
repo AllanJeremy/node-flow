@@ -67,13 +67,18 @@ class ElasticSearchHandler {
   * Update document field by id in the index
   */
   updateDocumentField = async(id, body) => {
-    let res = await client.update({
+    await client.indices.refresh({index: indexName, method: 'post'});
+    client.update({
       index: indexName,
       id: id,
-      body: { doc: body}
+      body: { doc: body},
+      refresh: 'wait_for'
+    }).then((res) => {
+      return res;
+    }).catch(e => {
+      // error
     });
 
-    return res;
   }
 
   /**
