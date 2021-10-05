@@ -67,13 +67,18 @@ class ElasticSearchHandler {
   * Update document field by id in the index
   */
   updateDocumentField = async(id, body) => {
-    let res = await client.update({
+    await client.indices.refresh({index: indexName, method: 'post'});
+    client.update({
       index: indexName,
       id: id,
-      body: { doc: body}
+      body: { doc: body},
+      refresh: 'wait_for'
+    }).then((res) => {
+      return res;
+    }).catch(e => {
+      // error
     });
 
-    return res;
   }
 
   /**
@@ -180,6 +185,35 @@ class ElasticSearchHandler {
       });
 
       return res;
+    }
+  }
+
+  getAllUser = async() => {
+    let res = await client.search({
+      index: indexName,
+      filter_path : "hits.hits._source"
+    });
+
+    if (res.body && res.body.hits) {
+      return res.body.hits.hits;
+    } else {
+      return '';
+    }
+  }
+
+  getLoginUser = async(userId) => {
+    let res = await client.search({
+      index: indexName,
+      filter_path : "hits.hits._source",
+      body: { query: {
+        match: {"id": userId}
+      }}
+    });
+
+    if (res.body && res.body.hits) {
+      return res.body.hits.hits;
+    } else {
+      return '';
     }
   }
 

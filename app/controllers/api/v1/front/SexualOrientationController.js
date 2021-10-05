@@ -15,6 +15,9 @@ const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEven
 var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
 ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
+var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
+ElasticSearchHandler = new ElasticSearchHandler();
+
 
 /**
  * Models
@@ -212,6 +215,9 @@ class SexualOrientationController {
       }
 
       ElasticsearchEventsHandler.store(ElasticsearchEventsAction.sexualOrientationUpdate, data);
+     	ElasticSearchHandler.updateDocumentField(userId, {
+      	sexual_orientation: name
+    	});
     }
   }
 }

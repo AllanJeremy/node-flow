@@ -35,6 +35,9 @@ class job {
       case ElasticsearchEventsAction.createUser:
         return await ElasticSearchHandler.addDocument(data.metadata.id, data.metadata);
         break;
+      case ElasticsearchEventsAction.updateUser:
+        return await ElasticSearchHandler.updateDocumentField(data.metadata.id, data.metadata);
+        break;
       case ElasticsearchEventsAction.raceUpdate:
         return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
           race: data.metadata.name
@@ -72,6 +75,10 @@ class job {
           delisted_peers: data.metadata.delisted_peers
         });
         break;
+      case ElasticsearchEventsAction.declinedPeerUpdate:
+        return await ElasticSearchHandler.updateDocumentField(data.metadata.id, {
+          declined_peers: data.metadata.declined_peers
+        });
       case ElasticsearchEventsAction.raceRenamed:
         return await ElasticSearchHandler.renameDocumentField('race', data.metadata);
       case ElasticsearchEventsAction.genderRenamed:

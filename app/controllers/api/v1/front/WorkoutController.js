@@ -216,9 +216,9 @@ class WorkoutController {
           workout_id: workoutId,
           status: StatusHandler.active
         }).then(response => {
-          if (status == StatusHandler.active) {
+          //if (status == StatusHandler.active) {
             this.updateElaticsearch(userId);
-          }
+          //}
         });
       } else {
         UserWorkout.update({
@@ -229,9 +229,9 @@ class WorkoutController {
             workout_id: workoutId,
           }
         }).then(response => {
-          if (status == StatusHandler.active) {
+          //if (status == StatusHandler.active) {
             this.updateElaticsearch(userId);
-          }
+          //}
         });
       }
     }

@@ -16,6 +16,9 @@ const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEven
 var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
 ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
+var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
+ElasticSearchHandler = new ElasticSearchHandler();
+
 
 /**
  * Models
@@ -236,6 +239,9 @@ class RaceController {
           name: race
         }
         ElasticsearchEventsHandler.store(ElasticsearchEventsAction.raceUpdate, data);
+        ElasticSearchHandler.updateDocumentField(userId, {
+          race: race
+        });
       }
     }).catch(err => {
       return ResponseHandler.error(res, 500, err.message);

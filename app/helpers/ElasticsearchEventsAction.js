@@ -4,6 +4,7 @@
  */
 const ElasticsearchEventsAction = {
   createUser: 'create_user',
+  updateUser: 'update_user',
   raceUpdate: 'race_update',
   raceRenamed: 'race_renamed',
   raceDelete: 'race_delete',
@@ -25,6 +26,7 @@ const ElasticsearchEventsAction = {
   listedPeerUpdate: 'match_peer_update',
   delistedPeerUpdate: 'unmatch_peer_update',
   userVisibility: 'user_visibility',
+  declinedPeerUpdate: 'declined_peer_update'
 };
 
 module.exports = ElasticsearchEventsAction;
