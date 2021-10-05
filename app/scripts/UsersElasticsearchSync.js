@@ -24,6 +24,9 @@ const Workout = Models.Workout;
 const UserWorkout = Models.UserWorkout;
 const UserRace = Models.UserRace;
 const UserFamilyDynamic = Models.UserFamilyDynamic;
+const ListedPeer = Models.ListedPeer;
+const DelistedPeer = Models.DelistedPeer;
+const DeclinedPeer = Models.DeclinedPeer;
 
 
 const StatusHandler = require('../helpers/StatusHandler');
@@ -38,7 +41,6 @@ const StatusHandler = require('../helpers/StatusHandler');
 class UsersElasticSearchSync {
 
   index = () => {
-    console.log("Testinggnngng");
     User.findAll().then(async users => {
       for(let i = 0; i < users.length; i++) {
         var user = users[i];
@@ -153,7 +155,49 @@ class UsersElasticSearchSync {
     });
     let familyDynamicsName = [];
     if(familyDynamics.length > 0) {
-      let familyDynamicsName = familyDynamics.map(item => item['family_dynamic.name']);
+      familyDynamicsName = familyDynamics.map(item => item['family_dynamic.name']);
+    }
+
+    //sync listed peers
+    var listedPeers = await ListedPeer.findAll({
+      where: {
+        user_id: userId
+      },
+    });
+
+    let listedPeersList = [];
+    if(listedPeers.length > 0) {
+      listedPeersList = listedPeers.map(item => {
+        return item['id'];
+      });
+    }
+
+    //sync delisted peers
+    var delistedPeers = await DeclinedPeer.findAll({
+      where: {
+        user_id: userId
+      },
+    });
+
+    let delistedPeersList = [];
+    if(delistedPeers.length > 0) {
+      delistedPeersList = delistedPeers.map(item => {
+        return item['id'];
+      });
+    }
+
+    //sync declined peers
+    var declinedPeers = await DeclinedPeer.findAll({
+      where: {
+        user_id: userId
+      },
+    });
+
+    let declinedPeersList = [];
+    if(declinedPeers.length > 0) {
+      declinedPeersList = declinedPeers.map(item => {
+        return item['id'];
+      });
     }
 
     let userData = {
@@ -166,7 +210,10 @@ class UsersElasticSearchSync {
       race: racesName,
       gender: gender,
       sexual_orientation: sexualOrientation,
-      family_dynamic: familyDynamicsName
+      family_dynamic: familyDynamicsName,
+      listed_peers: listedPeersList,
+      delisted_peers: delistedPeersList,
+      declined_peers: declinedPeersList
     }
     await ElasticSearchHandler.addDocument(userId, userData);
   }
