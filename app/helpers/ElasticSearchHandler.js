@@ -78,7 +78,6 @@ class ElasticSearchHandler {
     }).catch(e => {
       // error
     });
-
   }
 
   /**
@@ -192,7 +191,10 @@ class ElasticSearchHandler {
     let res = await client.search({
       index: indexName,
       size: 100,
-      filter_path : "hits.hits._source"
+      filter_path : "hits.hits._source",
+      body: { query: {
+        match: {"publish": 1}
+      }}
     });
 
     if (res.body && res.body.hits) {
