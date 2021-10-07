@@ -193,7 +193,7 @@ class ElasticSearchHandler {
       size: 100,
       filter_path : "hits.hits._source",
       body: { query: {
-        match: {"publish": 1}
+        match: {"published": 1}
       }}
     });
 

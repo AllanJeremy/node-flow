@@ -37,7 +37,7 @@ class AddStatusToElasticsearchUsers {
 
   sync = async(user) => {
     await ElasticSearchHandler.updateDocumentField(user.id, {
-      publish: StatusHandler.active
+      published: StatusHandler.active
     });
   }
 

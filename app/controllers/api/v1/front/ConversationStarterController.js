@@ -20,6 +20,8 @@ Chat = new Chat();
 var EmailEvents = require('../../../../helpers/EmailEvents');
 EmailEvents = new EmailEvents();
 
+var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
+ElasticSearchHandler = new ElasticSearchHandler();
 
 /**
  * Constants
@@ -199,6 +201,10 @@ class ConversationStarterController {
       }
 
       EmailEvents.init('profileCompleted', userData);
+
+      ElasticSearchHandler.updateDocumentField(req.id, {
+        published: StatusHandler.active
+      });
 
       try {
         await Chat.createUser({
