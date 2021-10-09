@@ -17,7 +17,7 @@ const apiRoute = {
     MERGE: '/race/merge'
   },
 
-  GENDER: { 
+  GENDER: {
     LIST: '/gender/list',
     STORE: '/gender/store',
     UPDATE: '/gender/update/:id',
@@ -54,7 +54,7 @@ const apiRoute = {
     STORE: '/family_dynamic/store',
     UPDATE: '/family_dynamic/update/:id',
     DELETE: '/family_dynamic/delete/:id',
-    MERGE:  '/family_dynamic/merge'  
+    MERGE:  '/family_dynamic/merge'
   },
 
   ADMIN_USER: {
@@ -72,14 +72,15 @@ const apiRoute = {
   PERSONALITY_QUESTION: {
     LIST: '/personality_question/list',
     STORE: '/personality_question/store',
-    UPDATE: '/personality_question/update/:id',    
+    UPDATE: '/personality_question/update/:id',
     DELETE: '/personality_question/delete/:id'
   },
 
   USER: {
     LIST: '/user/list',
     SHOW: '/user/show/:id',
-    UPDATE_STATUS: '/user/update/status'
+    UPDATE_STATUS: '/user/update/status',
+    LIST_STATUS: '/user/list/status'
   },
 
   CONVERSATION_STARTER: {
@@ -96,7 +97,7 @@ const apiRoute = {
     UNREAD: '/reported_users/unread/:id'
   },
 
-  AVATAR: { 
+  AVATAR: {
     LIST: '/avatar/list',
     STORE: '/avatar/store',
     UPDATE: '/avatar/update/:id',

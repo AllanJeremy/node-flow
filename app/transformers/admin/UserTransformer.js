@@ -29,7 +29,10 @@ class UserTransformer {
     'first_name': 'first_name',
     'status': function (data) {
       return data.get('status');
-    }
+    },
+    'list_status': function (data) {
+      return data.get('is_hide') == undefined ? 0 : data.get('is_hide') ? 1 : 0;
+    },
   });
 
   UserDetail = (data) => fractal(data, {
