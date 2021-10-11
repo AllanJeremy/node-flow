@@ -10,7 +10,7 @@ module.exports = {
      */
     return queryInterface.addColumn(
       'users',
-      'is_hide',
+      'hide_from_list',
       Sequelize.INTEGER
     );
   },
@@ -24,7 +24,7 @@ module.exports = {
      */
     return queryInterface.removeColumn(
       'users',
-      'is_hide'
+      'hide_from_list'
     );
   }
 };

@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     chat_token: DataTypes.STRING,
     unique_id: DataTypes.STRING,
     type: DataTypes.STRING,
-    is_hide: DataTypes.STRING,
+    hide_from_list: DataTypes.STRING,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,

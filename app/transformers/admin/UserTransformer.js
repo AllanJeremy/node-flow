@@ -31,7 +31,7 @@ class UserTransformer {
       return data.get('status');
     },
     'list_status': function (data) {
-      return data.get('is_hide') == undefined ? 0 : data.get('is_hide') ? 1 : 0;
+      return data.get('hide_from_list') == undefined ? 0 : data.get('hide_from_list') ? 1 : 0;
     },
   });
 

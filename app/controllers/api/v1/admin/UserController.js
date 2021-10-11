@@ -57,7 +57,7 @@ class UserController {
   list = (req, res) => {
     User.findAll({
       order: [['id', 'DESC']],
-      attributes: ['id', 'email', 'first_name', 'is_hide', 'status']
+      attributes: ['id', 'email', 'first_name', 'hide_from_list', 'status']
     })
     .then(response => {
       return ResponseHandler.success(res, '', UserTransformer.UserList(response));
@@ -199,7 +199,7 @@ class UserController {
     })
     .then(response => {
       User.update({
-        is_hide: req.body.status
+        hide_from_list: req.body.status
       },{
         where: {id: req.body.user_id}
       }).then(async res => {
