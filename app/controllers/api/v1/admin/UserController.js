@@ -205,10 +205,10 @@ class UserController {
       }).then(async res => {
         if(req.body.status == 0) {
           await ElasticSearchHandler.updateDocumentField(req.body.user_id, {
-            is_hide_from_list: true
+            hide_from_list: true
           });
         } else {
-          await ElasticSearchHandler.deleteFieldById(req.body.user_id, 'is_hide_from_list');
+          await ElasticSearchHandler.deleteFieldById(req.body.user_id, 'hide_from_list');
         }
       }).catch(err => {
       })

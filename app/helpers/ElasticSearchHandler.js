@@ -233,7 +233,7 @@ class ElasticSearchHandler {
             ],
             must_not: [{
               exists: {
-                field: "is_hide_from_list"
+                field: "hide_from_list"
               }
             }]
           }
