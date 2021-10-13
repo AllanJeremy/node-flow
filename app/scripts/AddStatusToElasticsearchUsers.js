@@ -20,25 +20,26 @@ const User = Models.User;
  */
 class AddStatusToElasticsearchUsers {
 
-  index = () => {
+  index = (status) => {
+    var elasticSearchStatus = status == 'published' ? {
+      published: StatusHandler.active
+    } : {
+      status: StatusHandler.active
+    };
     User.findAll({
-      where: {
-        published: StatusHandler.active
-      }
+      where: elasticSearchStatus
     }).then(async users => {
       for(let i = 0; i < users.length; i++) {
         var user = users[i];
-        await this.sync(user);
+        await this.sync(user, elasticSearchStatus);
       }
     }).catch( err => {
       //error
     });
   }
 
-  sync = async(user) => {
-    await ElasticSearchHandler.updateDocumentField(user.id, {
-      published: StatusHandler.active
-    });
+  sync = async(user, status) => {
+    await ElasticSearchHandler.updateDocumentField(user.id, status);
   }
 
 }

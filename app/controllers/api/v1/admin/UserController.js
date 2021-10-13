@@ -6,6 +6,9 @@ const { validationResult } = require('express-validator');
 var ResponseHandler = require('../../../../helpers/ResponseHandler');
 ResponseHandler = new ResponseHandler();
 
+var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
+ElasticSearchHandler = new ElasticSearchHandler();
+
 /**
  * Models
  */
@@ -54,7 +57,7 @@ class UserController {
   list = (req, res) => {
     User.findAll({
       order: [['id', 'DESC']],
-      attributes: ['id', 'email', 'first_name', 'status']
+      attributes: ['id', 'email', 'first_name', 'hide_from_list', 'status']
     })
     .then(response => {
       return ResponseHandler.success(res, '', UserTransformer.UserList(response));
@@ -172,6 +175,42 @@ class UserController {
         status: req.body.status
       },{
         where: {id: response.id}
+      })
+      return ResponseHandler.success(res, responseLanguage.user_status_change);
+    })
+    .catch(err => {
+      return ResponseHandler.error(res, 500, err.message);
+    });
+  }
+
+  /**
+   * @api {post} /admin/user/list/status Update user listing status
+   * @apiName Update user listing status
+   * @apiGroup Admin
+   *
+   * @apiParam {Integer} [user_id] user_id
+   * @apiParam {Integer} [status] status
+   *
+   * @apiSuccess (200) {Object}
+   */
+  listStatus = (req, res) => {
+    User.findOne({
+      where: {id: req.body.user_id}
+    })
+    .then(response => {
+      User.update({
+        hide_from_list: req.body.status
+      },{
+        where: {id: req.body.user_id}
+      }).then(async res => {
+        if(req.body.status == 0) {
+          await ElasticSearchHandler.updateDocumentField(req.body.user_id, {
+            hide_from_list: true
+          });
+        } else {
+          await ElasticSearchHandler.deleteFieldById(req.body.user_id, 'hide_from_list');
+        }
+      }).catch(err => {
       })
       return ResponseHandler.success(res, responseLanguage.user_status_change);
     })

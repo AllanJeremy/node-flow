@@ -8,6 +8,8 @@ const config = require('../config/elasticsearch.config.js');
  */
 const { Client } = require('@elastic/elasticsearch');
 
+const StatusHandler = require('../helpers/StatusHandler');
+
 
 /**
  * Elastic search config
@@ -159,6 +161,28 @@ class ElasticSearchHandler {
   }
 
   /**
+  * Delete document field by id
+  */
+  deleteFieldById = async(id, deleteField) => {
+    let res = await client.updateByQuery({
+      index: indexName,
+      body: {
+        script: {
+          'source': 'ctx._source.remove("' + deleteField + '")',
+          'lang': 'painless'
+        },
+        query: {
+          match: {
+            'id': id
+          }
+        }
+      }
+    });
+
+    return res;
+  }
+
+  /**
   * Delete item from array in document field by name
   */
   deleteItemFromDocumentList = async(deleteField, matchParam) => {
@@ -192,9 +216,29 @@ class ElasticSearchHandler {
       index: indexName,
       size: 100,
       filter_path : "hits.hits._source",
-      body: { query: {
-        match: {"published": 1}
-      }}
+      body: {
+        query: {
+          bool: {
+            must: [
+              {
+                match: {
+                  "published": StatusHandler.active
+                },
+              },
+              {
+                match: {
+                  "status": StatusHandler.active
+                }
+              }
+            ],
+            must_not: [{
+              exists: {
+                field: "hide_from_list"
+              }
+            }]
+          }
+        }
+      }
     });
 
     if (res.body && res.body.hits) {

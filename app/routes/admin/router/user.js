@@ -27,4 +27,6 @@ router.get(apiRoute.USER.SHOW, UserController.show);
 
 router.post(apiRoute.USER.UPDATE_STATUS, UserValidation.UserUpdateStatus, UserController.updateStatus);
 
+router.post(apiRoute.USER.LIST_STATUS, UserValidation.UserUpdateStatus, UserController.listStatus);
+
 module.exports = router;
