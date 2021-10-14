@@ -17,7 +17,8 @@ exports.language = {
     'sign_up_link': {
       'text1': 'Don\'t have an account?',
       'text2': 'Sign Up'
-    }
+    },
+    'login_link': 'Log in with Email'
   },
   'signup': {
     'title': 'Sign Up',
@@ -28,7 +29,7 @@ exports.language = {
       'password_placeholder': 'Create your password',
       'confirm_password_label': 'Confirm password',
       'confirm_password_placeholder': 'Confirm your password',
-      'button': 'Sign Up'
+      'button': 'Sign Up',
     },
     'terms_and_policy': {
       'text1': 'Signing up you agree to our',
@@ -45,6 +46,7 @@ exports.language = {
       'button': 'Continue',
       'resend_success': 'Code is re-sent to your email address'
     },
+    'signup_link': 'Sign up with Work Email'
   },
   'forgot_password': {
     'title': 'Forgot Password',
@@ -387,7 +389,17 @@ exports.language = {
     'days': 'days',
     'learn_more': 'Learn More',
     'go_back_to_chat': 'Go back to chat',
-    'go_back_to_home': 'Go back to home'
+    'go_back_to_home': 'Go back to home',
+    'linkedIn_info_title': 'Why LinkedIn?',
+    'linkedIn_info_popup': {
+      'text1': 'We use LinkedIn to make our sign up process as easy as possible and to support our future monetization.',
+      'text2': 'We want Joyn to remain free to our users by focusing on our app as a company benefit.  You remain completely anonymous and the app continues to be your private space.',
+      'text3': 'Any questions?',
+      'text4': 'Or choose to sign up with your',
+      'text5': 'Work Email'
+    },
+    'close_button': 'Close',
+    'linkedIn_button': 'Sign in with LinkedIn',
   },
   'validation': {
     'required_fields': 'All the fields are required.',
@@ -415,6 +427,6 @@ exports.language = {
     'verification_code_length': 'Verification code must be of 5 characters length.',
     'name_invalid': 'First name should not contain special characters.',
     'retention_success': 'Message retention updated successfully.',
-    'email_public_domain':'Please use business email address for registration.'
+    'email_public_domain':'Please use business email address for registration.',
   }
 }
