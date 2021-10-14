@@ -91,3 +91,30 @@ exports.ForgotPassword = [
     .withMessage(validation.password_alphanumeric)
     .bail(),
 ];
+
+
+exports.LinkedinLogin = [
+  check('email')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.email_required)
+    .isEmail()
+    .withMessage(validation.email_invalid)
+    .bail(),
+  check('first_name')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.first_name_required)
+    .bail(),
+  check('access_token')
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage(validation.access_token_required)
+    .bail(),
+];

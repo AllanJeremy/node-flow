@@ -108,6 +108,7 @@ exports.visibility = [
 
 exports.ChangePassword = [
   check('current_password')
+    .optional({checkFalsy: true})
     .trim()
     .escape()
     .not()

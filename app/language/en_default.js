@@ -124,7 +124,8 @@ exports.en = {
       'chat_message_id': 'Message id is a required field.',
       'chat_channel_id': 'Chat channel id is a required field.',
       'chat_message_retention': 'Chat message retention is a required field.',
-      'health_journey_id_required': 'Health journey id is a required field.'
+      'health_journey_id_required': 'Health journey id is a required field.',
+      'access_token_required': 'Access token is a required field.'
     },
     'response': {
       'login_success': 'Logged in successfully.',

@@ -473,13 +473,15 @@ class UserProfileController {
         id: req.id
       }
     }).then(response => {
-      var isPasswordValid = bcrypt.compareSync(
-        req.body.current_password,
-        response.password
-      );
+      if(response.password != null) {
+        var isPasswordValid = bcrypt.compareSync(
+          req.body.current_password,
+          response.password
+        );
 
-      if (!isPasswordValid) {
-        return ResponseHandler.error(res, 422, responseLanguage.incorrect_current_password);
+        if (!isPasswordValid) {
+          return ResponseHandler.error(res, 422, responseLanguage.incorrect_current_password);
+        }
       }
 
       User.update({

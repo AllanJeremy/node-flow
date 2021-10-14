@@ -10,6 +10,7 @@ const authRoute = {
   REFRESH_TOKEN: '/api/token/refresh',
   PUBLIC_DOMAIN_LIST: '/api/public_domain',
   CONFIG: '/api/config/:name?',
+  AUTH_LINKEDIN: '/api/auth/linkedin',
 }
 
 const apiRoute = {
