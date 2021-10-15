@@ -158,7 +158,7 @@ class AuthController {
           password: bcrypt.hashSync(req.body.password),
           status: StatusHandler.pending,
           unique_id: uniqueId,
-          type: UserTypes.noraml,
+          type: UserTypes.normal,
         })
         .then(response => {
 
@@ -509,10 +509,12 @@ class AuthController {
           email: email,
           status: StatusHandler.active,
           unique_id: uniqueId,
-          type: UserTypes.noraml,
+          type: UserTypes.normal,
           social_access_token: {
-            'linkedin': req.body.access_token,
-            'expires_at': currentDate.setDate(currentDate.getDate() + authConfig.linkedinTokenExpiryTime)
+            'linkedin': {
+              'access_token': req.body.access_token,
+              'expires_at': currentDate.setDate(currentDate.getDate() + authConfig.linkedinTokenExpiryTime)
+            }
           }
         })
         .then(response => {
@@ -539,8 +541,10 @@ class AuthController {
       } else {
         User.update({
           social_access_token: {
-            'linkedin': req.body.access_token,
-            'expires_at': currentDate.setDate(currentDate.getDate() + authConfig.linkedinTokenExpiryTime)
+            'linkedin': {
+              'access_token': req.body.access_token,
+              'expires_at': currentDate.setDate(currentDate.getDate() + authConfig.linkedinTokenExpiryTime)
+            }
           }
         },
         {
