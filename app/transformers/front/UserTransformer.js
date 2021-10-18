@@ -45,6 +45,8 @@ class UserTransformer {
     'birth_date': 'birth_date',
     'published': 'published',
     'chat_token': 'chat_token',
+    'password': 'password',
+    'social_access_token': 'social_access_token',
     'profile_picture': function (data) {
       return process.env.API_IMAGE_URL + '/avatar/' + data.get('profile_picture');
     },

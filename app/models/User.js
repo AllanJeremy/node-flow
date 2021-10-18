@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     unique_id: DataTypes.STRING,
     type: DataTypes.STRING,
     hide_from_list: DataTypes.STRING,
+    social_access_token: DataTypes.JSON,
     deleted_at: DataTypes.DATE
   }, {
     sequelize,

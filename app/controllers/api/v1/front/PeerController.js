@@ -364,42 +364,43 @@ class PeerController {
    * @apiSuccess (200) {Object}
    */
   newMatch = async (req, res) => {
-    
+
     var userData = await ElasticSearchHandler.getLoginUser(req.id);
     let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0;
 
-    ElasticSearchHandler.getAllUser().then(response => {
+    if(userData){
+      ElasticSearchHandler.getAllUser().then(response => {
 
-      const matchingAlgorithm = new MatchingAlgorithm({
-        source: response,
-        matchIndex: 15,
-        showOriginal: true,
-        decimals: 2,
-        verbose: true,
-        keys: [
-          {key: `health_categories`, m: 50},
-          {key: `race`, m: 12},
-          {key: `gender`, m: 12},
-          {key: `sexual_orientation`, m: 12},
-          {key: `family_dynamic`, m: 12},
-        ]
+        const matchingAlgorithm = new MatchingAlgorithm({
+          source: response,
+          matchIndex: 15,
+          showOriginal: true,
+          decimals: 2,
+          verbose: true,
+          keys: [
+            {key: `health_categories`, m: 50},
+            {key: `race`, m: 12},
+            {key: `gender`, m: 12},
+            {key: `sexual_orientation`, m: 12},
+            {key: `family_dynamic`, m: 12},
+          ]
+        });
+
+        var peers = matchingAlgorithm.match(userData[0]._source);
+
+        var matchedPeers = peers.filter(function(el) {
+          return el.matchIndex - 1 == page;
+        });
+
+        return ResponseHandler.success(
+          res,
+          "",
+          PeerTransformer.newMatch(peers.length, matchedPeers)
+        );
+      }).catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
       });
-
-      var peers = matchingAlgorithm.match(userData[0]._source);
-
-
-      var matchedPeers = peers.filter(function(el) {
-        return el.matchIndex - 1 == page;
-      });
-
-      return ResponseHandler.success(
-        res,
-        "",
-        PeerTransformer.newMatch(peers.length, matchedPeers)
-      );
-    }).catch((err) => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
+    }
   };
 
   /**

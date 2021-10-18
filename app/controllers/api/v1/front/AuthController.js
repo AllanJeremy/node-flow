@@ -158,7 +158,7 @@ class AuthController {
           password: bcrypt.hashSync(req.body.password),
           status: StatusHandler.pending,
           unique_id: uniqueId,
-          type: UserTypes.noraml,
+          type: UserTypes.normal,
         })
         .then(response => {
 
@@ -475,6 +475,96 @@ class AuthController {
       expiresIn: authConfig.tokenExpiryTime
     });
     return ResponseHandler.success(res, '', token);
+  }
+
+  /**
+   * @api {post} /api/auth/linkedin Handles Linkedin user store operation
+   * @apiName Front Linkedin user store operation
+   * @apiGroup Front
+   *
+   * @apiParam {String} [access_token] access_token
+   * @apiParam {String} [email] email
+   * @apiParam {String} [first_name] first_name
+   *
+   * @apiSuccess (200) {Object}
+   */
+  LinkedinLogin = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResponseHandler.error(res, 422, errors.array());
+    }
+
+    var uniqueId = (new Date().getTime()).toString(36);
+    var email = req.body.email.toLowerCase();
+
+    var currentDate = new Date();
+
+    User.findOne({
+      where: {
+        email: email
+      }
+    }).then(response => {
+      if (!response) {
+        User.create({
+          email: email,
+          status: StatusHandler.active,
+          unique_id: uniqueId,
+          type: UserTypes.normal,
+          social_access_token: {
+            'linkedin': {
+              'access_token': req.body.access_token,
+              'expires_at': currentDate.setDate(currentDate.getDate() + authConfig.linkedinTokenExpiryTime)
+            }
+          }
+        })
+        .then(response => {
+          let user = {
+            id: response.id
+          }
+
+          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.createUser, user);
+
+          ElasticSearchHandler.addDocument(response.id, user)
+          var token = jwt.sign({ id: response.id }, authConfig.secret, {
+            expiresIn: authConfig.tokenExpiryTime
+          });
+
+          var data = {
+            token: token,
+            user: UserTransformer.user(response)
+          };
+
+          return ResponseHandler.success(res, responseLanguage.login_success, data);
+        }).catch(err => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
+      } else {
+        User.update({
+          social_access_token: {
+            'linkedin': {
+              'access_token': req.body.access_token,
+              'expires_at': currentDate.setDate(currentDate.getDate() + authConfig.linkedinTokenExpiryTime)
+            }
+          }
+        },
+        {
+          where: { id: response.id },
+          returning: true
+        })
+        .then(result => {
+          var token = jwt.sign({ id: response.id }, authConfig.secret, {
+            expiresIn: authConfig.tokenExpiryTime
+          });
+
+          var data = {
+            token: token,
+            user: UserTransformer.user(response)
+          };
+
+          return ResponseHandler.success(res, responseLanguage.login_success, data);
+        });
+      }
+    });
   }
 
 }
