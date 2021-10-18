@@ -19,7 +19,7 @@ const KEYS = {
 class EmailEvents {
 
   init(action, data) {
-    if (process.env.APP_ENV == 'production') {
+    if (process.env == 'production') {
       switch(action) {
         case 'signup':
          return this.signup(data);
