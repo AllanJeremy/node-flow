@@ -1,22 +1,22 @@
-const { validationResult } = require('express-validator');
+const { validationResult } = require("express-validator");
 /**
  * Helpers
  */
-var ResponseHandler = require('../../../../helpers/ResponseHandler');
+var ResponseHandler = require("../../../../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
 
-const StatusHandler = require('../../../../helpers/StatusHandler');
+const StatusHandler = require("../../../../helpers/StatusHandler");
 
-const HealthJourney = require('../../../../helpers/HealthJourney');
+const HealthJourney = require("../../../../helpers/HealthJourney");
 
-var PublicDomain = require('../../../../helpers/PublicDomain');
+var PublicDomain = require("../../../../helpers/PublicDomain");
 PublicDomain = new PublicDomain();
 
 /**
  * Models
  */
-const Pronouns = require('../../../../models/Pronouns');
-const Models = require('../../../../models');
+const Pronouns = require("../../../../models/Pronouns");
+const Models = require("../../../../models");
 const Avatar = Models.Avatar;
 const ContactSupport = Models.ContactSupport;
 const Feedback = Models.Feedback;
@@ -26,18 +26,17 @@ User = new User();
 /**
  * Languages
  */
-const language = require('../../../../language/en_default');
+const language = require("../../../../language/en_default");
 const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
 
 /**
  * Transformers
  */
- var AvatarTransformer = require('../../../../transformers/front/AvatarTransformer');
- AvatarTransformer = new AvatarTransformer();
+var AvatarTransformer = require("../../../../transformers/front/AvatarTransformer");
+AvatarTransformer = new AvatarTransformer();
 
 class CommonController {
-
   /**
    * @api {get} /api/pronouns/list Show pronouns list
    * @apiName Front pronouns list
@@ -49,8 +48,8 @@ class CommonController {
   pronouns = (req, res) => {
     var PronounsModel = new Pronouns();
     var pronouns = PronounsModel.pronouns;
-    return ResponseHandler.success(res, '', pronouns);
-  }
+    return ResponseHandler.success(res, "", pronouns);
+  };
 
   /**
    * @api {get} /api/avatar/list Show avatar list
@@ -60,19 +59,24 @@ class CommonController {
    *
    * @apiSuccess (200) {Object}
    */
-   avatar = (req, res) => {
+  avatar = (req, res) => {
     Avatar.findAll({
       where: {
-        status: StatusHandler.active
-      }
-    , order: [['id', 'DESC']]})
-    .then(response => {
-      return ResponseHandler.success(res, '', AvatarTransformer.transform(response));
+        status: StatusHandler.active,
+      },
+      order: [["id", "DESC"]],
     })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          "",
+          AvatarTransformer.transform(response)
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /api/contact_support/store Handle contact support detail store operation
@@ -84,24 +88,32 @@ class CommonController {
    *
    * @apiSuccess (200) {Object}
    */
-   ContactSupport = (req, res) => {
+  ContactSupport = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+      return ResponseHandler.error(
+        res,
+        422,
+        validationLanguage.required_fields,
+        errors.array()
+      );
     }
 
     ContactSupport.create({
       user_id: req.id,
       email: req.body.email,
-      description: req.body.description
+      description: req.body.description,
     })
-    .then(response => {
-      return ResponseHandler.success(res, responseLanguage.contact_support_store_success);
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          responseLanguage.contact_support_store_success
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /api/feedback/store Handle feedback store operation
@@ -113,24 +125,32 @@ class CommonController {
    *
    * @apiSuccess (200) {Object}
    */
-   Feedback = (req, res) => {
+  Feedback = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+      return ResponseHandler.error(
+        res,
+        422,
+        validationLanguage.required_fields,
+        errors.array()
+      );
     }
 
     Feedback.create({
       user_id: req.id,
       rating: req.body.rating,
-      suggestion: req.body.suggestion
+      suggestion: req.body.suggestion,
     })
-    .then(response => {
-      return ResponseHandler.success(res, responseLanguage.feedback_store_success);
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          responseLanguage.feedback_store_success
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {get} /api/health_journey/list Show Health journey question list
@@ -143,23 +163,21 @@ class CommonController {
   HealthJourney = (req, res) => {
     var healthJourney = {
       question: HealthJourney.HealthJourneyQuestion,
-      options: HealthJourney.HealthJourneyOption
+      options: HealthJourney.HealthJourneyOption,
     };
-    return ResponseHandler.success(res, '', healthJourney);
-  }
+    return ResponseHandler.success(res, "", healthJourney);
+  };
 
   GetPublicDomain = (req, res) => {
     var publicDomains = PublicDomain.get();
     var exceptionalEmail = User.getExceptionalEmail();
     var data = {
-      'public_domain': publicDomains,
-      'exceptional_email': exceptionalEmail,
-      'api_key': process.env.ANTIDEO_API_KEY
-    }
-    return ResponseHandler.success(res, '', data);
-  }
-
-
+      public_domain: publicDomains,
+      exceptional_email: exceptionalEmail,
+      api_key: process.env.ANTIDEO_API_KEY,
+    };
+    return ResponseHandler.success(res, "", data);
+  };
 }
 
 module.exports = CommonController;

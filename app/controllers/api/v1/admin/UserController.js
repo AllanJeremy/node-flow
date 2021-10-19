@@ -1,9 +1,9 @@
-const { validationResult } = require('express-validator');
+const { validationResult } = require("express-validator");
 
 /**
  * Helpers
  */
-var ResponseHandler = require('../../../../helpers/ResponseHandler');
+var ResponseHandler = require("../../../../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
 
 var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
@@ -12,7 +12,7 @@ ElasticSearchHandler = new ElasticSearchHandler();
 /**
  * Models
  */
-const Models = require('../../../../models');
+const Models = require("../../../../models");
 const User = Models.User;
 const UserMetadata = Models.UserMetadata;
 const Race = Models.Race;
@@ -33,19 +33,17 @@ const UserFamilyDynamic = Models.UserFamilyDynamic;
 /**
  * Languages
  */
-const language = require('../../../../language/en_default');
+const language = require("../../../../language/en_default");
 const responseLanguage = language.en.admin.response;
 const validationLanguage = language.en.admin.validation;
 
 /**
  * Transformers
  */
-var UserTransformer = require('../../../../transformers/admin/UserTransformer');
+var UserTransformer = require("../../../../transformers/admin/UserTransformer");
 UserTransformer = new UserTransformer();
 
-
 class UserController {
-
   /**
    * @api {get} /admin/user/list Show user list
    * @apiName User list
@@ -56,16 +54,20 @@ class UserController {
    */
   list = (req, res) => {
     User.findAll({
-      order: [['id', 'DESC']],
-      attributes: ['id', 'email', 'first_name', 'hide_from_list', 'status']
+      order: [["id", "DESC"]],
+      attributes: ["id", "email", "first_name", "hide_from_list", "status"],
     })
-    .then(response => {
-      return ResponseHandler.success(res, '', UserTransformer.UserList(response));
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          "",
+          UserTransformer.UserList(response)
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {get} /admin/user/show/:id Show user detail
@@ -77,84 +79,117 @@ class UserController {
    */
   show = (req, res) => {
     User.findOne({
-      where: {id: req.params.id},
+      where: { id: req.params.id },
       include: [
-      {
-        model: UserMetadata,
-        attributes: ['gender_status', 'sexual_orientation_status', 'race_status', 'family_dynamic_status', 'workout_status', 'summary'],
-        include: [
-          { model: Gender, as:'gender', attributes: ['id', 'name', 'status'] },
-          { model: SexualOrientation, as: 'sexual_orientation',  attributes: ['id', 'name', 'status'] }],
-        as: 'user_meta_data'
-      },
-      {
-        model: UserRace,
-        attributes: ['id', 'user_id', 'race_id'],
-        include: [{
-          model: Race,
-          attributes: ['name'],
-          as: 'race'
-        }],
-        as: 'races'
-      },
-      {
-        model: UserHealthCategory,
-        attributes: ['id', 'user_id', 'health_category_id'],
-        include: [{
-            model: HealthCategory,
-            attributes: ['name'],
-            as: 'health_category'
-          }],
-        as: 'health_categories'
-      },
-      {
-        model: UserFamilyDynamic,
-        attributes: ['id', 'user_id', 'family_dynamic_id'],
-        include: [{
-            model: FamilyDynamic,
-            attributes: ['name'],
-            as: 'family_dynamic'
-          }],
-        as: 'family_dynamics'
-      },
-      {
-        model: UserWorkout,
-        attributes: ['id', 'user_id', 'workout_id'],
-        include: [{
-          model: Workout,
-          attributes: ['name'],
-          as: 'workout'
-        }],
-        as: 'workouts'
-      },
-      {
-        model: UserPersonalityQuestion,
-        attributes: ['id', 'user_id', 'question_id', 'answer'],
-        include: [{
-          model: PersonalityQuestion,
-          attributes: ['id', 'question', 'options'],
-          as: 'personality_question'
-        }],
-        as: 'personality_questions'
-      },
-      {
-      model: UserConversationStarter,
-        attributes: ['id', 'user_id', 'conversation_starter_id', 'answer'],
-        include: [{
-          model: ConversationStarter,
-          attributes: ['question'],
-          as: 'conversation_starter'
-        }],
-        as: 'conversation_starters'
-      }]
+        {
+          model: UserMetadata,
+          attributes: [
+            "gender_status",
+            "sexual_orientation_status",
+            "race_status",
+            "family_dynamic_status",
+            "workout_status",
+            "summary",
+          ],
+          include: [
+            {
+              model: Gender,
+              as: "gender",
+              attributes: ["id", "name", "status"],
+            },
+            {
+              model: SexualOrientation,
+              as: "sexual_orientation",
+              attributes: ["id", "name", "status"],
+            },
+          ],
+          as: "user_meta_data",
+        },
+        {
+          model: UserRace,
+          attributes: ["id", "user_id", "race_id"],
+          include: [
+            {
+              model: Race,
+              attributes: ["name"],
+              as: "race",
+            },
+          ],
+          as: "races",
+        },
+        {
+          model: UserHealthCategory,
+          attributes: ["id", "user_id", "health_category_id"],
+          include: [
+            {
+              model: HealthCategory,
+              attributes: ["name"],
+              as: "health_category",
+            },
+          ],
+          as: "health_categories",
+        },
+        {
+          model: UserFamilyDynamic,
+          attributes: ["id", "user_id", "family_dynamic_id"],
+          include: [
+            {
+              model: FamilyDynamic,
+              attributes: ["name"],
+              as: "family_dynamic",
+            },
+          ],
+          as: "family_dynamics",
+        },
+        {
+          model: UserWorkout,
+          attributes: ["id", "user_id", "workout_id"],
+          include: [
+            {
+              model: Workout,
+              attributes: ["name"],
+              as: "workout",
+            },
+          ],
+          as: "workouts",
+        },
+        {
+          model: UserPersonalityQuestion,
+          attributes: ["id", "user_id", "question_id", "answer"],
+          include: [
+            {
+              model: PersonalityQuestion,
+              attributes: ["id", "question", "options"],
+              as: "personality_question",
+            },
+          ],
+          as: "personality_questions",
+        },
+        {
+          model: UserConversationStarter,
+          attributes: ["id", "user_id", "conversation_starter_id", "answer"],
+          include: [
+            {
+              model: ConversationStarter,
+              attributes: ["question"],
+              as: "conversation_starter",
+            },
+          ],
+          as: "conversation_starters",
+        },
+      ],
     })
-    .then(response => {
-      return ResponseHandler.success(res, '', UserTransformer.UserDetail(response));
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          "",
+          UserTransformer.UserDetail(response)
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /admin/user/update/status Update user status
@@ -168,20 +203,26 @@ class UserController {
    */
   updateStatus = (req, res) => {
     User.findOne({
-      where: {id: req.body.user_id}
+      where: { id: req.body.user_id },
     })
-    .then(response => {
-      User.update({
-        status: req.body.status
-      },{
-        where: {id: response.id}
+      .then((response) => {
+        User.update(
+          {
+            status: req.body.status,
+          },
+          {
+            where: { id: response.id },
+          }
+        );
+        return ResponseHandler.success(
+          res,
+          responseLanguage.user_status_change
+        );
       })
-      return ResponseHandler.success(res, responseLanguage.user_status_change);
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /admin/user/list/status Update user listing status
@@ -195,30 +236,39 @@ class UserController {
    */
   listStatus = (req, res) => {
     User.findOne({
-      where: {id: req.body.user_id}
+      where: { id: req.body.user_id },
     })
-    .then(response => {
-      User.update({
-        hide_from_list: req.body.status
-      },{
-        where: {id: req.body.user_id}
-      }).then(async res => {
-        if(req.body.status == 0) {
-          await ElasticSearchHandler.updateDocumentField(req.body.user_id, {
-            hide_from_list: true
-          });
-        } else {
-          await ElasticSearchHandler.deleteFieldById(req.body.user_id, 'hide_from_list');
-        }
-      }).catch(err => {
+      .then((response) => {
+        User.update(
+          {
+            hide_from_list: req.body.status,
+          },
+          {
+            where: { id: req.body.user_id },
+          }
+        )
+          .then(async (res) => {
+            if (req.body.status == 0) {
+              await ElasticSearchHandler.updateDocumentField(req.body.user_id, {
+                hide_from_list: true,
+              });
+            } else {
+              await ElasticSearchHandler.deleteFieldById(
+                req.body.user_id,
+                "hide_from_list"
+              );
+            }
+          })
+          .catch((err) => {});
+        return ResponseHandler.success(
+          res,
+          responseLanguage.user_status_change
+        );
       })
-      return ResponseHandler.success(res, responseLanguage.user_status_change);
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 }
 
 module.exports = UserController;

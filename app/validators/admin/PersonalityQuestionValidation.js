@@ -1,21 +1,21 @@
-const { check } = require('express-validator');
+const { check } = require("express-validator");
 
-const language = require('../../language/en_default');
-const validationLanguage = language.en.admin.validation
+const language = require("../../language/en_default");
+const validationLanguage = language.en.admin.validation;
 
 exports.Validation = [
-  check('question')
+  check("question")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validationLanguage.question_required)
     .bail(),
-  check('options')
-    .isArray({min: 1})
+  check("options")
+    .isArray({ min: 1 })
     .withMessage(validationLanguage.options_required)
     .bail(),
-  check('sequence')
+  check("sequence")
     .trim()
     .escape()
     .not()
@@ -24,7 +24,7 @@ exports.Validation = [
     .isNumeric()
     .withMessage(validationLanguage.sequence_number)
     .bail(),
-  check('status')
+  check("status")
     .trim()
     .escape()
     .not()

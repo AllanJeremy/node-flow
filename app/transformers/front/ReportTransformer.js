@@ -1,11 +1,11 @@
-var fractal = require('fractal-transformer')();
+var fractal = require("fractal-transformer")();
 
 class ReportTransformer {
-
-  reason = (data) => fractal(data, {
-    'key': 'key',
-    'reason': 'reason'
-  });
+  reason = (data) =>
+    fractal(data, {
+      key: "key",
+      reason: "reason",
+    });
 }
 
 module.exports = ReportTransformer;

@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class UserHealthCategory extends Model {
     /**
@@ -12,19 +10,22 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  UserHealthCategory.init({
-    user_id: DataTypes.INTEGER,
-    health_category_id: DataTypes.INTEGER,
-    status: DataTypes.INTEGER,
-    deleted_at: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'UserHealthCategory',
-    tableName: 'user_health_categories',
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
-    deletedAt: 'deleted_at'
-  });
+  }
+  UserHealthCategory.init(
+    {
+      user_id: DataTypes.INTEGER,
+      health_category_id: DataTypes.INTEGER,
+      status: DataTypes.INTEGER,
+      deleted_at: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      modelName: "UserHealthCategory",
+      tableName: "user_health_categories",
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+      deletedAt: "deleted_at",
+    }
+  );
   return UserHealthCategory;
 };

@@ -21,11 +21,10 @@ ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
 ElasticSearchHandler = new ElasticSearchHandler();
 
-var EmailEvents = require('../../../../helpers/EmailEvents');
+var EmailEvents = require("../../../../helpers/EmailEvents");
 EmailEvents = new EmailEvents();
 
-var MatchingAlgorithm = require('../../../../lib/MatchingAlgorithm');
-
+var MatchingAlgorithm = require("../../../../lib/MatchingAlgorithm");
 
 /**
  * Models
@@ -61,7 +60,7 @@ class PeerController {
    *
    * @apiSuccess (200) {Object}
    */
-  match = async(req, res) => {
+  match = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(
@@ -74,8 +73,8 @@ class PeerController {
 
     let user = await User.findOne({
       where: {
-        id: req.id
-      }
+        id: req.id,
+      },
     });
 
     ListedPeer.findOrCreate({
@@ -99,12 +98,12 @@ class PeerController {
         }).then((response) => {
           let peers = response.map((item) => item.peer_id);
           //if (peers.length == 1) {
-            let userData = {
-              userId: req.id,
-              peerId: req.body.peer_id,
-              email: user.email
-            };
-            EmailEvents.init("firstMatch", userData);
+          let userData = {
+            userId: req.id,
+            peerId: req.body.peer_id,
+            email: user.email,
+          };
+          EmailEvents.init("firstMatch", userData);
           //}
           let data = {
             id: req.id,
@@ -116,9 +115,8 @@ class PeerController {
           );
 
           ElasticSearchHandler.updateDocumentField(req.id, {
-            listed_peers: peers
+            listed_peers: peers,
           });
-
         });
         return ResponseHandler.success(res, responseLanguage.peer_match_store);
       })
@@ -175,7 +173,7 @@ class PeerController {
             data
           );
           ElasticSearchHandler.updateDocumentField(req.id, {
-            delisted_peers: peers
+            delisted_peers: peers,
           });
         });
 
@@ -364,42 +362,42 @@ class PeerController {
    * @apiSuccess (200) {Object}
    */
   newMatch = async (req, res) => {
-
     var userData = await ElasticSearchHandler.getLoginUser(req.id);
     let page = req.query.page && req.query.page > 0 ? req.query.page - 1 : 0;
 
-    if(userData){
-      ElasticSearchHandler.getAllUser().then(response => {
+    if (userData) {
+      ElasticSearchHandler.getAllUser()
+        .then((response) => {
+          const matchingAlgorithm = new MatchingAlgorithm({
+            source: response,
+            matchIndex: 15,
+            showOriginal: true,
+            decimals: 2,
+            verbose: true,
+            keys: [
+              { key: `health_categories`, m: 50 },
+              { key: `race`, m: 12 },
+              { key: `gender`, m: 12 },
+              { key: `sexual_orientation`, m: 12 },
+              { key: `family_dynamic`, m: 12 },
+            ],
+          });
 
-        const matchingAlgorithm = new MatchingAlgorithm({
-          source: response,
-          matchIndex: 15,
-          showOriginal: true,
-          decimals: 2,
-          verbose: true,
-          keys: [
-            {key: `health_categories`, m: 50},
-            {key: `race`, m: 12},
-            {key: `gender`, m: 12},
-            {key: `sexual_orientation`, m: 12},
-            {key: `family_dynamic`, m: 12},
-          ]
+          var peers = matchingAlgorithm.match(userData[0]._source);
+
+          var matchedPeers = peers.filter(function (el) {
+            return el.matchIndex - 1 == page;
+          });
+
+          return ResponseHandler.success(
+            res,
+            "",
+            PeerTransformer.newMatch(peers.length, matchedPeers)
+          );
+        })
+        .catch((err) => {
+          return ResponseHandler.error(res, 500, err.message);
         });
-
-        var peers = matchingAlgorithm.match(userData[0]._source);
-
-        var matchedPeers = peers.filter(function(el) {
-          return el.matchIndex - 1 == page;
-        });
-
-        return ResponseHandler.success(
-          res,
-          "",
-          PeerTransformer.newMatch(peers.length, matchedPeers)
-        );
-      }).catch((err) => {
-        return ResponseHandler.error(res, 500, err.message);
-      });
     }
   };
 
@@ -466,7 +464,8 @@ class PeerController {
         user_id: req.id,
         peer_id: req.body.peer_id,
       },
-    }).then((response) => {
+    })
+      .then((response) => {
         DeclinedPeer.findAll({
           where: {
             user_id: req.id,
@@ -484,7 +483,7 @@ class PeerController {
             data
           );
           ElasticSearchHandler.updateDocumentField(req.id, {
-            declined_peers: peers
+            declined_peers: peers,
           });
         });
 

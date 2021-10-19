@@ -1,48 +1,44 @@
-require('dotenv').config();
-const { validationResult } = require('express-validator');
-const Sequelize = require('sequelize');
-
+require("dotenv").config();
+const { validationResult } = require("express-validator");
+const Sequelize = require("sequelize");
 
 /**
  * Helpers
  */
-var ResponseHandler = require('../../../../helpers/ResponseHandler');
+var ResponseHandler = require("../../../../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
 
-const StatusHandler = require('../../../../helpers/StatusHandler');
+const StatusHandler = require("../../../../helpers/StatusHandler");
 
-const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
+const ElasticsearchEventsAction = require("../../../../helpers/ElasticsearchEventsAction");
 
-var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+var ElasticsearchEventsHandler = require("../../../../helpers/ElasticsearchEventsHandler");
 ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
 ElasticSearchHandler = new ElasticSearchHandler();
 
-
 /**
  * Models
  */
-const Models = require('../../../../models');
+const Models = require("../../../../models");
 const HealthCategory = Models.HealthCategory;
 const UserHealthCategory = Models.UserHealthCategory;
 
 /**
  * Languages
  */
-const language = require('../../../../language/en_default');
+const language = require("../../../../language/en_default");
 const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
 
 /**
  * Transformers
  */
-var CommonTransformer = require('../../../../transformers/core/CommonTransformer');
+var CommonTransformer = require("../../../../transformers/core/CommonTransformer");
 CommonTransformer = new CommonTransformer();
 
-
 class HealthCategoryController {
-
   /**
    * @api {get} /user/profile/health_category/list Show health category list
    * @apiName Health category list
@@ -54,17 +50,21 @@ class HealthCategoryController {
   list = (req, res) => {
     HealthCategory.findAll({
       where: {
-        status: StatusHandler.active
-      }
-    , order: [['name', 'ASC']]})
-    .then(response => {
-      return ResponseHandler.success(res, '', CommonTransformer.transform(response));
+        status: StatusHandler.active,
+      },
+      order: [["name", "ASC"]],
     })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          "",
+          CommonTransformer.transform(response)
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /user/profile/health_category/store Handles user profile health category store operation
@@ -78,7 +78,12 @@ class HealthCategoryController {
   store = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+      return ResponseHandler.error(
+        res,
+        422,
+        validationLanguage.required_fields,
+        errors.array()
+      );
     }
 
     const Op = Sequelize.Op;
@@ -86,38 +91,48 @@ class HealthCategoryController {
     let healthCategories = req.body.health_categories;
     let removedOtherhealthCategories = [];
 
-    healthCategories && healthCategories.length > 0 && healthCategories.length > 0 && healthCategories.map(async(item, index) => {
-      this.update(req.id, item, req.body.status);
-    });
+    healthCategories &&
+      healthCategories.length > 0 &&
+      healthCategories.length > 0 &&
+      healthCategories.map(async (item, index) => {
+        this.update(req.id, item, req.body.status);
+      });
 
     if (req.body.other && req.body.other.length > 0) {
       var userHealthCategory = await UserHealthCategory.findAll({
-        attributes: ['health_category_id'],
+        attributes: ["health_category_id"],
         where: {
-          user_id: req.id
+          user_id: req.id,
         },
-        include: [{
-          model: HealthCategory,
-          attributes: ['id', 'name'],
-          as: 'health_category',
-          where: { name:  req.body.other, status: StatusHandler.pending }
-        }]
+        include: [
+          {
+            model: HealthCategory,
+            attributes: ["id", "name"],
+            as: "health_category",
+            where: { name: req.body.other, status: StatusHandler.pending },
+          },
+        ],
       });
       await userHealthCategory.map((item) => {
         healthCategories.push(item.health_category_id);
       });
 
       var userRemovedHealthCategory = await UserHealthCategory.findAll({
-        attributes: ['health_category_id'],
+        attributes: ["health_category_id"],
         where: {
-          user_id: req.id
+          user_id: req.id,
         },
-        include: [{
-          model: HealthCategory,
-          attributes: ['id', 'name'],
-          as: 'health_category',
-          where: { name:  {[Op.notIn]: req.body.other}, status: StatusHandler.pending }
-        }]
+        include: [
+          {
+            model: HealthCategory,
+            attributes: ["id", "name"],
+            as: "health_category",
+            where: {
+              name: { [Op.notIn]: req.body.other },
+              status: StatusHandler.pending,
+            },
+          },
+        ],
       });
       await userRemovedHealthCategory.map((item) => {
         removedOtherhealthCategories.push(item.health_category_id);
@@ -125,25 +140,28 @@ class HealthCategoryController {
       req.body.other.map(async (item) => {
         UserHealthCategory.findOne({
           where: {
-            user_id: req.id
+            user_id: req.id,
           },
-          include: [{
-            model: HealthCategory,
-            attributes: ['id', 'name'],
-            as: 'health_category',
-            where: { name: item }
-          }]
-        }).then(res => {
-          if(!res) {
-            HealthCategory.create({
-              name: item,
-              status: StatusHandler.pending
-            },
+          include: [
             {
-              returning: true,
-              raw:true
-            })
-            .then(response => {
+              model: HealthCategory,
+              attributes: ["id", "name"],
+              as: "health_category",
+              where: { name: item },
+            },
+          ],
+        }).then((res) => {
+          if (!res) {
+            HealthCategory.create(
+              {
+                name: item,
+                status: StatusHandler.pending,
+              },
+              {
+                returning: true,
+                raw: true,
+              }
+            ).then((response) => {
               this.update(req.id, response.id, StatusHandler.pending);
             });
           }
@@ -151,16 +169,18 @@ class HealthCategoryController {
       });
     } else {
       var userRemovedHealthCategory = await UserHealthCategory.findAll({
-        attributes: ['health_category_id'],
+        attributes: ["health_category_id"],
         where: {
-          user_id: req.id
+          user_id: req.id,
         },
-        include: [{
-          model: HealthCategory,
-          attributes: ['id', 'name'],
-          as: 'health_category',
-          where: { status: StatusHandler.pending }
-        }]
+        include: [
+          {
+            model: HealthCategory,
+            attributes: ["id", "name"],
+            as: "health_category",
+            where: { status: StatusHandler.pending },
+          },
+        ],
       });
       await userRemovedHealthCategory.map((item) => {
         removedOtherhealthCategories.push(item.health_category_id);
@@ -169,86 +189,97 @@ class HealthCategoryController {
 
     UserHealthCategory.destroy({
       where: {
-        health_category_id: {[Op.notIn]: healthCategories},
-        user_id: req.id
-      }
+        health_category_id: { [Op.notIn]: healthCategories },
+        user_id: req.id,
+      },
     });
 
     HealthCategory.destroy({
       where: {
-        id: {[Op.in]: removedOtherhealthCategories}
-      }
+        id: { [Op.in]: removedOtherhealthCategories },
+      },
     });
 
     return ResponseHandler.success(res, responseLanguage.health_category_save);
-  }
+  };
 
-  update = async(userId, healthCategoryId, status) => {
-    if(healthCategoryId) {
+  update = async (userId, healthCategoryId, status) => {
+    if (healthCategoryId) {
       let isUserHealthCategoryExist = await UserHealthCategory.findOne({
         where: {
           user_id: userId,
-          health_category_id: healthCategoryId
-        }
+          health_category_id: healthCategoryId,
+        },
       });
       if (!isUserHealthCategoryExist) {
         UserHealthCategory.create({
           user_id: userId,
           health_category_id: healthCategoryId,
-          status: StatusHandler.active
-        }).then(response => {
-          this.updateElaticsearch(userId);
+          status: StatusHandler.active,
         })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
+          .then((response) => {
+            this.updateElaticsearch(userId);
+          })
+          .catch((err) => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
       } else {
-        UserHealthCategory.update({
-          status: status
-        }, {
-          where: {
-            user_id: userId,
-            health_category_id: healthCategoryId,
+        UserHealthCategory.update(
+          {
+            status: status,
+          },
+          {
+            where: {
+              user_id: userId,
+              health_category_id: healthCategoryId,
+            },
           }
-        }).then(response => {
+        ).then((response) => {
           if (status == StatusHandler.active) {
             this.updateElaticsearch(userId);
           }
         });
       }
     }
-  }
+  };
 
   updateElaticsearch = (userId) => {
     UserHealthCategory.findAll({
       where: {
-        user_id: userId
+        user_id: userId,
       },
-      include: [{
-        model: HealthCategory,
-        attributes: ['name'],
-        as: 'health_category',
-        where: { status: StatusHandler.active }
-      }],
-      raw: true
-    }).then(response => {
-      if (response && response.length > 0) {
-        let healthCategories = response.map(item => item['health_category.name']);
-        let data = {
-          id: userId,
-          name: healthCategories
-        }
-        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.healthCategoryUpdate, data);
-       	ElasticSearchHandler.updateDocumentField(userId, {
-        	health_categories: healthCategories
-      	});
-      }
+      include: [
+        {
+          model: HealthCategory,
+          attributes: ["name"],
+          as: "health_category",
+          where: { status: StatusHandler.active },
+        },
+      ],
+      raw: true,
     })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
+      .then((response) => {
+        if (response && response.length > 0) {
+          let healthCategories = response.map(
+            (item) => item["health_category.name"]
+          );
+          let data = {
+            id: userId,
+            name: healthCategories,
+          };
+          ElasticsearchEventsHandler.store(
+            ElasticsearchEventsAction.healthCategoryUpdate,
+            data
+          );
+          ElasticSearchHandler.updateDocumentField(userId, {
+            health_categories: healthCategories,
+          });
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 }
 
 module.exports = HealthCategoryController;

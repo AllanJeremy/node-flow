@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -8,7 +8,7 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    queryInterface.renameTable('workout_users', 'user_workouts');
+    queryInterface.renameTable("workout_users", "user_workouts");
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -18,6 +18,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    queryInterface.renameTable('user_workouts', 'workout_users');
-  }
+    queryInterface.renameTable("user_workouts", "workout_users");
+  },
 };

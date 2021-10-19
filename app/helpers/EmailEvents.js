@@ -1,12 +1,12 @@
 const https = require("https");
-require('dotenv').config();
+require("dotenv").config();
 
 const KEYS = {
-  'signup': 'Signup Completed',
-  'profile_completed': 'Minimum Profile Completed',
-  'account_deactivated': 'Account Deactivated',
-  'account_deleted': 'Account Deleted',
-  'firstMatch': 'First Peer Added'
+  signup: "Signup Completed",
+  profile_completed: "Minimum Profile Completed",
+  account_deactivated: "Account Deactivated",
+  account_deleted: "Account Deleted",
+  firstMatch: "First Peer Added",
 };
 
 /**
@@ -17,140 +17,175 @@ const KEYS = {
  * @subpackage helpers
  */
 class EmailEvents {
-
   init(action, data) {
-    switch(action) {
-      case 'signup':
-       return this.signup(data);
-      case 'profileCompleted':
+    switch (action) {
+      case "signup":
+        return this.signup(data);
+      case "profileCompleted":
         return this.profileCompleted(data);
-      case 'accountDeactivate':
+      case "accountDeactivate":
         return this.accountDeactivate(data);
-      case 'accountDelete':
+      case "accountDelete":
         return this.accountDelete(data);
-      case 'firstMatch':
+      case "firstMatch":
         return this.firstMatch(data);
     }
   }
 
   createUser = (data) => {
     const headers = {
-      'Content-Type': 'application/json',
-      'Api-Token': process.env.ACTIVE_CAMPAIGN_API_TOKEN
-    }
+      "Content-Type": "application/json",
+      "Api-Token": process.env.ACTIVE_CAMPAIGN_API_TOKEN,
+    };
 
     const hostname = process.env.ACTIVE_CAMPAIGN_BASE_URL;
 
     const param = new TextEncoder().encode(
       JSON.stringify({
         contact: {
-          email: data['email']
-        }
+          email: data["email"],
+        },
       })
     );
 
-    const url = process.env.ACTIVE_CAMPAIGN_API_URL + 'contacts';
+    const url = process.env.ACTIVE_CAMPAIGN_API_URL + "contacts";
 
     this.httpRequest(hostname, url, headers, param);
-  }
+  };
 
   signup = (data) => {
     this.createUser(data);
 
-
-    var json = {"email": data['email']};
+    var json = { email: data["email"] };
     var encoded = encodeURIComponent(JSON.stringify(json)).replace(/%40/g, "@");
 
-    const param =  (`${encodeURIComponent('actid')}=${encodeURIComponent(process.env.ACTIVE_CAMPAIGN_ACCOUNT_ID)}&${encodeURIComponent('key')}=${encodeURIComponent(process.env.ACTIVE_CAMPAIGN_EVENT_KEY)}&${encodeURIComponent('event')}=${encodeURIComponent(KEYS.signup)}&${encodeURIComponent('eventdata')}=${encodeURIComponent(data['verificationCode'])}&${encodeURIComponent('visit')}=${encoded}`).replace(/%20/g, ' ');
+    const param = `${encodeURIComponent("actid")}=${encodeURIComponent(
+      process.env.ACTIVE_CAMPAIGN_ACCOUNT_ID
+    )}&${encodeURIComponent("key")}=${encodeURIComponent(
+      process.env.ACTIVE_CAMPAIGN_EVENT_KEY
+    )}&${encodeURIComponent("event")}=${encodeURIComponent(
+      KEYS.signup
+    )}&${encodeURIComponent("eventdata")}=${encodeURIComponent(
+      data["verificationCode"]
+    )}&${encodeURIComponent("visit")}=${encoded}`.replace(/%20/g, " ");
 
     const headers = {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
+      "Content-Type": "application/x-www-form-urlencoded",
+    };
 
     const hostname = process.env.ACTIVE_CAMPAIGN_TRACKING_URL;
 
-    const url = '/event';
+    const url = "/event";
 
     this.httpRequest(hostname, url, headers, param);
-
-  }
+  };
 
   profileCompleted = (data) => {
-    var json = {"email": data['email']};
+    var json = { email: data["email"] };
     var encoded = encodeURIComponent(JSON.stringify(json)).replace(/%40/g, "@");
 
-    const param =  (`${encodeURIComponent('actid')}=${encodeURIComponent(process.env.ACTIVE_CAMPAIGN_ACCOUNT_ID)}&${encodeURIComponent('key')}=${encodeURIComponent(process.env.ACTIVE_CAMPAIGN_EVENT_KEY)}&${encodeURIComponent('event')}=${encodeURIComponent(KEYS.profile_completed)}&${encodeURIComponent('eventdata')}=${encodeURIComponent('')}&${encodeURIComponent('visit')}=${encoded}`).replace(/%20/g, ' ');
+    const param = `${encodeURIComponent("actid")}=${encodeURIComponent(
+      process.env.ACTIVE_CAMPAIGN_ACCOUNT_ID
+    )}&${encodeURIComponent("key")}=${encodeURIComponent(
+      process.env.ACTIVE_CAMPAIGN_EVENT_KEY
+    )}&${encodeURIComponent("event")}=${encodeURIComponent(
+      KEYS.profile_completed
+    )}&${encodeURIComponent("eventdata")}=${encodeURIComponent(
+      ""
+    )}&${encodeURIComponent("visit")}=${encoded}`.replace(/%20/g, " ");
 
     const headers = {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
+      "Content-Type": "application/x-www-form-urlencoded",
+    };
 
     const hostname = process.env.ACTIVE_CAMPAIGN_TRACKING_URL;
 
-    const url = '/event';
+    const url = "/event";
 
     this.httpRequest(hostname, url, headers, param);
-  }
+  };
 
   accountDeactivate = (data) => {
-
-    var json = {"email": data['email']};
+    var json = { email: data["email"] };
     var encoded = encodeURIComponent(JSON.stringify(json)).replace(/%40/g, "@");
 
-    const param =  (`${encodeURIComponent('actid')}=${encodeURIComponent(process.env.ACTIVE_CAMPAIGN_ACCOUNT_ID)}&${encodeURIComponent('key')}=${encodeURIComponent(process.env.ACTIVE_CAMPAIGN_EVENT_KEY)}&${encodeURIComponent('event')}=${encodeURIComponent(KEYS.account_deactivated)}&${encodeURIComponent('eventdata')}=${encodeURIComponent('')}&${encodeURIComponent('visit')}=${encoded}`).replace(/%20/g, ' ');
+    const param = `${encodeURIComponent("actid")}=${encodeURIComponent(
+      process.env.ACTIVE_CAMPAIGN_ACCOUNT_ID
+    )}&${encodeURIComponent("key")}=${encodeURIComponent(
+      process.env.ACTIVE_CAMPAIGN_EVENT_KEY
+    )}&${encodeURIComponent("event")}=${encodeURIComponent(
+      KEYS.account_deactivated
+    )}&${encodeURIComponent("eventdata")}=${encodeURIComponent(
+      ""
+    )}&${encodeURIComponent("visit")}=${encoded}`.replace(/%20/g, " ");
 
     const headers = {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
+      "Content-Type": "application/x-www-form-urlencoded",
+    };
 
     const hostname = process.env.ACTIVE_CAMPAIGN_TRACKING_URL;
 
-    const url = '/event';
+    const url = "/event";
 
     this.httpRequest(hostname, url, headers, param);
-  }
+  };
 
   accountDelete = (data) => {
-
-    var json = {"email": data['email']};
+    var json = { email: data["email"] };
     var encoded = encodeURIComponent(JSON.stringify(json)).replace(/%40/g, "@");
 
-    const param =  (`${encodeURIComponent('actid')}=${encodeURIComponent(process.env.ACTIVE_CAMPAIGN_ACCOUNT_ID)}&${encodeURIComponent('key')}=${encodeURIComponent(process.env.ACTIVE_CAMPAIGN_EVENT_KEY)}&${encodeURIComponent('event')}=${encodeURIComponent(KEYS.account_deleted)}&${encodeURIComponent('eventdata')}=${encodeURIComponent('')}&${encodeURIComponent('visit')}=${encoded}`).replace(/%20/g, ' ');
+    const param = `${encodeURIComponent("actid")}=${encodeURIComponent(
+      process.env.ACTIVE_CAMPAIGN_ACCOUNT_ID
+    )}&${encodeURIComponent("key")}=${encodeURIComponent(
+      process.env.ACTIVE_CAMPAIGN_EVENT_KEY
+    )}&${encodeURIComponent("event")}=${encodeURIComponent(
+      KEYS.account_deleted
+    )}&${encodeURIComponent("eventdata")}=${encodeURIComponent(
+      ""
+    )}&${encodeURIComponent("visit")}=${encoded}`.replace(/%20/g, " ");
 
     const headers = {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
+      "Content-Type": "application/x-www-form-urlencoded",
+    };
 
     const hostname = process.env.ACTIVE_CAMPAIGN_TRACKING_URL;
 
-    const url = '/event';
+    const url = "/event";
 
     this.httpRequest(hostname, url, headers, param);
-  }
+  };
 
   firstMatch = (data) => {
-    var json = {"email": data['email']};
+    var json = { email: data["email"] };
     var encoded = encodeURIComponent(JSON.stringify(json)).replace(/%40/g, "@");
 
-    const param =  (`${encodeURIComponent('actid')}=${encodeURIComponent(process.env.ACTIVE_CAMPAIGN_ACCOUNT_ID)}&${encodeURIComponent('key')}=${encodeURIComponent(process.env.ACTIVE_CAMPAIGN_EVENT_KEY)}&${encodeURIComponent('event')}=${encodeURIComponent(KEYS.firstMatch)}&${encodeURIComponent('eventdata')}=${encodeURIComponent('Peer Id' + data['peerId'])}&${encodeURIComponent('visit')}=${encoded}`).replace(/%20/g, ' ');
+    const param = `${encodeURIComponent("actid")}=${encodeURIComponent(
+      process.env.ACTIVE_CAMPAIGN_ACCOUNT_ID
+    )}&${encodeURIComponent("key")}=${encodeURIComponent(
+      process.env.ACTIVE_CAMPAIGN_EVENT_KEY
+    )}&${encodeURIComponent("event")}=${encodeURIComponent(
+      KEYS.firstMatch
+    )}&${encodeURIComponent("eventdata")}=${encodeURIComponent(
+      "Peer Id" + data["peerId"]
+    )}&${encodeURIComponent("visit")}=${encoded}`.replace(/%20/g, " ");
 
     const headers = {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
+      "Content-Type": "application/x-www-form-urlencoded",
+    };
 
     const hostname = process.env.ACTIVE_CAMPAIGN_TRACKING_URL;
 
-    const url = '/event';
+    const url = "/event";
 
     this.httpRequest(hostname, url, headers, param);
-  }
+  };
 
   httpRequest = (hostname, url, header, data) => {
     var options = {
-      'method': 'POST',
-      'hostname': hostname,
-      'path': url,
-      'headers': header,
+      method: "POST",
+      hostname: hostname,
+      path: url,
+      headers: header,
     };
 
     var req = https.request(options, function (res) {
@@ -173,8 +208,7 @@ class EmailEvents {
     req.write(data);
 
     req.end();
-  }
-
+  };
 }
 
 module.exports = EmailEvents;

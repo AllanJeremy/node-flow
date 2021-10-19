@@ -1,26 +1,23 @@
 /**
  * Helpers
  */
-var ResponseHandler = require('../../../../helpers/ResponseHandler');
+var ResponseHandler = require("../../../../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
-
 
 /**
  * Models
  */
 
-const Models = require('../../../../models');
+const Models = require("../../../../models");
 const Configuration = Models.Configuration;
 
 /**
  * Languages
  */
-const language = require('../../../../language/en_default');
+const language = require("../../../../language/en_default");
 const responseLanguage = language.en.front.response;
 
-
 class ConfigurationController {
-
   /**
    * @api {get} /api/config/name_from_database Get configuration value
    * @apiName Front configuration value
@@ -33,14 +30,16 @@ class ConfigurationController {
     var name = req.params.name;
     Configuration.findOne({
       where: {
-        name: name.toString()
+        name: name.toString(),
       },
-    }).then(response => {
-      return ResponseHandler.success(res, '', response);
-    }).catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+    })
+      .then((response) => {
+        return ResponseHandler.success(res, "", response);
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 }
 
 module.exports = ConfigurationController;

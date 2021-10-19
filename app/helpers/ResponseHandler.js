@@ -6,7 +6,6 @@
  * @subpackage helpers
  */
 class ResponseHandler {
-
   /**
    * Used for returning success response
    *
@@ -15,13 +14,11 @@ class ResponseHandler {
    * @param {Array} data
    */
   success = (res, message, data = []) => {
-    return res
-      .status(200)
-      .send({
-        output: data,
-        message: message
-      })
-  }
+    return res.status(200).send({
+      output: data,
+      message: message,
+    });
+  };
 
   /**
    * Used for returning error response
@@ -32,14 +29,11 @@ class ResponseHandler {
    * @param {Array} data
    */
   error = (res, code, message, data = []) => {
-    return res
-      .status(code)
-      .send({
-        output: data,
-        message: message
-      })
-  }
-
+    return res.status(code).send({
+      output: data,
+      message: message,
+    });
+  };
 }
 
 module.exports = ResponseHandler;

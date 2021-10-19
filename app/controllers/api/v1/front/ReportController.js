@@ -1,41 +1,38 @@
-require('dotenv').config();
-const { validationResult } = require('express-validator');
-
+require("dotenv").config();
+const { validationResult } = require("express-validator");
 
 /**
  * Helpers
  */
-var ResponseHandler = require('../../../../helpers/ResponseHandler');
+var ResponseHandler = require("../../../../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
 
-const StatusHandler = require('../../../../helpers/StatusHandler');
+const StatusHandler = require("../../../../helpers/StatusHandler");
 
-const ReportTypes = require('../../../../helpers/ReportTypes');
+const ReportTypes = require("../../../../helpers/ReportTypes");
 
-const ReportReasonHandler = require('../../../../helpers/ReportReasonHandler');
+const ReportReasonHandler = require("../../../../helpers/ReportReasonHandler");
 
 /**
  * Models
  */
-const Models = require('../../../../models');
+const Models = require("../../../../models");
 const ReportedUser = Models.ReportedUser;
 
 /**
  * Languages
  */
-const language = require('../../../../language/en_default');
+const language = require("../../../../language/en_default");
 const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
 
 /**
  * Transformers
  */
-var ReportTransformer = require('../../../../transformers/front/ReportTransformer');
+var ReportTransformer = require("../../../../transformers/front/ReportTransformer");
 ReportTransformer = new ReportTransformer();
 
-
 class ReportController {
-
   /**
    * @api {get} /reported_reasons Show report reasons list
    * @apiName report reasons list
@@ -49,13 +46,13 @@ class ReportController {
 
     Object.entries(ReportReasonHandler).map((item, key) => {
       reasons.push({
-        'key': item[0],
-        'reason': item[1]
-      })
+        key: item[0],
+        reason: item[1],
+      });
     });
 
-    return ResponseHandler.success(res, '', ReportTransformer.reason(reasons));
-  }
+    return ResponseHandler.success(res, "", ReportTransformer.reason(reasons));
+  };
 
   /**
    * @api {post} /user/reported Handles user report store operation
@@ -68,33 +65,42 @@ class ReportController {
    * @apiSuccess (200) {Object}
    */
   store = (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+      return ResponseHandler.error(
+        res,
+        422,
+        validationLanguage.required_fields,
+        errors.array()
+      );
     }
 
     let allReasons = Object.keys(ReportReasonHandler);
-    let reason = allReasons.indexOf(req.body.reason) > -1 ? ReportReasonHandler[req.body.reason] : req.body.reason;
+    let reason =
+      allReasons.indexOf(req.body.reason) > -1
+        ? ReportReasonHandler[req.body.reason]
+        : req.body.reason;
 
     ReportedUser.create({
       user_id: req.body.user_id,
       reported_by: req.id,
-      type: req.query.type && req.query.type == 'flagged' ?  Object.keys(ReportTypes)[0] : Object.keys(ReportTypes)[1],
+      type:
+        req.query.type && req.query.type == "flagged"
+          ? Object.keys(ReportTypes)[0]
+          : Object.keys(ReportTypes)[1],
       reason: reason,
-      status: StatusHandler.pending
+      status: StatusHandler.pending,
     })
-    .then(response => {
-      return ResponseHandler.success(
-        res, responseLanguage.reported_successfully);
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    })
-  }
-
-
-
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          responseLanguage.reported_successfully
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 }
 
 module.exports = ReportController;

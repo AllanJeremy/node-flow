@@ -3,8 +3,8 @@
  *
  */
 const ReportTypes = {
-  flagged: 'User at risk',
-  reported: 'Reported'
+  flagged: "User at risk",
+  reported: "Reported",
 };
 
 module.exports = ReportTypes;

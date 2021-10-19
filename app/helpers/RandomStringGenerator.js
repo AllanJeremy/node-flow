@@ -1,9 +1,8 @@
-const cryptoRandomString = require('crypto-random-string');
+const cryptoRandomString = require("crypto-random-string");
 
-exports.string = function(length) {
+exports.string = function (length) {
   return cryptoRandomString({
     length: length,
-    type: 'numeric'
+    type: "numeric",
   });
-}
-
+};

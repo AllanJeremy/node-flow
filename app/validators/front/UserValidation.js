@@ -1,32 +1,32 @@
-const { check } = require('express-validator');
+const { check } = require("express-validator");
 
-const language = require('../../language/en_default');
-const validation = language.en.front.validation
+const language = require("../../language/en_default");
+const validation = language.en.front.validation;
 
 exports.Profile = [
-  check('first_name')
+  check("first_name")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.first_name_required)
     .bail(),
-  check('name_prefix')
+  check("name_prefix")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.name_prefix_required)
     .bail(),
-  check('birth_date')
+  check("birth_date")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.birth_date_required)
     .bail(),
-  check('profile_picture')
-    .optional({checkFalsy: true})
+  check("profile_picture")
+    .optional({ checkFalsy: true })
     .trim()
     .escape()
     .not()
@@ -36,14 +36,14 @@ exports.Profile = [
 ];
 
 exports.ProfileSummary = [
-  check('health_journey_id')
+  check("health_journey_id")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.health_journey_id_required)
     .bail(),
-  check('summary')
+  check("summary")
     .trim()
     .escape()
     .not()
@@ -53,7 +53,7 @@ exports.ProfileSummary = [
 ];
 
 exports.UserInterest = [
-  check('interest')
+  check("interest")
     .trim()
     .escape()
     .not()
@@ -62,60 +62,59 @@ exports.UserInterest = [
     .bail(),
 ];
 
-
 exports.visibility = [
-  check('race_status')
+  check("race_status")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.race_status_required)
     .bail(),
-  check('gender_status')
+  check("gender_status")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.gender_status_required)
     .bail(),
-  check('family_dynamic_status')
+  check("family_dynamic_status")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.family_dynamic_status_required)
     .bail(),
-  check('sexual_orientation_status')
+  check("sexual_orientation_status")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.sexual_orientation_status_required)
     .bail(),
-  check('workouts_status')
+  check("workouts_status")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.workouts_status_required)
     .bail(),
-  check('health_categories_status')
-    .optional({checkFalsy: true})
-    .isArray({min: 1})
+  check("health_categories_status")
+    .optional({ checkFalsy: true })
+    .isArray({ min: 1 })
     .withMessage(validation.health_categories_status_required)
     .bail(),
 ];
 
 exports.ChangePassword = [
-  check('current_password')
-    .optional({checkFalsy: true})
+  check("current_password")
+    .optional({ checkFalsy: true })
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.current_password_required)
     .bail(),
-  check('new_password')
+  check("new_password")
     .trim()
     .escape()
     .not()
@@ -125,11 +124,8 @@ exports.ChangePassword = [
 ];
 
 exports.MatchingPreference = [
-  check('module')
-    .isArray({min: 1})
+  check("module")
+    .isArray({ min: 1 })
     .withMessage(validation.matching_preference_module_required)
     .bail(),
 ];
-
-
-

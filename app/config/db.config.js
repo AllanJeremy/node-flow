@@ -1,23 +1,23 @@
 module.exports = {
-  'local': {
+  local: {
     HOST: process.env.DB_HOST,
     USER: process.env.DB_USERNAME,
     PASSWORD: process.env.DB_PASSWORD,
     DATABASE: process.env.DB_DATABASE,
-    DIALECT: process.env.DB_DIALECT
+    DIALECT: process.env.DB_DIALECT,
   },
-  'development': {
+  development: {
     HOST: process.env.DB_HOST,
     USER: process.env.DB_USERNAME,
     PASSWORD: process.env.DB_PASSWORD,
     DATABASE: process.env.DB_DATABASE,
-    DIALECT: process.env.DB_DIALECT
+    DIALECT: process.env.DB_DIALECT,
   },
-  'production': {
+  production: {
     HOST: process.env.DB_HOST,
     USER: process.env.DB_USERNAME,
     PASSWORD: process.env.DB_PASSWORD,
     DATABASE: process.env.DB_DATABASE,
-    DIALECT: process.env.DB_DIALECT
-  }
+    DIALECT: process.env.DB_DIALECT,
+  },
 };

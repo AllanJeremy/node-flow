@@ -1,49 +1,49 @@
-'use strict';
+"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('reported_users', {
+    await queryInterface.createTable("reported_users", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       user_id: {
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
+        onDelete: "CASCADE",
         references: {
-          model: 'users',
-          key: 'id'
-        }
+          model: "users",
+          key: "id",
+        },
       },
       reported_by: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       reason: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       type: {
-        type: Sequelize.DataTypes.ENUM('reported', 'flagged'),
-        defaultValue: 'reported',
+        type: Sequelize.DataTypes.ENUM("reported", "flagged"),
+        defaultValue: "reported",
       },
       status: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
         field: "created_at",
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)"),
       },
       updatedAt: {
         allowNull: false,
         field: "updated_at",
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)")
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)"),
       },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('reported_users');
-  }
+    await queryInterface.dropTable("reported_users");
+  },
 };

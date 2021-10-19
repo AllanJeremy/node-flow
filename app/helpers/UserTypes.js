@@ -3,8 +3,8 @@
  *
  */
 const UserTypes = {
-  normal: 'normal',
-  bot: 'bot'
+  normal: "normal",
+  bot: "bot",
 };
 
 module.exports = UserTypes;

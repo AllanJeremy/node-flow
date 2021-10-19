@@ -1,23 +1,23 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const { validationResult } = require('express-validator');
-const Sequelize = require('sequelize');
-var { StreamChat } = require('stream-chat');
+const { validationResult } = require("express-validator");
+const Sequelize = require("sequelize");
+var { StreamChat } = require("stream-chat");
 
 /**
  * Helpers
  */
-var ResponseHandler = require('../../../../helpers/ResponseHandler');
+var ResponseHandler = require("../../../../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
 
-const StatusHandler = require('../../../../helpers/StatusHandler');
+const StatusHandler = require("../../../../helpers/StatusHandler");
 
-const PeerStatusHandler = require('../../../../helpers/PeerStatusHandler');
+const PeerStatusHandler = require("../../../../helpers/PeerStatusHandler");
 
-var Chat = require('../../../../helpers/Chat');
+var Chat = require("../../../../helpers/Chat");
 Chat = new Chat();
 
-var EmailEvents = require('../../../../helpers/EmailEvents');
+var EmailEvents = require("../../../../helpers/EmailEvents");
 EmailEvents = new EmailEvents();
 
 var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
@@ -26,12 +26,12 @@ ElasticSearchHandler = new ElasticSearchHandler();
 /**
  * Constants
  */
-const SystemConstants = require('../../../../config/constants.js');
+const SystemConstants = require("../../../../config/constants.js");
 
 /**
  * Models
  */
-const Models = require('../../../../models');
+const Models = require("../../../../models");
 const ConversationStarter = Models.ConversationStarter;
 const UserConversationStarter = Models.UserConversationStarter;
 const User = Models.User;
@@ -40,7 +40,7 @@ const ListedPeer = Models.ListedPeer;
 /**
  * Languages
  */
-const language = require('../../../../language/en_default');
+const language = require("../../../../language/en_default");
 const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
 const chatLanguage = language.en.chat;
@@ -48,18 +48,16 @@ const chatLanguage = language.en.chat;
 /**
  * Transformers
  */
-var ConversationStarterTransformer = require('../../../../transformers/front/ConversationStarterTransformer');
+var ConversationStarterTransformer = require("../../../../transformers/front/ConversationStarterTransformer");
 ConversationStarterTransformer = new ConversationStarterTransformer();
 
 /**
  * Transformers
  */
-var UserTransformer = require('../../../../transformers/front/UserTransformer');
+var UserTransformer = require("../../../../transformers/front/UserTransformer");
 UserTransformer = new UserTransformer();
 
-
 class ConversationStarterController {
-
   /**
    * @api {get} /user/conversation_starter/list Show conversation starter list
    * @apiName Conversation starter question list
@@ -71,17 +69,21 @@ class ConversationStarterController {
   list = (req, res) => {
     ConversationStarter.findAll({
       where: {
-        status: StatusHandler.active
-      }
-    , order: [['sequence', 'ASC']]})
-    .then(response => {
-      return ResponseHandler.success(res, '', ConversationStarterTransformer.transform(response));
+        status: StatusHandler.active,
+      },
+      order: [["sequence", "ASC"]],
     })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          "",
+          ConversationStarterTransformer.transform(response)
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /user/conversation_starter/store Handles user conversation starter store operation
@@ -93,38 +95,48 @@ class ConversationStarterController {
    *
    * @apiSuccess (200) {Object}
    */
-  store = async(req, res) => {
-
+  store = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+      return ResponseHandler.error(
+        res,
+        422,
+        validationLanguage.required_fields,
+        errors.array()
+      );
     }
 
     let isConversationStarterExist = await UserConversationStarter.findOne({
       where: {
         user_id: req.id,
         conversation_starter_id: req.body.conversation_starter_id,
-      }
+      },
     });
     if (!isConversationStarterExist) {
       await UserConversationStarter.create({
         user_id: req.id,
         conversation_starter_id: req.body.conversation_starter_id,
-        answer: req.body.answer
+        answer: req.body.answer,
       });
     } else {
-      await UserConversationStarter.update({
-        answer: req.body.answer,
-      },{
-        where: {
-          user_id: req.id,
-          conversation_starter_id: req.body.conversation_starter_id,
+      await UserConversationStarter.update(
+        {
+          answer: req.body.answer,
+        },
+        {
+          where: {
+            user_id: req.id,
+            conversation_starter_id: req.body.conversation_starter_id,
+          },
         }
-      });
+      );
     }
 
-    return ResponseHandler.success(res, responseLanguage.conversation_starter_store_success);
-  }
+    return ResponseHandler.success(
+      res,
+      responseLanguage.conversation_starter_store_success
+    );
+  };
 
   /**
    * @api {post} /user/conversation_starter/status/store Handles user conversation starter status store operation
@@ -135,75 +147,87 @@ class ConversationStarterController {
    *
    * @apiSuccess (200) {Object}
    */
-  status = async(req, res) => {
+  status = async (req, res) => {
     let isConversationStarterExist = await UserConversationStarter.findOne({
       where: {
         user_id: req.id,
         conversation_starter_id: req.body.conversation_starter_id,
-      }
+      },
     });
 
     if (isConversationStarterExist) {
-      await UserConversationStarter.update({
-        status: StatusHandler.active
-      },{
-        where: {
-          user_id: req.id,
-          conversation_starter_id: req.body.conversation_starter_id,
+      await UserConversationStarter.update(
+        {
+          status: StatusHandler.active,
+        },
+        {
+          where: {
+            user_id: req.id,
+            conversation_starter_id: req.body.conversation_starter_id,
+          },
         }
-      });
+      );
 
       const Op = Sequelize.Op;
-      UserConversationStarter.update({
-        status: StatusHandler.pending
-      }, {
-        where: {
-          conversation_starter_id: {[Op.notIn]: [req.body.conversation_starter_id]},
-          user_id: req.id
+      UserConversationStarter.update(
+        {
+          status: StatusHandler.pending,
+        },
+        {
+          where: {
+            conversation_starter_id: {
+              [Op.notIn]: [req.body.conversation_starter_id],
+            },
+            user_id: req.id,
+          },
         }
-      });
+      );
     }
 
-
-    var user = await User.findOne({where: { id: req.id }});
+    var user = await User.findOne({ where: { id: req.id } });
     if (!user.published) {
       var chatToken = await Chat.token(user.unique_id);
 
-      var botUser = await User.findOne({where: {
-        email: SystemConstants.SYSTEM_BOT_EMAIL
-      }});
-
-      User.update({
-        published: StatusHandler.active,
-        chat_token: chatToken
-      }, {
+      var botUser = await User.findOne({
         where: {
-          id: req.id
-        }
+          email: SystemConstants.SYSTEM_BOT_EMAIL,
+        },
       });
+
+      User.update(
+        {
+          published: StatusHandler.active,
+          chat_token: chatToken,
+        },
+        {
+          where: {
+            id: req.id,
+          },
+        }
+      );
 
       ListedPeer.create({
         user_id: req.id,
         peer_id: botUser.id,
-        status: PeerStatusHandler.active
+        status: PeerStatusHandler.active,
       });
 
       ListedPeer.create({
         user_id: botUser.id,
         peer_id: req.id,
-        status: PeerStatusHandler.active
+        status: PeerStatusHandler.active,
       });
 
       let userData = {
         userId: req.id,
         firstName: user.first_name,
-        email: user.email
-      }
+        email: user.email,
+      };
 
-      EmailEvents.init('profileCompleted', userData);
+      EmailEvents.init("profileCompleted", userData);
 
       ElasticSearchHandler.updateDocumentField(req.id, {
-        published: StatusHandler.active
+        published: StatusHandler.active,
       });
 
       try {
@@ -211,19 +235,23 @@ class ConversationStarterController {
           id: user.unique_id,
           user_id: user.id,
           first_name: user.first_name,
-          image: process.env.API_IMAGE_URL + '/avatar/' + user.profile_picture
+          image: process.env.API_IMAGE_URL + "/avatar/" + user.profile_picture,
         });
 
         await Chat.createChannel(botUser, user);
-      } catch(e) {
+      } catch (e) {
         console.log(e);
       }
     }
 
-    var userData = await User.findOne({where: { id: req.id }});
+    var userData = await User.findOne({ where: { id: req.id } });
 
-    return ResponseHandler.success(res, responseLanguage.conversation_starter_status_store, UserTransformer.user(userData));
-  }
+    return ResponseHandler.success(
+      res,
+      responseLanguage.conversation_starter_status_store,
+      UserTransformer.user(userData)
+    );
+  };
 }
 
 module.exports = ConversationStarterController;

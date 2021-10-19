@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class UserMetadata extends Model {
     /**
@@ -12,26 +10,29 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  UserMetadata.init({
-    user_id: DataTypes.INTEGER,
-    gender_id: DataTypes.INTEGER,
-    gender_status: DataTypes.INTEGER,
-    sexual_orientation_id: DataTypes.INTEGER,
-    sexual_orientation_status: DataTypes.INTEGER,
-    race_status: DataTypes.INTEGER,
-    family_dynamic_status: DataTypes.INTEGER,
-    workout_status: DataTypes.INTEGER,
-    summary: DataTypes.STRING,
-    deleted_at: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'UserMetadata',
-    tableName: 'user_metadata',
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
-    deletedAt: 'deleted_at',
-    //paranoid: true,
-  });
+  }
+  UserMetadata.init(
+    {
+      user_id: DataTypes.INTEGER,
+      gender_id: DataTypes.INTEGER,
+      gender_status: DataTypes.INTEGER,
+      sexual_orientation_id: DataTypes.INTEGER,
+      sexual_orientation_status: DataTypes.INTEGER,
+      race_status: DataTypes.INTEGER,
+      family_dynamic_status: DataTypes.INTEGER,
+      workout_status: DataTypes.INTEGER,
+      summary: DataTypes.STRING,
+      deleted_at: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      modelName: "UserMetadata",
+      tableName: "user_metadata",
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+      deletedAt: "deleted_at",
+      //paranoid: true,
+    }
+  );
   return UserMetadata;
 };

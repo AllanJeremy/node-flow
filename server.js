@@ -1,8 +1,8 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-var dotenv = require('dotenv');
-const multer = require('multer');
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+var dotenv = require("dotenv");
+const multer = require("multer");
 const cron = require("node-cron");
 const Joyn = express();
 
@@ -10,16 +10,15 @@ dotenv.config();
 
 // image folder
 const upload = multer({
-  dest: 'images'
+  dest: "images",
 });
 
-Joyn.use('/images', express.static('./images'));
+Joyn.use("/images", express.static("./images"));
 
 // Set CORS
 Joyn.use(cors({ origin: process.env.CORS_ORIGIN }));
 
 Joyn.use(express.json());
-
 
 // parse requests of content-type - application/x-www-form-urlencoded
 Joyn.use(bodyParser.urlencoded({ extended: true }));
@@ -28,29 +27,28 @@ Joyn.use(bodyParser.urlencoded({ extended: true }));
 Joyn.use(bodyParser.json());
 
 // Database
-const db = require('./app/models');
+const db = require("./app/models");
 db.sequelize.sync();
 
 // route
-Joyn.get('/', (req, res) => {
+Joyn.get("/", (req, res) => {
   res.json({
-    'message': 'No route matches [GET] /'
+    message: "No route matches [GET] /",
   });
 });
 
 // front routes
-require('./app/routes/front')(Joyn);
+require("./app/routes/front")(Joyn);
 
 // admin routes
-require('./app/routes/admin')(Joyn);
+require("./app/routes/admin")(Joyn);
 
 // cron job
-var cronJob = require('./app/cron');
+var cronJob = require("./app/cron");
 cronJob = new cronJob();
 
-var chatCronJob = require('./app/cron/chat.js');
+var chatCronJob = require("./app/cron/chat.js");
 chatCronJob = new chatCronJob();
-
 
 // Schedule tasks to be run on the server.
 // cron.schedule('* * * * *', function() {

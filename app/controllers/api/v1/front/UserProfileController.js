@@ -1,35 +1,35 @@
-require('dotenv').config();
-const { validationResult } = require('express-validator');
-const Sequelize = require('sequelize');
-var bcrypt = require('bcryptjs');
+require("dotenv").config();
+const { validationResult } = require("express-validator");
+const Sequelize = require("sequelize");
+var bcrypt = require("bcryptjs");
 const Op = Sequelize.Op;
 
 /**
  * Helpers
  */
-var ResponseHandler = require('../../../../helpers/ResponseHandler');
+var ResponseHandler = require("../../../../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
 
-const StatusHandler = require('../../../../helpers/StatusHandler');
+const StatusHandler = require("../../../../helpers/StatusHandler");
 
-const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
+const ElasticsearchEventsAction = require("../../../../helpers/ElasticsearchEventsAction");
 
-var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+var ElasticsearchEventsHandler = require("../../../../helpers/ElasticsearchEventsHandler");
 ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
 ElasticSearchHandler = new ElasticSearchHandler();
 
-var Chat = require('../../../../helpers/Chat');
+var Chat = require("../../../../helpers/Chat");
 Chat = new Chat();
 
-var EmailEvents = require('../../../../helpers/EmailEvents');
+var EmailEvents = require("../../../../helpers/EmailEvents");
 EmailEvents = new EmailEvents();
 
 /**
  * Models
  */
-const Models = require('../../../../models');
+const Models = require("../../../../models");
 const User = Models.User;
 const UserMetadata = Models.UserMetadata;
 const UserInterest = Models.UserInterest;
@@ -55,20 +55,17 @@ const UserHealthJourney = Models.UserHealthJourney;
 /**
  * Languages
  */
-const language = require('../../../../language/en_default');
+const language = require("../../../../language/en_default");
 const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
-
 
 /**
  * Transformers
  */
-var UserTransformer = require('../../../../transformers/front/UserTransformer');
+var UserTransformer = require("../../../../transformers/front/UserTransformer");
 UserTransformer = new UserTransformer();
 
 class UserProfileController {
-
-
   /**
    * @api {post} /user/profile/basic Handles user profile store operation
    * @apiName Front user profile store operation
@@ -81,7 +78,6 @@ class UserProfileController {
    * @apiSuccess (200) {Object}
    */
   store = (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, errors.array());
@@ -89,51 +85,62 @@ class UserProfileController {
 
     User.findOne({
       where: {
-        id: req.id
-      }
-    }).then(response => {
-      User.update({
-        first_name: req.body.first_name,
-        name_prefix: req.body.name_prefix,
-        birth_date: req.body.birth_date,
-        profile_picture: req.body.profile_picture,
+        id: req.id,
       },
-      {
-        where: {id: response.id},
-        returning: true,
-        raw: true
+    })
+      .then((response) => {
+        User.update(
+          {
+            first_name: req.body.first_name,
+            name_prefix: req.body.name_prefix,
+            birth_date: req.body.birth_date,
+            profile_picture: req.body.profile_picture,
+          },
+          {
+            where: { id: response.id },
+            returning: true,
+            raw: true,
+          }
+        )
+          .then(async (response) => {
+            let data = {
+              id: req.id,
+              name: req.body.first_name,
+              profile_picture: req.body.profile_picture,
+              unique_id: response[1][0]["unique_id"],
+            };
+
+            await Chat.updateUser({
+              id: response[1][0]["unique_id"],
+              user_id: req.id,
+              first_name: req.body.first_name,
+              name: req.body.first_name,
+              image:
+                process.env.API_IMAGE_URL +
+                "/avatar/" +
+                req.body.profile_picture,
+            });
+
+            ElasticsearchEventsHandler.store(
+              ElasticsearchEventsAction.updateUser,
+              data
+            );
+
+            ElasticSearchHandler.updateDocumentField(req.id, data);
+
+            return ResponseHandler.success(
+              res,
+              responseLanguage.profile_create
+            );
+          })
+          .catch((err) => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
       })
-      .then(async response => {
-        let data = {
-          id: req.id,
-          name: req.body.first_name,
-          profile_picture: req.body.profile_picture,
-          unique_id: response[1][0]['unique_id']
-        };
-
-        await Chat.updateUser({
-          id: response[1][0]['unique_id'],
-          user_id: req.id,
-          first_name: req.body.first_name,
-          name: req.body.first_name,
-          image: process.env.API_IMAGE_URL + '/avatar/' + req.body.profile_picture
-        });
-
-        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.updateUser, data);
-
-        ElasticSearchHandler.updateDocumentField(req.id, data);
-
-        return ResponseHandler.success(res, responseLanguage.profile_create);
-      })
-      .catch(err => {
+      .catch((err) => {
         return ResponseHandler.error(res, 500, err.message);
       });
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
+  };
 
   /**
    * @api {post} /user/profile/basic/store/summary Handles user profile store summary operation
@@ -145,73 +152,88 @@ class UserProfileController {
    * @apiSuccess (200) {Object}
    */
   update = (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+      return ResponseHandler.error(
+        res,
+        422,
+        validationLanguage.required_fields,
+        errors.array()
+      );
     }
 
     UserMetadata.findOne({
       where: {
-        user_id: req.id
-      }
-    }).then(response => {
-      if (!response) {
-        UserMetadata.create({
-          user_id: req.id,
-          summary: req.body.summary
-        })
-        .then(async response => {
-          await this.storeJourneyHealth(req);
-          return ResponseHandler.success(res, responseLanguage.profile_update);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      } else {
-        UserMetadata.update({
-          summary: req.body.summary
-        },{
-          where: {user_id: req.id}
-        })
-        .then(async response => {
-          await this.storeJourneyHealth(req);
-          return ResponseHandler.success(res, responseLanguage.profile_update);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      }
+        user_id: req.id,
+      },
     })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        if (!response) {
+          UserMetadata.create({
+            user_id: req.id,
+            summary: req.body.summary,
+          })
+            .then(async (response) => {
+              await this.storeJourneyHealth(req);
+              return ResponseHandler.success(
+                res,
+                responseLanguage.profile_update
+              );
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        } else {
+          UserMetadata.update(
+            {
+              summary: req.body.summary,
+            },
+            {
+              where: { user_id: req.id },
+            }
+          )
+            .then(async (response) => {
+              await this.storeJourneyHealth(req);
+              return ResponseHandler.success(
+                res,
+                responseLanguage.profile_update
+              );
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   storeJourneyHealth = (req) => {
-
     UserHealthJourney.findOne({
       where: {
-        user_id: req.id
-      }
-    }).then(response => {
-      if(!response) {
+        user_id: req.id,
+      },
+    }).then((response) => {
+      if (!response) {
         UserHealthJourney.create({
           user_id: req.id,
           health_journey_id: req.body.health_journey_id,
         });
       } else {
-        UserHealthJourney.update({
-          health_journey_id: req.body.health_journey_id
-        }, {
-          where: {
-            user_id: req.id
+        UserHealthJourney.update(
+          {
+            health_journey_id: req.body.health_journey_id,
+          },
+          {
+            where: {
+              user_id: req.id,
+            },
           }
-        });
+        );
       }
     });
-  }
-
+  };
 
   /**
    * @api {post} /user/profile/interest Handles user profile interest option store operation
@@ -223,44 +245,49 @@ class UserProfileController {
    * @apiSuccess (200) {Object}
    */
   userInterestStore = async (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, errors.array());
     }
 
     let userInterest = await UserInterest.findOne({
-      where: { user_id: req.id}
+      where: { user_id: req.id },
     });
 
     if (!userInterest) {
       UserInterest.create({
         user_id: req.id,
-        value: req.body.interest
+        value: req.body.interest,
       })
-      .then(response => {
-        return ResponseHandler.success(res, responseLanguage.user_interest_save);
-      })
-      .catch(err => {
-        return ResponseHandler.error(res, 500, err.message);
-      });
+        .then((response) => {
+          return ResponseHandler.success(
+            res,
+            responseLanguage.user_interest_save
+          );
+        })
+        .catch((err) => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
     } else {
-      UserInterest.update({
-        value: req.body.interest
-      },
-      {
-        where: { user_id: req.id }
-      }
+      UserInterest.update(
+        {
+          value: req.body.interest,
+        },
+        {
+          where: { user_id: req.id },
+        }
       )
-      .then(response => {
-        return ResponseHandler.success(res, responseLanguage.user_interest_save);
-      })
-      .catch(err => {
-        return ResponseHandler.error(res, 500, err.message);
-      });
+        .then((response) => {
+          return ResponseHandler.success(
+            res,
+            responseLanguage.user_interest_save
+          );
+        })
+        .catch((err) => {
+          return ResponseHandler.error(res, 500, err.message);
+        });
     }
-  }
-
+  };
 
   /**
    * @api {post} /user/profile/visibility Handles user profile visibility store operation
@@ -276,8 +303,7 @@ class UserProfileController {
    *
    * @apiSuccess (200) {Object}
    */
-  visibility = async(req, res) => {
-
+  visibility = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, errors.array());
@@ -285,51 +311,59 @@ class UserProfileController {
 
     UserMetadata.findOne({
       where: {
-        user_id: req.id
-      }
-    }).then(async response => {
-      await UserMetadata.update({
-        race_status: req.body.race_status,
-        gender_status: req.body.gender_status,
-        family_dynamic_status: req.body.family_dynamic_status,
-        sexual_orientation_status: req.body.sexual_orientation_status,
-        workout_status: req.body.workouts_status,
+        user_id: req.id,
       },
-      {
-        where: { id: response.id }
-      });
+    })
+      .then(async (response) => {
+        await UserMetadata.update(
+          {
+            race_status: req.body.race_status,
+            gender_status: req.body.gender_status,
+            family_dynamic_status: req.body.family_dynamic_status,
+            sexual_orientation_status: req.body.sexual_orientation_status,
+            workout_status: req.body.workouts_status,
+          },
+          {
+            where: { id: response.id },
+          }
+        );
 
-      let healthCategoriesStatus = req.body.health_categories_status ? req.body.health_categories_status : [];
-      if (healthCategoriesStatus && healthCategoriesStatus.length > 0) {
-        healthCategoriesStatus.map(async (item, index) => {
-          await UserHealthCategory.update({
-            status: StatusHandler.active
+        let healthCategoriesStatus = req.body.health_categories_status
+          ? req.body.health_categories_status
+          : [];
+        if (healthCategoriesStatus && healthCategoriesStatus.length > 0) {
+          healthCategoriesStatus.map(async (item, index) => {
+            await UserHealthCategory.update(
+              {
+                status: StatusHandler.active,
+              },
+              {
+                where: {
+                  user_id: req.id,
+                  health_category_id: item,
+                },
+              }
+            );
+          });
+        }
+        UserHealthCategory.update(
+          {
+            status: StatusHandler.pending,
           },
           {
             where: {
+              health_category_id: { [Op.notIn]: healthCategoriesStatus },
               user_id: req.id,
-              health_category_id: item
-            }
-          });
-        });
-      }
-      UserHealthCategory.update({
-        status: StatusHandler.pending
-      },
-      {
-        where: {
-          health_category_id: {[Op.notIn]: healthCategoriesStatus},
-          user_id: req.id
-        }
+            },
+          }
+        );
+
+        return ResponseHandler.success(res, responseLanguage.visibility);
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
       });
-
-      return ResponseHandler.success(res, responseLanguage.visibility);
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
+  };
 
   /**
    * @api {get} /user Handles user profile show operation
@@ -340,117 +374,157 @@ class UserProfileController {
    * @apiSuccess (200) {Object}
    */
   show = (req, res) => {
-    let userId = req.params.id && req.params.id != 'null' ? req.params.id : req.id;
+    let userId =
+      req.params.id && req.params.id != "null" ? req.params.id : req.id;
 
     User.findOne({
       where: { id: userId },
       include: [
-      {
-        model: UserMetadata,
-        attributes: ['gender_status', 'sexual_orientation_status', 'race_status', 'family_dynamic_status', 'workout_status', 'summary'],
-        include: [
-          { model: Gender, as:'gender', attributes: ['id', 'name', 'status'] },
-          { model: SexualOrientation, as: 'sexual_orientation',  attributes: ['id', 'name', 'status'] }],
-        as: 'user_meta_data'
-      },
-      {
-        model: ListedPeer,
-        attributes: ['peer_id'],
-        as: 'listed_peers'
-      },
-      {
-        model: UserHealthCategory,
-        attributes: ['id', 'status'],
-        include: [{
-            model: HealthCategory,
-            attributes: ['id', 'name', 'status'],
-            as: 'health_category',
-          }],
-        as: 'health_categories',
-      },
-      {
-        model: UserWorkout,
-        attributes: ['id', 'status'],
-        include: [{
-          model: Workout,
-          attributes: ['id', 'name', 'status'],
-          as: 'workout'
-        }],
-        as: 'workouts'
-      },
-      {
-        model: UserRace,
-        attributes: ['id', 'status'],
-        include: [{
-          model: Race,
-          attributes: ['id', 'name', 'status'],
-          as: 'race'
-        }],
-        as: 'races'
-      },
-      {
-        model: UserFamilyDynamic,
-        attributes: ['id', 'status'],
-        include: [{
-          model: FamilyDynamic,
-          attributes: ['id', 'name', 'status'],
-          as: 'family_dynamic',
-        }],
-        as: 'family_dynamics'
-      },
-      {
-        model: UserPersonalityQuestion,
-        attributes: ['id', 'user_id', 'question_id', 'answer'],
-        include: [{
-          model: PersonalityQuestion,
-          attributes: ['id', 'question', 'options'],
-          as: 'personality_question'
-        }],
-        as: 'personality_questions'
-      },
-      {
-        model: UserConversationStarter,
-          attributes: ['id', 'user_id', 'conversation_starter_id', 'answer', 'status'],
-          include: [{
-            model: ConversationStarter,
-            attributes: ['id', 'question', 'question_icon'],
-            as: 'conversation_starter'
-          }],
-          as: 'conversation_starters'
-      },
-      {
-        model: UserMatchingPreference,
-          attributes: ['id', 'user_id', 'module'],
-          as: 'user_matching_preferences'
-      },
-      {
-        model: UserSetting,
-        attributes: ['theme_color'],
-        as: 'user_setting'
-      },
-      {
-        model: UserHealthJourney,
-        attributes: ['health_journey_id'],
-        as: 'user_health_journey'
-      },
+        {
+          model: UserMetadata,
+          attributes: [
+            "gender_status",
+            "sexual_orientation_status",
+            "race_status",
+            "family_dynamic_status",
+            "workout_status",
+            "summary",
+          ],
+          include: [
+            {
+              model: Gender,
+              as: "gender",
+              attributes: ["id", "name", "status"],
+            },
+            {
+              model: SexualOrientation,
+              as: "sexual_orientation",
+              attributes: ["id", "name", "status"],
+            },
+          ],
+          as: "user_meta_data",
+        },
+        {
+          model: ListedPeer,
+          attributes: ["peer_id"],
+          as: "listed_peers",
+        },
+        {
+          model: UserHealthCategory,
+          attributes: ["id", "status"],
+          include: [
+            {
+              model: HealthCategory,
+              attributes: ["id", "name", "status"],
+              as: "health_category",
+            },
+          ],
+          as: "health_categories",
+        },
+        {
+          model: UserWorkout,
+          attributes: ["id", "status"],
+          include: [
+            {
+              model: Workout,
+              attributes: ["id", "name", "status"],
+              as: "workout",
+            },
+          ],
+          as: "workouts",
+        },
+        {
+          model: UserRace,
+          attributes: ["id", "status"],
+          include: [
+            {
+              model: Race,
+              attributes: ["id", "name", "status"],
+              as: "race",
+            },
+          ],
+          as: "races",
+        },
+        {
+          model: UserFamilyDynamic,
+          attributes: ["id", "status"],
+          include: [
+            {
+              model: FamilyDynamic,
+              attributes: ["id", "name", "status"],
+              as: "family_dynamic",
+            },
+          ],
+          as: "family_dynamics",
+        },
+        {
+          model: UserPersonalityQuestion,
+          attributes: ["id", "user_id", "question_id", "answer"],
+          include: [
+            {
+              model: PersonalityQuestion,
+              attributes: ["id", "question", "options"],
+              as: "personality_question",
+            },
+          ],
+          as: "personality_questions",
+        },
+        {
+          model: UserConversationStarter,
+          attributes: [
+            "id",
+            "user_id",
+            "conversation_starter_id",
+            "answer",
+            "status",
+          ],
+          include: [
+            {
+              model: ConversationStarter,
+              attributes: ["id", "question", "question_icon"],
+              as: "conversation_starter",
+            },
+          ],
+          as: "conversation_starters",
+        },
+        {
+          model: UserMatchingPreference,
+          attributes: ["id", "user_id", "module"],
+          as: "user_matching_preferences",
+        },
+        {
+          model: UserSetting,
+          attributes: ["theme_color"],
+          as: "user_setting",
+        },
+        {
+          model: UserHealthJourney,
+          attributes: ["health_journey_id"],
+          as: "user_health_journey",
+        },
       ],
       order: [
         [
           {
-            model: UserHealthCategory, as: 'health_categories'
+            model: UserHealthCategory,
+            as: "health_categories",
           },
-          'status',
-          'DESC'
-        ]
-      ]
-     })
-    .then(response => {
-      return ResponseHandler.success(res, '', UserTransformer.UserDetail(response));
+          "status",
+          "DESC",
+        ],
+      ],
     })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          "",
+          UserTransformer.UserDetail(response)
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /user/change_password Handles change password operation
@@ -470,34 +544,46 @@ class UserProfileController {
 
     User.findOne({
       where: {
-        id: req.id
-      }
-    }).then(response => {
-      if(response.password != null) {
+        id: req.id,
+      },
+    }).then((response) => {
+      if (response.password != null) {
         var isPasswordValid = bcrypt.compareSync(
           req.body.current_password,
           response.password
         );
 
         if (!isPasswordValid) {
-          return ResponseHandler.error(res, 422, responseLanguage.incorrect_current_password);
+          return ResponseHandler.error(
+            res,
+            422,
+            responseLanguage.incorrect_current_password
+          );
         }
       }
 
-      User.update({
+      User.update(
+        {
           password: bcrypt.hashSync(req.body.new_password),
-        }, {
+        },
+        {
           where: {
-            id: req.id
-          }
+            id: req.id,
+          },
+        }
+      )
+        .then((response) => {
+          return ResponseHandler.success(
+            res,
+            200,
+            responseLanguage.password_changed_success
+          );
         })
-        .then(response => {
-          return ResponseHandler.success(res, 200, responseLanguage.password_changed_success);
-        }).catch(err => {
+        .catch((err) => {
           return ResponseHandler.error(res, 500, err.message);
         });
     });
-  }
+  };
 
   /**
    * @api {post} /user/matching_preference/store Handles user matching preference module store operation
@@ -511,33 +597,41 @@ class UserProfileController {
   StoreMatchingPreference = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+      return ResponseHandler.error(
+        res,
+        422,
+        validationLanguage.required_fields,
+        errors.array()
+      );
     }
 
     req.body.module.map(async (item) => {
       var isModuleExist = await UserMatchingPreference.findOne({
         where: {
           user_id: req.id,
-          module: item
-        }
+          module: item,
+        },
       });
       if (!isModuleExist) {
         await UserMatchingPreference.create({
           user_id: req.id,
-          module: item
+          module: item,
         });
       }
     });
 
     UserMatchingPreference.destroy({
       where: {
-        module: {[Op.notIn]: req.body.module},
-        user_id: req.id
-      }
+        module: { [Op.notIn]: req.body.module },
+        user_id: req.id,
+      },
     });
 
-    return ResponseHandler.success(res, responseLanguage.matching_preference_store);
-  }
+    return ResponseHandler.success(
+      res,
+      responseLanguage.matching_preference_store
+    );
+  };
 
   /**
    * @api {get} /user/account/deactivate Handles user account deactivate operation
@@ -550,30 +644,38 @@ class UserProfileController {
   AccountDeactivate = (req, res) => {
     User.findOne({
       where: {
-        id: req.id
-      }
-    }).then(userResponse => {
-      User.update({
-        status: StatusHandler.deactivate,
+        id: req.id,
       },
-      {
-        where: { id: req.id }
-      }).then(response => {
+    })
+      .then((userResponse) => {
+        User.update(
+          {
+            status: StatusHandler.deactivate,
+          },
+          {
+            where: { id: req.id },
+          }
+        )
+          .then((response) => {
+            let userData = {
+              userId: req.id,
+              email: userResponse.email,
+            };
+            EmailEvents.init("accountDeactivate", userData);
 
-        let userData = {
-          userId: req.id,
-          email: userResponse.email
-        }
-        EmailEvents.init('accountDeactivate', userData);
-
-        return ResponseHandler.success(res, responseLanguage.account_deactivate_success);
-      }).catch(err => {
+            return ResponseHandler.success(
+              res,
+              responseLanguage.account_deactivate_success
+            );
+          })
+          .catch((err) => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
+      })
+      .catch((err) => {
         return ResponseHandler.error(res, 500, err.message);
       });
-    }).catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+  };
 
   /**
    * @api {get} /user/account/delete Handles user account delete operation
@@ -586,27 +688,33 @@ class UserProfileController {
   AccountDelete = (req, res) => {
     User.findOne({
       where: {
-        id: req.id
-      }
-    }).then(userResponse => {
-      User.destroy({
-        where: { id: req.id }
-      }).then(response => {
+        id: req.id,
+      },
+    })
+      .then((userResponse) => {
+        User.destroy({
+          where: { id: req.id },
+        })
+          .then((response) => {
+            let userData = {
+              userId: req.id,
+              email: userResponse.email,
+            };
+            EmailEvents.init("accountDelete", userData);
 
-        let userData = {
-          userId: req.id,
-          email: userResponse.email
-        }
-        EmailEvents.init('accountDelete', userData);
-
-        return ResponseHandler.success(res, responseLanguage.account_delete_success);
-      }).catch(err => {
+            return ResponseHandler.success(
+              res,
+              responseLanguage.account_delete_success
+            );
+          })
+          .catch((err) => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
+      })
+      .catch((err) => {
         return ResponseHandler.error(res, 500, err.message);
       });
-    }).catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+  };
 
   /**
    * @api {post} /user/settings/store Handles user settings store operation
@@ -620,34 +728,48 @@ class UserProfileController {
   settingStore = (req, res) => {
     UserSetting.findOne({
       where: {
-        user_id: req.id
-      }
-    }).then(response => {
-      if (!response) {
-        UserSetting.create({
-          user_id: req.id,
-          theme_color: req.body.profile_color
-        }).then(response => {
-          return ResponseHandler.success(res, responseLanguage.setting_store_success);
-        }).catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      } else {
-        UserSetting.update({
-          theme_color: req.body.profile_color
-        }, {
-          where: { user_id: req.id }
-        }).then(response => {
-          return ResponseHandler.success(res, responseLanguage.setting_update_success);
-        }).catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      }
-    }).catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
+        user_id: req.id,
+      },
+    })
+      .then((response) => {
+        if (!response) {
+          UserSetting.create({
+            user_id: req.id,
+            theme_color: req.body.profile_color,
+          })
+            .then((response) => {
+              return ResponseHandler.success(
+                res,
+                responseLanguage.setting_store_success
+              );
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        } else {
+          UserSetting.update(
+            {
+              theme_color: req.body.profile_color,
+            },
+            {
+              where: { user_id: req.id },
+            }
+          )
+            .then((response) => {
+              return ResponseHandler.success(
+                res,
+                responseLanguage.setting_update_success
+              );
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 }
 
 module.exports = UserProfileController;

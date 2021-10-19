@@ -1,23 +1,23 @@
-const { check, oneOf } = require('express-validator');
+const { check, oneOf } = require("express-validator");
 
-const language = require('../../language/en_default');
-const validationLanguage = language.en.front.validation
+const language = require("../../language/en_default");
+const validationLanguage = language.en.front.validation;
 
 exports.Validation = [
-  check('races')
-    .optional({checkFalsy: true})
+  check("races")
+    .optional({ checkFalsy: true })
     .isArray()
     .withMessage(validationLanguage.race_required)
     .bail(),
-  check('other')
-    .optional({checkFalsy: true})
+  check("other")
+    .optional({ checkFalsy: true })
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validationLanguage.other_required)
     .bail(),
-  check('status')
+  check("status")
     .trim()
     .escape()
     .not()

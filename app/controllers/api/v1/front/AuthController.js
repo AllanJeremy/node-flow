@@ -1,25 +1,24 @@
-require('dotenv').config();
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcryptjs');
-const { validationResult } = require('express-validator');
-
+require("dotenv").config();
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
+const { validationResult } = require("express-validator");
 
 /**
  * Helpers
  */
-var ResponseHandler = require('../../../../helpers/ResponseHandler');
+var ResponseHandler = require("../../../../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
 
-const StatusHandler = require('../../../../helpers/StatusHandler');
-const RandomStringGenerator = require('../../../../helpers/RandomStringGenerator');
+const StatusHandler = require("../../../../helpers/StatusHandler");
+const RandomStringGenerator = require("../../../../helpers/RandomStringGenerator");
 
-var MailHandler = require('../../../../helpers/MailHandler');
+var MailHandler = require("../../../../helpers/MailHandler");
 MailHandler = new MailHandler();
 
-var EmailEvents = require('../../../../helpers/EmailEvents');
+var EmailEvents = require("../../../../helpers/EmailEvents");
 EmailEvents = new EmailEvents();
 
-const UserTypes = require('../../../../helpers/UserTypes.js');
+const UserTypes = require("../../../../helpers/UserTypes.js");
 
 const ElasticsearchEventsAction = require("../../../../helpers/ElasticsearchEventsAction");
 
@@ -32,13 +31,12 @@ ElasticSearchHandler = new ElasticSearchHandler();
 /**
  * Configs
  */
-const authConfig = require('../../../../config/auth.config.js');
-
+const authConfig = require("../../../../config/auth.config.js");
 
 /**
  * Models
  */
-const Models = require('../../../../models');
+const Models = require("../../../../models");
 const User = Models.User;
 const SystemSetting = Models.SystemSetting;
 const VerifyUser = Models.VerifyUser;
@@ -47,24 +45,19 @@ const ResetPassword = Models.ResetPassword;
 /**
  * Languages
  */
-const language = require('../../../../language/en_default');
+const language = require("../../../../language/en_default");
 const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
 
 /**
  * Transformers
  */
-var UserTransformer = require('../../../../transformers/front/UserTransformer');
+var UserTransformer = require("../../../../transformers/front/UserTransformer");
 UserTransformer = new UserTransformer();
 
-
-const templateName = [
-  'email_verification',
-  'reset_password',
-]
+const templateName = ["email_verification", "reset_password"];
 
 class AuthController {
-
   /**
    * @api {post} /auth/signin Handles user login operation
    * @apiName Front user login operation
@@ -76,7 +69,6 @@ class AuthController {
    * @apiSuccess (200) {Object}
    */
   SignIn = (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, errors.array());
@@ -84,49 +76,74 @@ class AuthController {
 
     User.findOne({
       where: {
-        email: req.body.email
-      }
-    }).then(response => {
-      if (!response) {
-        return ResponseHandler.error(res, 422, validationLanguage.invalid_credentials);
-      }
-
-      var isPasswordValid = bcrypt.compareSync(
-        req.body.password,
-        response.password
-      );
-
-      if (!isPasswordValid) {
-        return ResponseHandler.error(res, 422, validationLanguage.invalid_credentials);
-      }
-
-      if (response.status == StatusHandler.pending) {
-        return ResponseHandler.error(res, 423, responseLanguage.not_verified_account);
-      }
-
-      if (response.status == StatusHandler.blocked) {
-        return ResponseHandler.error(res, 422, responseLanguage.blocked_account);
-      }
-
-      if (response.status == StatusHandler.deactivate) {
-        return ResponseHandler.error(res, 422, responseLanguage.deactivate_account);
-      }
-
-      var token = jwt.sign({ id: response.id }, authConfig.secret, {
-        expiresIn: authConfig.tokenExpiryTime
-      });
-
-      var data = {
-        token: token,
-        user: UserTransformer.user(response)
-      };
-
-      return ResponseHandler.success(res, responseLanguage.login_success, data);
+        email: req.body.email,
+      },
     })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        if (!response) {
+          return ResponseHandler.error(
+            res,
+            422,
+            validationLanguage.invalid_credentials
+          );
+        }
+
+        var isPasswordValid = bcrypt.compareSync(
+          req.body.password,
+          response.password
+        );
+
+        if (!isPasswordValid) {
+          return ResponseHandler.error(
+            res,
+            422,
+            validationLanguage.invalid_credentials
+          );
+        }
+
+        if (response.status == StatusHandler.pending) {
+          return ResponseHandler.error(
+            res,
+            423,
+            responseLanguage.not_verified_account
+          );
+        }
+
+        if (response.status == StatusHandler.blocked) {
+          return ResponseHandler.error(
+            res,
+            422,
+            responseLanguage.blocked_account
+          );
+        }
+
+        if (response.status == StatusHandler.deactivate) {
+          return ResponseHandler.error(
+            res,
+            422,
+            responseLanguage.deactivate_account
+          );
+        }
+
+        var token = jwt.sign({ id: response.id }, authConfig.secret, {
+          expiresIn: authConfig.tokenExpiryTime,
+        });
+
+        var data = {
+          token: token,
+          user: UserTransformer.user(response),
+        };
+
+        return ResponseHandler.success(
+          res,
+          responseLanguage.login_success,
+          data
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /auth/signup Handles user register operation
@@ -138,71 +155,76 @@ class AuthController {
    *
    * @apiSuccess (200) {Object}
    */
-  SignUp = async(req, res) => {
+  SignUp = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, errors.array());
     }
 
-    var uniqueId = (new Date().getTime()).toString(36);
+    var uniqueId = new Date().getTime().toString(36);
     var email = req.body.email.toLowerCase();
 
     User.findOne({
       where: {
-        email: email
-      }
-    }).then(response => {
-      if (!response) {
-        User.create({
-          email: email,
-          password: bcrypt.hashSync(req.body.password),
-          status: StatusHandler.pending,
-          unique_id: uniqueId,
-          type: UserTypes.normal,
-        })
-        .then(response => {
-
-          let verificationCode = RandomStringGenerator.string(5);
-
-          VerifyUser.create({
-            user_id: response.id,
-            verification_code: verificationCode
-          })
-          .then(async response => {
-
-            let template = templateName[0];
-            let to = email;
-            let data = [];
-            data['params'] = {
-              verificationCode: verificationCode
-            }
-
-            MailHandler.send(template, data, to);
-
-            let userData = {
-              email: email,
-              verificationCode: verificationCode
-            }
-
-            EmailEvents.init('signup', userData);
-            return ResponseHandler.success(res, responseLanguage.register_successfully);
-          })
-          .catch(err => {
-            return ResponseHandler.error(res, 500, err.message);
-          })
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        })
-      } else {
-        return ResponseHandler.error(res, 422, responseLanguage.email_already_exist);
-      }
+        email: email,
+      },
     })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        if (!response) {
+          User.create({
+            email: email,
+            password: bcrypt.hashSync(req.body.password),
+            status: StatusHandler.pending,
+            unique_id: uniqueId,
+            type: UserTypes.normal,
+          })
+            .then((response) => {
+              let verificationCode = RandomStringGenerator.string(5);
 
+              VerifyUser.create({
+                user_id: response.id,
+                verification_code: verificationCode,
+              })
+                .then(async (response) => {
+                  let template = templateName[0];
+                  let to = email;
+                  let data = [];
+                  data["params"] = {
+                    verificationCode: verificationCode,
+                  };
+
+                  MailHandler.send(template, data, to);
+
+                  let userData = {
+                    email: email,
+                    verificationCode: verificationCode,
+                  };
+
+                  EmailEvents.init("signup", userData);
+                  return ResponseHandler.success(
+                    res,
+                    responseLanguage.register_successfully
+                  );
+                })
+                .catch((err) => {
+                  return ResponseHandler.error(res, 500, err.message);
+                });
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        } else {
+          return ResponseHandler.error(
+            res,
+            422,
+            responseLanguage.email_already_exist
+          );
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /auth/email/resend_code Handles user register resend code operation
@@ -213,8 +235,7 @@ class AuthController {
    *
    * @apiSuccess (200) {Object}
    */
-  ResendCode = async(req, res) => {
-
+  ResendCode = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, errors.array());
@@ -222,48 +243,55 @@ class AuthController {
 
     User.findOne({
       where: {
-        email: req.body.email
-      }
-    }).then(response => {
-      if (response) {
-        let verificationCode = RandomStringGenerator.string(5);
-
-        VerifyUser.update({
-          verification_code: verificationCode
-        },
-        {
-          where: {user_id: response.id}
-        })
-        .then(async response => {
-          let template = templateName[0];
-          let to = req.body.email;
-          let data = [];
-          data['params'] = {
-            verificationCode: verificationCode
-          }
-
-          MailHandler.send(template, data, to);
-
-          let userData = {
-            email: req.body.email,
-            verificationCode: verificationCode
-          }
-
-          EmailEvents.init('signup', userData);
-
-          return ResponseHandler.success(res, responseLanguage.code_resend);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        })
-      } else {
-        return ResponseHandler.error(res, 422, responseLanguage.email_not_exist);
-      }
+        email: req.body.email,
+      },
     })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        if (response) {
+          let verificationCode = RandomStringGenerator.string(5);
+
+          VerifyUser.update(
+            {
+              verification_code: verificationCode,
+            },
+            {
+              where: { user_id: response.id },
+            }
+          )
+            .then(async (response) => {
+              let template = templateName[0];
+              let to = req.body.email;
+              let data = [];
+              data["params"] = {
+                verificationCode: verificationCode,
+              };
+
+              MailHandler.send(template, data, to);
+
+              let userData = {
+                email: req.body.email,
+                verificationCode: verificationCode,
+              };
+
+              EmailEvents.init("signup", userData);
+
+              return ResponseHandler.success(res, responseLanguage.code_resend);
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        } else {
+          return ResponseHandler.error(
+            res,
+            422,
+            responseLanguage.email_not_exist
+          );
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {get} /auth/email/verify Handles email verification operation
@@ -282,57 +310,65 @@ class AuthController {
 
     VerifyUser.findOne({
       where: {
-        verification_code: req.body.verification_code
-      }
-    }).then(response => {
-      if (!response) {
-        return ResponseHandler.error(res, 400, responseLanguage.invalid_code);
-      }
-
-      let userId = response.user_id;
-
-      User.update({
-        status: StatusHandler.active,
+        verification_code: req.body.verification_code,
       },
-      {
-        where: { id: userId },
-        returning: true
-      })
-      .then(result => {
-        VerifyUser.destroy({ where: { id: response.id }, force: true })
-        .then(response => {
+    })
+      .then((response) => {
+        if (!response) {
+          return ResponseHandler.error(res, 400, responseLanguage.invalid_code);
+        }
 
-          let user = {
-            id: userId
+        let userId = response.user_id;
+
+        User.update(
+          {
+            status: StatusHandler.active,
+          },
+          {
+            where: { id: userId },
+            returning: true,
           }
+        )
+          .then((result) => {
+            VerifyUser.destroy({ where: { id: response.id }, force: true })
+              .then((response) => {
+                let user = {
+                  id: userId,
+                };
 
-          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.createUser, user);
+                ElasticsearchEventsHandler.store(
+                  ElasticsearchEventsAction.createUser,
+                  user
+                );
 
-          ElasticSearchHandler.addDocument(userId, user)
+                ElasticSearchHandler.addDocument(userId, user);
 
-          var token = jwt.sign({ id: userId }, authConfig.secret, {
-            expiresIn: authConfig.tokenExpiryTime
+                var token = jwt.sign({ id: userId }, authConfig.secret, {
+                  expiresIn: authConfig.tokenExpiryTime,
+                });
+
+                var data = {
+                  token: token,
+                };
+
+                return ResponseHandler.success(
+                  res,
+                  responseLanguage.verified_success,
+                  data
+                );
+              })
+              .catch((err) => {
+                return ResponseHandler.error(res, 500, err.message);
+              });
+          })
+          .catch((err) => {
+            return ResponseHandler.error(res, 500, err.message);
           });
-
-          var data = {
-            token: token
-          };
-
-          return ResponseHandler.success(res, responseLanguage.verified_success, data);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
       })
-      .catch(err => {
+      .catch((err) => {
         return ResponseHandler.error(res, 500, err.message);
       });
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
+  };
 
   /**
    * @api {post} /auth/reset_password Handles forgot password request operation
@@ -344,7 +380,6 @@ class AuthController {
    * @apiSuccess (200) {Object}
    */
   ForgotPasswordRequest = (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, errors.array());
@@ -352,64 +387,73 @@ class AuthController {
 
     User.findOne({
       where: {
-        email: req.body.email
-      }
-    }).then(response => {
-      if (!response) {
-        return ResponseHandler.error(res, 422, validationLanguage.invalid_email);
-      }
-
-      let verificationCode = RandomStringGenerator.string(5);
-
-      ResetPassword.findOne({
-        where: {
-          user_id: response.id
+        email: req.body.email,
+      },
+    })
+      .then((response) => {
+        if (!response) {
+          return ResponseHandler.error(
+            res,
+            422,
+            validationLanguage.invalid_email
+          );
         }
-      }).then(result => {
-        if (!result) {
-          ResetPassword.create({
+
+        let verificationCode = RandomStringGenerator.string(5);
+
+        ResetPassword.findOne({
+          where: {
             user_id: response.id,
-            verification_code: verificationCode
-          }).then(response => {
+          },
+        })
+          .then((result) => {
+            if (!result) {
+              ResetPassword.create({
+                user_id: response.id,
+                verification_code: verificationCode,
+              })
+                .then((response) => {})
+                .catch((err) => {
+                  return ResponseHandler.error(res, 500, err.message);
+                });
+            } else {
+              ResetPassword.update(
+                {
+                  verification_code: verificationCode,
+                },
+                {
+                  where: { user_id: response.id },
+                  returning: true,
+                }
+              )
+                .then((response) => {})
+                .catch((err) => {
+                  return ResponseHandler.error(res, 500, err.message);
+                });
+            }
+
+            let template = templateName[1];
+            let to = req.body.email;
+            let data = [];
+            data["params"] = {
+              verificationCode: verificationCode,
+            };
+
+            MailHandler.send(template, data, to);
+
+            return ResponseHandler.success(
+              res,
+              responseLanguage.reset_password_request_success
+            );
           })
-          .catch(err => {
+          .catch((err) => {
             return ResponseHandler.error(res, 500, err.message);
           });
-        } else {
-          ResetPassword.update({
-            verification_code: verificationCode
-          }, {
-            where: { user_id: response.id },
-            returning: true
-          })
-          .then(response => {
-          })
-          .catch(err => {
-            return ResponseHandler.error(res, 500, err.message);
-          });
-        }
-
-        let template = templateName[1];
-        let to = req.body.email;
-        let data = [];
-        data['params'] = {
-          verificationCode: verificationCode
-        }
-
-        MailHandler.send(template, data, to);
-
-        return ResponseHandler.success(res, responseLanguage.reset_password_request_success);
-
       })
-      .catch(err => {
+      .catch((err) => {
         return ResponseHandler.error(res, 500, err.message);
       });
-
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+  };
 
   /**
    * @api {get} /auth/reset_password/verify Handles reset password operation
@@ -421,7 +465,6 @@ class AuthController {
    * @apiSuccess (200) {Object}
    */
   ForgotPassword = (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, errors.array());
@@ -429,37 +472,43 @@ class AuthController {
 
     ResetPassword.findOne({
       where: {
-        verification_code: req.body.verification_code
-      }
-    }).then(response => {
-      if (!response) {
-        return ResponseHandler.error(res, 400, responseLanguage.invalid_code);
-      }
-
-      User.update({
-        password: bcrypt.hashSync(req.body.password),
+        verification_code: req.body.verification_code,
       },
-      {
-        where: { id: response.user_id },
-        returning: true
+    })
+      .then((response) => {
+        if (!response) {
+          return ResponseHandler.error(res, 400, responseLanguage.invalid_code);
+        }
+
+        User.update(
+          {
+            password: bcrypt.hashSync(req.body.password),
+          },
+          {
+            where: { id: response.user_id },
+            returning: true,
+          }
+        )
+          .then((result) => {
+            ResetPassword.destroy({ where: { id: response.id }, force: true })
+              .then((response) => {
+                return ResponseHandler.success(
+                  res,
+                  responseLanguage.password_reset_success
+                );
+              })
+              .catch((err) => {
+                return ResponseHandler.error(res, 500, err.message);
+              });
+          })
+          .catch((err) => {
+            return ResponseHandler.error(res, 500, err.message);
+          });
       })
-      .then(result => {
-        ResetPassword.destroy({ where: { id: response.id }, force: true })
-        .then(response => {
-          return ResponseHandler.success(res, responseLanguage.password_reset_success);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      })
-      .catch(err => {
+      .catch((err) => {
         return ResponseHandler.error(res, 500, err.message);
       });
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+  };
 
   /**
    * @api {get} /api/get_token Handles refresh token operation
@@ -472,10 +521,10 @@ class AuthController {
    */
   GetToken = (req, res) => {
     var token = jwt.sign({ id: req.body.user_id }, authConfig.secret, {
-      expiresIn: authConfig.tokenExpiryTime
+      expiresIn: authConfig.tokenExpiryTime,
     });
-    return ResponseHandler.success(res, '', token);
-  }
+    return ResponseHandler.success(res, "", token);
+  };
 
   /**
    * @api {post} /api/auth/linkedin Handles Linkedin user store operation
@@ -494,16 +543,16 @@ class AuthController {
       return ResponseHandler.error(res, 422, errors.array());
     }
 
-    var uniqueId = (new Date().getTime()).toString(36);
+    var uniqueId = new Date().getTime().toString(36);
     var email = req.body.email.toLowerCase();
 
     var currentDate = new Date();
 
     User.findOne({
       where: {
-        email: email
-      }
-    }).then(response => {
+        email: email,
+      },
+    }).then((response) => {
       if (!response) {
         User.create({
           email: email,
@@ -511,62 +560,78 @@ class AuthController {
           unique_id: uniqueId,
           type: UserTypes.normal,
           social_access_token: {
-            'linkedin': {
-              'access_token': req.body.access_token,
-              'expires_at': currentDate.setDate(currentDate.getDate() + authConfig.linkedinTokenExpiryTime)
-            }
-          }
+            linkedin: {
+              access_token: req.body.access_token,
+              expires_at: currentDate.setDate(
+                currentDate.getDate() + authConfig.linkedinTokenExpiryTime
+              ),
+            },
+          },
         })
-        .then(response => {
-          let user = {
-            id: response.id
-          }
+          .then((response) => {
+            let user = {
+              id: response.id,
+            };
 
-          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.createUser, user);
+            ElasticsearchEventsHandler.store(
+              ElasticsearchEventsAction.createUser,
+              user
+            );
 
-          ElasticSearchHandler.addDocument(response.id, user)
-          var token = jwt.sign({ id: response.id }, authConfig.secret, {
-            expiresIn: authConfig.tokenExpiryTime
+            ElasticSearchHandler.addDocument(response.id, user);
+            var token = jwt.sign({ id: response.id }, authConfig.secret, {
+              expiresIn: authConfig.tokenExpiryTime,
+            });
+
+            var data = {
+              token: token,
+              user: UserTransformer.user(response),
+            };
+
+            return ResponseHandler.success(
+              res,
+              responseLanguage.login_success,
+              data
+            );
+          })
+          .catch((err) => {
+            return ResponseHandler.error(res, 500, err.message);
           });
-
-          var data = {
-            token: token,
-            user: UserTransformer.user(response)
-          };
-
-          return ResponseHandler.success(res, responseLanguage.login_success, data);
-        }).catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
       } else {
-        User.update({
-          social_access_token: {
-            'linkedin': {
-              'access_token': req.body.access_token,
-              'expires_at': currentDate.setDate(currentDate.getDate() + authConfig.linkedinTokenExpiryTime)
-            }
+        User.update(
+          {
+            social_access_token: {
+              linkedin: {
+                access_token: req.body.access_token,
+                expires_at: currentDate.setDate(
+                  currentDate.getDate() + authConfig.linkedinTokenExpiryTime
+                ),
+              },
+            },
+          },
+          {
+            where: { id: response.id },
+            returning: true,
           }
-        },
-        {
-          where: { id: response.id },
-          returning: true
-        })
-        .then(result => {
+        ).then((result) => {
           var token = jwt.sign({ id: response.id }, authConfig.secret, {
-            expiresIn: authConfig.tokenExpiryTime
+            expiresIn: authConfig.tokenExpiryTime,
           });
 
           var data = {
             token: token,
-            user: UserTransformer.user(response)
+            user: UserTransformer.user(response),
           };
 
-          return ResponseHandler.success(res, responseLanguage.login_success, data);
+          return ResponseHandler.success(
+            res,
+            responseLanguage.login_success,
+            data
+          );
         });
       }
     });
-  }
-
+  };
 }
 
 module.exports = AuthController;

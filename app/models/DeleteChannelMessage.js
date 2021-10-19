@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class DeleteChannelMessage extends Model {
     /**
@@ -12,16 +10,19 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  DeleteChannelMessage.init({
-    message_id: DataTypes.STRING,
-    status: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'DeleteChannelMessage',
-    tableName: 'delete_channel_messages',
-    createdAt: 'created_at',
-    updatedAt: 'updated_at'
-  });
+  }
+  DeleteChannelMessage.init(
+    {
+      message_id: DataTypes.STRING,
+      status: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "DeleteChannelMessage",
+      tableName: "delete_channel_messages",
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    }
+  );
   return DeleteChannelMessage;
 };
