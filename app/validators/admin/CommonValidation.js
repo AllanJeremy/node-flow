@@ -1,17 +1,17 @@
-const { check } = require('express-validator');
+const { check } = require("express-validator");
 
-const language = require('../../language/en_default');
-const validationLanguage = language.en.admin.validation
+const language = require("../../language/en_default");
+const validationLanguage = language.en.admin.validation;
 
 exports.Validation = [
-  check('name')
-  	.trim()
+  check("name")
+    .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validationLanguage.name_required)
     .bail(),
-  check('status')
+  check("status")
     .trim()
     .escape()
     .not()

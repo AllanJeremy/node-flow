@@ -1,15 +1,14 @@
 /**
  * Configs
  */
-const config = require('../config/elasticsearch.config.js');
+const config = require("../config/elasticsearch.config.js");
 
 /**
  * Elastic search library
  */
-const { Client } = require('@elastic/elasticsearch');
+const { Client } = require("@elastic/elasticsearch");
 
-const StatusHandler = require('../helpers/StatusHandler');
-
+const StatusHandler = require("../helpers/StatusHandler");
 
 /**
  * Elastic search config
@@ -18,8 +17,8 @@ const client = new Client({
   node: config.node,
   auth: {
     username: config.username,
-    password: config.password
-  }
+    password: config.password,
+  },
 });
 
 const indexName = "users";
@@ -32,93 +31,96 @@ const indexName = "users";
  * @subpackage helpers
  */
 class ElasticSearchHandler {
-
-	/**
-	* Create the index
-	*/
-	initIndex = () => {
+  /**
+   * Create the index
+   */
+  initIndex = () => {
     return client.indices.create({
-      index: indexName
+      index: indexName,
     });
-	}
+  };
 
-
-	/**
-	* Check if the index exists
-	*/
-	indexExists = () => {
+  /**
+   * Check if the index exists
+   */
+  indexExists = () => {
     return client.indices.exists({
-      index: indexName
+      index: indexName,
     });
-	}
+  };
 
-	/**
-	* Add or update document in the index
-	*/
-	addDocument = async(id, body) => {
+  /**
+   * Add or update document in the index
+   */
+  addDocument = async (id, body) => {
     let res = await client.index({
-     	index: indexName,
-     	id: id,
-	    body: body
+      index: indexName,
+      id: id,
+      body: body,
     });
 
     return res;
-  }
+  };
 
   /**
-  * Update document field by id in the index
-  */
-  updateDocumentField = async(id, body) => {
-    await client.indices.refresh({index: indexName, method: 'post'});
-    client.update({
-      index: indexName,
-      id: id,
-      body: { doc: body},
-      refresh: 'wait_for'
-    }).then((res) => {
-      return res;
-    }).catch(e => {
-      // error
-    });
-  }
+   * Update document field by id in the index
+   */
+  updateDocumentField = async (id, body) => {
+    await client.indices.refresh({ index: indexName, method: "post" });
+    client
+      .update({
+        index: indexName,
+        id: id,
+        body: { doc: body },
+        refresh: "wait_for",
+      })
+      .then((res) => {
+        return res;
+      })
+      .catch((e) => {
+        // error
+      });
+  };
 
   /**
-  * Rename item from field in document by matching name
-  */
-  renameDocumentField = async(renameField, matchParam) => {
-    let scriptQuery = ''
-    if (renameField == 'race') {
-      scriptQuery = 'ctx._source.race = params.name';
+   * Rename item from field in document by matching name
+   */
+  renameDocumentField = async (renameField, matchParam) => {
+    let scriptQuery = "";
+    if (renameField == "race") {
+      scriptQuery = "ctx._source.race = params.name";
     }
 
     let res = await client.updateByQuery({
       index: indexName,
       body: {
         script: {
-          'inline': scriptQuery,
-          'lang': 'painless',
-          'params': {
-            'name': matchParam.name
-          }
+          inline: scriptQuery,
+          lang: "painless",
+          params: {
+            name: matchParam.name,
+          },
         },
         query: {
-          match: eval({[renameField] : matchParam.old_name.toLowerCase()})
-        }
-      }
+          match: eval({ [renameField]: matchParam.old_name.toLowerCase() }),
+        },
+      },
     });
 
     return res;
-  }
+  };
 
   /**
-  * Rename item from array in document field by matching name
-  */
-  renameDocumentListItem = async(updateField, matchParam) => {
-    let scriptQuery = ''
-    if (updateField == 'health_categories') {
-      scriptQuery = "if (ctx._source.containsKey('health_categories') && ctx._source.health_categories.size() > 0){for(int i=0;i<ctx._source.health_categories.size();i++){if(ctx._source.health_categories[i]==params.searchName){ctx._source.health_categories[i] = params.name}}}";
-    } else if (updateField == 'workouts') {
-      scriptQuery = "if (ctx._source.containsKey('workouts') && ctx._source.workouts.size() > 0){for(int i=0;i<ctx._source.workouts.size();i++){if(ctx._source.workouts[i]==params.searchName){ctx._source.workouts[i] = params.name}}}";
+   * Rename item from array in document field by matching name
+   */
+  renameDocumentListItem = async (updateField, matchParam) => {
+    let scriptQuery = "";
+    if (updateField == "health_categories") {
+      scriptQuery =
+        "if (ctx._source.containsKey('health_categories') && ctx._source.health_categories.size() > 0){for(int i=0;i<ctx._source.health_categories.size();i++){if(ctx._source.health_categories[i]==params.searchName){ctx._source.health_categories[i] = params.name}}}";
+    } else if (updateField == "workouts") {
+      scriptQuery =
+        "if (ctx._source.containsKey('workouts') && ctx._source.workouts.size() > 0){for(int i=0;i<ctx._source.workouts.size();i++){if(ctx._source.workouts[i]==params.searchName){ctx._source.workouts[i] = params.name}}}";
     }
 
     if (scriptQuery) {
@@ -126,71 +128,73 @@ class ElasticSearchHandler {
         index: indexName,
         body: {
           script: {
-            'inline':scriptQuery,
-            'lang': 'painless',
-            'params': {
-              'name': matchParam.name,
-              'searchName': matchParam.old_name
-            }
-          }
-        }
+            inline: scriptQuery,
+            lang: "painless",
+            params: {
+              name: matchParam.name,
+              searchName: matchParam.old_name,
+            },
+          },
+        },
       });
 
       return res;
     }
-  }
+  };
 
   /**
-  * Delete document field by search query
-  */
-  deleteDocumentField = async(deleteField, matchQuery) => {
+   * Delete document field by search query
+   */
+  deleteDocumentField = async (deleteField, matchQuery) => {
     let res = await client.updateByQuery({
       index: indexName,
       body: {
         script: {
-          'source': 'ctx._source.remove("' + deleteField + '")',
-          'lang': 'painless'
+          source: 'ctx._source.remove("' + deleteField + '")',
+          lang: "painless",
         },
         query: {
-          match: eval({[deleteField] : matchQuery.toLowerCase()})
-        }
-      }
+          match: eval({ [deleteField]: matchQuery.toLowerCase() }),
+        },
+      },
     });
 
     return res;
-  }
+  };
 
   /**
-  * Delete document field by id
-  */
-  deleteFieldById = async(id, deleteField) => {
+   * Delete document field by id
+   */
+  deleteFieldById = async (id, deleteField) => {
     let res = await client.updateByQuery({
       index: indexName,
       body: {
         script: {
-          'source': 'ctx._source.remove("' + deleteField + '")',
-          'lang': 'painless'
+          source: 'ctx._source.remove("' + deleteField + '")',
+          lang: "painless",
         },
         query: {
           match: {
-            'id': id
-          }
-        }
-      }
+            id: id,
+          },
+        },
+      },
     });
 
     return res;
-  }
+  };
 
   /**
-  * Delete item from array in document field by name
-  */
-  deleteItemFromDocumentList = async(deleteField, matchParam) => {
-    let scriptQuery = ''
-    if (deleteField == 'health_categories') {
-      scriptQuery = "if(ctx._source.containsKey('health_categories') && ctx._source.health_categories.size() > 0){for(int i=0;i<ctx._source.health_categories.size();i++){if(ctx._source.health_categories[i]==params.name){ctx._source.health_categories.remove(i)}}}";
-    } else if (deleteField == 'workouts') {
-      scriptQuery = "if(ctx._source.containsKey('workouts') && ctx._source.workouts.size() > 0){for(int i=0;i<ctx._source.workouts.size();i++){if(ctx._source.workouts[i]==params.name){ctx._source.workouts.remove(i)}}}";
+   * Delete item from array in document field by name
+   */
+  deleteItemFromDocumentList = async (deleteField, matchParam) => {
+    let scriptQuery = "";
+    if (deleteField == "health_categories") {
+      scriptQuery =
+        "if(ctx._source.containsKey('health_categories') && ctx._source.health_categories.size() > 0){for(int i=0;i<ctx._source.health_categories.size();i++){if(ctx._source.health_categories[i]==params.name){ctx._source.health_categories.remove(i)}}}";
+    } else if (deleteField == "workouts") {
+      scriptQuery =
+        "if(ctx._source.containsKey('workouts') && ctx._source.workouts.size() > 0){for(int i=0;i<ctx._source.workouts.size();i++){if(ctx._source.workouts[i]==params.name){ctx._source.workouts.remove(i)}}}";
     }
 
     if (scriptQuery) {
@@ -198,72 +202,75 @@ class ElasticSearchHandler {
         index: indexName,
         body: {
           script: {
-            'inline':scriptQuery,
-            'lang': 'painless',
-            'params': {
-              'name': matchParam
-            }
-          }
-        }
+            inline: scriptQuery,
+            lang: "painless",
+            params: {
+              name: matchParam,
+            },
+          },
+        },
       });
 
       return res;
     }
-  }
+  };
 
-  getAllUser = async() => {
+  getAllUser = async () => {
     let res = await client.search({
       index: indexName,
       size: 100,
-      filter_path : "hits.hits._source",
+      filter_path: "hits.hits._source",
       body: {
         query: {
           bool: {
             must: [
               {
                 match: {
-                  "published": StatusHandler.active
+                  published: StatusHandler.active,
                 },
               },
               {
                 match: {
-                  "status": StatusHandler.active
-                }
-              }
+                  status: StatusHandler.active,
+                },
+              },
             ],
-            must_not: [{
-              exists: {
-                field: "hide_from_list"
-              }
-            }]
-          }
-        }
-      }
+            must_not: [
+              {
+                exists: {
+                  field: "hide_from_list",
+                },
+              },
+            ],
+          },
+        },
+      },
     });
 
     if (res.body && res.body.hits) {
       return res.body.hits.hits;
     } else {
-      return '';
+      return "";
     }
-  }
+  };
 
-  getLoginUser = async(userId) => {
+  getLoginUser = async (userId) => {
     let res = await client.search({
       index: indexName,
-      filter_path : "hits.hits._source",
-      body: { query: {
-        match: {"id": userId}
-      }}
+      filter_path: "hits.hits._source",
+      body: {
+        query: {
+          match: { id: userId },
+        },
+      },
     });
 
     if (res.body && res.body.hits) {
       return res.body.hits.hits;
     } else {
-      return '';
+      return "";
     }
-  }
-
+  };
 }
 
 module.exports = ElasticSearchHandler;

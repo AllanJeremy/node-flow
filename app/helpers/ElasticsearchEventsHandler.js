@@ -1,11 +1,10 @@
-const { DateTime } = require('luxon');
+const { DateTime } = require("luxon");
 
 /**
  * Models
  */
-const Models = require('../models');
+const Models = require("../models");
 const ElasticsearchEvents = Models.ElasticsearchEvents;
-
 
 /**
  * Manages search activity model operations
@@ -15,17 +14,16 @@ const ElasticsearchEvents = Models.ElasticsearchEvents;
  * @subpackage helpers
  */
 class ElasticsearchEventsHandler {
-
   /**
    * Used for getting data
    *
    */
-  list = async() => {
+  list = async () => {
     let response = await ElasticsearchEvents.findAll({
-      order: [['id', 'ASC']]
+      order: [["id", "ASC"]],
     });
     return response;
-  }
+  };
 
   /**
    * Used for storing data
@@ -36,9 +34,9 @@ class ElasticsearchEventsHandler {
   store = (action, data) => {
     ElasticsearchEvents.create({
       action: action,
-      metadata: data
+      metadata: data,
     });
-  }
+  };
 
   /**
    * Used for updating data
@@ -48,15 +46,17 @@ class ElasticsearchEventsHandler {
    * @param {Integer} attempted
    */
   update = (id, reason, attempted = 0) => {
-    ElasticsearchEvents.update({
-      attempted_at: DateTime.now(),
-      failed_reason: reason,
-      attempted: attempted + 1
-    }, {
-      where: { id: id }
-    });
-  }
-
+    ElasticsearchEvents.update(
+      {
+        attempted_at: DateTime.now(),
+        failed_reason: reason,
+        attempted: attempted + 1,
+      },
+      {
+        where: { id: id },
+      }
+    );
+  };
 
   /**
    * Used for deleting data
@@ -65,7 +65,7 @@ class ElasticsearchEventsHandler {
    */
   destroy = (id) => {
     ElasticsearchEvents.destroy({ where: { id: id } });
-  }
+  };
 }
 
 module.exports = ElasticsearchEventsHandler;

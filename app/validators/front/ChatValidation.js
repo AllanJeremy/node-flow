@@ -1,25 +1,24 @@
-const { check } = require('express-validator');
+const { check } = require("express-validator");
 
-const language = require('../../language/en_default');
-const validation = language.en.front.validation
-
+const language = require("../../language/en_default");
+const validation = language.en.front.validation;
 
 exports.Feedback = [
-  check('question')
+  check("question")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.feedback_question)
     .bail(),
-  check('ratings')
+  check("ratings")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.feedback_rating)
     .bail(),
-  check('answer')
+  check("answer")
     .trim()
     .escape()
     .not()
@@ -29,7 +28,7 @@ exports.Feedback = [
 ];
 
 exports.Moderation = [
-  check('message_id')
+  check("message_id")
     .trim()
     .escape()
     .not()
@@ -39,14 +38,14 @@ exports.Moderation = [
 ];
 
 exports.Retention = [
-  check('channel_id')
+  check("channel_id")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.chat_channel_id)
     .bail(),
-  check('message_retention')
+  check("message_retention")
     .trim()
     .escape()
     .not()

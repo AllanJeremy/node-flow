@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -9,10 +9,10 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     return Promise.all([
-        queryInterface.changeColumn('admin_permissions', 'permissions', {
-          type: Sequelize.TEXT,
-        })
-    ])
+      queryInterface.changeColumn("admin_permissions", "permissions", {
+        type: Sequelize.TEXT,
+      }),
+    ]);
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -23,9 +23,9 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     return Promise.all([
-        queryInterface.changeColumn('admin_permissions', 'permissions', {
-          type: Sequelize.JSON,
-        })
-    ])
-  }
+      queryInterface.changeColumn("admin_permissions", "permissions", {
+        type: Sequelize.JSON,
+      }),
+    ]);
+  },
 };

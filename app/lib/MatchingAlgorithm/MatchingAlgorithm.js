@@ -21,18 +21,15 @@ class MatchingAlgorithm {
       obj,
       keys: this.keys,
       array: this.source,
-      showOriginal: this.showOriginal
+      showOriginal: this.showOriginal,
     });
 
-    const {
-      results,
-      max
-    } = (0, _score.calculateResults)(dists, this.source);
+    const { results, max } = (0, _score.calculateResults)(dists, this.source);
     const oresult = (0, _output.output)({
       max,
       results,
       index: this.matchIndex,
-      decimals: this.decimals
+      decimals: this.decimals,
     });
 
     this._resetAll();
@@ -41,14 +38,13 @@ class MatchingAlgorithm {
   }
 
   log() {
-    console.log('Log initialize');
+    console.log("Log initialize");
   }
 
   _resetAll() {
     (0, _score.resetScore)();
     (0, _output.resetOutput)();
   }
-
 }
 
 var _default = MatchingAlgorithm;

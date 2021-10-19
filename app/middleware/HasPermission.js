@@ -1,43 +1,42 @@
 /**
  * Models
  */
-const Models = require('../models');
+const Models = require("../models");
 const AdminPermission = Models.AdminPermission;
 
 /**
  * Helpers
  */
-var ResponseHandler = require('../helpers/ResponseHandler');
+var ResponseHandler = require("../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
 
 /**
  * Languages
  */
-const language = require('../language/en_default');
+const language = require("../language/en_default");
 const responseLanguage = language.en.admin.response;
 const validationLanguage = language.en.admin.validation;
 
 /**
  * Route Config
  */
-const allRoutesConfig = require('../routes/admin/config');
+const allRoutesConfig = require("../routes/admin/config");
 const apiRoute = allRoutesConfig.apiRoute;
 const authRoute = allRoutesConfig.authRoute;
 const routePrefix = allRoutesConfig.routePrefix;
 
-
 exports.verify = (req, res, next) => {
   let currentRoute = req.originalUrl;
-  currentRoute = currentRoute.replace(routePrefix, '');
+  currentRoute = currentRoute.replace(routePrefix, "");
   let isAuthRoute = false;
   Object.entries(authRoute).map((routeName, index) => {
     var routeMatchName = routeName[1];
-    var slug = routeMatchName.split(':');
-    slug = slug.length > 1 ? slug[1] : '';
+    var slug = routeMatchName.split(":");
+    slug = slug.length > 1 ? slug[1] : "";
     var routeRegex = generateMatchRoute(routeMatchName, slug);
-    routeRegex = '^' + routeRegex + '$';
+    routeRegex = "^" + routeRegex + "$";
     if (currentRoute.match(routeRegex) !== null) {
-      isAuthRoute = true
+      isAuthRoute = true;
     }
   });
 
@@ -45,45 +44,48 @@ exports.verify = (req, res, next) => {
     return next();
   } else {
     AdminPermission.findOne({
-      where: {admin_user_id: req.id }
-    }).then(response => {
-      let exists = false;
-      let permissions = response.permissions.replace(/^"|"$/g, '').split(',');
-
-      permissions.map((routeName, index) => {
-        let apiRouteName = apiRoute[routeName];
-        Object.values(apiRoute[routeName]).map((value, key) => {
-          var routeMatchName = value;
-          var slug = routeMatchName.split(':');
-          slug = slug.length > 1 ? slug[1] : '';
-          var routeRegex = generateMatchRoute(routeMatchName, slug);
-          routeRegex = '^' + routeRegex + '$';
-          if (currentRoute.match(routeRegex) !== null) {
-            exists = true;
-            next();
-          }
-        });       
-      });
-
-      if (!exists) {
-
-        return ResponseHandler.error(res, 400, responseLanguage.permission_denied);
-      }
+      where: { admin_user_id: req.id },
     })
-    .catch(err => {
+      .then((response) => {
+        let exists = false;
+        let permissions = response.permissions.replace(/^"|"$/g, "").split(",");
 
-      return ResponseHandler.error(res, 500, err.message);
-    });
+        permissions.map((routeName, index) => {
+          let apiRouteName = apiRoute[routeName];
+          Object.values(apiRoute[routeName]).map((value, key) => {
+            var routeMatchName = value;
+            var slug = routeMatchName.split(":");
+            slug = slug.length > 1 ? slug[1] : "";
+            var routeRegex = generateMatchRoute(routeMatchName, slug);
+            routeRegex = "^" + routeRegex + "$";
+            if (currentRoute.match(routeRegex) !== null) {
+              exists = true;
+              next();
+            }
+          });
+        });
+
+        if (!exists) {
+          return ResponseHandler.error(
+            res,
+            400,
+            responseLanguage.permission_denied
+          );
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
   }
-}
+};
 
 function generateMatchRoute(routeName, slug) {
-  switch(slug) {
-    case 'id':
-      return routeName.split(':id').join('([\\d-]+)');
+  switch (slug) {
+    case "id":
+      return routeName.split(":id").join("([\\d-]+)");
 
-    case 'user_id':
-      return routeName.split(':user_id').join('([\\d-]+)');
+    case "user_id":
+      return routeName.split(":user_id").join("([\\d-]+)");
 
     default:
       return routeName;

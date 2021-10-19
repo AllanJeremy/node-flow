@@ -1,10 +1,10 @@
-const { check } = require('express-validator');
+const { check } = require("express-validator");
 
-const language = require('../../language/en_default');
-const validation = language.en.front.validation
+const language = require("../../language/en_default");
+const validation = language.en.front.validation;
 
 exports.SignIn = [
-  check('email')
+  check("email")
     .trim()
     .escape()
     .not()
@@ -13,7 +13,7 @@ exports.SignIn = [
     .isEmail()
     .withMessage(validation.email_invalid)
     .bail(),
-  check('password')
+  check("password")
     .trim()
     .escape()
     .not()
@@ -23,7 +23,7 @@ exports.SignIn = [
 ];
 
 exports.SignUp = [
-  check('email')
+  check("email")
     .trim()
     .escape()
     .not()
@@ -32,7 +32,7 @@ exports.SignUp = [
     .isEmail()
     .withMessage(validation.email_invalid)
     .bail(),
-  check('password')
+  check("password")
     .trim()
     .escape()
     .not()
@@ -47,7 +47,7 @@ exports.SignUp = [
 ];
 
 exports.SignUpVerification = [
-  check('verification_code')
+  check("verification_code")
     .trim()
     .escape()
     .not()
@@ -58,7 +58,7 @@ exports.SignUpVerification = [
 ];
 
 exports.EmailValidation = [
-  check('email')
+  check("email")
     .trim()
     .escape()
     .not()
@@ -70,7 +70,7 @@ exports.EmailValidation = [
 ];
 
 exports.ForgotPassword = [
-  check('verification_code')
+  check("verification_code")
     .trim()
     .escape()
     .not()
@@ -78,7 +78,7 @@ exports.ForgotPassword = [
     .isLength({ min: 5 })
     .withMessage(validation.invalid_code)
     .bail(),
-  check('password')
+  check("password")
     .trim()
     .escape()
     .not()
@@ -92,9 +92,8 @@ exports.ForgotPassword = [
     .bail(),
 ];
 
-
 exports.LinkedinLogin = [
-  check('email')
+  check("email")
     .trim()
     .escape()
     .not()
@@ -103,14 +102,14 @@ exports.LinkedinLogin = [
     .isEmail()
     .withMessage(validation.email_invalid)
     .bail(),
-  check('first_name')
+  check("first_name")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.first_name_required)
     .bail(),
-  check('access_token')
+  check("access_token")
     .trim()
     .escape()
     .not()

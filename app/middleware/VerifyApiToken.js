@@ -1,52 +1,57 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 /**
  * Configs
  */
-const config = require('../config/auth.config.js');
+const config = require("../config/auth.config.js");
 
 /**
  * Languages
  */
-const language = require('../language/en_default');
+const language = require("../language/en_default");
 const responseLanguage = language.en.admin.response;
 
 /**
  * Helpers
  */
-var ResponseHandler = require('../helpers/ResponseHandler');
+var ResponseHandler = require("../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
 
 /**
  * Admin Routes Config
  */
-const allAdminRoutesConfig = require('../routes/admin/config');
+const allAdminRoutesConfig = require("../routes/admin/config");
 const authAdminRoute = allAdminRoutesConfig.authRoute;
 const routePrefix = allAdminRoutesConfig.routePrefix;
 
 /**
  * Admin Routes Config
  */
-const allFrontRoutesConfig = require('../routes/front/config');
+const allFrontRoutesConfig = require("../routes/front/config");
 const authFrontRoute = allFrontRoutesConfig.authRoute;
 
-
 exports.verify = (req, res, next) => {
-
   let currentURL = req.originalUrl;
   let isAdmin = currentURL.includes(routePrefix);
   let isPublicRoute = false;
-  let adminPublicRoute = [
-    authAdminRoute.AUTH_LOGIN,
-    authAdminRoute.AUTH_TOKEN
-  ]
+  let adminPublicRoute = [authAdminRoute.AUTH_LOGIN, authAdminRoute.AUTH_TOKEN];
   let langRoute = authFrontRoute.APP_LANGUAGE;
   let configRoute = authFrontRoute.CONFIG;
 
   if (isAdmin) {
-    isPublicRoute = adminPublicRoute.indexOf(currentURL.replace(routePrefix, '')) > -1 ? true : false;
+    isPublicRoute =
+      adminPublicRoute.indexOf(currentURL.replace(routePrefix, "")) > -1
+        ? true
+        : false;
   } else {
-    isPublicRoute = Object.values(authFrontRoute).indexOf(currentURL) > -1 || currentURL.slice(0, currentURL.lastIndexOf('/')) == langRoute.slice(0, langRoute.lastIndexOf('/')) || currentURL.slice(0, currentURL.lastIndexOf('/')) == configRoute.slice(0, configRoute.lastIndexOf('/')) ? true : false;
+    isPublicRoute =
+      Object.values(authFrontRoute).indexOf(currentURL) > -1 ||
+      currentURL.slice(0, currentURL.lastIndexOf("/")) ==
+        langRoute.slice(0, langRoute.lastIndexOf("/")) ||
+      currentURL.slice(0, currentURL.lastIndexOf("/")) ==
+        configRoute.slice(0, configRoute.lastIndexOf("/"))
+        ? true
+        : false;
   }
 
   if (isPublicRoute) {
@@ -58,19 +63,19 @@ exports.verify = (req, res, next) => {
       return ResponseHandler.error(res, 403, responseLanguage.token_required);
     }
 
-    token = token.split(' ')[1];
+    token = token.split(" ")[1];
 
     jwt.verify(token, config.secret, (err, decoded) => {
       if (err) {
-        if (err.name == 'TokenExpiredError') {
+        if (err.name == "TokenExpiredError") {
           return ResponseHandler.error(res, 410, responseLanguage.unauthorized);
         }
 
         return ResponseHandler.error(res, 401, responseLanguage.unauthorized);
       }
 
-      req.id = decoded.id
+      req.id = decoded.id;
       next();
     });
   }
-}
+};

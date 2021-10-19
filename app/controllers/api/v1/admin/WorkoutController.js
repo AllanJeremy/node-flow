@@ -1,41 +1,39 @@
-const { validationResult } = require('express-validator');
+const { validationResult } = require("express-validator");
 
 /**
  * Helpers
  */
-var ResponseHandler = require('../../../../helpers/ResponseHandler');
+var ResponseHandler = require("../../../../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
 
-const StatusHandler = require('../../../../helpers/StatusHandler');
+const StatusHandler = require("../../../../helpers/StatusHandler");
 
-const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
+const ElasticsearchEventsAction = require("../../../../helpers/ElasticsearchEventsAction");
 
-var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+var ElasticsearchEventsHandler = require("../../../../helpers/ElasticsearchEventsHandler");
 ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 /**
  * Models
  */
-const Models = require('../../../../models');
+const Models = require("../../../../models");
 const Workout = Models.Workout;
 const UserWorkout = Models.UserWorkout;
 
 /**
  * Languages
  */
-const language = require('../../../../language/en_default');
+const language = require("../../../../language/en_default");
 const responseLanguage = language.en.admin.response;
 const validationLanguage = language.en.admin.validation;
 
 /**
  * Transformers
  */
-var CommonTransformer = require('../../../../transformers/core/CommonTransformer');
+var CommonTransformer = require("../../../../transformers/core/CommonTransformer");
 CommonTransformer = new CommonTransformer();
 
-
 class WorkoutController {
-
   /**
    * @api {get} /admin/workout/list Handles workout list
    * @apiName Workout list
@@ -45,15 +43,18 @@ class WorkoutController {
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
-    Workout.findAll({order: [['id', 'DESC']]})
-    .then(response => {
-      return ResponseHandler.success(res, '', CommonTransformer.transform(response));
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
+    Workout.findAll({ order: [["id", "DESC"]] })
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          "",
+          CommonTransformer.transform(response)
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /admin/workout/store Handles workout store operation
@@ -68,34 +69,47 @@ class WorkoutController {
   store = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+      return ResponseHandler.error(
+        res,
+        422,
+        validationLanguage.required_fields,
+        errors.array()
+      );
     }
 
     Workout.findOne({
       where: {
-        name: req.body.name
-      }
-    }).then(response => {
-      if (!response) {
-        Workout.create({
-          name: req.body.name,
-          status: req.body.status
-        })
-        .then(response => {
-          return ResponseHandler.success(
-            res, responseLanguage.workout_store_success, CommonTransformer.transform(response));
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        })
-      } else {
-        return ResponseHandler.error(res, 400, responseLanguage.workout_exist);
-      }
+        name: req.body.name,
+      },
     })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        if (!response) {
+          Workout.create({
+            name: req.body.name,
+            status: req.body.status,
+          })
+            .then((response) => {
+              return ResponseHandler.success(
+                res,
+                responseLanguage.workout_store_success,
+                CommonTransformer.transform(response)
+              );
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        } else {
+          return ResponseHandler.error(
+            res,
+            400,
+            responseLanguage.workout_exist
+          );
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {patch} /admin/workout/update Handles workout update operation
@@ -115,43 +129,50 @@ class WorkoutController {
 
     Workout.findOne({
       where: {
-        id: req.params.id
-      }
+        id: req.params.id,
+      },
     })
-    .then(response => {
-      if (response) {
-        Workout.update({
-          name: req.body.name,
-          status: req.body.status,
-        },
-        {
-          where: { id: req.params.id },
-          returning: true
-        })
-        .then(result => {
-
-          if (response.name != req.body.name) {
-            let data = {
-              old_name: response.name,
-              name: req.body.name
+      .then((response) => {
+        if (response) {
+          Workout.update(
+            {
+              name: req.body.name,
+              status: req.body.status,
+            },
+            {
+              where: { id: req.params.id },
+              returning: true,
             }
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.workoutRenamed, data);
-          }
+          )
+            .then((result) => {
+              if (response.name != req.body.name) {
+                let data = {
+                  old_name: response.name,
+                  name: req.body.name,
+                };
+                ElasticsearchEventsHandler.store(
+                  ElasticsearchEventsAction.workoutRenamed,
+                  data
+                );
+              }
 
-          return ResponseHandler.success(
-            res, responseLanguage.workout_update_success, CommonTransformer.transform(result));
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      } else {
-        return ResponseHandler.error(res, 400, responseLanguage.not_exist);
-      }
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+              return ResponseHandler.success(
+                res,
+                responseLanguage.workout_update_success,
+                CommonTransformer.transform(result)
+              );
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        } else {
+          return ResponseHandler.error(res, 400, responseLanguage.not_exist);
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {delete} /admin/workout/destroy Handles workout destroy operation
@@ -165,38 +186,43 @@ class WorkoutController {
   destroy = (req, res) => {
     Workout.findOne({
       where: {
-        id: req.params.id
-      }
+        id: req.params.id,
+      },
     })
-    .then(response => {
-      if (response) {
-        let name = response.name;
+      .then((response) => {
+        if (response) {
+          let name = response.name;
 
-        Workout.destroy({ where: { id: req.params.id } })
-        .then(response => {
+          Workout.destroy({ where: { id: req.params.id } })
+            .then((response) => {
+              UserWorkout.destroy({
+                where: { workout_id: req.params.id },
+              });
 
-          UserWorkout.destroy({
-            where: { workout_id: req.params.id }
-          });
+              let data = {
+                name: name,
+              };
+              ElasticsearchEventsHandler.store(
+                ElasticsearchEventsHandler.workoutDelete,
+                data
+              );
 
-          let data = {
-            name: name
-          }
-          ElasticsearchEventsHandler.store(ElasticsearchEventsHandler.workoutDelete, data);
-
-          return ResponseHandler.success(res, responseLanguage.workout_delete_success);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      } else {
-        return ResponseHandler.error(res, 400, responseLanguage.not_exist);
-      }
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+              return ResponseHandler.success(
+                res,
+                responseLanguage.workout_delete_success
+              );
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        } else {
+          return ResponseHandler.error(res, 400, responseLanguage.not_exist);
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /admin/workout/merge Merge workout
@@ -209,61 +235,73 @@ class WorkoutController {
   merge = (req, res) => {
     Workout.findOne({
       where: {
-        id: req.body.id
-      }
+        id: req.body.id,
+      },
     })
-    .then(response => {
-      UserWorkout.findAll({where: { workout_id: req.body.id }})
-      .then(response => {
-        if (response.length > 0) {
-          UserWorkout.update({
-              workout_id: req.body.merged_id,
-            },
-            {
-            where: { workout_id: req.body.id },
-            returning: true,
-            plain: true
-          })
-          .then(response => {
-            if (response) {
-              UserWorkout.findAll({
-                where: {
-                  user_id: response[1].dataValues.user_id
+      .then((response) => {
+        UserWorkout.findAll({ where: { workout_id: req.body.id } })
+          .then((response) => {
+            if (response.length > 0) {
+              UserWorkout.update(
+                {
+                  workout_id: req.body.merged_id,
                 },
-                include: [{
-                  model: Workout,
-                  attributes: ['name'],
-                  as: 'workout',
-                  where: { status: StatusHandler.active }
-                }],
-                raw: true
-              }).then(result => {
-                if (result && result.length > 0) {
-                  let workouts = result.map(item => item['workout.name']);
-                  let data = {
-                    id: response[1].dataValues.user_id,
-                    name: workouts
-                  }
-                  ElasticsearchEventsHandler.store(ElasticsearchEventsHandler.workoutUpdate, data);
+                {
+                  where: { workout_id: req.body.id },
+                  returning: true,
+                  plain: true,
                 }
-              });
+              )
+                .then((response) => {
+                  if (response) {
+                    UserWorkout.findAll({
+                      where: {
+                        user_id: response[1].dataValues.user_id,
+                      },
+                      include: [
+                        {
+                          model: Workout,
+                          attributes: ["name"],
+                          as: "workout",
+                          where: { status: StatusHandler.active },
+                        },
+                      ],
+                      raw: true,
+                    }).then((result) => {
+                      if (result && result.length > 0) {
+                        let workouts = result.map(
+                          (item) => item["workout.name"]
+                        );
+                        let data = {
+                          id: response[1].dataValues.user_id,
+                          name: workouts,
+                        };
+                        ElasticsearchEventsHandler.store(
+                          ElasticsearchEventsHandler.workoutUpdate,
+                          data
+                        );
+                      }
+                    });
+                  }
+                })
+                .catch((err) => {
+                  return ResponseHandler.error(res, 500, err.message);
+                });
             }
+            Workout.destroy({ where: { id: req.body.id }, force: true });
+            return ResponseHandler.success(
+              res,
+              responseLanguage.workout_merge_success
+            );
           })
-          .catch(err => {
+          .catch((err) => {
             return ResponseHandler.error(res, 500, err.message);
           });
-        }
-        Workout.destroy({ where: { id: req.body.id }, force: true });
-        return ResponseHandler.success(res, responseLanguage.workout_merge_success);
       })
-      .catch(err => {
+      .catch((err) => {
         return ResponseHandler.error(res, 500, err.message);
       });
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+  };
 }
 
 module.exports = WorkoutController;

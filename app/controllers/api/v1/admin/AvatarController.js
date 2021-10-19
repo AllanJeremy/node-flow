@@ -1,33 +1,32 @@
-const { validationResult } = require('express-validator');
-const fs = require('fs');
-var path = require('path');
+const { validationResult } = require("express-validator");
+const fs = require("fs");
+var path = require("path");
 
 /**
  * Helpers
  */
- var ResponseHandler = require('../../../../helpers/ResponseHandler');
- ResponseHandler = new ResponseHandler();
+var ResponseHandler = require("../../../../helpers/ResponseHandler");
+ResponseHandler = new ResponseHandler();
 
- /**
-  * Models
-  */
- const Models = require('../../../../models');
- const Avatar = Models.Avatar;
+/**
+ * Models
+ */
+const Models = require("../../../../models");
+const Avatar = Models.Avatar;
 
- /**
+/**
  * Transformers
  */
-var AvatarTransformer = require('../../../../transformers/admin/AvatarTransformer');
+var AvatarTransformer = require("../../../../transformers/admin/AvatarTransformer");
 AvatarTransformer = new AvatarTransformer();
 
 /**
  * Languages
  */
- const language = require('../../../../language/en_default');
- const responseLanguage = language.en.admin.response;
+const language = require("../../../../language/en_default");
+const responseLanguage = language.en.admin.response;
 
- class AvatarController {
-
+class AvatarController {
   /**
    * @api {get} /api/avatar/list Show avatar list
    * @apiName Front avatar list
@@ -37,14 +36,18 @@ AvatarTransformer = new AvatarTransformer();
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
-    Avatar.findAll({order: [['id', 'DESC']]})
-    .then(response => {
-      return ResponseHandler.success(res, '', AvatarTransformer.transform(response));
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+    Avatar.findAll({ order: [["id", "DESC"]] })
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          "",
+          AvatarTransformer.transform(response)
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /api/avatar/store Handle avatar store operation
@@ -60,21 +63,29 @@ AvatarTransformer = new AvatarTransformer();
   store = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+      return ResponseHandler.error(
+        res,
+        422,
+        validationLanguage.required_fields,
+        errors.array()
+      );
     }
 
     Avatar.create({
       name: req.name,
-      status: req.body.status
+      status: req.body.status,
     })
-    .then(response => {
-      return ResponseHandler.success(
-        res, responseLanguage.avatar_store_success, AvatarTransformer.transform(response));
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          responseLanguage.avatar_store_success,
+          AvatarTransformer.transform(response)
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {patch} /admin/avatar/update Handles avatar update operation
@@ -87,7 +98,7 @@ AvatarTransformer = new AvatarTransformer();
    *
    * @apiSuccess (200) {Object}
    */
-   update = (req, res) => {
+  update = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return ResponseHandler.error(res, 422, errors.array());
@@ -95,35 +106,39 @@ AvatarTransformer = new AvatarTransformer();
 
     Avatar.findOne({
       where: {
-        id: req.params.id
-      }
+        id: req.params.id,
+      },
     })
-    .then(response => {
-      if (response) {
-        Avatar.update({
-          name: req.name ? req.name : response.name,
-          status: req.body.status,
-        },
-        {
-          where: { id: req.params.id },
-          returning: true
-        })
-        .then(result => {
-
-          return ResponseHandler.success(
-            res, responseLanguage.avatar_update_success, AvatarTransformer.transform(result));
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      } else {
-        return ResponseHandler.error(res, 400, responseLanguage.not_exist);
-      }
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        if (response) {
+          Avatar.update(
+            {
+              name: req.name ? req.name : response.name,
+              status: req.body.status,
+            },
+            {
+              where: { id: req.params.id },
+              returning: true,
+            }
+          )
+            .then((result) => {
+              return ResponseHandler.success(
+                res,
+                responseLanguage.avatar_update_success,
+                AvatarTransformer.transform(result)
+              );
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        } else {
+          return ResponseHandler.error(res, 400, responseLanguage.not_exist);
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {delete} /admin/avatar/destroy Handles avatar destroy operation
@@ -137,30 +152,32 @@ AvatarTransformer = new AvatarTransformer();
   destroy = (req, res) => {
     Avatar.findOne({
       where: {
-        id: req.params.id
-      }
+        id: req.params.id,
+      },
     })
-    .then(response => {
-      if (response) {
-        let name = response.name;
+      .then((response) => {
+        if (response) {
+          let name = response.name;
 
-        Avatar.destroy({ where: { id: req.params.id } })
-        .then(response => {
-          fs.unlink(path.join('images/avatar/' + name), function() {});
-          return ResponseHandler.success(res, responseLanguage.avatar_delete_success);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      } else {
-        return ResponseHandler.error(res, 400, responseLanguage.not_exist);
-      }
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+          Avatar.destroy({ where: { id: req.params.id } })
+            .then((response) => {
+              fs.unlink(path.join("images/avatar/" + name), function () {});
+              return ResponseHandler.success(
+                res,
+                responseLanguage.avatar_delete_success
+              );
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        } else {
+          return ResponseHandler.error(res, 400, responseLanguage.not_exist);
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
+}
 
- }
-
- module.exports = AvatarController;
+module.exports = AvatarController;

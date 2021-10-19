@@ -1,5 +1,5 @@
-const SYSTEM_BOT_EMAIL = 'lk@joyn.one';
+const SYSTEM_BOT_EMAIL = "lk@joyn.one";
 
 module.exports = {
-  SYSTEM_BOT_EMAIL
-}
+  SYSTEM_BOT_EMAIL,
+};

@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 /**
  * API Routes
  */
-const routeConfig = require('../routes/admin/config');
+const routeConfig = require("../routes/admin/config");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -15,13 +15,15 @@ module.exports = {
      *   name: 'John Doe',
      *   isBetaMember: false
      * }], {});
-    */
-    return queryInterface.bulkInsert('admin_permissions', [{
-      admin_user_id: '1',
-      permissions: '"' + Object.keys(routeConfig.apiRoute).toString() + '"',
-      created_at: new Date(),
-      updated_at: new Date()
-    }]);
+     */
+    return queryInterface.bulkInsert("admin_permissions", [
+      {
+        admin_user_id: "1",
+        permissions: '"' + Object.keys(routeConfig.apiRoute).toString() + '"',
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    ]);
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -31,5 +33,5 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-  }
+  },
 };

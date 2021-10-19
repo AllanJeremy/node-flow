@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -9,8 +9,8 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     return queryInterface.addColumn(
-      'users',
-      'social_access_token',
+      "users",
+      "social_access_token",
       Sequelize.JSON
     );
   },
@@ -22,9 +22,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    return queryInterface.removeColumn(
-      'users',
-      'social_access_token'
-    );
-  }
+    return queryInterface.removeColumn("users", "social_access_token");
+  },
 };

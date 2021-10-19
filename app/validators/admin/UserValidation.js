@@ -1,12 +1,12 @@
-const { check } = require('express-validator');
+const { check } = require("express-validator");
 
-const language = require('../../language/en_default');
+const language = require("../../language/en_default");
 const validation = language.en.admin.validation;
 const responseLanguage = language.en.admin.response;
 
 exports.SignIn = [
-  check('email')
-  	.trim()
+  check("email")
+    .trim()
     .escape()
     .not()
     .isEmpty()
@@ -14,7 +14,7 @@ exports.SignIn = [
     .isEmail()
     .withMessage(validation.email_invalid)
     .bail(),
-  check('password')
+  check("password")
     .trim()
     .escape()
     .not()
@@ -23,9 +23,8 @@ exports.SignIn = [
     .bail(),
 ];
 
-
 exports.SignUp = [
-  check('email')
+  check("email")
     .trim()
     .escape()
     .not()
@@ -34,8 +33,8 @@ exports.SignUp = [
     .isEmail()
     .withMessage(validation.email_invalid)
     .bail(),
-  check('password')
-    .optional({checkFalsy: true})
+  check("password")
+    .optional({ checkFalsy: true })
     .trim()
     .escape()
     .not()
@@ -44,14 +43,14 @@ exports.SignUp = [
     .isLength({ min: 8 })
     .withMessage(validation.password_minimum_length)
     .bail(),
-  check('first_name')
+  check("first_name")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(validation.first_name_required)
     .bail(),
-  check('last_name')
+  check("last_name")
     .trim()
     .escape()
     .not()
@@ -61,29 +60,28 @@ exports.SignUp = [
 ];
 
 exports.AdminPermission = [
-  check('permissions')
-    .isArray({min: 1})
+  check("permissions")
+    .isArray({ min: 1 })
     .withMessage(validation.admin_permission_required)
-    .bail()
+    .bail(),
 ];
 
 exports.AuthToken = [
-  check('access_token')
+  check("access_token")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(responseLanguage.token_required)
-    .bail()
+    .bail(),
 ];
 
 exports.UserUpdateStatus = [
-  check('status')
+  check("status")
     .trim()
     .escape()
     .not()
     .isEmpty()
     .withMessage(responseLanguage.status_required)
-    .bail()
+    .bail(),
 ];
-

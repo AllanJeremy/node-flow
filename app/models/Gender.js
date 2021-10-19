@@ -1,8 +1,6 @@
-'use strict';
+"use strict";
 
-const {
-  Model
-} = require('sequelize');
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Gender extends Model {
     /**
@@ -13,21 +11,23 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  Gender.init({
-    name: DataTypes.STRING,
-    status: DataTypes.INTEGER,
-    deleted_at: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'Gender',
-    tableName: 'genders',
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
-    deletedAt: 'deleted_at',
-    paranoid: true,
-  });
+  }
+  Gender.init(
+    {
+      name: DataTypes.STRING,
+      status: DataTypes.INTEGER,
+      deleted_at: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      modelName: "Gender",
+      tableName: "genders",
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+      deletedAt: "deleted_at",
+      paranoid: true,
+    }
+  );
 
   return Gender;
-
 };

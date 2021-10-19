@@ -1,8 +1,6 @@
-'use strict';
+"use strict";
 
-const {
-  Model
-} = require('sequelize');
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class InviteUser extends Model {
     /**
@@ -13,18 +11,20 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  InviteUser.init({
-    user_id: DataTypes.INTEGER,
-    invite_user_email: DataTypes.STRING,
-    deleted_at: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'InviteUser',
-    paranoid: true,
-    deletedAt: 'deleted_at'
-  });
+  }
+  InviteUser.init(
+    {
+      user_id: DataTypes.INTEGER,
+      invite_user_email: DataTypes.STRING,
+      deleted_at: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      modelName: "InviteUser",
+      paranoid: true,
+      deletedAt: "deleted_at",
+    }
+  );
 
   return InviteUser;
-
 };

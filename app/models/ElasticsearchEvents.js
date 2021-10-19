@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class ElasticsearchEvents extends Model {
     /**
@@ -12,19 +10,22 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  ElasticsearchEvents.init({
-    action: DataTypes.STRING,
-    metadata: DataTypes.JSON,
-    attempted_at: DataTypes.DATE,
-    reason: DataTypes.JSON,
-    attempted: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'ElasticsearchEvents',
-    tableName: 'elasticsearch_events',
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
-  });
+  }
+  ElasticsearchEvents.init(
+    {
+      action: DataTypes.STRING,
+      metadata: DataTypes.JSON,
+      attempted_at: DataTypes.DATE,
+      reason: DataTypes.JSON,
+      attempted: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "ElasticsearchEvents",
+      tableName: "elasticsearch_events",
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    }
+  );
   return ElasticsearchEvents;
 };

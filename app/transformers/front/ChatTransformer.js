@@ -1,13 +1,13 @@
-var fractal = require('fractal-transformer')();
-require('dotenv').config();
+var fractal = require("fractal-transformer")();
+require("dotenv").config();
 
 class ChatTransformer {
-
-  transform = (data) => fractal(data, {
-    'id': 'id',
-    'channel_id': 'channel_id',
-    'message_retention': 'message_retention'
-  });
+  transform = (data) =>
+    fractal(data, {
+      id: "id",
+      channel_id: "channel_id",
+      message_retention: "message_retention",
+    });
 }
 
 module.exports = ChatTransformer;

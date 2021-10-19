@@ -1,38 +1,37 @@
-const { validationResult } = require('express-validator');
+const { validationResult } = require("express-validator");
 
 /**
  * Helpers
  */
-var ResponseHandler = require('../../../../helpers/ResponseHandler');
+var ResponseHandler = require("../../../../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
 
-const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
+const ElasticsearchEventsAction = require("../../../../helpers/ElasticsearchEventsAction");
 
-var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+var ElasticsearchEventsHandler = require("../../../../helpers/ElasticsearchEventsHandler");
 ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 /**
  * Models
  */
-const Models = require('../../../../models');
+const Models = require("../../../../models");
 const Gender = Models.Gender;
 const UserMetadata = Models.UserMetadata;
 
 /**
  * Languages
  */
-const language = require('../../../../language/en_default');
+const language = require("../../../../language/en_default");
 const responseLanguage = language.en.admin.response;
 const validationLanguage = language.en.admin.validation;
 
 /**
  * Transformers
  */
-var CommonTransformer = require('../../../../transformers/core/CommonTransformer');
+var CommonTransformer = require("../../../../transformers/core/CommonTransformer");
 CommonTransformer = new CommonTransformer();
 
 class GenderController {
-
   /**
    * @api {post} /admin/gender/list Handles gender list
    * @apiName Gender list
@@ -42,14 +41,18 @@ class GenderController {
    * @apiSuccess (200) {Object}
    */
   list = (req, res) => {
-    Gender.findAll({order: [['id', 'DESC']]})
-    .then(response => {
-      return ResponseHandler.success(res, '', CommonTransformer.transform(response));
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+    Gender.findAll({ order: [["id", "DESC"]] })
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          "",
+          CommonTransformer.transform(response)
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /admin/gender/store Handles gender store operation
@@ -64,34 +67,43 @@ class GenderController {
   store = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+      return ResponseHandler.error(
+        res,
+        422,
+        validationLanguage.required_fields,
+        errors.array()
+      );
     }
 
     Gender.findOne({
       where: {
-        name: req.body.name
-      }
-    }).then(response => {
-      if (!response) {
-        Gender.create({
-          name: req.body.name,
-          status: req.body.status
-        })
-        .then(response => {
-          return ResponseHandler.success(
-            res, responseLanguage.gender_store_success, CommonTransformer.transform(response));
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        })
-      } else {
-        return ResponseHandler.error(res, 400, responseLanguage.gender_exist);
-      }
+        name: req.body.name,
+      },
     })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+      .then((response) => {
+        if (!response) {
+          Gender.create({
+            name: req.body.name,
+            status: req.body.status,
+          })
+            .then((response) => {
+              return ResponseHandler.success(
+                res,
+                responseLanguage.gender_store_success,
+                CommonTransformer.transform(response)
+              );
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        } else {
+          return ResponseHandler.error(res, 400, responseLanguage.gender_exist);
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /admin/gender/update Handles gender update operation
@@ -107,47 +119,60 @@ class GenderController {
   update = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+      return ResponseHandler.error(
+        res,
+        422,
+        validationLanguage.required_fields,
+        errors.array()
+      );
     }
 
     Gender.findOne({
       where: {
-        id: req.params.id
-      }
+        id: req.params.id,
+      },
     })
-    .then(response => {
-      if (response) {
-        Gender.update({
-          name: req.body.name,
-          status: req.body.status,
-        },
-        {
-          where: { id: req.params.id },
-          returning: true
-        }).then(result => {
-
-          if (response.name != req.body.name) {
-            let data = {
-              old_name: response.name,
-              name: req.body.name
+      .then((response) => {
+        if (response) {
+          Gender.update(
+            {
+              name: req.body.name,
+              status: req.body.status,
+            },
+            {
+              where: { id: req.params.id },
+              returning: true,
             }
-            ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderRenamed, data);
-          }
+          )
+            .then((result) => {
+              if (response.name != req.body.name) {
+                let data = {
+                  old_name: response.name,
+                  name: req.body.name,
+                };
+                ElasticsearchEventsHandler.store(
+                  ElasticsearchEventsAction.genderRenamed,
+                  data
+                );
+              }
 
-          return ResponseHandler.success(
-            res, responseLanguage.gender_update_success, CommonTransformer.transform(result));
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      } else {
-        return ResponseHandler.error(res, 400, responseLanguage.not_exist);
-      }
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+              return ResponseHandler.success(
+                res,
+                responseLanguage.gender_update_success,
+                CommonTransformer.transform(result)
+              );
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        } else {
+          return ResponseHandler.error(res, 400, responseLanguage.not_exist);
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /admin/gender/destroy Handles gender destroy operation
@@ -161,40 +186,48 @@ class GenderController {
   destroy = (req, res) => {
     Gender.findOne({
       where: {
-        id: req.params.id
-      }
+        id: req.params.id,
+      },
     })
-    .then(response => {
-      if (response) {
-        let name = response.name;
+      .then((response) => {
+        if (response) {
+          let name = response.name;
 
-        Gender.destroy({ where: { id: req.params.id } })
-        .then(response => {
+          Gender.destroy({ where: { id: req.params.id } })
+            .then((response) => {
+              UserMetadata.update(
+                {
+                  gender_id: null,
+                },
+                {
+                  where: { gender_id: req.params.id },
+                }
+              );
 
-          UserMetadata.update({
-            gender_id: null
-          },{
-            where: { gender_id: req.params.id }
-          });
+              let data = {
+                name: name,
+              };
+              ElasticsearchEventsHandler.store(
+                ElasticsearchEventsAction.genderDelete,
+                data
+              );
 
-          let data = {
-            name: name
-          }
-          ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderDelete, data);
-
-          return ResponseHandler.success(res, responseLanguage.gender_delete_success);
-        })
-        .catch(err => {
-          return ResponseHandler.error(res, 500, err.message);
-        });
-      } else {
-        return ResponseHandler.error(res, 400, responseLanguage.not_exist);
-      }
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
+              return ResponseHandler.success(
+                res,
+                responseLanguage.gender_delete_success
+              );
+            })
+            .catch((err) => {
+              return ResponseHandler.error(res, 500, err.message);
+            });
+        } else {
+          return ResponseHandler.error(res, 400, responseLanguage.not_exist);
+        }
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /admin/race/merge Merge gender
@@ -207,51 +240,57 @@ class GenderController {
   merge = (req, res) => {
     Gender.findOne({
       where: {
-        id: req.body.id
-      }
+        id: req.body.id,
+      },
     })
-    .then(response => {
-      UserMetadata.findAll({where: { gender_id: req.body.id }})
-      .then(response => {
-        if (response.length > 0) {
-          UserMetadata.update({
-              gender_id: req.body.merged_id,
-            },
-            {
-            where: { gender_id: req.body.id },
-            returning: true,
-            plain: true
+      .then((response) => {
+        UserMetadata.findAll({ where: { gender_id: req.body.id } })
+          .then((response) => {
+            if (response.length > 0) {
+              UserMetadata.update(
+                {
+                  gender_id: req.body.merged_id,
+                },
+                {
+                  where: { gender_id: req.body.id },
+                  returning: true,
+                  plain: true,
+                }
+              )
+                .then((response) => {
+                  Gender.findOne({
+                    where: {
+                      id: req.body.merged_id,
+                    },
+                  }).then((result) => {
+                    let data = {
+                      id: response[1].dataValues.user_id,
+                      name: result.name,
+                    };
+                    ElasticsearchEventsHandler.store(
+                      ElasticsearchEventsAction.genderUpdate,
+                      data
+                    );
+                  });
+                })
+                .catch((err) => {
+                  return ResponseHandler.error(res, 500, err.message);
+                });
+            }
+            Gender.destroy({ where: { id: req.body.id }, force: true });
+            return ResponseHandler.success(
+              res,
+              responseLanguage.gender_merge_success
+            );
           })
-          .then(response => {
-
-            Gender.findOne({
-              where: {
-                id: req.body.merged_id
-              }
-            }).then(result => {
-              let data = {
-                id: response[1].dataValues.user_id,
-                name: result.name
-              }
-              ElasticsearchEventsHandler.store(ElasticsearchEventsAction.genderUpdate, data);
-            });
-          })
-          .catch(err => {
+          .catch((err) => {
             return ResponseHandler.error(res, 500, err.message);
           });
-        }
-        Gender.destroy({ where: { id: req.body.id }, force: true });
-        return ResponseHandler.success(res, responseLanguage.gender_merge_success);
       })
-      .catch(err => {
+      .catch((err) => {
         return ResponseHandler.error(res, 500, err.message);
       });
-    })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
+  };
 }
 
 module.exports = GenderController;

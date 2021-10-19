@@ -1,4 +1,4 @@
-var nodemailer = require('nodemailer');
+var nodemailer = require("nodemailer");
 
 /**
  * Reusable transporter object using the default SMTP transport
@@ -11,8 +11,8 @@ const MailTransporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER_NAME,
     pass: process.env.EMAIL_USER_PASSWORD,
   },
-  tls:{
-    ciphers:'SSLv3'
+  tls: {
+    ciphers: "SSLv3",
   },
   secure: process.env.EMAIL_SERVICE_SECURE,
 });

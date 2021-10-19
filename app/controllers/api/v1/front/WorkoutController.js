@@ -1,25 +1,24 @@
-require('dotenv').config();
-const { validationResult } = require('express-validator');
-const Sequelize = require('sequelize');
-
+require("dotenv").config();
+const { validationResult } = require("express-validator");
+const Sequelize = require("sequelize");
 
 /**
  * Helpers
  */
-var ResponseHandler = require('../../../../helpers/ResponseHandler');
+var ResponseHandler = require("../../../../helpers/ResponseHandler");
 ResponseHandler = new ResponseHandler();
 
-const StatusHandler = require('../../../../helpers/StatusHandler');
+const StatusHandler = require("../../../../helpers/StatusHandler");
 
-const ElasticsearchEventsAction = require('../../../../helpers/ElasticsearchEventsAction');
+const ElasticsearchEventsAction = require("../../../../helpers/ElasticsearchEventsAction");
 
-var ElasticsearchEventsHandler = require('../../../../helpers/ElasticsearchEventsHandler');
+var ElasticsearchEventsHandler = require("../../../../helpers/ElasticsearchEventsHandler");
 ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 /**
  * Models
  */
-const Models = require('../../../../models');
+const Models = require("../../../../models");
 const Workout = Models.Workout;
 const UserWorkout = Models.UserWorkout;
 const UserMetadata = Models.UserMetadata;
@@ -27,19 +26,17 @@ const UserMetadata = Models.UserMetadata;
 /**
  * Languages
  */
-const language = require('../../../../language/en_default');
+const language = require("../../../../language/en_default");
 const responseLanguage = language.en.front.response;
 const validationLanguage = language.en.front.validation;
 
 /**
  * Transformers
  */
-var CommonTransformer = require('../../../../transformers/core/CommonTransformer');
+var CommonTransformer = require("../../../../transformers/core/CommonTransformer");
 CommonTransformer = new CommonTransformer();
 
-
 class WorkoutController {
-
   /**
    * @api {get} /profile/workout/list Show workout list
    * @apiName Workout list
@@ -51,17 +48,21 @@ class WorkoutController {
   list = (req, res) => {
     Workout.findAll({
       where: {
-        status: StatusHandler.active
-      }
-    , order: [['name', 'ASC']]})
-    .then(response => {
-      return ResponseHandler.success(res, '', CommonTransformer.transform(response));
+        status: StatusHandler.active,
+      },
+      order: [["name", "ASC"]],
     })
-    .catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
+      .then((response) => {
+        return ResponseHandler.success(
+          res,
+          "",
+          CommonTransformer.transform(response)
+        );
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 
   /**
    * @api {post} /profile/workout/store Handles user profile workout store operation
@@ -75,7 +76,12 @@ class WorkoutController {
   store = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return ResponseHandler.error(res, 422, validationLanguage.required_fields, errors.array());
+      return ResponseHandler.error(
+        res,
+        422,
+        validationLanguage.required_fields,
+        errors.array()
+      );
     }
 
     const Op = Sequelize.Op;
@@ -83,38 +89,48 @@ class WorkoutController {
     let workouts = req.body.workouts;
     let removedOtherWorkouts = [];
 
-    workouts && workouts.length > 0 && workouts.length > 0 && workouts.map(async(item, index) => {
-      this.update(req.id, item, req.body.status);
-    });
+    workouts &&
+      workouts.length > 0 &&
+      workouts.length > 0 &&
+      workouts.map(async (item, index) => {
+        this.update(req.id, item, req.body.status);
+      });
 
     if (req.body.other && req.body.other.length > 0) {
       var userWorkout = await UserWorkout.findAll({
-        attributes: ['workout_id'],
+        attributes: ["workout_id"],
         where: {
-          user_id: req.id
+          user_id: req.id,
         },
-        include: [{
-          model: Workout,
-          attributes: ['id', 'name'],
-          as: 'workout',
-          where: { name:  req.body.other, status: StatusHandler.pending }
-        }]
+        include: [
+          {
+            model: Workout,
+            attributes: ["id", "name"],
+            as: "workout",
+            where: { name: req.body.other, status: StatusHandler.pending },
+          },
+        ],
       });
       await userWorkout.map((item) => {
         workouts.push(item.workout_id);
       });
 
       var userRemovedWorkout = await UserWorkout.findAll({
-        attributes: ['workout_id'],
+        attributes: ["workout_id"],
         where: {
-          user_id: req.id
+          user_id: req.id,
         },
-        include: [{
-          model: Workout,
-          attributes: ['id', 'name'],
-          as: 'workout',
-          where: { name:  {[Op.notIn]: req.body.other}, status: StatusHandler.pending }
-        }]
+        include: [
+          {
+            model: Workout,
+            attributes: ["id", "name"],
+            as: "workout",
+            where: {
+              name: { [Op.notIn]: req.body.other },
+              status: StatusHandler.pending,
+            },
+          },
+        ],
       });
       await userRemovedWorkout.map((item) => {
         removedOtherWorkouts.push(item.workout_id);
@@ -123,25 +139,28 @@ class WorkoutController {
       req.body.other.map(async (item) => {
         UserWorkout.findOne({
           where: {
-            user_id: req.id
+            user_id: req.id,
           },
-          include: [{
-            model: Workout,
-            attributes: ['id', 'name'],
-            as: 'workout',
-            where: { name: item }
-          }]
-        }).then(res => {
-          if(!res) {
-            Workout.create({
-              name: item,
-              status: StatusHandler.pending
-            },
+          include: [
             {
-              returning: true,
-              raw:true
-            })
-            .then(response => {
+              model: Workout,
+              attributes: ["id", "name"],
+              as: "workout",
+              where: { name: item },
+            },
+          ],
+        }).then((res) => {
+          if (!res) {
+            Workout.create(
+              {
+                name: item,
+                status: StatusHandler.pending,
+              },
+              {
+                returning: true,
+                raw: true,
+              }
+            ).then((response) => {
               this.update(req.id, response.id, StatusHandler.pending);
             });
           }
@@ -149,16 +168,18 @@ class WorkoutController {
       });
     } else {
       var userRemovedWorkout = await UserWorkout.findAll({
-        attributes: ['workout_id'],
+        attributes: ["workout_id"],
         where: {
-          user_id: req.id
+          user_id: req.id,
         },
-        include: [{
-          model: Workout,
-          attributes: ['id', 'name'],
-          as: 'workout',
-          where: { status: StatusHandler.pending }
-        }]
+        include: [
+          {
+            model: Workout,
+            attributes: ["id", "name"],
+            as: "workout",
+            where: { status: StatusHandler.pending },
+          },
+        ],
       });
       await userRemovedWorkout.map((item) => {
         removedOtherWorkouts.push(item.workout_id);
@@ -167,102 +188,113 @@ class WorkoutController {
 
     UserWorkout.destroy({
       where: {
-        workout_id: {[Op.notIn]: workouts},
-        user_id: req.id
-      }
+        workout_id: { [Op.notIn]: workouts },
+        user_id: req.id,
+      },
     });
 
     Workout.destroy({
       where: {
-        id: {[Op.in]: removedOtherWorkouts}
-      }
+        id: { [Op.in]: removedOtherWorkouts },
+      },
     });
 
     UserMetadata.findOne({
       where: {
-        user_id: req.id
-      }
-    }).then(response => {
+        user_id: req.id,
+      },
+    }).then((response) => {
       if (!response) {
         UserMetadata.create({
           user_id: req.id,
-          workout_status: StatusHandler.active
+          workout_status: StatusHandler.active,
         });
       } else {
-        UserMetadata.update({
-          workout_status: StatusHandler.active
-        },
-        {
-          where: {user_id: req.id}
-        });
+        UserMetadata.update(
+          {
+            workout_status: StatusHandler.active,
+          },
+          {
+            where: { user_id: req.id },
+          }
+        );
       }
     });
 
     return ResponseHandler.success(res, responseLanguage.workout_save);
-  }
+  };
 
-  update = async(userId, workoutId, status) => {
-    if(workoutId) {
+  update = async (userId, workoutId, status) => {
+    if (workoutId) {
       let isUserWorkoutExist = await UserWorkout.findOne({
         where: {
           user_id: userId,
-          workout_id: workoutId
-        }
+          workout_id: workoutId,
+        },
       });
 
       if (!isUserWorkoutExist) {
         UserWorkout.create({
           user_id: userId,
           workout_id: workoutId,
-          status: StatusHandler.active
-        }).then(response => {
+          status: StatusHandler.active,
+        }).then((response) => {
           //if (status == StatusHandler.active) {
-            this.updateElaticsearch(userId);
+          this.updateElaticsearch(userId);
           //}
         });
       } else {
-        UserWorkout.update({
-          status: status
-        }, {
-          where: {
-            user_id: userId,
-            workout_id: workoutId,
+        UserWorkout.update(
+          {
+            status: status,
+          },
+          {
+            where: {
+              user_id: userId,
+              workout_id: workoutId,
+            },
           }
-        }).then(response => {
+        ).then((response) => {
           //if (status == StatusHandler.active) {
-            this.updateElaticsearch(userId);
+          this.updateElaticsearch(userId);
           //}
         });
       }
     }
-  }
+  };
 
   updateElaticsearch = (userId) => {
     UserWorkout.findAll({
       where: {
-        user_id: userId
+        user_id: userId,
       },
-      include: [{
-        model: Workout,
-        attributes: ['name'],
-        as: 'workout',
-        where: { status: StatusHandler.active }
-      }],
-      raw: true
-    }).then(response => {
-      if (response && response.length > 0) {
-        let workouts = response.map(item => item['workout.name']);
-        let data = {
-          id: userId,
-          name: workouts
+      include: [
+        {
+          model: Workout,
+          attributes: ["name"],
+          as: "workout",
+          where: { status: StatusHandler.active },
+        },
+      ],
+      raw: true,
+    })
+      .then((response) => {
+        if (response && response.length > 0) {
+          let workouts = response.map((item) => item["workout.name"]);
+          let data = {
+            id: userId,
+            name: workouts,
+          };
+          ElasticsearchEventsHandler.store(
+            ElasticsearchEventsAction.workoutUpdate,
+            data
+          );
         }
-        ElasticsearchEventsHandler.store(ElasticsearchEventsAction.workoutUpdate, data);
-      }
-    }).catch(err => {
-      return ResponseHandler.error(res, 500, err.message);
-    });
-  }
-
+      })
+      .catch((err) => {
+        return ResponseHandler.error(res, 500, err.message);
+      });
+  };
 }
 
 module.exports = WorkoutController;

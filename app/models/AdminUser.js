@@ -1,8 +1,6 @@
-'use strict';
+"use strict";
 
-const {
-  Model
-} = require('sequelize');
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class AdminUser extends Model {
     /**
@@ -13,26 +11,28 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  AdminUser.init({
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    status: DataTypes.INTEGER,
-    remember_token: DataTypes.STRING,
-    access_token: DataTypes.STRING,
-    deleted_at: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'AdminUser',
-    tableName: 'admin_users',
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
-    deletedAt: 'deleted_at',
-    paranoid: true,
-  });
+  }
+  AdminUser.init(
+    {
+      first_name: DataTypes.STRING,
+      last_name: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      status: DataTypes.INTEGER,
+      remember_token: DataTypes.STRING,
+      access_token: DataTypes.STRING,
+      deleted_at: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      modelName: "AdminUser",
+      tableName: "admin_users",
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+      deletedAt: "deleted_at",
+      paranoid: true,
+    }
+  );
 
   return AdminUser;
-
 };
