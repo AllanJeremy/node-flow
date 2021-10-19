@@ -556,6 +556,7 @@ class AuthController {
       if (!response) {
         User.create({
           email: email,
+          first_name: req.body.first_name,
           status: StatusHandler.active,
           unique_id: uniqueId,
           type: UserTypes.normal,

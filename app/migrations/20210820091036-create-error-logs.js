@@ -12,9 +12,9 @@ module.exports = {
         type: Sequelize.INTEGER,
         onDelete: "CASCADE",
         references: {
-          model: "User",
-          key: "id",
-        },
+          model: "users",
+          key: "id"
+        }
       },
       error: {
         type: Sequelize.JSON,
