@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 var dotenv = require("dotenv");
 const multer = require("multer");
@@ -18,13 +17,11 @@ Joyn.use("/images", express.static("./images"));
 // Set CORS
 Joyn.use(cors({ origin: process.env.CORS_ORIGIN }));
 
+// parse requests of content-type - application/json
 Joyn.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-Joyn.use(bodyParser.urlencoded({ extended: true }));
-
-// parse requests of content-type - application/json
-Joyn.use(bodyParser.json());
+Joyn.use(express.urlencoded({ extended: true }));
 
 // Database
 const db = require("./app/models");
