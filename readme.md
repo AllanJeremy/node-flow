@@ -57,6 +57,8 @@ We'll go over these in order of significance.
 
 - The `config.js` file in both `admin/` and `front/` contains objects that contain the paths to the various API endpoints defined within their respective `router/` directories.
 
+- The `index.js` file in both the `admin/` and `front` serves as an aggregator for all routes in their respective `router/` directories. In other words, this file checks for all files in the `router/` directory and bundles them all together so they can all be included together when defining the API routes in the root `server.js` file. More on how this file works in the [contribution guide](contributing.md).
+
 - The `router/` directory contains files that correspond to our individual route groups.
 
 _Buzzword alert._ **Route group:** a group of routes (no kidding) that operate within a specific domain. For example: authentication functionality can involve _signin, signup, forgot password_ etc. Such functionality would be grouped together in a single file that represents the authentication route group. In the case of this codebase, for the `app/routes/admin/` routes, authentication routes would be found in `app/routes/admin/router/auth.js`. This analogy translates into other domains where each file in a **`router/`** directory corresponds to a set of API endpoints (also called routes) that operate within a given domain.
