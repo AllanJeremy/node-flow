@@ -63,4 +63,4 @@ _Buzzword alert._ **Route group:** a group of routes (no kidding) that operate w
 
 # Contributing
 
-To start contributing to the codebase, kindly reference the [contribution guide](https://github.com/). This guide contains details on the structure as well as architectural choices, coding style guides and more.
+To start contributing to the codebase, kindly reference the [contribution guide](contributing.md). This guide contains details on the structure as well as architectural choices, coding style guides and more.
