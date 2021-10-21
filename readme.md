@@ -57,7 +57,7 @@ We'll go over these in order of significance.
 
 - The `config.js` file in both `admin/` and `front/` contains objects that contain the paths to the various API endpoints defined within their respective `router/` directories.
 
-- The `index.js` file in both the `admin/` and `front` serves as an aggregator for all routes in their respective `router/` directories. In other words, this file checks for all files in the `router/` directory and bundles them all together so they can all be included together when defining the API routes in the root `server.js` file. More on how this file works in the [contribution guide](contributing.md).
+- The `index.js` file in both the `admin/` and `front` serves as an aggregator for all routes in their respective `router/` directories. In other words, this file checks for all files in the `router/` directory and bundles them all together so they can all be included together when defining the API routes in the root `server.js` file. More on how this [`server.js`](server.js) works in the [contribution guide](contributing.md).
 
 - The `router/` directory contains files that correspond to our individual route groups.
 
