@@ -1,23 +1,28 @@
+require("dotenv").config();
+
 module.exports = {
   local: {
-    HOST: process.env.DB_HOST,
-    USER: process.env.DB_USERNAME,
-    PASSWORD: process.env.DB_PASSWORD,
-    DATABASE: process.env.DB_DATABASE,
-    DIALECT: process.env.DB_DIALECT,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
+    migrationStorageTableName: "sequelize_meta",
   },
   development: {
-    HOST: process.env.DB_HOST,
-    USER: process.env.DB_USERNAME,
-    PASSWORD: process.env.DB_PASSWORD,
-    DATABASE: process.env.DB_DATABASE,
-    DIALECT: process.env.DB_DIALECT,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
+    migrationStorageTableName: "sequelize_meta",
   },
   production: {
-    HOST: process.env.DB_HOST,
-    USER: process.env.DB_USERNAME,
-    PASSWORD: process.env.DB_PASSWORD,
-    DATABASE: process.env.DB_DATABASE,
-    DIALECT: process.env.DB_DIALECT,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
+    migrationStorageTableName: "sequelize_meta",
   },
 };
