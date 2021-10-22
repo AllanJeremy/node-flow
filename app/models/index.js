@@ -4,19 +4,25 @@ let env = process.env.APP_ENV;
 config = config[env];
 
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize(config.DATABASE, config.USER, config.PASSWORD, {
-  host: config.HOST,
-  dialect: config.DIALECT,
-  operatorsAliases: false,
-  camelCase: true,
-  camelCaseForFileName: true,
-  logging: false,
-  define: {
-    charset: "utf8",
-    collate: "utf8_general_ci",
-    timestamps: true,
-  },
-});
+
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  {
+    host: config.host,
+    dialect: config.dialect,
+    operatorsAliases: false,
+    camelCase: true,
+    camelCaseForFileName: true,
+    logging: false,
+    define: {
+      charset: "utf8",
+      collate: "utf8_general_ci",
+      timestamps: true,
+    },
+  }
+);
 
 const db = {};
 
