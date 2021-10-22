@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       text: DataTypes.STRING,
       prompt_id: DataTypes.INTEGER,
+      emoji: DataTypes.STRING,
     },
     {
       sequelize,

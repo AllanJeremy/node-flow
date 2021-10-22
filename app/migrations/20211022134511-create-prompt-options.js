@@ -20,6 +20,10 @@ module.exports = {
           key: "id",
         },
       },
+      emoji: {
+        type: Sequelize.STRING,
+        defaultValue: null,
+      },
       createdAt: {
         allowNull: false,
         field: "created_at",
