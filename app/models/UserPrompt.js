@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "user_prompts",
       createdAt: "created_at",
       updatedAt: "updated_at",
+      paranoid: true,
     }
   );
 
