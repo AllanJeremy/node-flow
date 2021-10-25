@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
       prompt_id: DataTypes.INTEGER,
       prompt_option_id: DataTypes.INTEGER,
       user_id: DataTypes.INTEGER,
+      custom_value: DataTypes.STRING,
+      show_on_profile: DataTypes.BOOLEAN,
     },
     {
       sequelize,

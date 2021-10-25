@@ -33,6 +33,15 @@ module.exports = {
           key: "id",
         },
       },
+      custom_value: {
+        type: Sequelize.STRING,
+        defaultValue: null,
+      },
+      show_on_profile: {
+        allowNull: true,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       createdAt: {
         allowNull: false,
         field: "created_at",
