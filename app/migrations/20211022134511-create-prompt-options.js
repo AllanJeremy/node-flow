@@ -15,6 +15,7 @@ module.exports = {
       },
       prompt_id: {
         type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
         references: {
           model: "prompts",
           key: "id",

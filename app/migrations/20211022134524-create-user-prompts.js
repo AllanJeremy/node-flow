@@ -11,6 +11,7 @@ module.exports = {
       },
       prompt_id: {
         allowNull: false,
+        onDelete: "SET NULL",
         type: Sequelize.INTEGER,
         references: {
           model: "prompts",
@@ -19,6 +20,7 @@ module.exports = {
       },
       prompt_option_id: {
         type: Sequelize.INTEGER,
+        onDelete: "SET NULL",
         references: {
           model: "prompt_options",
           key: "id",
