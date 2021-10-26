@@ -88,6 +88,12 @@ exports.en = {
       avatar_update_success: "Avatar updated successfully.",
       avatar_delete_success: "Avatar deleted successfully.",
       avatar_exist: "Avatar already exists.",
+
+      prompt_store_success: "Prompt created successfully.",
+      prompt_update_success: "Prompt updated successfully.",
+      prompt_option_update_success: "Prompt option updated successfully.",
+      prompt_delete_success: "Prompt deleted successfully.",
+      prompt_option_delete_success: "Prompt option deleted successfully.",
     },
   },
   front: {
