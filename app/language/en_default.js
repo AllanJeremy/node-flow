@@ -96,6 +96,8 @@ exports.en = {
       prompt_delete_success: "Prompt deleted successfully.",
       prompt_option_delete_success: "Prompt option deleted successfully.",
 
+      user_prompt_store_wait:
+        "Sorry, you need to wait before you can create another response for that prompt. ",
       user_prompt_store_success: "User response added successfully.",
 
       user_prompt_update_success: "User response updated successfully.",
