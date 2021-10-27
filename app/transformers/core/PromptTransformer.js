@@ -27,6 +27,45 @@ class PromptTransformer {
       },
     });
   };
+
+  /**
+   * Transform a user prompt
+   * @param {Object} data An object representing the `user_prompt` records from the database
+   */
+  static transformUserPrompt = (data) => {
+    return fractal(data, {
+      id: "id",
+      user_id: "user_id",
+      custom_value: (data) => data.get("custom_value"),
+      show_on_profile: (data) => data.get("show_on_profile") === true,
+
+      prompt: (data) => {
+        const promptObj = data.get("prompt");
+
+        // When no prompt could be found ~ fail silently
+        if (!promptObj) return null;
+
+        //* Getting here means that a prompt could be found ~ return only the relevant data
+        return {
+          id: promptObj.id,
+          question: promptObj.question,
+        };
+      },
+
+      prompt_option: (data) => {
+        const promptOptionObj = data.get("prompt_option");
+
+        // When no prompt could be found ~ fail silently
+        if (!promptOptionObj) return null;
+
+        //* Getting here means that a user prompt response could be found
+        return {
+          id: promptOptionObj.id,
+          text: promptOptionObj.text,
+        };
+      },
+    });
+  };
 }
 
 module.exports = PromptTransformer;
