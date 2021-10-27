@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       user_id: DataTypes.INTEGER,
       custom_value: DataTypes.STRING,
       show_on_profile: DataTypes.BOOLEAN,
+      skipped: DataTypes.BOOLEAN,
     },
     {
       sequelize,

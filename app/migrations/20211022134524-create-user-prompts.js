@@ -27,6 +27,10 @@ module.exports = {
         },
         defaultValue: null,
       },
+      skipped: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       user_id: {
         type: Sequelize.INTEGER,
         onDelete: "CASCADE",
