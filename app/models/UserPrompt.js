@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       custom_value: DataTypes.STRING,
       show_on_profile: DataTypes.BOOLEAN,
       skipped: DataTypes.BOOLEAN,
+      deleted_at: DataTypes.DATE,
     },
     {
       sequelize,
@@ -28,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "user_prompts",
       createdAt: "created_at",
       updatedAt: "updated_at",
+      deletedAt: "deleted_at",
       paranoid: true,
     }
   );

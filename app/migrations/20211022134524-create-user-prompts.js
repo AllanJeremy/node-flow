@@ -60,6 +60,11 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(6)"),
       },
+      deletedAt: {
+        type: Sequelize.DATE,
+        field: "deleted_at",
+        defaultValue: null,
+      },
     });
   },
 
