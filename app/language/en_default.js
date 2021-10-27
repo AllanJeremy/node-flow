@@ -97,7 +97,11 @@ exports.en = {
       prompt_option_delete_success: "Prompt option deleted successfully.",
 
       user_prompt_store_success: "User response added successfully.",
+
       user_prompt_update_success: "User response updated successfully.",
+      user_prompt_update_failed:
+        "Failed to update user response. Either the update data was incorrect or the user response prompt does not exist.",
+
       user_prompt_delete_success: "User response deleted successfully.",
     },
   },
