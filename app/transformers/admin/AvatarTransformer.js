@@ -1,7 +1,7 @@
 var fractal = require("fractal-transformer")();
 
 class AvatarTransformer {
-  transform = (data) =>
+  static transform = (data) =>
     fractal(data, {
       id: "id",
       name: "name",

@@ -3,7 +3,7 @@ var fractal = require("fractal-transformer")();
 const ReportTypes = require("../../helpers/ReportTypes");
 
 class ReportTransformer {
-  users = (data) =>
+  static users = (data) =>
     fractal(data, {
       id: "id",
       user_id: "user_id",
