@@ -34,7 +34,7 @@ class ElasticSearchHandler {
   /**
    * Create the index
    */
-  initIndex = () => {
+  static initIndex = () => {
     return client.indices.create({
       index: indexName,
     });
@@ -43,7 +43,7 @@ class ElasticSearchHandler {
   /**
    * Check if the index exists
    */
-  indexExists = () => {
+  static indexExists = () => {
     return client.indices.exists({
       index: indexName,
     });
@@ -52,7 +52,7 @@ class ElasticSearchHandler {
   /**
    * Add or update document in the index
    */
-  addDocument = async (id, body) => {
+  static addDocument = async (id, body) => {
     let res = await client.index({
       index: indexName,
       id: id,
@@ -65,7 +65,7 @@ class ElasticSearchHandler {
   /**
    * Update document field by id in the index
    */
-  updateDocumentField = async (id, body) => {
+  static updateDocumentField = async (id, body) => {
     await client.indices.refresh({ index: indexName, method: "post" });
     client
       .update({
@@ -85,7 +85,7 @@ class ElasticSearchHandler {
   /**
    * Rename item from field in document by matching name
    */
-  renameDocumentField = async (renameField, matchParam) => {
+  static renameDocumentField = async (renameField, matchParam) => {
     let scriptQuery = "";
     if (renameField == "race") {
       scriptQuery = "ctx._source.race = params.name";
@@ -113,7 +113,7 @@ class ElasticSearchHandler {
   /**
    * Rename item from array in document field by matching name
    */
-  renameDocumentListItem = async (updateField, matchParam) => {
+  static renameDocumentListItem = async (updateField, matchParam) => {
     let scriptQuery = "";
     if (updateField == "health_categories") {
       scriptQuery =
@@ -145,7 +145,7 @@ class ElasticSearchHandler {
   /**
    * Delete document field by search query
    */
-  deleteDocumentField = async (deleteField, matchQuery) => {
+  static deleteDocumentField = async (deleteField, matchQuery) => {
     let res = await client.updateByQuery({
       index: indexName,
       body: {
@@ -165,7 +165,7 @@ class ElasticSearchHandler {
   /**
    * Delete document field by id
    */
-  deleteFieldById = async (id, deleteField) => {
+  static deleteFieldById = async (id, deleteField) => {
     let res = await client.updateByQuery({
       index: indexName,
       body: {
@@ -187,7 +187,7 @@ class ElasticSearchHandler {
   /**
    * Delete item from array in document field by name
    */
-  deleteItemFromDocumentList = async (deleteField, matchParam) => {
+  static deleteItemFromDocumentList = async (deleteField, matchParam) => {
     let scriptQuery = "";
     if (deleteField == "health_categories") {
       scriptQuery =
@@ -215,7 +215,7 @@ class ElasticSearchHandler {
     }
   };
 
-  getAllUser = async () => {
+  static getAllUser = async () => {
     let res = await client.search({
       index: indexName,
       size: 100,
@@ -254,7 +254,7 @@ class ElasticSearchHandler {
     }
   };
 
-  getLoginUser = async (userId) => {
+  static getLoginUser = async (userId) => {
     let res = await client.search({
       index: indexName,
       filter_path: "hits.hits._source",

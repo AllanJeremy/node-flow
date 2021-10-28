@@ -12,7 +12,7 @@ class PublicDomain {
    * Return list of public domain
    *
    */
-  get = () => {
+  static get = () => {
     var domains = [
       /* Default domains included */
       "aol.com",

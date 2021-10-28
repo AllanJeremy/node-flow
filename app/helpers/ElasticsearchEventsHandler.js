@@ -18,7 +18,7 @@ class ElasticsearchEventsHandler {
    * Used for getting data
    *
    */
-  list = async () => {
+  static list = async () => {
     let response = await ElasticsearchEvents.findAll({
       order: [["id", "ASC"]],
     });
@@ -31,7 +31,7 @@ class ElasticsearchEventsHandler {
    * @param {String} action
    * @param {Object} data
    */
-  store = (action, data) => {
+  static store = (action, data) => {
     ElasticsearchEvents.create({
       action: action,
       metadata: data,
@@ -45,7 +45,7 @@ class ElasticsearchEventsHandler {
    * @param {Object} reason
    * @param {Integer} attempted
    */
-  update = (id, reason, attempted = 0) => {
+  static update = (id, reason, attempted = 0) => {
     ElasticsearchEvents.update(
       {
         attempted_at: DateTime.now(),
@@ -63,7 +63,7 @@ class ElasticsearchEventsHandler {
    *
    * @param {Integer} id
    */
-  destroy = (id) => {
+  static destroy = (id) => {
     ElasticsearchEvents.destroy({ where: { id: id } });
   };
 }

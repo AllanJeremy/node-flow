@@ -25,7 +25,7 @@ class Chat {
    * Generate stream instance
    *
    */
-  getInstance = () => {
+  static getInstance = () => {
     // Initialize a Server Client
     let client = StreamChat.getInstance(
       process.env.GET_STREAM_API_KEY,
@@ -40,21 +40,21 @@ class Chat {
    *
    * @param {Integer} user_id
    */
-  token = (user_id) => {
+  static token = (user_id) => {
     let client = this.getInstance();
     let token = client.createToken(user_id);
 
     return token;
   };
 
-  createUser = async (data) => {
+  static createUser = async (data) => {
     let client = this.getInstance();
     let response = await client.upsertUser(data);
 
     return response;
   };
 
-  updateUser = async (data) => {
+  static updateUser = async (data) => {
     let client = this.getInstance();
     let response = await client.upsertUser({
       id: data.id,
@@ -67,7 +67,7 @@ class Chat {
     return response;
   };
 
-  createChannel = async (botUser, user) => {
+  static createChannel = async (botUser, user) => {
     const client = this.getInstance();
 
     const channel = client.channel("messaging", {
