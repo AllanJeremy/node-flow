@@ -9,9 +9,7 @@ const chatLanguage = language.en.chat;
 /**
  * Models
  */
-const Models = require("../models");
-const Channel = Models.Channel;
-const ChannelUser = Models.ChannelUser;
+const { Channel, ChannelUser } = require("../models");
 
 /**
  * Used for mobile app chat functionality
