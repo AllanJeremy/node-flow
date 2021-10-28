@@ -3,14 +3,12 @@ const { validationResult } = require("express-validator");
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
-ResponseHandler = new ResponseHandler();
+const { ResponseHandler } = require("../../../../helpers");
 
 /**
  * Models
  */
-const Models = require("../../../../models");
-const ConversationStarter = Models.ConversationStarter;
+const { ConversationStarter } = require("../../../../models");
 
 /**
  * Languages
@@ -22,8 +20,9 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Transformers
  */
-var ConversationStarterTransformer = require("../../../../transformers/admin/ConversationStarterTransformer");
-ConversationStarterTransformer = new ConversationStarterTransformer();
+const {
+  ConversationStarterTransformer,
+} = require("../../../../transformers/admin");
 
 class ConversationStarterController {
   /**

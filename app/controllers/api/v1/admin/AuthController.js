@@ -1,17 +1,17 @@
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const { DateTime } = require("luxon");
 
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
-ResponseHandler = new ResponseHandler();
+const {
+  RandomStringGenerator,
+  ResponseHandler,
+  StatusHandler,
+} = require("../../../../helpers");
 
-const StatusHandler = require("../../../../helpers/StatusHandler");
-
-const RandomStringGenerator = require("../../../../helpers/RandomStringGenerator");
 /**
  * Configs
  */
@@ -20,8 +20,7 @@ const authConfig = require("../../../../config/auth.config.js");
 /**
  * Models
  */
-const Models = require("../../../../models");
-const AdminUser = Models.AdminUser;
+const { AdminUser } = require("../../../../models");
 
 /**
  * Languages
@@ -33,8 +32,7 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Transformers
  */
-var UserTransformer = require("../../../../transformers/admin/UserTransformer");
-UserTransformer = new UserTransformer();
+const { UserTransformer } = require("../../../../transformers/admin");
 
 class AuthController {
   /**

@@ -3,14 +3,12 @@ const { validationResult } = require("express-validator");
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
-ResponseHandler = new ResponseHandler();
+const { ResponseHandler } = require("../../../../helpers");
 
 /**
  * Models
  */
-const Models = require("../../../../models");
-const AdminPermission = Models.AdminPermission;
+const { AdminPermission } = require("../../../../models");
 
 /**
  * Languages
@@ -22,14 +20,12 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Transformers
  */
-var UserTransformer = require("../../../../transformers/admin/UserTransformer");
-UserTransformer = new UserTransformer();
+const { UserTransformer } = require("../../../../transformers/admin");
 
 /**
  * Route Configs
  */
-const routeConfig = require("../../../../routes/admin/config");
-const apiRoute = routeConfig.apiRoute;
+const { apiRoute } = require("../../../../routes/admin/config");
 
 class AdminPermissionController {
   /**

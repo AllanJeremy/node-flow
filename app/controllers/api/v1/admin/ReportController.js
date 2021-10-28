@@ -5,19 +5,16 @@ const Sequelize = require("sequelize");
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
-ResponseHandler = new ResponseHandler();
-
-const StatusHandler = require("../../../../helpers/StatusHandler");
-
-const ReportReasonHandler = require("../../../../helpers/ReportReasonHandler");
+const {
+  ResponseHandler,
+  ReportReasonHandler,
+  StatusHandler,
+} = require("../../../../helpers");
 
 /**
  * Models
  */
-const Models = require("../../../../models");
-const ReportedUser = Models.ReportedUser;
-const User = Models.User;
+const { ReportedUser, User } = require("../../../../models");
 
 /**
  * Languages
@@ -29,8 +26,7 @@ const validationLanguage = language.en.front.validation;
 /**
  * Transformers
  */
-var ReportTransformer = require("../../../../transformers/admin/ReportTransformer");
-ReportTransformer = new ReportTransformer();
+const { ReportTransformer } = require("../../../../transformers/admin");
 
 class ReportController {
   /**

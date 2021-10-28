@@ -3,22 +3,17 @@ const { validationResult } = require("express-validator");
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
-ResponseHandler = new ResponseHandler();
-
-const ElasticsearchEventsAction = require("../../../../helpers/ElasticsearchEventsAction");
-
-const StatusHandler = require("../../../../helpers/StatusHandler");
-
-var ElasticsearchEventsHandler = require("../../../../helpers/ElasticsearchEventsHandler");
-ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
+const {
+  ElasticsearchEventsAction,
+  ElasticsearchEventsHandler,
+  ResponseHandler,
+  StatusHandler,
+} = require("../../../../helpers");
 
 /**
  * Models
  */
-const Models = require("../../../../models");
-const HealthCategory = Models.HealthCategory;
-const UserHealthCategory = Models.UserHealthCategory;
+const { HealthCategory, UserHealthCategory } = require("../../../../models");
 
 /**
  * Languages
@@ -30,8 +25,7 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Transformers
  */
-var CommonTransformer = require("../../../../transformers/core/CommonTransformer");
-CommonTransformer = new CommonTransformer();
+const { CommonTransformer } = require("../../../../transformers/core");
 
 class HealthCategoryController {
   /**

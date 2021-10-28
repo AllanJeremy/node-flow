@@ -3,22 +3,18 @@ const { validationResult } = require("express-validator");
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
+const {
+  ElasticsearchEventsAction,
+  ElasticsearchEventsHandler,
+  ResponseHandler,
+  StatusHandler,
+} = require("../../../../helpers");
 ResponseHandler = new ResponseHandler();
-
-const StatusHandler = require("../../../../helpers/StatusHandler");
-
-const ElasticsearchEventsAction = require("../../../../helpers/ElasticsearchEventsAction");
-
-var ElasticsearchEventsHandler = require("../../../../helpers/ElasticsearchEventsHandler");
-ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 
 /**
  * Models
  */
-const Models = require("../../../../models");
-const Workout = Models.Workout;
-const UserWorkout = Models.UserWorkout;
+const { Workout, UserWorkout } = require("../../../../models");
 
 /**
  * Languages
@@ -30,8 +26,7 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Transformers
  */
-var CommonTransformer = require("../../../../transformers/core/CommonTransformer");
-CommonTransformer = new CommonTransformer();
+const { CommonTransformer } = require("../../../../transformers/core");
 
 class WorkoutController {
   /**
