@@ -2,7 +2,7 @@ var fractal = require("fractal-transformer")();
 require("dotenv").config();
 
 class ChatTransformer {
-  transform = (data) =>
+  static transform = (data) =>
     fractal(data, {
       id: "id",
       channel_id: "channel_id",

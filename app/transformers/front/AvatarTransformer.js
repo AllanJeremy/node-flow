@@ -2,7 +2,7 @@ var fractal = require("fractal-transformer")();
 require("dotenv").config();
 
 class CommonTransformer {
-  transform = (data) =>
+  static transform = (data) =>
     fractal(data, {
       id: "id",
       avatar: function (data) {

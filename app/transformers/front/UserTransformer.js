@@ -4,7 +4,7 @@ const Pronouns = require("../../models/Pronouns");
 const HealthJourney = require("../../helpers/HealthJourney");
 
 class UserTransformer {
-  user = (data) =>
+  static user = (data) =>
     fractal(data, {
       id: "id",
       name_prefix: "name_prefix",
@@ -25,7 +25,7 @@ class UserTransformer {
       },
     });
 
-  UserDetail = (data) =>
+  static UserDetail = (data) =>
     fractal(data, {
       id: "id",
       peer_id: "id",
