@@ -9,7 +9,6 @@ const {
   ResponseHandler,
   StatusHandler,
 } = require("../../../../helpers");
-ResponseHandler = new ResponseHandler();
 
 /**
  * Models
