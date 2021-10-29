@@ -36,6 +36,8 @@ router.post(authRoute.FORGOT_PASSWORD, AuthValidation.ForgotPassword, AuthContro
 
 router.post(authRoute.REFRESH_TOKEN, AuthController.GetToken);
 
-router.post(authRoute.AUTH_LINKEDIN, AuthValidation.LinkedinLogin, AuthController.LinkedinLogin);
+router.post(authRoute.AUTH_LINKEDIN_STORE, AuthValidation.LinkedinLogin, AuthController.LinkedinLogin);
+
+router.get(authRoute.AUTH_LINKEDIN, AuthValidation.LinkedinLogin, AuthController.Linkedin);
 
 module.exports = router;
