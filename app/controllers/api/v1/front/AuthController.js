@@ -2,6 +2,7 @@ require("dotenv").config();
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
+var path = require("path");
 
 /**
  * Helpers
@@ -527,7 +528,7 @@ class AuthController {
   };
 
   /**
-   * @api {post} /api/auth/linkedin Handles Linkedin user store operation
+   * @api {post} /api/auth/linkedin/store Handles Linkedin user store operation
    * @apiName Front Linkedin user store operation
    * @apiGroup Front
    *
@@ -632,6 +633,17 @@ class AuthController {
         });
       }
     });
+  };
+
+  /**
+   * @api {get} /api/auth/linkedin Handles Linkedin blank screen
+   * @apiName Front Linkedin blank screen
+   * @apiGroup Front
+   *
+   * @apiSuccess (200) {Object}
+   */
+  Linkedin = (req, res) => {
+    res.sendFile(path.join(__dirname, "../../../../", "/views/index.html"));
   };
 }
 
