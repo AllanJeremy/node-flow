@@ -32,9 +32,10 @@ db.sequelize.sync();
 
 // route
 Joyn.get("/", (req, res) => {
-  res.json({
-    message: "No route matches [GET] /",
-  });
+  // res.json({
+  //   message: "No route matches [GET] /",
+  // });
+  res.sendFile(__dirname + "/app/views/index.html");
 });
 
 // front routes
