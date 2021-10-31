@@ -91,6 +91,7 @@ exports.en = {
 
       // Prompt related
       prompt_store_success: "Prompt created successfully.",
+      prompt_store_failed: `Failed to create prompt response. Please ensure you have provided prompt responses in the body. Format -> prompt_responses: [ { prompt_option_id, user_id, custom_value, show_on_profile, skipped } ]`,
       prompt_update_success: "Prompt updated successfully.",
       prompt_option_update_success: "Prompt option updated successfully.",
       prompt_delete_success: "Prompt deleted successfully.",

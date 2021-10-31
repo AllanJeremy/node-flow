@@ -90,7 +90,7 @@ class PromptController {
       return ResponseHandler.error(
         res,
         400,
-        `Failed to create prompt response. Please ensure you have provided prompt responses in the body. Format -> prompt_responses: [ { prompt_option_id, user_id, custom_value, show_on_profile, skipped } ]`
+        responseLanguage.prompt_store_failed
       );
     }
 
