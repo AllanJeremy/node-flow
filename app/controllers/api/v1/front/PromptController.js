@@ -151,7 +151,6 @@ class PromptController {
       where: { id: req.params.id, deletedAt: null },
     })
       .then((updateStatus) => {
-        console.log("Update status: ", updateStatus);
         // Something went wrong while trying to update the user prompt
         if (!updateStatus[0]) {
           return ResponseHandler.error(
