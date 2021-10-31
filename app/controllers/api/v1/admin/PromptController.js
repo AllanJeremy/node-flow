@@ -75,7 +75,7 @@ class PromptController {
   /**
    *
    */
-  static updatePrompt = (req, res) => {
+  static update = (req, res) => {
     const { question, is_multiple_choice, is_active } = req.body;
     const updateData = { question, is_multiple_choice, is_active };
 

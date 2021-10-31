@@ -23,7 +23,7 @@ router.get(apiRoute.PROMPT.LIST, PromptController.list);
 
 router.post(apiRoute.PROMPT.STORE, PromptController.store);
 
-router.patch(apiRoute.PROMPT.UPDATE, PromptController.updatePrompt);
+router.patch(apiRoute.PROMPT.UPDATE, PromptController.update);
 
 router.patch(
   apiRoute.PROMPT.UPDATE_OPTION,
