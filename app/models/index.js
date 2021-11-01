@@ -4,19 +4,25 @@ let env = process.env.APP_ENV;
 config = config[env];
 
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize(config.DATABASE, config.USER, config.PASSWORD, {
-  host: config.HOST,
-  dialect: config.DIALECT,
-  operatorsAliases: false,
-  camelCase: true,
-  camelCaseForFileName: true,
-  logging: false,
-  define: {
-    charset: "utf8",
-    collate: "utf8_general_ci",
-    timestamps: true,
-  },
-});
+
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  {
+    host: config.host,
+    dialect: config.dialect,
+    operatorsAliases: false,
+    camelCase: true,
+    camelCaseForFileName: true,
+    logging: false,
+    define: {
+      charset: "utf8",
+      collate: "utf8_general_ci",
+      timestamps: true,
+    },
+  }
+);
 
 const db = {};
 
@@ -113,9 +119,13 @@ db.UserHealthJourney = require("../models/UserHealthJourney.js")(
 db.ErrorLog = require("../models/ErrorLog.js")(sequelize, Sequelize);
 db.Configuration = require("../models/Configuration.js")(sequelize, Sequelize);
 
+db.Prompt = require("../models/Prompt")(sequelize, Sequelize);
+db.PromptOption = require("../models/PromptOption")(sequelize, Sequelize);
+db.UserPrompt = require("../models/UserPrompt")(sequelize, Sequelize);
+
+//* relationships
 db.User.hasOne(db.UserSetting, { foreignKey: "user_id", as: "user_setting" });
 
-// relationships
 db.User.hasOne(db.UserMetadata, {
   foreignKey: "user_id",
   as: "user_meta_data",
@@ -123,6 +133,7 @@ db.User.hasOne(db.UserMetadata, {
   hooks: true,
   allowNull: false,
 });
+
 db.UserMetadata.belongsTo(db.Gender, {
   foreignKey: "gender_id",
   as: "gender",
@@ -130,6 +141,7 @@ db.UserMetadata.belongsTo(db.Gender, {
   hooks: true,
   allowNull: false,
 });
+
 db.UserMetadata.belongsTo(db.SexualOrientation, {
   foreignKey: "sexual_orientation_id",
   as: "sexual_orientation",
@@ -137,6 +149,7 @@ db.UserMetadata.belongsTo(db.SexualOrientation, {
   hooks: true,
   allowNull: false,
 });
+
 db.User.hasMany(db.UserHealthCategory, {
   foreignKey: "user_id",
   as: "health_categories",
@@ -144,6 +157,7 @@ db.User.hasMany(db.UserHealthCategory, {
   hooks: true,
   allowNull: false,
 });
+
 db.UserHealthCategory.belongsTo(db.HealthCategory, {
   foreignKey: "health_category_id",
   as: "health_category",
@@ -151,6 +165,7 @@ db.UserHealthCategory.belongsTo(db.HealthCategory, {
   hooks: true,
   allowNull: false,
 });
+
 db.User.hasMany(db.UserWorkout, {
   foreignKey: "user_id",
   as: "workouts",
@@ -158,6 +173,7 @@ db.User.hasMany(db.UserWorkout, {
   hooks: true,
   allowNull: false,
 });
+
 db.UserWorkout.belongsTo(db.Workout, {
   foreignKey: "workout_id",
   as: "workout",
@@ -165,10 +181,12 @@ db.UserWorkout.belongsTo(db.Workout, {
   hooks: true,
   allowNull: false,
 });
+
 db.User.hasMany(db.UserPersonalityQuestion, {
   foreignKey: "user_id",
   as: "personality_questions",
 });
+
 db.UserPersonalityQuestion.belongsTo(db.PersonalityQuestion, {
   foreignKey: "question_id",
   as: "personality_question",
@@ -176,10 +194,12 @@ db.UserPersonalityQuestion.belongsTo(db.PersonalityQuestion, {
   hooks: true,
   allowNull: false,
 });
+
 db.User.hasMany(db.UserConversationStarter, {
   foreignKey: "user_id",
   as: "conversation_starters",
 });
+
 db.UserConversationStarter.belongsTo(db.ConversationStarter, {
   foreignKey: "conversation_starter_id",
   as: "conversation_starter",
@@ -187,6 +207,7 @@ db.UserConversationStarter.belongsTo(db.ConversationStarter, {
   hooks: true,
   allowNull: false,
 });
+
 db.User.hasOne(db.UserInterest, {
   foreignKey: "user_id",
   as: "user_interest",
@@ -194,6 +215,7 @@ db.User.hasOne(db.UserInterest, {
   hooks: true,
   allowNull: false,
 });
+
 db.ListedPeer.belongsTo(db.User, {
   foreignKey: "peer_id",
   as: "peer",
@@ -201,6 +223,7 @@ db.ListedPeer.belongsTo(db.User, {
   hooks: true,
   allowNull: false,
 });
+
 db.DelistedPeer.belongsTo(db.User, {
   foreignKey: "peer_id",
   as: "peer",
@@ -208,15 +231,18 @@ db.DelistedPeer.belongsTo(db.User, {
   hooks: true,
   allowNull: false,
 });
+
 db.ReportedUser.belongsTo(db.User, {
   foreignKey: "user_id",
   as: "reported_user",
 });
+
 db.ReportedUser.belongsTo(db.User, {
   foreignKey: "reported_by",
   as: "reported_by_user",
   allowNull: false,
 });
+
 db.User.hasMany(db.UserRace, {
   foreignKey: "user_id",
   as: "races",
@@ -224,6 +250,7 @@ db.User.hasMany(db.UserRace, {
   hooks: true,
   allowNull: false,
 });
+
 db.UserRace.belongsTo(db.Race, {
   foreignKey: "race_id",
   as: "race",
@@ -231,6 +258,7 @@ db.UserRace.belongsTo(db.Race, {
   hooks: true,
   allowNull: false,
 });
+
 db.User.hasMany(db.UserFamilyDynamic, {
   foreignKey: "user_id",
   as: "family_dynamics",
@@ -238,6 +266,7 @@ db.User.hasMany(db.UserFamilyDynamic, {
   hooks: true,
   allowNull: false,
 });
+
 db.UserFamilyDynamic.belongsTo(db.FamilyDynamic, {
   foreignKey: "family_dynamic_id",
   as: "family_dynamic",
@@ -245,6 +274,7 @@ db.UserFamilyDynamic.belongsTo(db.FamilyDynamic, {
   hooks: true,
   allowNull: false,
 });
+
 db.User.hasMany(db.UserMatchingPreference, {
   foreignKey: "user_id",
   as: "user_matching_preferences",
@@ -252,6 +282,7 @@ db.User.hasMany(db.UserMatchingPreference, {
   hooks: true,
   allowNull: false,
 });
+
 db.Feedback.belongsTo(db.User, {
   foreignKey: "user_id",
   as: "feedback",
@@ -259,6 +290,7 @@ db.Feedback.belongsTo(db.User, {
   hooks: true,
   allowNull: false,
 });
+
 db.User.hasMany(db.ContactSupport, {
   foreignKey: "user_id",
   as: "contact_support",
@@ -266,6 +298,7 @@ db.User.hasMany(db.ContactSupport, {
   hooks: true,
   allowNull: false,
 });
+
 db.User.hasMany(db.ListedPeer, {
   foreignKey: "user_id",
   as: "listed_peers",
@@ -273,6 +306,7 @@ db.User.hasMany(db.ListedPeer, {
   hooks: true,
   allowNull: false,
 });
+
 db.User.hasMany(db.ChannelUser, {
   foreignKey: "user_id",
   as: "channel_user",
@@ -280,6 +314,7 @@ db.User.hasMany(db.ChannelUser, {
   hooks: true,
   allowNull: false,
 });
+
 //db.User.hasMany(db.DelistedPeer, {foreignKey: 'user_id', as: 'user'});
 db.User.hasOne(db.UserHealthJourney, {
   foreignKey: "user_id",
@@ -289,4 +324,36 @@ db.User.hasOne(db.UserHealthJourney, {
   allowNull: false,
 });
 
+//* Prompt related stuff
+
+db.Prompt.hasMany(db.PromptOption, {
+  foreignKey: "prompt_id",
+  as: "prompt",
+  onDelete: "cascade",
+  hooks: true,
+});
+
+db.UserPrompt.belongsTo(db.Prompt, {
+  foreignKey: "prompt_id",
+  as: "prompt",
+  onDelete: "cascade",
+  hooks: true,
+});
+
+db.UserPrompt.belongsTo(db.PromptOption, {
+  foreignKey: "prompt_option_id",
+  as: "prompt_option",
+  onDelete: "set null",
+  hooks: true,
+  allowNull: true,
+});
+
+db.UserPrompt.belongsTo(db.User, {
+  foreignKey: "user_id",
+  as: "user",
+  onDelete: "cascade",
+  hooks: true,
+});
+
+//
 module.exports = db;

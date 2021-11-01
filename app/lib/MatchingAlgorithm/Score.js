@@ -25,7 +25,7 @@ const setmax = (score) => {
 };
 
 const compareKeys = (key, m, i, obj) => {
-  if (i[key] != null && i[key].length > 0) {
+  if (i[key]?.length > 0) {
     switch (typeof i[key]) {
       case `string`:
         if (obj[key] !== i[key]) pushScore(i.id, 1 * m);

@@ -10,7 +10,7 @@ const authRoute = {
   REFRESH_TOKEN: "/api/token/refresh",
   PUBLIC_DOMAIN_LIST: "/api/public_domain",
   CONFIG: "/api/config/:name?",
-  AUTH_LINKEDIN_STORE: "/api/auth/linkedin/store",
+
   AUTH_LINKEDIN: "/api/auth/linkedin",
 };
 
@@ -77,6 +77,12 @@ const apiRoute = {
 
   UPDATE_CHAT_USER: "/chat/user/update",
 
+  // Prompt related stuff
+  USER_PROMPT_LIST: "/user/prompt/list",
+  USER_PROMPT_STORE: "/user/prompt/store",
+  USER_PROMPT_UPDATE: "/user/prompt/update/:id",
+  USER_PROMPT_DESTROY: "/user/prompt/destroy/:id",
+  
   ERROR_LOG: "/api/error/log",
 };
 

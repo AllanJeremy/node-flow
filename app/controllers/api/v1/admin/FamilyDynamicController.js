@@ -14,9 +14,7 @@ ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
 /**
  * Models
  */
-const Models = require("../../../../models");
-const FamilyDynamic = Models.FamilyDynamic;
-const UserMetadata = Models.UserMetadata;
+const { FamilyDynamic, UserMetadata } = require("../../../../models");
 
 /**
  * Languages
