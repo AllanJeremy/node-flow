@@ -88,6 +88,24 @@ exports.en = {
       avatar_update_success: "Avatar updated successfully.",
       avatar_delete_success: "Avatar deleted successfully.",
       avatar_exist: "Avatar already exists.",
+
+      // Prompt related
+      prompt_store_success: "Prompt created successfully.",
+      prompt_store_failed: `Failed to create prompt response. Please ensure you have provided prompt responses in the body. Format -> prompt_responses: [ { prompt_option_id, user_id, custom_value, show_on_profile, skipped } ]`,
+      prompt_update_success: "Prompt updated successfully.",
+      prompt_option_update_success: "Prompt option updated successfully.",
+      prompt_delete_success: "Prompt deleted successfully.",
+      prompt_option_delete_success: "Prompt option deleted successfully.",
+
+      user_prompt_store_wait:
+        "Sorry, you need to wait before you can create another response for that prompt. ",
+      user_prompt_store_success: "User response added successfully.",
+
+      user_prompt_update_success: "User response updated successfully.",
+      user_prompt_update_failed:
+        "Failed to update user response. Either the update data was incorrect or the user response prompt does not exist.",
+
+      user_prompt_delete_success: "User response deleted successfully.",
     },
   },
   front: {

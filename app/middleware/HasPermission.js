@@ -48,9 +48,12 @@ exports.verify = (req, res, next) => {
     })
       .then((response) => {
         let exists = false;
+
+        // Generate an array out of the db stored list of permissions in the `admin_permissions` table
         let permissions = response.permissions.replace(/^"|"$/g, "").split(",");
 
         permissions.map((routeName, index) => {
+          //? This MUST correspond to the name of the route's object in `routes/admin/config.js`
           let apiRouteName = apiRoute[routeName];
           Object.values(apiRoute[routeName]).map((value, key) => {
             var routeMatchName = value;
@@ -58,6 +61,7 @@ exports.verify = (req, res, next) => {
             slug = slug.length > 1 ? slug[1] : "";
             var routeRegex = generateMatchRoute(routeMatchName, slug);
             routeRegex = "^" + routeRegex + "$";
+
             if (currentRoute.match(routeRegex) !== null) {
               exists = true;
               next();
