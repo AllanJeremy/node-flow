@@ -32,7 +32,7 @@ class MailHandler {
    * @param {String} message
    * @param {String} to
    */
-  send = async (template, message, to, cc = "", bcc = "") => {
+  static send = async (template, message, to, cc = "", bcc = "") => {
     switch (template) {
       case "email_verification":
         message["subject"] = "Email Verification";

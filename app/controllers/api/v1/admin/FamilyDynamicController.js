@@ -3,13 +3,11 @@ const { validationResult } = require("express-validator");
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
-ResponseHandler = new ResponseHandler();
-
-const ElasticsearchEventsAction = require("../../../../helpers/ElasticsearchEventsAction");
-
-var ElasticsearchEventsHandler = require("../../../../helpers/ElasticsearchEventsHandler");
-ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
+const {
+  ElasticsearchEventsAction,
+  ElasticsearchEventsHandler,
+  ResponseHandler,
+} = require("../../../../helpers");
 
 /**
  * Models
@@ -26,8 +24,7 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Transformers
  */
-var CommonTransformer = require("../../../../transformers/core/CommonTransformer");
-CommonTransformer = new CommonTransformer();
+const { CommonTransformer } = require("../../../../transformers/core");
 
 class FamilyDynamicController {
   /**

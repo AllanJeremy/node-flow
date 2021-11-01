@@ -1,7 +1,7 @@
 var fractal = require("fractal-transformer")();
 
 class ConversationStarterTransformer {
-  transform = (data) =>
+  static transform = (data) =>
     fractal(data, {
       id: "id",
       question: "question",

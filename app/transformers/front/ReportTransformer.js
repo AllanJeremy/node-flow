@@ -1,7 +1,7 @@
 var fractal = require("fractal-transformer")();
 
 class ReportTransformer {
-  reason = (data) =>
+  static reason = (data) =>
     fractal(data, {
       key: "key",
       reason: "reason",

@@ -1,24 +1,21 @@
 const { validationResult } = require("express-validator");
 const fs = require("fs");
-var path = require("path");
+const path = require("path");
 
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
-ResponseHandler = new ResponseHandler();
+const { ResponseHandler } = require("../../../../helpers");
 
 /**
  * Models
  */
-const Models = require("../../../../models");
-const Avatar = Models.Avatar;
+const { Avatar } = require("../../../../models");
 
 /**
  * Transformers
  */
-var AvatarTransformer = require("../../../../transformers/admin/AvatarTransformer");
-AvatarTransformer = new AvatarTransformer();
+const { AvatarTransformer } = require("../../../../transformers/admin");
 
 /**
  * Languages

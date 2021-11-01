@@ -17,8 +17,10 @@ const KEYS = {
  * @subpackage helpers
  */
 class EmailEvents {
-  init(action, data) {
-    if (process.env.APP_ENV == 'production') {
+
+  static init(action, data) {
+    if (process.env.APP_ENV == "production") {
+
       switch (action) {
         case "signup":
           return this.signup(data);
@@ -34,7 +36,7 @@ class EmailEvents {
     }
   }
 
-  createUser = (data) => {
+  static createUser = (data) => {
     const headers = {
       "Content-Type": "application/json",
       "Api-Token": process.env.ACTIVE_CAMPAIGN_API_TOKEN,
@@ -55,7 +57,7 @@ class EmailEvents {
     this.httpRequest(hostname, url, headers, param);
   };
 
-  signup = (data) => {
+  static signup = (data) => {
     this.createUser(data);
 
     var json = { email: data["email"] };
@@ -82,7 +84,7 @@ class EmailEvents {
     this.httpRequest(hostname, url, headers, param);
   };
 
-  profileCompleted = (data) => {
+  static profileCompleted = (data) => {
     var json = { email: data["email"] };
     var encoded = encodeURIComponent(JSON.stringify(json)).replace(/%40/g, "@");
 
@@ -107,7 +109,7 @@ class EmailEvents {
     this.httpRequest(hostname, url, headers, param);
   };
 
-  accountDeactivate = (data) => {
+  static accountDeactivate = (data) => {
     var json = { email: data["email"] };
     var encoded = encodeURIComponent(JSON.stringify(json)).replace(/%40/g, "@");
 
@@ -132,7 +134,7 @@ class EmailEvents {
     this.httpRequest(hostname, url, headers, param);
   };
 
-  accountDelete = (data) => {
+  static accountDelete = (data) => {
     var json = { email: data["email"] };
     var encoded = encodeURIComponent(JSON.stringify(json)).replace(/%40/g, "@");
 
@@ -157,7 +159,7 @@ class EmailEvents {
     this.httpRequest(hostname, url, headers, param);
   };
 
-  firstMatch = (data) => {
+  static firstMatch = (data) => {
     var json = { email: data["email"] };
     var encoded = encodeURIComponent(JSON.stringify(json)).replace(/%40/g, "@");
 
@@ -182,7 +184,7 @@ class EmailEvents {
     this.httpRequest(hostname, url, headers, param);
   };
 
-  httpRequest = (hostname, url, header, data) => {
+  static httpRequest = (hostname, url, header, data) => {
     var options = {
       method: "POST",
       hostname: hostname,

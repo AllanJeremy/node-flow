@@ -1,7 +1,7 @@
 var fractal = require("fractal-transformer")();
 
 class UserTransformer {
-  AdminUser = (data) =>
+  static AdminUser = (data) =>
     fractal(data, {
       id: "id",
       first_name: "first_name",
@@ -12,20 +12,20 @@ class UserTransformer {
       },
     });
 
-  AdminPermission = (data) =>
+  static AdminPermission = (data) =>
     fractal(data, {
       id: "id",
       admin_user_id: "admin_user_id",
       permissions: "permissions",
     });
 
-  AdminPermissionList = (data) =>
+  static AdminPermissionList = (data) =>
     fractal(data, {
       key: "key",
       value: "value",
     });
 
-  UserList = (data) =>
+  static UserList = (data) =>
     fractal(data, {
       id: "id",
       email: "email",
@@ -42,7 +42,7 @@ class UserTransformer {
       },
     });
 
-  UserDetail = (data) =>
+  static UserDetail = (data) =>
     fractal(data, {
       id: "id",
       email: "email",

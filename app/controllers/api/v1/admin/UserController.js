@@ -3,32 +3,32 @@ const { validationResult } = require("express-validator");
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
-ResponseHandler = new ResponseHandler();
-
-var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
-ElasticSearchHandler = new ElasticSearchHandler();
+const {
+  ElasticSearchHandler,
+  ResponseHandler,
+} = require("../../../../helpers");
 
 /**
  * Models
  */
-const Models = require("../../../../models");
-const User = Models.User;
-const UserMetadata = Models.UserMetadata;
-const Race = Models.Race;
-const Gender = Models.Gender;
-const SexualOrientation = Models.SexualOrientation;
-const FamilyDynamic = Models.FamilyDynamic;
-const HealthCategory = Models.HealthCategory;
-const UserHealthCategory = Models.UserHealthCategory;
-const Workout = Models.Workout;
-const UserWorkout = Models.UserWorkout;
-const PersonalityQuestion = Models.PersonalityQuestion;
-const UserPersonalityQuestion = Models.UserPersonalityQuestion;
-const ConversationStarter = Models.ConversationStarter;
-const UserConversationStarter = Models.UserConversationStarter;
-const UserRace = Models.UserRace;
-const UserFamilyDynamic = Models.UserFamilyDynamic;
+const {
+  User,
+  UserMetadata,
+  Race,
+  Gender,
+  SexualOrientation,
+  FamilyDynamic,
+  HealthCategory,
+  UserHealthCategory,
+  Workout,
+  UserWorkout,
+  PersonalityQuestion,
+  UserPersonalityQuestion,
+  ConversationStarter,
+  UserConversationStarter,
+  UserRace,
+  UserFamilyDynamic,
+} = require("../../../../models");
 
 /**
  * Languages
@@ -40,8 +40,7 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Transformers
  */
-var UserTransformer = require("../../../../transformers/admin/UserTransformer");
-UserTransformer = new UserTransformer();
+const { UserTransformer } = require("../../../../transformers/admin");
 
 class UserController {
   /**

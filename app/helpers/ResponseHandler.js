@@ -13,7 +13,7 @@ class ResponseHandler {
    * @param {String} message
    * @param {Array} data
    */
-  success = (res, message, data = []) => {
+  static success = (res, message, data = []) => {
     return res.status(200).send({
       output: data,
       message: message,
@@ -28,7 +28,7 @@ class ResponseHandler {
    * @param {String} message
    * @param {Array} data
    */
-  error = (res, code, message, data = []) => {
+  static error = (res, code, message, data = []) => {
     return res.status(code).send({
       output: data,
       message: message,

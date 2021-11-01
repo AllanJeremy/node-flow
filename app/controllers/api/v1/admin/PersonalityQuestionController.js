@@ -3,14 +3,12 @@ const { validationResult } = require("express-validator");
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
-ResponseHandler = new ResponseHandler();
+const { ResponseHandler } = require("../../../../helpers");
 
 /**
  * Models
  */
-const Models = require("../../../../models");
-const PersonalityQuestion = Models.PersonalityQuestion;
+const { PersonalityQuestion } = require("../../../../models");
 
 /**
  * Languages
@@ -22,8 +20,9 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Transformers
  */
-var PersonalityQuestionTransformer = require("../../../../transformers/core/PersonalityQuestionTransformer");
-PersonalityQuestionTransformer = new PersonalityQuestionTransformer();
+const {
+  PersonalityQuestionTransformer,
+} = require("../../../../transformers/core");
 
 class PersonalityQuestionController {
   /**

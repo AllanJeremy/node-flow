@@ -1,7 +1,7 @@
 var fractal = require("fractal-transformer")();
 
 class PeerTransformer {
-  peer = (data) =>
+  static peer = (data) =>
     fractal(data, {
       id: "id",
       peer_id: "peer_id",
@@ -19,7 +19,7 @@ class PeerTransformer {
       },
     });
 
-  newMatch = (count, data) => {
+  static newMatch = (count, data) => {
     return {
       res: fractal(data, {
         id: "item.id",
@@ -44,7 +44,7 @@ class PeerTransformer {
     };
   };
 
-  search = (data) =>
+  static search = (data) =>
     fractal(data, {
       id: "id",
       peer_id: "id",

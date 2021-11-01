@@ -1,19 +1,16 @@
 const { validationResult } = require("express-validator");
 const Sequelize = require("sequelize");
-var bcrypt = require("bcryptjs");
-const Op = Sequelize.Op;
+const bcrypt = require("bcryptjs");
 
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
-ResponseHandler = new ResponseHandler();
+const { ResponseHandler } = require("../../../../helpers/ResponseHandler");
 
 /**
  * Models
  */
-const Models = require("../../../../models");
-const AdminUser = Models.AdminUser;
+const { AdminUser } = require("../../../../models");
 
 /**
  * Languages
@@ -25,8 +22,7 @@ const validationLanguage = language.en.admin.validation;
 /**
  * Transformers
  */
-var UserTransformer = require("../../../../transformers/admin/UserTransformer");
-UserTransformer = new UserTransformer();
+const { UserTransformer } = require("../../../../transformers/admin");
 
 class AdminUserController {
   /**
