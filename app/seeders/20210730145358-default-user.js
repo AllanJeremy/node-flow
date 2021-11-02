@@ -2,14 +2,11 @@
 
 const bcrypt = require("bcryptjs");
 
-var Sequelize = require("sequelize");
-var Op = Sequelize.Op;
+const Sequelize = require("sequelize");
 
-var Chat = require("../helpers/Chat");
-Chat = new Chat();
+const { Chat, UserTypes: userTypes } = require("../helpers");
 
 const SystemConstants = require("../config/constants.js");
-const userTypes = require("../helpers/UserTypes.js");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -23,10 +20,10 @@ module.exports = {
      * }], {});
      */
 
-    var uniqueId = new Date().getTime().toString(36);
-    var chatToken = await Chat.token(uniqueId);
+    const uniqueId = new Date().getTime().toString(36);
+    const chatToken = await Chat.token(uniqueId);
 
-    var healthCategories = [
+    const healthCategories = [
       "Anxiety",
       "Depression",
       "Panic Attacks",
@@ -34,7 +31,7 @@ module.exports = {
       "Stress or Burnout",
     ];
 
-    var workouts = [
+    const workouts = [
       "Meditation",
       "Exercise",
       "Yoga",
@@ -42,7 +39,7 @@ module.exports = {
       "Arts and Crafts",
     ];
 
-    var result = await queryInterface.bulkInsert(
+    const result = await queryInterface.bulkInsert(
       "users",
       [
         {
@@ -63,9 +60,9 @@ module.exports = {
       { returning: true }
     );
 
-    var userId = Array.isArray(result) ? result[0].id : result;
+    const userId = Array.isArray(result) ? result[0].id : result;
 
-    var streamUser = await Chat.createUser({
+    const streamUser = await Chat.createUser({
       id: uniqueId,
       user_id: userId,
       first_name: "L&K",

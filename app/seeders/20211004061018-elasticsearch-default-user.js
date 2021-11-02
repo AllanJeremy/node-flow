@@ -2,13 +2,11 @@
 
 const SystemConstants = require("../config/constants.js");
 
-const ElasticsearchEventsAction = require("../helpers/ElasticsearchEventsAction");
-
-var ElasticsearchEventsHandler = require("../helpers/ElasticsearchEventsHandler");
-ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
-
-var ElasticSearchHandler = require("../helpers/ElasticSearchHandler");
-ElasticSearchHandler = new ElasticSearchHandler();
+const {
+  ElasticsearchEventsAction,
+  ElasticsearchEventsHandler,
+  ElasticSearchHandler,
+} = require("../helpers");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
