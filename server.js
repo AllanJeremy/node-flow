@@ -7,6 +7,9 @@ const Joyn = express();
 
 dotenv.config();
 
+const AchievementEngine = require("./app/lib/AchievementEngine/Engine");
+AchievementEngine.init();
+
 // image folder
 const upload = multer({
   dest: "images",
