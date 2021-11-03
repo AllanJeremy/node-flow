@@ -123,6 +123,9 @@ db.Prompt = require("../models/Prompt")(sequelize, Sequelize);
 db.PromptOption = require("../models/PromptOption")(sequelize, Sequelize);
 db.UserPrompt = require("../models/UserPrompt")(sequelize, Sequelize);
 
+db.Achievement = require("../models/Achievement")(sequelize, Sequelize);
+db.UserAchievement = require("../models/UserAchievement")(sequelize, Sequelize);
+
 //* relationships
 db.User.hasOne(db.UserSetting, { foreignKey: "user_id", as: "user_setting" });
 
