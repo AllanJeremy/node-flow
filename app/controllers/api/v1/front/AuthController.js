@@ -7,27 +7,15 @@ var path = require("path");
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
-ResponseHandler = new ResponseHandler();
-
-const StatusHandler = require("../../../../helpers/StatusHandler");
-const RandomStringGenerator = require("../../../../helpers/RandomStringGenerator");
-
-var MailHandler = require("../../../../helpers/MailHandler");
-MailHandler = new MailHandler();
-
-var EmailEvents = require("../../../../helpers/EmailEvents");
-EmailEvents = new EmailEvents();
-
-const UserTypes = require("../../../../helpers/UserTypes.js");
-
-const ElasticsearchEventsAction = require("../../../../helpers/ElasticsearchEventsAction");
-
-var ElasticsearchEventsHandler = require("../../../../helpers/ElasticsearchEventsHandler");
-ElasticsearchEventsHandler = new ElasticsearchEventsHandler();
-
-var ElasticSearchHandler = require("../../../../helpers/ElasticSearchHandler");
-ElasticSearchHandler = new ElasticSearchHandler();
+const {
+  ElasticsearchEventsAction,
+  ElasticsearchEventsHandler,
+  ElasticSearchHandler,
+  MailHandler,
+  ResponseHandler,
+  StatusHandler,
+  UserTypes,
+} = require("../../../../helpers");
 
 /**
  * Configs
@@ -37,11 +25,12 @@ const authConfig = require("../../../../config/auth.config.js");
 /**
  * Models
  */
-const Models = require("../../../../models");
-const User = Models.User;
-const SystemSetting = Models.SystemSetting;
-const VerifyUser = Models.VerifyUser;
-const ResetPassword = Models.ResetPassword;
+const {
+  ResetPassword,
+  SystemSetting,
+  User,
+  VerifyUser,
+} = require("../../../../models");
 
 /**
  * Languages
@@ -53,8 +42,7 @@ const validationLanguage = language.en.front.validation;
 /**
  * Transformers
  */
-var UserTransformer = require("../../../../transformers/front/UserTransformer");
-UserTransformer = new UserTransformer();
+const { UserTransformer } = require("../../../../transformers/front");
 
 const templateName = ["email_verification", "reset_password"];
 
