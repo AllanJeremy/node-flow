@@ -6,8 +6,7 @@ const { UserPrompt, Prompt, PromptOption } = require("../../../../models");
 /**
  * Helpers
  */
-var ResponseHandler = require("../../../../helpers/ResponseHandler");
-ResponseHandler = new ResponseHandler();
+const { ResponseHandler } = require("../../../../helpers");
 
 const language = require("../../../../language/en_default");
 const responseLanguage = language.en.admin.response;
@@ -15,7 +14,7 @@ const responseLanguage = language.en.admin.response;
 /**
  * Transformers
  */
-const PromptTransformer = require("../../../../transformers/core/PromptTransformer");
+const { PromptTransformer } = require("../../../../transformers/core");
 
 class PromptController {
   /** Get the latest user prompt response (but only if it was created within the past 24 hours)
