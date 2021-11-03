@@ -4,9 +4,11 @@
 */
 const CommonTransformer = require("./CommonTransformer");
 const PersonalityQuestionTransformer = require("./PersonalityQuestionTransformer");
+const PromptTransformer = require("./PromptTransformer");
 
 //* EXPORTS
 module.exports = {
   CommonTransformer,
   PersonalityQuestionTransformer,
+  PromptTransformer,
 };
